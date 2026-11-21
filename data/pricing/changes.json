@@ -1,1 +1,114 @@
-[]
+[
+ {
+  "t": "2026-11-21 14:42",
+  "id": "gemini",
+  "kind": "price",
+  "plan": "Google AI Ultra",
+  "period": "month",
+  "from": "199.99 USD",
+  "to": "99.99 USD"
+ },
+ {
+  "t": "2026-11-21 14:42",
+  "id": "gemini",
+  "kind": "promo",
+  "title": "Black Friday 最高 5 折",
+  "detail": "指定 Google AI 方案最高省 50%，条款适用"
+ },
+ {
+  "t": "2026-11-21 14:42",
+  "id": "perplexity",
+  "kind": "promo",
+  "title": "限时 +$40 Computer credits",
+  "detail": "Pro 方案赠送 $40 Computer 额度"
+ },
+ {
+  "t": "2026-11-21 14:42",
+  "id": "perplexity",
+  "kind": "promo",
+  "title": "限时 +$450 Computer credits",
+  "detail": "Max 方案赠送 $450 Computer 额度"
+ },
+ {
+  "t": "2026-11-21 14:42",
+  "id": "copilot",
+  "kind": "promo",
+  "title": "Copilot Fusion 使用费 7 折",
+  "detail": "Copilot Fusion usage 30% off until Nov 30th."
+ },
+ {
+  "t": "2026-11-21 14:42",
+  "id": "suno",
+  "kind": "price",
+  "plan": "Pro",
+  "period": "month",
+  "from": "10 USD",
+  "to": "8 GBP"
+ },
+ {
+  "t": "2026-11-21 14:42",
+  "id": "suno",
+  "kind": "price",
+  "plan": "Pro",
+  "period": "year",
+  "from": "96 USD",
+  "to": "72 GBP"
+ },
+ {
+  "t": "2026-11-21 14:42",
+  "id": "suno",
+  "kind": "price",
+  "plan": "Premier",
+  "period": "month",
+  "from": "30 USD",
+  "to": "22 GBP"
+ },
+ {
+  "t": "2026-11-21 14:42",
+  "id": "suno",
+  "kind": "price",
+  "plan": "Premier",
+  "period": "year",
+  "from": "288 USD",
+  "to": "216 GBP"
+ },
+ {
+  "t": "2026-11-21 14:42",
+  "id": "suno",
+  "kind": "price",
+  "plan": "Platinum",
+  "period": "month",
+  "from": "120 USD",
+  "to": "90 GBP"
+ },
+ {
+  "t": "2026-11-21 14:42",
+  "id": "suno",
+  "kind": "price",
+  "plan": "Platinum",
+  "period": "year",
+  "from": "1200 USD",
+  "to": "900 GBP"
+ },
+ {
+  "t": "2026-11-21 14:42",
+  "id": "elevenlabs",
+  "kind": "promo",
+  "title": "Startup Grants Program",
+  "detail": "新产品/初创公司可免费使用 12 个月，含 33M 字符，有效期 12 个月。"
+ },
+ {
+  "t": "2026-11-21 14:42",
+  "id": "lovart",
+  "kind": "promo",
+  "title": "Seedance 2.5 Flash 升级限时5折",
+  "detail": "升级会员限时5折，另赠最多20次免费生成（Pro 5次、Ultimate 20次）"
+ },
+ {
+  "t": "2026-11-21 14:42",
+  "id": "manus",
+  "kind": "promo",
+  "title": "Black Friday 活动",
+  "detail": "Black Friday is almost here. Launch your campaign with Manus."
+ }
+]
