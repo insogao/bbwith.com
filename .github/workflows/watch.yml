@@ -1,0 +1,52 @@
+name: Official pricing watch
+
+on:
+  schedule:
+    # 22:41 UTC = 06:41 Beijing time
+    - cron: "41 22 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: data-commit
+  cancel-in-progress: false
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install headless Chromium
+        run: |
+          pip install playwright==1.49.1
+          python -m playwright install --with-deps chromium
+      - name: Read pricing pages
+        env:
+          SUPBI_AI_BASE_URL: ${{ secrets.SUPBI_AI_BASE_URL }}
+          SUPBI_AI_API_KEY: ${{ secrets.SUPBI_AI_API_KEY }}
+          SUPBI_AI_MODEL: ${{ secrets.SUPBI_AI_MODEL }}
+        run: python scraper/watch.py
+      - name: Keep screenshots for 7 days
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pricing-screenshots
+          path: /tmp/shots
+          retention-days: 7
+      - name: Check the site builds
+        run: python site_src/generate.py
+      - name: Commit
+        run: |
+          git config user.name "bbwith-bot"
+          git config user.email "bbwith-bot@users.noreply.github.com"
+          git add data/pricing
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "data: official AI pricing $(TZ=Asia/Shanghai date +%F)"
+          git pull --rebase
+          git push

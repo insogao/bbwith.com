@@ -880,6 +880,7 @@ def build_merchant_pages():
 # ---------- AI brief ----------
 
 BRIEFS = []
+LATEST_BRIEF_HTML = {}
 KIND_LABEL = {"model": "新模型", "pricing": "价格/会员", "product": "产品", "industry": "行业"}
 
 
@@ -909,9 +910,7 @@ def build_news(cur):
         arts = []
         for n, x in enumerate(b["items"], 1):
             links = " · ".join(f'<a href="{e(l["url"])}" rel="nofollow noopener" target="_blank">{e(l["name"])}</a>' for l in x["links"][:5])
-            prices = "".join(f"<li>{brief_price_line(p, cur)}</li>" for p in x["products"]
-                             if x["kind"] != "industry" and brief_price_line(p, cur))
-            prices += "".join(f'<li>本站已核实：<a href="{deal_url(d)}">{e(d["title"])}</a></li>' for d in DEALS
+            prices = "".join(f'<li>本站已核实：<a href="{deal_url(d)}">{e(d["title"])}</a></li>' for d in DEALS
                               if d["active"] and d["product"] in x["products"] and x["kind"] == "pricing")
             arts.append(f"""<article class="brief"><h2><span class="tag">{KIND_LABEL[x['kind']]}</span> {e(x['title'])}</h2>
 <p>{e(x['summary'])}</p>{f'<p class="take"><b>社区怎么看：</b>{e(x["take"])}</p>' if x['take'] else ''}
@@ -923,12 +922,16 @@ def build_news(cur):
         if i < len(BRIEFS) - 1:
             nav.append(f'<a href="/news/{BRIEFS[i + 1]["date"]}/">{zh_date(BRIEFS[i + 1]["date"])} →</a>')
         cr_html, cr_ld = crumbs([("首页", "/"), ("AI 早报", "/news/"), (zh_date(b["date"]), path)])
+        if i == len(BRIEFS) - 1:
+            older = f'<a href="/news/{BRIEFS[i - 1]["date"]}/">← 前一期：{zh_date(BRIEFS[i - 1]["date"])}</a>' if i > 0 else ""
+            LATEST_BRIEF_HTML["body"] = f"""<p class="meta">整理自 Hacker News、Google 新闻、OpenRouter、官方博客和科技媒体的 {b['inputs']} 条信息 · AI 辅助撰写，每条附原文链接</p>
+<p class="lead">{e(b['headline'])}</p>{''.join(arts)}<p class="note">早报由 AI 根据公开来源归纳改写，可能有疏漏，请以原文和官方信息为准。</p><p class="src">{older}</p>"""
         body = f"""{cr_html}
 <h1>AI 早报 · {zh_date(b['date'])}</h1>
 <p class="meta">整理自 Hacker News、Google 新闻、OpenRouter、官方博客和科技媒体的 {b['inputs']} 条信息 · AI 辅助撰写，每条附原文链接</p>
 <p class="lead">{e(b['headline'])}</p>
 {''.join(arts)}
-<p class="note">早报由 AI 根据公开来源归纳改写，可能有疏漏，请以原文和官方信息为准。会员价格来自本站当日 App Store 比价数据。</p>
+<p class="note">早报由 AI 根据公开来源归纳改写，可能有疏漏，请以原文和官方信息为准。</p>
 <p class="src">{' · '.join(nav)}</p>"""
         ld = [cr_ld, {"@context": "https://schema.org", "@type": "NewsArticle", "headline": f"AI 早报 {b['date']}：{b['headline']}",
                       "datePublished": b["time"].replace(" ", "T") + ":00+08:00", "inLanguage": "zh-CN", "mainEntityOfPage": SITE + path,
@@ -938,11 +941,13 @@ def build_news(cur):
         write(path, page(f"AI 早报 {zh_date(b['date'])}：{b['headline']} · 比比价", f"{b['headline']}。{titles}。"[:150], path, body, ld, b["date"]))
         urls.append(path)
     rows = "".join(f'<li><a href="/news/{b["date"]}/">{zh_date(b["date"])}</a>：{e(b["headline"])}</li>' for b in reversed(BRIEFS))
+    latest = BRIEFS[-1]
+    latest_html = LATEST_BRIEF_HTML.get("body", "")
     cr_html, cr_ld = crumbs([("首页", "/"), ("AI 早报", "/news/")])
-    write("/news/", page("AI 早报：每天 5 分钟看懂新模型、会员和价格变化 · 比比价",
-                         "每天整理 AI 新模型发布、社区口碑、会员价格和限额变化，附原文链接和各地区会员比价。", "/news/",
-                         f'{cr_html}<h1>AI 早报</h1><p class="lead">每天早上 8 点前更新：新模型发布和口碑、会员价格和限额变化、重要产品动态。每条都附原文链接，并配上本站的会员比价数据。</p><ul class="list">{rows}</ul>',
-                         [cr_ld], BRIEFS[-1]["date"]))
+    write("/news/", page(f"AI 早报（每日更新）：{latest['headline']} · 比比价",
+                         f"今日 AI 早报：{latest['headline']}。每天整理 AI 新模型发布、社区口碑、会员价格和限额变化，附原文链接。", "/news/",
+                         f'{cr_html}<h1>AI 早报 · {zh_date(latest["date"])}</h1>{latest_html}'
+                         f'<h2>往期早报</h2><ul class="list">{rows}</ul>', [cr_ld], latest["date"]))
     return ["/news/"] + urls
 
 
