@@ -145,6 +145,7 @@ def page(title, description, path, body, ld=(), date=None):
 <meta property="og:locale" content="zh_CN">
 <meta name="twitter:card" content="summary">
 {f'<meta property="article:modified_time" content="{date}">' if date else ''}
+<meta name="msvalidate.01" content="939B2495BA3A4866A1D2B018A6455FBC">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="/assets/style.css">
 <link rel="alternate" type="application/json" href="/data/latest.json" title="最新价格数据">
