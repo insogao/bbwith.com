@@ -8,7 +8,7 @@ env: SUPBI_AI_BASE_URL, SUPBI_AI_API_KEY, SUPBI_AI_MODEL (any OpenAI-compatible 
 python scraper/brief.py           # collect + write data/news/brief/<date>.json
 python scraper/brief.py --dry     # collect only, print what would be sent
 """
-import datetime as dt, html, json, os, re, sys, time, urllib.parse, urllib.request
+import datetime as dt, html, json, os, re, sys, time, urllib.error, urllib.parse, urllib.request
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from news import FEEDS, parse  # noqa: E402
@@ -154,12 +154,16 @@ def ask_llm(items):
     for attempt in range(3):
         try:
             req = urllib.request.Request(base.rstrip("/") + "/chat/completions", data=body, method="POST",
-                                         headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"})
+                                         headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json",
+                                                  "User-Agent": "Mozilla/5.0 (bbwith-brief/1.0)", "Accept": "application/json"})
             r = json.loads(urllib.request.urlopen(req, timeout=240).read())
             text = r["choices"][0]["message"]["content"]
             text = re.sub(r"^.*?(\{)", r"\1", text.strip(), count=1, flags=re.S)
             text = text[:text.rfind("}") + 1]
             return json.loads(text), r.get("model", model)
+        except urllib.error.HTTPError as e:
+            last = e
+            print("llm attempt failed:", e.code, e.read()[:300].decode("utf8", "replace"))
         except Exception as e:
             last = e
             print("llm attempt failed:", repr(e)[:200])
