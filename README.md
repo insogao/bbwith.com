@@ -63,7 +63,7 @@ cd dist && python -m http.server 8000
 ## 商家入驻、投诉、点赞、点击统计（Pages Functions + D1）
 
 - `functions/api/[[path]].js`：入驻、商品管理、投诉、点赞点踩、浏览统计、管理后台接口；`functions/go/[[key]].js`：外链跳转并计数。
-- 需要在 Cloudflare Pages 项目里绑定 D1 数据库（变量名 `DB`），后台 /admin/ 和 /api/admin/ 用 Cloudflare Access 保护（只放行管理员邮箱），并设置环境变量 `ACCESS_TEAM`、`ACCESS_AUD`、`ADMIN_EMAILS`。表在第一次请求时自动建好。
+- 需要在 Cloudflare Pages 项目里绑定 D1 数据库（变量名 `DB`），后台 /admin/ 和 /api/admin/ 用 Cloudflare Access 保护（只放行管理员邮箱）（团队名、AUD 标签、管理员邮箱写在 functions/_lib.js 的 ACCESS 里）。表在第一次请求时自动建好。
 - `scraper/merchants.py` 每 4 小时（随 channels.yml）核价、算信用分，写 `data/merchants/latest.json`，生成器据此展示每类最低价前 5 名。
 - 不要在仓库里放 wrangler.toml：Pages 会把它当成配置，覆盖面板里的绑定。
 

@@ -82,6 +82,8 @@ export function str(v, max, name, required = true) {
 // Admin = a request that passed Cloudflare Access (Google / email login), verified by its signed JWT.
 // env.ACCESS_TEAM: e.g. "bbwith" for bbwith.cloudflareaccess.com; env.ACCESS_AUD: the application's AUD tag;
 // env.ADMIN_EMAILS: comma-separated allowed emails. ADMIN_TOKEN still works as a fallback if it is set.
+// Not secrets: the Access team name, the application's AUD tag and the admin email.
+const ACCESS = { team: "gavinni", aud: "c0ef962fda851815269dd9f288c51846e7a050c7886a98b72ecdd486f105ba45", emails: "insogao@gmail.com" };
 let certs = null, certsAt = 0;
 function b64url(s) {
   s = s.replace(/-/g, "+").replace(/_/g, "/");
@@ -91,13 +93,14 @@ function b64url(s) {
 async function accessEmail(request, env) {
   const jwt = request.headers.get("cf-access-jwt-assertion") ||
     (request.headers.get("cookie") || "").match(/CF_Authorization=([^;]+)/)?.[1];
-  if (!jwt || !env.ACCESS_TEAM || !env.ACCESS_AUD) return null;
+  const team = env.ACCESS_TEAM || ACCESS.team, audTag = env.ACCESS_AUD || ACCESS.aud;
+  if (!jwt) return null;
   const [h, p, sig] = jwt.split(".");
   if (!sig) return null;
   const header = JSON.parse(new TextDecoder().decode(b64url(h)));
   const claims = JSON.parse(new TextDecoder().decode(b64url(p)));
   if (Date.now() - certsAt > 3600e3 || !certs) {
-    certs = (await (await fetch(`https://${env.ACCESS_TEAM}.cloudflareaccess.com/cdn-cgi/access/certs`)).json()).keys;
+    certs = (await (await fetch(`https://${team}.cloudflareaccess.com/cdn-cgi/access/certs`)).json()).keys;
     certsAt = Date.now();
   }
   const jwk = certs.find((k) => k.kid === header.kid);
@@ -105,7 +108,7 @@ async function accessEmail(request, env) {
   const key = await crypto.subtle.importKey("jwk", jwk, { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" }, false, ["verify"]);
   const ok = await crypto.subtle.verify("RSASSA-PKCS1-v1_5", key, b64url(sig), new TextEncoder().encode(h + "." + p));
   const aud = Array.isArray(claims.aud) ? claims.aud : [claims.aud];
-  if (!ok || !aud.includes(env.ACCESS_AUD) || claims.exp * 1000 < Date.now()) return null;
+  if (!ok || !aud.includes(audTag) || claims.exp * 1000 < Date.now()) return null;
   return (claims.email || "").toLowerCase();
 }
 
@@ -114,7 +117,7 @@ export async function isAdmin(request, env) {
   if (env.ADMIN_TOKEN && t && t === env.ADMIN_TOKEN) return true;
   try {
     const email = await accessEmail(request, env);
-    const allowed = (env.ADMIN_EMAILS || "").toLowerCase().split(",").map((x) => x.trim()).filter(Boolean);
+    const allowed = (env.ADMIN_EMAILS || ACCESS.emails).toLowerCase().split(",").map((x) => x.trim()).filter(Boolean);
     return !!email && allowed.includes(email);
   } catch (e) {
     console.error(e);
