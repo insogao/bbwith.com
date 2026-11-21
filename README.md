@@ -58,6 +58,7 @@ cd dist && python -m http.server 8000
 
 `scraper/giftcards.py` 每天随 daily.yml 抓 Bitrefill、SEAGM、Eneba 的 App Store 礼品卡公开报价（土耳其、印尼、巴西、印度、日本、美国），生成 `/gift-cards/` 页面。
 所有外链都走 `/go/<平台>-<地区>`，由生成的 `_redirects` 做 302 跳转，链接带 `rel="nofollow sponsored"`，robots.txt 屏蔽 `/go/`。
+需要登录才能看价的平台（如由我付 YouWorld）写在 `data/giftcards/manual.json`，记人民币价格和核价日期，按当天汇率换算。
 注册联盟计划后，把追踪参数填进 `data/affiliates.json`（如 `"bitrefill": "ref=xxxx"`），跳转会自动带上。
 
 ## 商家入驻、投诉、点赞、点击统计（Pages Functions + D1）

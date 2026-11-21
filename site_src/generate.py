@@ -1060,13 +1060,24 @@ GIFT = {}   # latest data/giftcards/*.json
 GO = {}     # /go/<slug> -> destination; written to _redirects
 SHOPS = {"bitrefill": {"name": "Bitrefill", "pay": "加密货币（BTC、USDT 等）", "url": "https://www.bitrefill.com/us/en/gift-cards/{slug}/"},
          "seagm": {"name": "SEAGM", "pay": "信用卡、PayPal 等", "url": "https://www.seagm.com/{slug}"},
-         "eneba": {"name": "Eneba", "pay": "信用卡、PayPal 等（平台上的第三方卖家）", "url": "https://www.eneba.com/{slug}"}}
+         "eneba": {"name": "Eneba", "pay": "信用卡、PayPal 等（平台上的第三方卖家）", "url": "https://www.eneba.com/{slug}"},
+         "youworld": {"name": "由我付 YouWorld", "pay": "支付宝（人民币），需手机号登录", "url": "https://up.youworld.cn/{slug}"}}
 GIFT_NAMES = {"tr": "土耳其", "id": "印尼", "br": "巴西", "in": "印度", "jp": "日本", "us": "美国"}
 
 
 def load_gift():
     files = sorted(glob.glob(os.path.join(ROOT, "data", "giftcards", "20*.json")))
     return json.load(open(files[-1], encoding="utf8")) if files else {}
+
+
+def add_manual_gift(usd_cny):
+    """Prices checked by hand (shops that need a login), converted at today's CNY rate."""
+    f = os.path.join(ROOT, "data", "giftcards", "manual.json")
+    if not os.path.exists(f) or not GIFT.get("items"):
+        return
+    for m in json.load(open(f, encoding="utf8")):
+        GIFT["items"].append({"shop": m["shop"], "cc": m["cc"], "cur": m["cur"], "face": float(m["face"]),
+                              "usd": round(m["cny"] / usd_cny, 2), "slug": "", "manual": m["checked"], "cny": m["cny"]})
 
 
 def go(shop, slug, key):
@@ -1099,6 +1110,10 @@ def best_rate(cc, fx, min_face_usd=4):
     """Best USD per local unit among cards worth at least a few dollars (tiny cards are rounded oddly)."""
     rs = [r for r in gift_rows(cc, fx) if r["fair"] >= min_face_usd]
     return rs[0] if rs else None
+
+
+def manual_note(r):
+    return f'<br><small>¥{r["cny"]:g}（支付宝）· {e(r["manual"])} 人工核价</small>' if r.get("manual") else ""
 
 
 def face_text(r):
@@ -1134,7 +1149,7 @@ def build_gift(day, cur):
         path = f"/gift-cards/apple/{cc}/"
         cur_code = rows[0]["cur"]
         trs = "".join(
-            f'<tr><td>{e(SHOPS[r["shop"]]["name"])}</td><td data-v="{r["face"]}">{e(face_text(r))}</td><td data-v="{r["usd"]:.4f}"><b>{money(r["usd"])}</b></td>'
+            f'<tr><td>{e(SHOPS[r["shop"]]["name"])}{manual_note(r)}</td><td data-v="{r["face"]}">{e(face_text(r))}</td><td data-v="{r["usd"]:.4f}"><b>{money(r["usd"])}</b></td>'
             f'<td data-v="{r["fair"]:.4f}">{money(r["fair"])}</td><td data-v="{r["prem"]:.4f}" class="{"down" if r["prem"] < -0.005 else ("up" if r["prem"] > 0.005 else "")}">{pct(r["prem"])}</td>'
             f'<td>{out_link(r["href"], "去购买")}</td></tr>' for r in rows)
         shops_here = sorted({r["shop"] for r in rows})
@@ -1235,6 +1250,7 @@ def main():
     prev = rows_of(prev_day) if prev_day else None
     CHANNELS.update(load_channels())
     GIFT.update(load_gift())
+    add_manual_gift(day["usd_cny"])
     BRIEFS.extend(load_briefs())
     MERCH.update(load_merch())
     PRICING.update(load_pricing())
