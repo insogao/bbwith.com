@@ -16,3 +16,31 @@ document.querySelectorAll("table.sortable").forEach(function (table) {
     });
   });
 });
+
+// Currency selector: amounts are rendered in USD (data-usd); window.FX holds units per USD.
+(function () {
+  var sel = document.querySelectorAll("select#cur");
+  if (!sel.length || !window.FX) return;
+  var SYM = { USD: "$", CNY: "¥", EUR: "€", GBP: "£", JPY: "JP¥", HKD: "HK$", SGD: "S$" };
+  function fmt(v, c) {
+    var digits = c === "JPY" || v >= 1000 ? 0 : 2;
+    return (SYM[c] || c + " ") + v.toLocaleString("en-US", { minimumFractionDigits: digits, maximumFractionDigits: digits });
+  }
+  function apply(c) {
+    if (!window.FX[c]) c = "USD";
+    document.querySelectorAll(".m").forEach(function (el) {
+      el.textContent = fmt(parseFloat(el.getAttribute("data-usd")) * window.FX[c], c);
+    });
+    document.querySelectorAll(".mh").forEach(function (el) { el.textContent = c; });
+    sel.forEach(function (s) { s.value = c; });
+  }
+  var saved = "USD";
+  try { saved = localStorage.getItem("bbwith-cur") || "USD"; } catch (e) {}
+  apply(saved);
+  sel.forEach(function (s) {
+    s.addEventListener("change", function () {
+      try { localStorage.setItem("bbwith-cur", s.value); } catch (e) {}
+      apply(s.value);
+    });
+  });
+})();

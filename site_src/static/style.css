@@ -71,3 +71,7 @@ table.prices{border-collapse:collapse;width:100%;font-size:15px;font-variant-num
   .brand small{display:none}
   .prices th,.prices td{padding:8px 9px}
 }
+.bar{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:36px 0 12px}
+.bar h2{margin:0}
+.cursel{font-size:14px;color:var(--muted)}
+.cursel select{font:inherit;color:var(--fg);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:4px 8px;margin-left:4px}

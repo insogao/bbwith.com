@@ -66,12 +66,24 @@ def cname(cc):
     return COUNTRIES.get(cc, {}).get("zh", cc.upper())
 
 
-def yuan(v):
-    return f"¥{v:,.0f}" if v >= 100 else f"¥{v:,.1f}"
-
-
 def usd(v):
-    return f"${v:,.2f}"
+    return f"${v:,.2f}" if v < 1000 else f"${v:,.0f}"
+
+
+def money(v):
+    """A USD amount the page can show in another currency (see assets/sort.js)."""
+    return f'<span class="m" data-usd="{v:.4f}">{usd(v)}</span>'
+
+
+FX = {}  # filled in main(): currency -> units per USD, for the selector
+FX_CHOICES = [("USD", "美元 USD"), ("CNY", "人民币 CNY"), ("EUR", "欧元 EUR"), ("GBP", "英镑 GBP"),
+              ("JPY", "日元 JPY"), ("HKD", "港币 HKD"), ("SGD", "新加坡元 SGD")]
+
+
+def cur_select():
+    opts = "".join(f'<option value="{c}">{e(n)}</option>' for c, n in FX_CHOICES if c in FX)
+    return f'<label class="cursel">显示币种 <select id="cur">{opts}</select></label>'
+
 
 
 def pct(v):
@@ -136,6 +148,7 @@ def page(title, description, path, body, ld=(), date=None):
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="/assets/style.css">
 <link rel="alternate" type="application/json" href="/data/latest.json" title="最新价格数据">
+<script>window.FX={json.dumps(FX)}</script>
 {lds}
 </head>
 <body>
@@ -166,7 +179,7 @@ def crumbs(items):
 
 
 def price_table(rows, prev=None, limit=None, cls=""):
-    head = "<tr><th>#</th><th>地区</th><th data-sort=num>折合人民币</th><th>本地标价</th><th data-sort=num>折合美元</th><th data-sort=num>比美区</th>" + \
+    head = "<tr><th>#</th><th>地区</th><th data-sort=num>价格（<span class=mh>USD</span>）</th><th>本地标价</th><th data-sort=num>比美区</th>" + \
            ("<th data-sort=num>较前一日</th>" if prev is not None else "") + "</tr>"
     body = []
     for i, r in enumerate(rows[:limit] if limit else rows, 1):
@@ -182,8 +195,8 @@ def price_table(rows, prev=None, limit=None, cls=""):
                 chg = f'<td data-v="{d:.4f}" class="{"down" if d < 0 else "up"}">{d * 100:+.1f}%</td>'
         us = ' class="us"' if r["cc"] == "us" else ""
         vs = r["vs_us"]
-        body.append(f'<tr{us}><td>{i}</td><td>{flag(r["cc"])} {e(cname(r["cc"]))}</td><td data-v="{r["cny"]:.2f}"><b>{yuan(r["cny"])}</b></td>'
-                    f'<td>{e(r["display"])} <small>{r["currency"]}</small></td><td data-v="{r["usd"]:.2f}">{usd(r["usd"])}</td>'
+        body.append(f'<tr{us}><td>{i}</td><td>{flag(r["cc"])} {e(cname(r["cc"]))}</td><td data-v="{r["usd"]:.4f}"><b>{money(r["usd"])}</b></td>'
+                    f'<td>{e(r["display"])} <small>{r["currency"]}</small></td>'
                     f'<td data-v="{vs if vs is not None else 0:.4f}" class="{"down" if (vs or 0) < -0.005 else ("up" if (vs or 0) > 0.005 else "")}">{pct(vs)}</td>{chg}</tr>')
     return f'<div class="tablewrap"><table class="prices sortable {cls}"><thead>{head}</thead><tbody>{"".join(body)}</tbody></table></div>'
 
@@ -192,14 +205,14 @@ def summary_sentence(product, plan, rows, day):
     name = full_name(product, plan)
     us = next((r for r in rows if r["cc"] == "us"), None)
     lo, hi = rows[0], rows[-1]
-    med = statistics.median(r["cny"] for r in rows)
+    med = statistics.median(r["usd"] for r in rows)
     s = (f"截至{zh_date(day['date'])}，{name} 在 {len(rows)} 个 App Store 地区可以查到月付标价。"
-         f"最便宜的是{cname(lo['cc'])}（{lo['display']}，约 {yuan(lo['cny'])} / {usd(lo['usd'])}"
+         f"最便宜的是{cname(lo['cc'])}（{lo['display']}，约 {usd(lo['usd'])}"
          + (f"，比美区{'低' if lo['vs_us'] < 0 else '高'} {abs(lo['vs_us']) * 100:.0f}%" if lo["vs_us"] is not None and abs(lo["vs_us"]) >= 0.005 else "") + "），"
-         f"最贵的是{cname(hi['cc'])}（约 {yuan(hi['cny'])}）")
+         f"最贵的是{cname(hi['cc'])}（{hi['display']}，约 {usd(hi['usd'])}）")
     if us:
-        s += f"；美区标价 {us['display']}（约 {yuan(us['cny'])}）"
-    s += f"；所有地区的中位数约 {yuan(med)}。"
+        s += f"；美区标价 {us['display']}"
+    s += f"；所有地区的中位数约 {usd(med)}。价格均为按当日汇率折算的美元。"
     return s
 
 
@@ -212,8 +225,8 @@ def build_plan_page(product, plan, rows, prev_rows, day, all_plans):
     us = next((r for r in rows if r["cc"] == "us"), None)
     lo = rows[0]
     title = f"{name} 哪个地区最便宜？{len(rows)} 个 App Store 地区价格对比（{zh_date(date)}）"
-    desc = (f"{name} 今日最低：{cname(lo['cc'])} {lo['display']}，约 {yuan(lo['cny'])}。"
-            f"按人民币和美元对比 {len(rows)} 个 App Store 地区的月付标价，每日更新。")
+    desc = (f"{name} 今日最低：{cname(lo['cc'])} {lo['display']}，约 {usd(lo['usd'])}。"
+            f"统一折算成美元，对比 {len(rows)} 个 App Store 地区的月付标价，每日更新。")
     cr_html, cr_ld = crumbs([("首页", "/"), (PRODUCTS[product]["name"], f"/{product}/"), (plan_label(product, plan), path)])
     prev_map = {r["cc"]: r for r in prev_rows} if prev_rows is not None else None
     cheaper = [r for r in rows if r["vs_us"] is not None and r["vs_us"] < -0.005]
@@ -226,9 +239,9 @@ def build_plan_page(product, plan, rows, prev_rows, day, all_plans):
     faq = [
         (f"{name} 哪个地区最便宜？",
          f"按{zh_date(date)}的 App Store 标价和汇率，最便宜的 5 个地区是："
-         + "、".join(f"{cname(r['cc'])}（约 {yuan(r['cny'])}）" for r in rows[:5]) + "。"),
+         + "、".join(f"{cname(r['cc'])}（约 {usd(r['usd'])}）" for r in rows[:5]) + "。"),
         (f"{name} 美区多少钱？",
-         f"美区 App Store 标价 {us['display']} / 月，约合人民币 {yuan(us['cny'])}。美区标价不含销售税，结账时会按所在州另加。" if us else "本次没有抓到美区标价。"),
+         f"美区 App Store 标价 {us['display']} / 月。美区标价不含销售税，结账时会按所在州另加。" if us else "本次没有抓到美区标价。"),
         ("这些价格含税吗？",
          "大多数地区的 App Store 标价已经包含增值税或消费税；美国、加拿大等地区的标价不含税，结账时另加。"),
         (f"{name} 有多少个地区比美区便宜？",
@@ -237,10 +250,10 @@ def build_plan_page(product, plan, rows, prev_rows, day, all_plans):
     faq_html = "".join(f"<details><summary>{e(q)}</summary><p>{e(a)}</p></details>" for q, a in faq)
     body = f"""{cr_html}
 <h1>{e(name)} 各地区 App Store 价格</h1>
-<p class="meta">更新于 {zh_date(date)} · 汇率 1 美元 = {day['usd_cny']:.4f} 人民币（{e(day['fx_source'])}）· 月付标价</p>
+<p class="meta">更新于 {zh_date(date)} · 月付标价 · 按当日汇率折算（{e(day['fx_source'])}）</p>
 <p class="lead">{e(summary_sentence(product, plan, rows, day))}</p>
 <div class="chips">{siblings}</div>
-<h2>最便宜的 10 个地区</h2>
+<div class="bar"><h2>最便宜的 10 个地区</h2>{cur_select()}</div>
 {price_table(rows, limit=10)}
 <h2>全部 {len(rows)} 个地区</h2>
 <p class="hint">点击表头可以排序。美区一行已高亮。</p>
@@ -259,7 +272,7 @@ def build_plan_page(product, plan, rows, prev_rows, day, all_plans):
            "description": desc, "url": SITE + path, "dateModified": date, "temporalCoverage": date,
            "license": "https://creativecommons.org/licenses/by/4.0/",
            "creator": {"@type": "Organization", "name": SITE_NAME, "url": SITE},
-           "variableMeasured": ["本地标价", "人民币价格", "美元价格", "相对美区差价"],
+           "variableMeasured": ["本地标价", "折算美元价格", "相对美区差价"],
            "distribution": [{"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": f"{SITE}/data/latest.csv"},
                             {"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": f"{SITE}/data/latest.json"}]}]
     write(path, page(title, desc, path, body, ld, date))
@@ -274,16 +287,17 @@ def build_product_page(product, plans_rows, day):
         us = next((r for r in rows if r["cc"] == "us"), None)
         lo = rows[0]
         rows_html.append(f'<tr><td><a href="{url_plan(p, pl)}">{e(plan_label(p, pl))}</a></td><td>{e(us["display"]) if us else "—"}</td>'
-                         f'<td>{yuan(us["cny"]) if us else "—"}</td><td>{flag(lo["cc"])} {e(cname(lo["cc"]))}</td>'
-                         f'<td>{yuan(lo["cny"])}</td><td class="down">{pct(lo["vs_us"])}</td><td>{len(rows)}</td></tr>')
+                         f'<td>{flag(lo["cc"])} {e(cname(lo["cc"]))}</td>'
+                         f'<td><b>{money(lo["usd"])}</b></td><td class="down">{pct(lo["vs_us"])}</td><td>{len(rows)}</td></tr>')
     name0 = info["name"].split("（")[0]
     title = f"{name0} 会员各地区 App Store 价格对比：哪个地区最便宜（{zh_date(day['date'])}）"
-    desc = f"{name0} 各档会员在 {len(day['storefronts'])} 个 App Store 地区的月付标价，按人民币对比最便宜和最贵的地区，每日更新。"
+    desc = f"{name0} 各档会员在 {len(day['storefronts'])} 个 App Store 地区的月付标价，统一折算成美元，对比最便宜和最贵的地区，每日更新。"
     body = f"""{cr_html}
 <h1>{e(info['name'])} 各档会员 App Store 价格</h1>
 <p class="meta">更新于 {zh_date(day['date'])} · App：{e(info['app'])}（{e(info['vendor'])}）</p>
 {f'<p class="note">{e(info["note"])}</p>' if info["note"] else ''}
-<div class="tablewrap"><table class="prices"><thead><tr><th>档位</th><th>美区标价</th><th>美区人民币</th><th>最便宜地区</th><th>最低人民币</th><th>比美区</th><th>地区数</th></tr></thead>
+<div class="bar"><h2>各档位最便宜地区</h2>{cur_select()}</div>
+<div class="tablewrap"><table class="prices"><thead><tr><th>档位</th><th>美区标价</th><th>最便宜地区</th><th>最低价（<span class=mh>USD</span>）</th><th>比美区</th><th>地区数</th></tr></thead>
 <tbody>{''.join(rows_html)}</tbody></table></div>
 <p class="src"><a href="/about/">方法说明</a> · <a href="/data/">数据下载</a></p>
 """
@@ -320,33 +334,33 @@ def build_daily(day, cur, prev_day, prev):
         lo = rows[0]
         us = next((r for r in rows if r["cc"] == "us"), None)
         facts.append(f"<li><a href=\"{url_plan(p, pl)}\">{e(full_name(p, pl))}</a>：最低在{e(cname(lo['cc']))}，"
-                     f"{e(lo['display'])}，约 {yuan(lo['cny'])}" + (f"（美区约 {yuan(us['cny'])}）" if us else "") + "</li>")
+                     f"{e(lo['display'])}，约 {usd(lo['usd'])}" + (f"（美区 {e(us['display'])}）" if us else "") + "</li>")
     if prev is None:
         chg_html = "<p>这是第一期日报，从明天开始会列出相对前一天的价格变动。</p>"
     elif not chg:
-        chg_html = f"<p>与{zh_date(prev_day['date'])}相比，所有地区、所有档位的本地标价都没有变化（人民币折算价会随汇率小幅波动）。</p>"
+        chg_html = f"<p>与{zh_date(prev_day['date'])}相比，所有地区、所有档位的本地标价都没有变化（折算价会随汇率小幅波动）。</p>"
     else:
         items = "".join(f"<li>{e(full_name(*k))} · {flag(r['cc'])} {e(cname(r['cc']))}：{e(p['display'])} → {e(r['display'])}"
-                        f"（<span class=\"{'down' if d < 0 else 'up'}\">{d * 100:+.1f}%</span>，现约 {yuan(r['cny'])}）</li>"
+                        f"（<span class=\"{'down' if d < 0 else 'up'}\">{d * 100:+.1f}%</span>，现约 {usd(r['usd'])}）</li>"
                         for k, r, p, d in chg[:50])
         chg_html = f"<p>与{zh_date(prev_day['date'])}相比，共有 {len(chg)} 处本地标价变动：</p><ul>{items}</ul>"
     summary_rows = "".join(
         f'<tr><td><a href="{url_plan(p, pl)}">{e(full_name(p, pl))}</a></td><td>{flag(rows[0]["cc"])} {e(cname(rows[0]["cc"]))}</td>'
-        f'<td>{yuan(rows[0]["cny"])}</td><td class="down">{pct(rows[0]["vs_us"])}</td>'
-        f'<td>{yuan(next((r["cny"] for r in rows if r["cc"] == "us"), 0))}</td></tr>'
+        f'<td><b>{money(rows[0]["usd"])}</b></td><td class="down">{pct(rows[0]["vs_us"])}</td>'
+        f'<td>{money(next((r["usd"] for r in rows if r["cc"] == "us"), 0))}</td></tr>'
         for (p, pl), rows in sorted(cur.items(), key=lambda kv: [x[:2] for x in PLANS].index(kv[0])))
     desc = (f"{zh_date(date)} AI 会员 App Store 各地区价格日报：ChatGPT、Claude、Gemini、Grok、X、Perplexity、Cursor 共 "
             f"{len(cur)} 个档位的最便宜地区与价格变动。")
     cr_html, cr_ld = crumbs([("首页", "/"), ("日报", "/daily/"), (date, path)])
     body = f"""{cr_html}
 <h1>{e(title)}</h1>
-<p class="meta">覆盖 {len(day['storefronts'])} 个 App Store 地区 · 汇率 1 美元 = {day['usd_cny']:.4f} 人民币</p>
+<p class="meta">覆盖 {len(day['storefronts'])} 个 App Store 地区 · 价格按当日汇率折算成美元</p>
 <h2>今日要点</h2>
 <ul class="facts">{''.join(facts)}</ul>
 <h2>价格变动</h2>
 {chg_html}
-<h2>各档位最便宜地区</h2>
-<div class="tablewrap"><table class="prices"><thead><tr><th>档位</th><th>最便宜地区</th><th>人民币</th><th>比美区</th><th>美区人民币</th></tr></thead><tbody>{summary_rows}</tbody></table></div>
+<div class="bar"><h2>各档位最便宜地区</h2>{cur_select()}</div>
+<div class="tablewrap"><table class="prices"><thead><tr><th>档位</th><th>最便宜地区</th><th>最低价（<span class=mh>USD</span>）</th><th>比美区</th><th>美区价（<span class=mh>USD</span>）</th></tr></thead><tbody>{summary_rows}</tbody></table></div>
 """
     ld = [cr_ld, {"@context": "https://schema.org", "@type": "Article", "headline": title, "datePublished": date,
                   "dateModified": date, "inLanguage": "zh-CN", "mainEntityOfPage": SITE + path,
@@ -372,25 +386,25 @@ def build_home(day, cur, chg, prev):
         if not plans:
             continue
         plans.sort(key=lambda kv: [x[:2] for x in PLANS].index(kv[0]))
-        lis = "".join(f'<li><a href="{url_plan(*k)}"><span>{e(plan_label(*k))}</span><b>{yuan(v[0]["cny"])}</b>'
+        lis = "".join(f'<li><a href="{url_plan(*k)}"><span>{e(plan_label(*k))}</span><b>{money(v[0]["usd"])}</b>'
                       f'<em>{flag(v[0]["cc"])} {e(cname(v[0]["cc"]))}</em></a></li>' for k, v in plans)
         cards.append(f'<section class="card"><h3><a href="/{product}/">{e(info["name"])}</a></h3><ul>{lis}</ul></section>')
     facts = []
     for (p, pl), rows in headline_rows(cur)[:5]:
         lo = rows[0]
-        facts.append(f"<li>{e(full_name(p, pl))} 最便宜在{e(cname(lo['cc']))}：{e(lo['display'])}，约 {yuan(lo['cny'])}"
+        facts.append(f"<li>{e(full_name(p, pl))} 最便宜在{e(cname(lo['cc']))}：{e(lo['display'])}，约 {usd(lo['usd'])}"
                      + (f"，比美区低 {abs(lo['vs_us']) * 100:.0f}%" if lo["vs_us"] is not None and lo["vs_us"] < -0.005 else "") + "。</li>")
     chg_line = (f"今天共有 {len(chg)} 处标价变动。" if chg else ("今天各地区标价没有变化。" if prev is not None else ""))
     title = f"AI 会员哪个地区最便宜？ChatGPT、Claude、Gemini、Grok 各地区 App Store 价格对比 | 比比价"
     desc = (f"每天对比 ChatGPT、Claude、Google AI（Gemini）、Grok、X Premium、Perplexity、Cursor 在 {len(day['storefronts'])} 个"
-            f" App Store 地区的会员标价，按人民币和美元换算，找出最便宜的地区。")
+            f" App Store 地区的会员标价，统一折算成美元，找出最便宜的地区。")
     body = f"""<section class="hero">
 <h1>AI 会员各地区价格，比比再买</h1>
-<p class="lead">每天抓取 {len(day['storefronts'])} 个 App Store 地区的公开标价，按当日汇率换算成人民币和美元。最新数据：{zh_date(date)}。{chg_line}</p>
+<p class="lead">每天抓取 {len(day['storefronts'])} 个 App Store 地区的公开标价，按当日汇率统一折算成美元（也可以切换成其他币种）。最新数据：{zh_date(date)}。{chg_line}</p>
 <ul class="facts">{''.join(facts)}</ul>
 <p><a class="btn" href="/daily/{date}/">看今日日报</a></p>
 </section>
-<h2>各产品最便宜地区（月付）</h2>
+<div class="bar"><h2>各产品最便宜地区（月付）</h2>{cur_select()}</div>
 <div class="cards">{''.join(cards)}</div>
 <p class="src">价格为各地区 App Store 标价，大多数地区含税，美国、加拿大等地区不含税。<a href="/about/">方法说明</a></p>
 """
@@ -404,7 +418,7 @@ def build_about(day):
     body = f"""{cr_html}<h1>数据来源与方法</h1>
 <div class="prose">
 <h2>数据来源</h2><p>价格来自各地区 App Store 公开页面上的「App 内购买项目」列表（apps.apple.com，英文界面），每天北京时间早上抓取一次，覆盖 {len(day['storefronts'])} 个 App Store 地区。</p>
-<h2>汇率</h2><p>人民币和美元价格按 open.er-api.com 当日汇率换算。本期汇率更新于 {e(day['fx_updated'])}，1 美元 = {day['usd_cny']:.4f} 人民币。汇率每天都会波动，所以即使本地标价不变，人民币折算价也会有小幅变化。</p>
+<h2>汇率</h2><p>各地区本地标价按 open.er-api.com 当日汇率统一折算成美元；页面上可以切换成人民币、欧元等其他币种显示。本期汇率更新于 {e(day['fx_updated'])}。汇率每天都会波动，所以即使本地标价不变，折算价也会有小幅变化。</p>
 <h2>只统计月付</h2><p>同一个内购名称在页面上可能同时对应月付和年付。高于美区月价 5 倍的价格视为年付，不计入；剩下的价格中取最高值作为常规月价，以排除首月优惠价。</p>
 <h2>含税口径</h2><p>大多数地区的 App Store 标价已经包含增值税或消费税；美国、加拿大等地区的标价不含税，结账时按所在地另加。</p>
 <h2>已知限制</h2><ul>
@@ -459,12 +473,12 @@ def build_meta(days, cur):
     write("/sitemap.xml", f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{sm}</urlset>\n')
     write("/robots.txt", f"User-agent: *\nAllow: /\n\nSitemap: {SITE}/sitemap.xml\n")
     lines = [f"# 比比价 bbwith.com", "",
-             f"> 每天对比 AI 会员在 {len(day['storefronts'])} 个 App Store 地区的标价，按当日汇率换算成人民币和美元。最新数据：{day['date']}。", "",
+             f"> 每天对比 AI 会员在 {len(day['storefronts'])} 个 App Store 地区的标价，按当日汇率统一折算成美元。最新数据：{day['date']}。", "",
              "## 今日最低价（月付，App Store）", ""]
     for (p, pl), rows in sorted(cur.items(), key=lambda kv: [x[:2] for x in PLANS].index(kv[0])):
         lo = rows[0]
         us = next((r for r in rows if r["cc"] == "us"), None)
-        lines.append(f"- [{full_name(p, pl)}]({SITE}{url_plan(p, pl)})：最低 {COUNTRIES.get(lo['cc'], {}).get('zh')}（{lo['cc'].upper()}）{lo['display']} ≈ ¥{lo['cny']:.0f} / ${lo['usd']:.2f}"
+        lines.append(f"- [{full_name(p, pl)}]({SITE}{url_plan(p, pl)})：最低 {COUNTRIES.get(lo['cc'], {}).get('zh')}（{lo['cc'].upper()}）{lo['display']} ≈ ${lo['usd']:.2f}"
                      + (f"；美区 {us['display']}" if us else ""))
     lines += ["", "## 页面", "", f"- [今日日报]({SITE}/daily/{day['date']}/)", f"- [方法说明]({SITE}/about/)",
               f"- [数据下载 CSV]({SITE}/data/latest.csv)", f"- [数据下载 JSON]({SITE}/data/latest.json)", "",
@@ -488,6 +502,8 @@ def main():
         shutil.rmtree(DIST)
     days = load_days()
     day = days[-1]
+    FX.update({"USD": 1.0, "CNY": day["usd_cny"]})
+    FX.update({c: day["fx"][c] for c, _ in FX_CHOICES if c in day["fx"]})
     cur = rows_of(day)
     prev_day = days[-2] if len(days) > 1 else None
     prev = rows_of(prev_day) if prev_day else None
