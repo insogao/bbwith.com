@@ -155,7 +155,7 @@ def page(title, description, path, body, ld=(), date=None):
 <body>
 <header class="top"><div class="wrap">
 <a class="brand" href="/"><span class="logo">比</span>比比价 <small>bbwith.com</small></a>
-<nav><a href="/deals/">优惠</a><a href="/gift-cards/">礼品卡</a><a href="/daily/">日报</a><a href="/data/">数据下载</a><a href="/about/">方法说明</a></nav>
+<nav><a href="/news/">早报</a><a href="/deals/">优惠</a><a href="/gift-cards/">礼品卡</a><a href="/daily/">日报</a><a href="/data/">数据下载</a><a href="/about/">方法说明</a></nav>
 </div></header>
 <main class="wrap">
 {body}
@@ -549,6 +549,7 @@ def build_home(day, cur, chg, prev):
 <p><a class="btn" href="/daily/{date}/">看今日日报</a></p>
 </section>
 {deal_banner()}
+{brief_home()}
 <div class="bar"><h2>各档位最便宜的 3 个地区（月付）</h2>{cur_select()}</div>
 <div class="cards">{''.join(cards)}</div>
 <p class="src">价格为各地区 App Store 标价，大多数地区含税，美国、加拿大等地区不含税。<a href="/about/">方法说明</a></p>
@@ -629,6 +630,9 @@ def build_meta(days, cur, gift_urls=()):
     act = [d for d in DEALS if d["active"]]
     if act:
         lines += ["", "## 进行中的优惠（已核实）", ""] + [f"- [{d['title']}]({SITE}{deal_url(d)})：{d['discount']}，{deal_period(d)}；{d['eligibility']}" for d in act]
+    if BRIEFS:
+        b = BRIEFS[-1]
+        lines += ["", f"## 最新 AI 早报（{b['date']}）", "", f"[{b['headline']}]({SITE}/news/{b['date']}/)", ""] + [f"- {x['title']}：{x['summary']}" for x in b["items"]]
     if gift_urls:
         lines += ["", "## App Store 礼品卡（每日报价，溢价 = 售价 ÷ 按汇率折算的面值 − 1）", ""]
         for cc, name in GIFT_NAMES.items():
@@ -711,6 +715,80 @@ def build_deals(day):
 <h2>已结束</h2><ul class="list">{rows([d for d in DEALS if not d['active']])}</ul>"""
     write("/deals/", page("AI 会员优惠快讯：ChatGPT、Claude、Gemini、Grok 限时折扣 · 比比价",
                           "AI 会员限时优惠、降价和新方案快讯，官方核实后发布，到期自动下架。", "/deals/", body, [cr_ld], day["date"]))
+
+
+# ---------- AI brief ----------
+
+BRIEFS = []
+KIND_LABEL = {"model": "新模型", "pricing": "价格/会员", "product": "产品", "industry": "行业"}
+
+
+def load_briefs():
+    return [json.load(open(f, encoding="utf8")) for f in sorted(glob.glob(os.path.join(ROOT, "data", "news", "brief", "20*.json")))]
+
+
+def brief_price_line(product, cur):
+    """Our own data next to a news item: cheapest region of the product's main plan."""
+    keys = [k for k in [x[:2] for x in PLANS] if k[0] == product and k in cur]
+    if not keys:
+        return ""
+    k = keys[0] if product != "chatgpt" else next((x for x in keys if x[1] == "plus"), keys[0])
+    rows = cur[k]
+    return (f'<a href="{url_plan(*k)}">{e(full_name(*k))}</a> 今日最便宜：'
+            + "、".join(f"{e(cname(r['cc']))} {money(r['usd'])}" for r in rows[:2]))
+
+
+def build_news(cur):
+    if not BRIEFS:
+        write("/news/", page("AI 早报 · 比比价", "每天整理 AI 新模型、社区口碑和会员价格变化。", "/news/",
+                             '<h1>AI 早报</h1><p class="lead">首期早报即将上线：每天早上 8 点前整理新模型发布和口碑、会员价格和限额变化。</p>', [], None))
+        return []
+    urls = []
+    for i, b in enumerate(BRIEFS):
+        path = f"/news/{b['date']}/"
+        arts = []
+        for n, x in enumerate(b["items"], 1):
+            links = " · ".join(f'<a href="{e(l["url"])}" rel="nofollow noopener" target="_blank">{e(l["name"])}</a>' for l in x["links"][:5])
+            prices = "".join(f"<li>{brief_price_line(p, cur)}</li>" for p in x["products"] if brief_price_line(p, cur))
+            arts.append(f"""<article class="brief"><h2><span class="tag">{KIND_LABEL[x['kind']]}</span> {e(x['title'])}</h2>
+<p>{e(x['summary'])}</p>{f'<p class="take"><b>社区怎么看：</b>{e(x["take"])}</p>' if x['take'] else ''}
+{f'<ul class="list small">{prices}</ul>' if prices else ''}<p class="src">来源：{links}</p></article>""")
+        nav = []
+        if i > 0:
+            nav.append(f'<a href="/news/{BRIEFS[i - 1]["date"]}/">← {zh_date(BRIEFS[i - 1]["date"])}</a>')
+        nav.append('<a href="/news/">全部早报</a>')
+        if i < len(BRIEFS) - 1:
+            nav.append(f'<a href="/news/{BRIEFS[i + 1]["date"]}/">{zh_date(BRIEFS[i + 1]["date"])} →</a>')
+        cr_html, cr_ld = crumbs([("首页", "/"), ("AI 早报", "/news/"), (zh_date(b["date"]), path)])
+        body = f"""{cr_html}
+<h1>AI 早报 · {zh_date(b['date'])}</h1>
+<p class="meta">整理自 Hacker News、Google 新闻、OpenRouter、官方博客和科技媒体的 {b['inputs']} 条信息 · AI 辅助撰写，每条附原文链接</p>
+<p class="lead">{e(b['headline'])}</p>
+{''.join(arts)}
+<p class="note">早报由 AI 根据公开来源归纳改写，可能有疏漏，请以原文和官方信息为准。会员价格来自本站当日 App Store 比价数据。</p>
+<p class="src">{' · '.join(nav)}</p>"""
+        ld = [cr_ld, {"@context": "https://schema.org", "@type": "NewsArticle", "headline": f"AI 早报 {b['date']}：{b['headline']}",
+                      "datePublished": b["time"].replace(" ", "T") + ":00+08:00", "inLanguage": "zh-CN", "mainEntityOfPage": SITE + path,
+                      "author": {"@type": "Organization", "name": SITE_NAME, "url": SITE},
+                      "publisher": {"@type": "Organization", "name": SITE_NAME, "url": SITE}}]
+        titles = "；".join(x["title"] for x in b["items"][:3])
+        write(path, page(f"AI 早报 {zh_date(b['date'])}：{b['headline']} · 比比价", f"{b['headline']}。{titles}。"[:150], path, body, ld, b["date"]))
+        urls.append(path)
+    rows = "".join(f'<li><a href="/news/{b["date"]}/">{zh_date(b["date"])}</a>：{e(b["headline"])}</li>' for b in reversed(BRIEFS))
+    cr_html, cr_ld = crumbs([("首页", "/"), ("AI 早报", "/news/")])
+    write("/news/", page("AI 早报：每天 5 分钟看懂新模型、会员和价格变化 · 比比价",
+                         "每天整理 AI 新模型发布、社区口碑、会员价格和限额变化，附原文链接和各地区会员比价。", "/news/",
+                         f'{cr_html}<h1>AI 早报</h1><p class="lead">每天早上 8 点前更新：新模型发布和口碑、会员价格和限额变化、重要产品动态。每条都附原文链接，并配上本站的会员比价数据。</p><ul class="list">{rows}</ul>',
+                         [cr_ld], BRIEFS[-1]["date"]))
+    return ["/news/"] + urls
+
+
+def brief_home():
+    if not BRIEFS:
+        return ""
+    b = BRIEFS[-1]
+    li = "".join(f"<li>{e(x['title'])}</li>" for x in b["items"][:5])
+    return f'<section><h2><a href="/news/{b["date"]}/">AI 早报 · {zh_date(b["date"])}</a></h2><p>{e(b["headline"])}</p><ul class="list">{li}</ul><p><a href="/news/{b["date"]}/">阅读全文 →</a></p></section>'
 
 
 # ---------- gift cards and outbound links ----------
@@ -894,6 +972,7 @@ def main():
     prev = rows_of(prev_day) if prev_day else None
     CHANNELS.update(load_channels())
     GIFT.update(load_gift())
+    BRIEFS.extend(load_briefs())
     DEALS.extend(load_deals(dt.datetime.now(dt.timezone(dt.timedelta(hours=8))).date().isoformat()))
     for p, pl, _, _ in PLANS:
         if (p, pl) in cur:
@@ -913,7 +992,7 @@ def main():
     build_home(day, cur, chg, prev)
     build_about(day)
     build_deals(day)
-    gift_urls = build_gift(day, cur)
+    gift_urls = build_gift(day, cur) + build_news(cur)
     build_data(days, cur)
     build_meta(days, cur, gift_urls)
     build_static()

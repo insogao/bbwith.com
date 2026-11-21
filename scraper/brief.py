@@ -20,7 +20,7 @@ HOURS = 30
 EXTRA_FEEDS = ["https://www.jiqizhixin.com/rss", "https://www.qbitai.com/feed", "https://36kr.com/feed",
                "https://simonwillison.net/atom/everything/", "https://news.smol.ai/rss.xml"]
 AI = re.compile(r"\bai\b|a\.i\.|llm|gpt|chatgpt|openai|claude|anthropic|gemini|deepmind|grok|xai|deepseek|qwen|kimi|moonshot|"
-                r"mistral|llama|perplexity|cursor|copilot|codex|agent|模型|大模型|智能体|人工智能|AI", re.I)
+                r"mistral|llama|perplexity|cursor|copilot|codex|\bagents?\b|模型|智能体|人工智能|(?<![a-z])AI(?![a-z])", re.I)
 PRODUCTS = ["chatgpt", "claude", "google-ai", "grok", "x", "perplexity", "cursor"]
 
 
