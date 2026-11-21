@@ -231,21 +231,43 @@ def fetch_all():
                "Merchant-Token": tok, "device-key": dev, "visitor-key": vis, "visitor_key": vis,
                "Origin": "https://www.16688.com.cn", "Referer": "https://www.16688.com.cn/merchant/source",
                "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36"}
-    items = {}
+    page_size = 20  # small pages: long responses from GitHub's US runners to China often get cut off
+
+    def post(kw, page):
+        body = json.dumps({"page_no": page, "page_size": page_size, "source_category_id": 0, "keywords": kw,
+                           "merchant_no": "", "sort": "composite"}).encode()
+        last = None
+        for attempt in range(5):
+            try:
+                req = urllib.request.Request(API, data=body, headers=headers, method="POST")
+                with urllib.request.urlopen(req, timeout=40) as r:
+                    return json.loads(r.read())
+            except Exception as e:  # IncompleteRead, timeouts, resets
+                last = e
+                time.sleep(3 * (attempt + 1))
+        raise RuntimeError(f"16688 request failed for {kw!r} page {page}: {last!r}")
+
+    items, failed = {}, []
     for kw in KEYWORDS:
-        for page in range(1, 21):
-            body = json.dumps({"page_no": page, "page_size": 50, "source_category_id": 0, "keywords": kw,
-                               "merchant_no": "", "sort": "composite"}).encode()
-            req = urllib.request.Request(API, data=body, headers=headers, method="POST")
-            j = json.load(urllib.request.urlopen(req, timeout=30))
+        for page in range(1, 51):
+            try:
+                j = post(kw, page)
+            except RuntimeError as e:
+                print(e)
+                failed.append(kw)
+                break
             if j.get("code") != 1:
                 sys.exit(f"16688 API error for {kw!r}: {j.get('msg')}")
             for g in j["data"]["list"]:
                 items[g["id"]] = g
-            if len(j["data"]["list"]) < 50:
+            if len(j["data"]["list"]) < page_size:
                 break
-            time.sleep(1.0)
-        time.sleep(1.5)
+            time.sleep(0.8)
+        time.sleep(1.2)
+    if failed:
+        print("keywords with errors:", failed)
+    if len(items) < 300:
+        sys.exit(f"only {len(items)} listings fetched; not writing data")
     return list(items.values())
 
 
