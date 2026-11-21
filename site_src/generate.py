@@ -3,6 +3,7 @@
 Pure standard library, so it runs in the Cloudflare Pages build image as is:
   python3 site_src/generate.py   ->  dist/
 """
+import re
 import csv
 import datetime as dt
 import glob
@@ -156,7 +157,7 @@ def page(title, description, path, body, ld=(), date=None, noindex=False, extra_
 <body>
 <header class="top"><div class="wrap">
 <a class="brand" href="/"><span class="logo">比</span>比比价 <small>bbwith.com</small></a>
-<nav><a href="/news/">早报</a><a href="/deals/">优惠</a><a href="/ai-pricing/">官方价格</a><a href="/gift-cards/">礼品卡</a><a href="/daily/">日报</a><a href="/data/">数据下载</a><a href="/about/">方法说明</a></nav>
+<nav><a href="/news/">早报</a><a href="/deals/">优惠</a><a href="/ai-pricing/">官方价格</a><a href="/guides/">教程</a><a href="/gift-cards/">礼品卡</a><a href="/daily/">日报</a><a href="/data/">数据下载</a><a href="/about/">方法说明</a></nav>
 </div></header>
 <main class="wrap">
 {body}
@@ -737,6 +738,148 @@ def build_deals(day):
                           "AI 会员限时优惠、降价和新方案：编辑核实的快讯，加上每天自动识别的各家官网优惠。", "/deals/", body, [cr_ld], day["date"]))
 
 
+# ---------- guides ----------
+
+GUIDES = []
+
+
+def load_guides():
+    out = []
+    for f in sorted(glob.glob(os.path.join(ROOT, "content", "guides", "*.md"))):
+        raw = open(f, encoding="utf8").read()
+        _, fm, body = raw.split("---", 2)
+        meta, faq, cur_q = {}, [], None
+        for line in fm.strip().splitlines():
+            if line.startswith("  - q:"):
+                cur_q = {"q": line.split(":", 1)[1].strip()}
+                faq.append(cur_q)
+            elif line.startswith("    a:"):
+                cur_q["a"] = line.split(":", 1)[1].strip()
+            elif ":" in line and not line.startswith(" "):
+                k, v = line.split(":", 1)
+                meta[k.strip()] = v.strip()
+        meta["faq"], meta["body"] = faq, body.strip()
+        out.append(meta)
+    return out
+
+
+def guide_inline(t, cur, day):
+    """Inline markdown: **bold**, [[link /path/]], [[top3 product/plan]]."""
+    t = e(t)
+    t = re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", t)
+
+    def link(m):
+        path = m.group(1)
+        g = next((g for g in GUIDES if f"/guides/{g['slug']}/" == path), None)
+        names = {"/": "首页的各地区会员比价", "/gift-cards/": "礼品卡价格对比", "/daily/": "每日价格日报"}
+        if g:
+            name = f"《{g['title'].split('？')[0].split('：')[0]}》"
+        elif path.startswith("/gift-cards/apple/"):
+            name = f"{GIFT_NAMES.get(path.split('/')[3], '')}区礼品卡页面"
+        elif path.count("/") == 3 and path.strip("/").split("/")[0] in PRODUCTS:
+            k = tuple(path.strip("/").split("/"))
+            name = full_name(*k) + " 价格页"
+        else:
+            name = names.get(path, path)
+        return f'<a href="{path}">{e(name)}</a>'
+    t = re.sub(r"\[\[link (\S+?)\]\]", link, t)
+
+    def top3(m):
+        k = tuple(m.group(1).split("/"))
+        rows = cur.get(k)
+        return f'<a href="{url_plan(*k)}">{e(rank_text(rows))}</a>' if rows else "（暂无数据）"
+    t = re.sub(r"\[\[top3 (\S+?)\]\]", top3, t)
+    return t
+
+
+def gift_summary_table(day):
+    trs = ""
+    for cc, name in GIFT_NAMES.items():
+        b = best_rate(cc, day["fx"])
+        if b:
+            trs += (f'<tr><td><a href="/gift-cards/apple/{cc}/">{flag(cc)} {e(name)}区</a></td><td>{e(SHOPS[b["shop"]]["name"])}</td>'
+                    f'<td>{e(face_text(b))} · {money(b["usd"])}</td><td>{pct(b["prem"])}</td></tr>')
+    return (f'<div class="tablewrap"><table class="prices"><thead><tr><th>地区</th><th>最划算的平台</th><th>面额 · 售价</th><th>溢价</th></tr></thead>'
+            f'<tbody>{trs}</tbody></table></div><p class="hint">数据每天更新，今日 {zh_date(day["date"])}。</p>')
+
+
+def guide_html(md, cur, day):
+    out, lst, table = [], None, []
+
+    def flush():
+        nonlocal lst, table
+        if lst:
+            out.append(f"<{lst[0]} class=\"list\">" + "".join(f"<li>{x}</li>" for x in lst[1]) + f"</{lst[0]}>")
+            lst = None
+        if table:
+            rows = [r.strip().strip("|").split("|") for r in table if not re.match(r"^\|?\s*-", r.strip())]
+            head, rest = rows[0], rows[1:]
+            out.append('<div class="tablewrap"><table class="prices"><thead><tr>' + "".join(f"<th>{guide_inline(c.strip(), cur, day)}</th>" for c in head)
+                       + "</tr></thead><tbody>" + "".join("<tr>" + "".join(f"<td>{guide_inline(c.strip(), cur, day)}</td>" for c in r) + "</tr>" for r in rest)
+                       + "</tbody></table></div>")
+            table = []
+    for line in md.splitlines():
+        s_ = line.strip()
+        if not s_:
+            flush()
+            continue
+        if s_.startswith("|"):
+            if lst:
+                flush()
+            table.append(s_)
+            continue
+        if table:
+            flush()
+        if s_ == "[[gifttable]]":
+            flush(); out.append(gift_summary_table(day)); continue
+        m = re.match(r"^(#{2,3}) (.+)", s_)
+        if m:
+            flush(); out.append(f"<h{len(m.group(1))}>{guide_inline(m.group(2), cur, day)}</h{len(m.group(1))}>"); continue
+        m = re.match(r"^(-|\d+\.) (.+)", s_)
+        if m:
+            kind = "ol" if m.group(1)[0].isdigit() else "ul"
+            if not lst or lst[0] != kind:
+                flush(); lst = (kind, [])
+            lst[1].append(guide_inline(m.group(2), cur, day)); continue
+        flush()
+        out.append(f"<p>{guide_inline(s_, cur, day)}</p>")
+    flush()
+    return "\n".join(out)
+
+
+def build_guides(day, cur):
+    if not GUIDES:
+        return []
+    urls = []
+    for g in GUIDES:
+        path = f"/guides/{g['slug']}/"
+        others = "".join(f'<li><a href="/guides/{o["slug"]}/">{e(o["title"])}</a></li>' for o in GUIDES if o is not g)
+        faq_html = "".join(f"<details><summary>{e(x['q'])}</summary><p>{e(x['a'])}</p></details>" for x in g["faq"])
+        cr_html, cr_ld = crumbs([("首页", "/"), ("教程", "/guides/"), (g["title"].split("？")[0].split("：")[0], path)])
+        body = f"""{cr_html}<article class="guide"><h1>{e(g['title'])}</h1>
+<p class="meta">比比价 · 更新于 {zh_date(g['updated'])} · 文中价格每天自动更新（今日 {zh_date(day['date'])}）</p>
+<p class="lead">{e(g['description'])}</p>
+{guide_html(g['body'], cur, day)}
+{f'<h2>常见问题</h2><div class="faq">{faq_html}</div>' if faq_html else ''}
+<p class="note">本文只做信息参考。跨区使用 App Store 不符合 Apple 服务条款，请自行判断风险；价格以 App Store 结账页为准。</p>
+<h2>相关教程</h2><ul class="list">{others}</ul></article>"""
+        ld = [cr_ld, {"@context": "https://schema.org", "@type": "Article", "headline": g["title"], "description": g["description"],
+                      "datePublished": g["updated"], "dateModified": day["date"], "inLanguage": "zh-CN", "mainEntityOfPage": SITE + path,
+                      "author": {"@type": "Organization", "name": SITE_NAME, "url": SITE}, "publisher": {"@type": "Organization", "name": SITE_NAME, "url": SITE}}]
+        if g["faq"]:
+            ld.append({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+                {"@type": "Question", "name": x["q"], "acceptedAnswer": {"@type": "Answer", "text": x["a"]}} for x in g["faq"]]})
+        write(path, page(f"{g['title']} · 比比价", g["description"][:150], path, body, ld, day["date"]))
+        urls.append(path)
+    items = "".join(f'<li><a href="/guides/{g["slug"]}/"><b>{e(g["title"])}</b></a><br><small>{e(g["description"])}</small></li>' for g in GUIDES)
+    cr_html, cr_ld = crumbs([("首页", "/"), ("教程", "/guides/")])
+    write("/guides/", page("AI 会员低价订阅教程：低价区 Apple ID、礼品卡充值、风险须知 · 比比价",
+                           "低价区 Apple ID 注册、礼品卡购买和兑换、App 内订阅 ChatGPT / Claude / Gemini 的完整教程，文中价格每天更新。",
+                           "/guides/", f'{cr_html}<h1>教程</h1><p class="lead">怎么用低价区订阅 AI 会员：从注册账号、买礼品卡到订阅和避坑。文中的价格数据每天自动更新。</p><ul class="list">{items}</ul>',
+                           [cr_ld], day["date"]))
+    return ["/guides/"] + urls
+
+
 # ---------- official pricing pages ----------
 
 PRICING = {}
@@ -1231,6 +1374,7 @@ def build_gift(day, cur):
 <p class="lead">跨区订阅 AI 会员，最常用的付款方式是当地 App Store 礼品卡。我们每天抓取 Bitrefill、SEAGM、Eneba 的公开报价，按当日汇率算出每张卡的溢价，并直接换算成订阅会员的实付价格。</p>
 <div class="bar"><h2>各地区最划算的礼品卡</h2>{cur_select()}</div>
 <div class="tablewrap"><table class="prices sortable"><thead><tr><th>地区</th><th>平台</th><th data-sort=num>最低溢价</th><th>对应面额 · 售价</th><th>最省的会员（礼品卡实付）</th></tr></thead><tbody>{trs}</tbody></table></div>
+<p class="hint">第一次用？看<a href="/guides/subscribe-with-gift-card/">礼品卡订阅教程</a>和<a href="/guides/apple-id-low-price-region/">低价区 Apple ID 注册教程</a>。</p>
 <p class="note">溢价 = 售价 ÷ 按当日汇率折算的面值 − 1，只统计面值 $4 以上的卡。礼品卡锁区，只能用于对应地区的 Apple 账户。本站可能从部分外链获得推广佣金，不影响排序。</p>
 <p class="src">数据更新于 {e(GIFT['time'])}（北京时间）。</p>"""
     write("/gift-cards/", page("App Store 礼品卡价格对比：土耳其、印尼、巴西、印度、日本、美区 · 比比价",
@@ -1269,6 +1413,7 @@ def main():
     BRIEFS.extend(load_briefs())
     MERCH.update(load_merch())
     PRICING.update(load_pricing())
+    GUIDES.extend(load_guides())
     DEALS.extend(load_deals(dt.datetime.now(dt.timezone(dt.timedelta(hours=8))).date().isoformat()))
     for p, pl, _, _ in PLANS:
         if (p, pl) in cur:
@@ -1289,7 +1434,7 @@ def main():
     build_about(day)
     pricing_urls = build_pricing(day)
     build_deals(day)
-    gift_urls = build_gift(day, cur) + build_news(cur) + build_shops() + pricing_urls
+    gift_urls = build_gift(day, cur) + build_news(cur) + build_shops() + pricing_urls + build_guides(day, cur)
     build_merchant_pages()
     build_data(days, cur)
     build_meta(days, cur, gift_urls)
