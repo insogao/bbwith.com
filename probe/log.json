@@ -1,0 +1,82 @@
+{
+ "https://www.reddit.com/r/LocalLLaMA/top/.rss?t=day": {
+  "ua": "browser",
+  "error": "<HTTPError 429: 'Too Many Requests'>"
+ },
+ "https://www.reddit.com/r/OpenAI/top.json?t=day&limit=10": {
+  "ua": "bot",
+  "error": "<HTTPError 403: 'Blocked'>"
+ },
+ "https://old.reddit.com/r/ClaudeAI/top/.rss?t=day": {
+  "ua": "browser",
+  "status": 200,
+  "bytes": 342069,
+  "head": "\n    <!DOCTYPE html>\n    <html lang=\"en-US\" class=\"theme-beta\" dir=\"ltr\" device=\"desktop\">\n      <head prefix=\"og: https://ogp.me/ns#\">\n        <title>Welcome to Reddit</title>\n        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, viewport-fit=cover\">\n    <meta name=\"apple-mobi"
+ },
+ "https://hn.algolia.com/api/v1/search?query=gemini&tags=story&numericFilters=points>50": {
+  "ua": "bot",
+  "status": 200,
+  "bytes": 46354,
+  "head": "{\"exhaustive\":{\"nbHits\":false,\"typo\":false},\"exhaustiveNbHits\":false,\"exhaustiveTypo\":false,\"hits\":[{\"_highlightResult\":{\"author\":{\"matchLevel\":\"none\",\"matchedWords\":[],\"value\":\"keepamovin\"},\"title\":{\"fullyHighlighted\":false,\"matchLevel\":\"full\",\"matchedWords\":[\"gemini\"],\"value\":\"Show HN: <em>Gemini<"
+ },
+ "https://public.api.bsky.app/xrpc/app.bsky.feed.searchPosts?q=gemini%203&sort=top&limit=10": {
+  "ua": "bot",
+  "error": "<HTTPError 403: 'Forbidden'>"
+ },
+ "https://news.google.com/rss/search?q=Gemini+OR+Claude+OR+ChatGPT+when:1d&hl=en-US&gl=US&ceid=US:en": {
+  "ua": "bot",
+  "status": 200,
+  "bytes": 126597,
+  "head": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><rss version=\"2.0\" xmlns:media=\"http://search.yahoo.com/mrss/\"><channel><generator>NFE/5.0</generator><title>\"Gemini OR Claude OR ChatGPT when:1d\" - Google News</title><link>https://news.google.com/search?q=Gemini+OR+Claude+OR+ChatGPT+when:1d&am"
+ },
+ "https://news.smol.ai/rss.xml": {
+  "ua": "bot",
+  "status": 200,
+  "bytes": 2253193,
+  "head": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><rss version=\"2.0\" xmlns:content=\"http://purl.org/rss/1.0/modules/content/\"><channel><title>AINews</title><description>Weekday recaps of top News for AI Engineers</description><link>https://news.smol.ai/</link><language>en-us</language><item><title>not much happ"
+ },
+ "https://rsshub.app/twitter/user/OpenAI": {
+  "ua": "bot",
+  "error": "<HTTPError 404: 'Not Found'>"
+ },
+ "https://nitter.net/OpenAI/rss": {
+  "ua": "bot",
+  "error": "<HTTPError 410: 'Gone'>"
+ },
+ "https://openrouter.ai/api/v1/models": {
+  "ua": "bot",
+  "status": 200,
+  "bytes": 925139,
+  "head": "{\"data\":[{\"id\":\"thinkingmachines/inkling-2-mini\",\"canonical_slug\":\"thinkingmachines/inkling-2-mini-20261120\",\"hugging_face_id\":\"thinkingmachines/Inkling-2-Mini\",\"name\":\"Thinking Machines: Inkling 2 Mini\",\"created\":1795227585,\"description\":\"Inkling 2 Mini is an open-weight multimodal looped transform"
+ },
+ "https://huggingface.co/api/daily_papers?limit=5": {
+  "ua": "bot",
+  "status": 200,
+  "bytes": 23646,
+  "head": "[{\"paper\":{\"id\":\"2611.26232\",\"authors\":[{\"_id\":\"6b00fe70ecb204ffe44e6bba\",\"name\":\"Jacqueline Maasch\",\"hidden\":false},{\"_id\":\"6b00fe70ecb204ffe44e6bbb\",\"name\":\"Shu Wan\",\"hidden\":false},{\"_id\":\"6b00fe70ecb204ffe44e6bbc\",\"name\":\"Hank Zhu\",\"hidden\":false},{\"_id\":\"6b00fe70ecb204ffe44e6bbd\",\"name\":\"Huan L"
+ },
+ "https://simonwillison.net/atom/everything/": {
+  "ua": "bot",
+  "status": 200,
+  "bytes": 126050,
+  "head": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<feed xml:lang=\"en-us\" xmlns=\"http://www.w3.org/2005/Atom\"><title>Simon Willison's Weblog</title><link href=\"http://simonwillison.net/\" rel=\"alternate\"/><link href=\"http://simonwillison.net/atom/everything/\" rel=\"self\"/><id>http://simonwillison.net/</id><update"
+ },
+ "https://www.jiqizhixin.com/rss": {
+  "ua": "bot",
+  "status": 200,
+  "bytes": 7603,
+  "head": "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\" /><meta content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, interactive-widget=resizes-content\" name=\"viewport\" /><meta content=\"ie=edge\" http-equiv=\"X-UA-Compatible\" /><meta content=\"light"
+ },
+ "https://www.qbitai.com/feed": {
+  "ua": "bot",
+  "status": 200,
+  "bytes": 7407,
+  "head": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><rss version=\"2.0\"\n\txmlns:content=\"http://purl.org/rss/1.0/modules/content/\"\n\txmlns:wfw=\"http://wellformedweb.org/CommentAPI/\"\n\txmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n\txmlns:atom=\"http://www.w3.org/2005/Atom\"\n\txmlns:sy=\"http://purl.org/rss/1.0/modules/syndi"
+ },
+ "https://36kr.com/feed": {
+  "ua": "bot",
+  "status": 200,
+  "bytes": 25361,
+  "head": "<!DOCTYPE html>\n<html lang=\"en\">\n\n<head>\n\t<meta charset=\"UTF-8\" />\n\t<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n\t<link rel=\"icon\" href=\"data:;base64,=\">\n\t<style>* { box-sizing: border-box; } html, body { height: 100%; } body { margin: 0; background: #fff; color: #0c0d0e; f"
+ }
+}
