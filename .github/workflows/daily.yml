@@ -56,3 +56,8 @@ jobs:
           git commit -m "data: App Store prices $(TZ=Asia/Shanghai date +%F)"
           git pull --rebase
           git push
+
+      - name: Ping IndexNow
+        run: |
+          sleep 240   # give Cloudflare Pages time to deploy the new build
+          python scraper/indexnow.py
