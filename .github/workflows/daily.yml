@@ -41,6 +41,10 @@ jobs:
       - name: Normalize prices
         run: python scraper/build_data.py
 
+      - name: Gift card prices
+        continue-on-error: true   # retailer pages change; never block the daily App Store data
+        run: python scraper/giftcards.py
+
       - name: Check the site builds
         run: python site_src/generate.py
 
@@ -48,7 +52,7 @@ jobs:
         run: |
           git config user.name "bbwith-bot"
           git config user.email "bbwith-bot@users.noreply.github.com"
-          git add data/daily scraper/storefronts.json
+          git add data/daily data/giftcards scraper/storefronts.json
           if git diff --cached --quiet; then
             echo "nothing to commit"
             exit 0

@@ -54,6 +54,12 @@ cd dist && python -m http.server 8000
 每条优惠一个 JSON 文件（格式见 `data/deals/google-ai-black-friday-2026.json`），**先在官方页面核实再添加**；到 `end` 日期后自动移到「已结束」。
 `news.yml` 每天两次扫描 AI/科技资讯 RSS，把疑似优惠/价格新闻开成带 `deal-candidate` 标签的 Issue，核实后再写成快讯文件。
 
+## 礼品卡和外链（data/giftcards/、/go/）
+
+`scraper/giftcards.py` 每天随 daily.yml 抓 Bitrefill、SEAGM、Eneba 的 App Store 礼品卡公开报价（土耳其、印尼、巴西、印度、日本、美国），生成 `/gift-cards/` 页面。
+所有外链都走 `/go/<平台>-<地区>`，由生成的 `_redirects` 做 302 跳转，链接带 `rel="nofollow sponsored"`，robots.txt 屏蔽 `/go/`。
+注册联盟计划后，把追踪参数填进 `data/affiliates.json`（如 `"bitrefill": "ref=xxxx"`），跳转会自动带上。
+
 ## 数据口径
 
 见网站的 /about/ 页面：只统计月付；大多数地区的标价含税，美国、加拿大等不含税；App Store 每个 App 只展示约 10 个内购项目，部分档位在部分地区抓不到。

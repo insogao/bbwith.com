@@ -155,7 +155,7 @@ def page(title, description, path, body, ld=(), date=None):
 <body>
 <header class="top"><div class="wrap">
 <a class="brand" href="/"><span class="logo">比</span>比比价 <small>bbwith.com</small></a>
-<nav><a href="/deals/">优惠</a><a href="/daily/">日报</a><a href="/data/">数据下载</a><a href="/about/">方法说明</a></nav>
+<nav><a href="/deals/">优惠</a><a href="/gift-cards/">礼品卡</a><a href="/daily/">日报</a><a href="/data/">数据下载</a><a href="/about/">方法说明</a></nav>
 </div></header>
 <main class="wrap">
 {body}
@@ -375,6 +375,7 @@ def build_plan_page(product, plan, rows, prev_rows, day, all_plans):
 <div class="bar"><h2>最便宜的 10 个地区</h2>{cur_select()}</div>
 {price_table(rows, limit=10)}
 {channel_block(product, plan, rows)}
+{gift_note_for_plan(rows, day)}
 <h2>全部 {len(rows)} 个地区</h2>
 <p class="hint">点击表头可以排序。美区一行已高亮。</p>
 {price_table(rows, prev=prev_map)}
@@ -610,13 +611,13 @@ def build_data(days, cur):
     write("/data/", page("数据下载 · 比比价", "AI 会员 App Store 各地区价格数据下载，CSV 和 JSON。", "/data/", body, [cr_ld]))
 
 
-def build_meta(days, cur):
+def build_meta(days, cur, gift_urls=()):
     day = days[-1]
     urls = ["/", "/daily/", "/about/", "/data/"] + [f"/{p}/" for p in PRODUCTS if any(k[0] == p for k in cur)] + \
-           [url_plan(*k) for k in cur] + [f"/daily/{d['date']}/" for d in days] + ["/deals/"] + [deal_url(d) for d in DEALS]
+           [url_plan(*k) for k in cur] + [f"/daily/{d['date']}/" for d in days] + ["/deals/"] + [deal_url(d) for d in DEALS] + list(gift_urls)
     sm = "".join(f"<url><loc>{SITE}{u}</loc><lastmod>{u.split('/')[2] if u.startswith('/daily/20') else day['date']}</lastmod></url>" for u in urls)
     write("/sitemap.xml", f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{sm}</urlset>\n')
-    write("/robots.txt", f"User-agent: *\nAllow: /\n\nSitemap: {SITE}/sitemap.xml\n")
+    write("/robots.txt", f"User-agent: *\nAllow: /\nDisallow: /go/\n\nSitemap: {SITE}/sitemap.xml\n")
     lines = [f"# 比比价 bbwith.com", "",
              f"> 每天对比 AI 会员在 {len(day['storefronts'])} 个 App Store 地区的标价，按当日汇率统一折算成美元。最新数据：{day['date']}。", "",
              "## 今日最便宜的 3 个地区（月付，App Store，比美区）", ""]
@@ -628,6 +629,12 @@ def build_meta(days, cur):
     act = [d for d in DEALS if d["active"]]
     if act:
         lines += ["", "## 进行中的优惠（已核实）", ""] + [f"- [{d['title']}]({SITE}{deal_url(d)})：{d['discount']}，{deal_period(d)}；{d['eligibility']}" for d in act]
+    if gift_urls:
+        lines += ["", "## App Store 礼品卡（每日报价，溢价 = 售价 ÷ 按汇率折算的面值 − 1）", ""]
+        for cc, name in GIFT_NAMES.items():
+            b = best_rate(cc, day["fx"])
+            if b:
+                lines.append(f"- [{name}区礼品卡]({SITE}/gift-cards/apple/{cc}/)：最低 {SHOPS[b['shop']]['name']} {face_text(b)} 售 ${b['usd']:.2f}，溢价 {pct(b['prem'])}")
     lines += ["", "## 页面", "", f"- [今日日报]({SITE}/daily/{day['date']}/)", f"- [方法说明]({SITE}/about/)",
               f"- [数据下载 CSV]({SITE}/data/latest.csv)", f"- [数据下载 JSON]({SITE}/data/latest.json)", "",
               "## 口径", "", "- 价格为各地区 App Store 公开标价，大多数地区含税，美国、加拿大等不含税。",
@@ -636,6 +643,8 @@ def build_meta(days, cur):
 
 
 DEALS = []  # loaded in main()
+AFF = {k: v for k, v in json.load(open(os.path.join(ROOT, "data", "affiliates.json"), encoding="utf8")).items() if not k.startswith("_")} \
+    if os.path.exists(os.path.join(ROOT, "data", "affiliates.json")) else {}
 
 
 def load_deals(today):
@@ -704,6 +713,166 @@ def build_deals(day):
                           "AI 会员限时优惠、降价和新方案快讯，官方核实后发布，到期自动下架。", "/deals/", body, [cr_ld], day["date"]))
 
 
+# ---------- gift cards and outbound links ----------
+
+GIFT = {}   # latest data/giftcards/*.json
+GO = {}     # /go/<slug> -> destination; written to _redirects
+SHOPS = {"bitrefill": {"name": "Bitrefill", "pay": "加密货币（BTC、USDT 等）", "url": "https://www.bitrefill.com/us/en/gift-cards/{slug}/"},
+         "seagm": {"name": "SEAGM", "pay": "信用卡、PayPal 等", "url": "https://www.seagm.com/{slug}"},
+         "eneba": {"name": "Eneba", "pay": "信用卡、PayPal 等（平台上的第三方卖家）", "url": "https://www.eneba.com/{slug}"}}
+GIFT_NAMES = {"tr": "土耳其", "id": "印尼", "br": "巴西", "in": "印度", "jp": "日本", "us": "美国"}
+
+
+def load_gift():
+    files = sorted(glob.glob(os.path.join(ROOT, "data", "giftcards", "20*.json")))
+    return json.load(open(files[-1], encoding="utf8")) if files else {}
+
+
+def go(shop, slug, key):
+    aff = AFF.get(shop, "")
+    url = SHOPS[shop]["url"].format(slug=slug)
+    if aff:
+        url += ("&" if "?" in url else "?") + aff
+    GO[key] = url
+    return f"/go/{key}"
+
+
+def out_link(href, text, cls="btn small"):
+    return f'<a class="{cls}" href="{href}" rel="nofollow sponsored noopener" target="_blank">{e(text)}</a>'
+
+
+def gift_rows(cc, fx):
+    """Cards for one region with premium vs the day's exchange rate, cheapest per unit first."""
+    rows = []
+    for it in GIFT.get("items", []):
+        if it["cc"] != cc or it["cur"] not in fx:
+            continue
+        fair = it["face"] / fx[it["cur"]]
+        key = f"{it['shop']}-{cc}" if it["shop"] != "eneba" else f"eneba-{cc}-{int(it['face'])}"
+        rows.append(dict(it, fair=fair, prem=it["usd"] / fair - 1, rate=it["usd"] / it["face"], href=go(it["shop"], it["slug"], key)))
+    rows.sort(key=lambda r: (r["prem"], -r["face"]))
+    return rows
+
+
+def best_rate(cc, fx, min_face_usd=4):
+    """Best USD per local unit among cards worth at least a few dollars (tiny cards are rounded oddly)."""
+    rs = [r for r in gift_rows(cc, fx) if r["fair"] >= min_face_usd]
+    return rs[0] if rs else None
+
+
+def face_text(r):
+    f = int(r["face"]) if r["face"] == int(r["face"]) else r["face"]
+    return f"{f:,} {r['cur']}"
+
+
+def gift_note_for_plan(rows, day):
+    """Short block on plan pages: net cost via gift cards for top regions that have cards."""
+    out = []
+    for r in rows[:10]:
+        b = best_rate(r["cc"], day["fx"])
+        if b and r["cc"] != "us":
+            net = r["local"] * b["rate"]
+            out.append(f'<li><a href="/gift-cards/apple/{r["cc"]}/">{flag(r["cc"])} {e(cname(r["cc"]))}区礼品卡</a>：'
+                       f'标价 {e(r["display"])}，用礼品卡实付约 <b>{money(net)}</b>（卡价比汇率 {pct(b["prem"])}）</li>')
+    if not out:
+        return ""
+    return f'<h2>用礼品卡订阅要花多少</h2><p class="hint">跨区订阅通常用当地 App Store 礼品卡付款。礼品卡售价一般略高于面值，下面已按最划算的面额算上这部分溢价。</p><ul class="list">{"".join(out)}</ul>'
+
+
+def build_gift(day, cur):
+    fx = day["fx"]
+    if not GIFT.get("items"):
+        return []
+    regions = [cc for cc in GIFT_NAMES if any(i["cc"] == cc for i in GIFT["items"])]
+    us_price = {k: next((r for r in rows if r["cc"] == "us"), None) for k, rows in cur.items()}
+    idx = []
+    for cc in regions:
+        rows = gift_rows(cc, fx)
+        b = best_rate(cc, fx)
+        name = GIFT_NAMES[cc]
+        path = f"/gift-cards/apple/{cc}/"
+        cur_code = rows[0]["cur"]
+        trs = "".join(
+            f'<tr><td>{e(SHOPS[r["shop"]]["name"])}</td><td data-v="{r["face"]}">{e(face_text(r))}</td><td data-v="{r["usd"]:.4f}"><b>{money(r["usd"])}</b></td>'
+            f'<td data-v="{r["fair"]:.4f}">{money(r["fair"])}</td><td data-v="{r["prem"]:.4f}" class="{"down" if r["prem"] < -0.005 else ("up" if r["prem"] > 0.005 else "")}">{pct(r["prem"])}</td>'
+            f'<td>{out_link(r["href"], "去购买")}</td></tr>' for r in rows)
+        shops_here = sorted({r["shop"] for r in rows})
+        shop_best = {s: min((r for r in rows if r["shop"] == s and r["fair"] >= 4), key=lambda r: r["prem"], default=None) for s in shops_here}
+        subs = []
+        for (p, pl), prs in sorted(cur.items(), key=lambda kv: [x[:2] for x in PLANS].index(kv[0])):
+            r = next((x for x in prs if x["cc"] == cc), None)
+            if not r or not b:
+                continue
+            net = r["local"] * b["rate"]
+            us = us_price.get((p, pl))
+            vs = net / us["usd"] - 1 if us and cc != "us" else None
+            subs.append((full_name(p, pl), url_plan(p, pl), r, net, vs))
+        sub_rows = "".join(
+            f'<tr><td><a href="{u}">{e(n)}</a></td><td>{e(r["display"])}</td><td data-v="{r["usd"]:.4f}">{money(r["usd"])}</td>'
+            f'<td data-v="{net:.4f}"><b>{money(net)}</b></td><td data-v="{vs or 0:.4f}" class="{"down" if (vs or 0) < -0.005 else ("up" if (vs or 0) > 0.005 else "")}">{pct(vs) if vs is not None else "—"}</td></tr>'
+            for n, u, r, net, vs in subs)
+        cheap, seen_p = [], set()
+        for x in sorted([x for x in subs if x[4] is not None], key=lambda x: x[4]):
+            prod = x[1].strip("/").split("/")[0]
+            if prod not in seen_p and x[4] < -0.005:
+                seen_p.add(prod)
+                cheap.append(x)
+        cheap = cheap[:3]
+        lead = (f"{zh_date(GIFT['date'])}抓到 {len(rows)} 个{name}区 App Store 礼品卡报价（{'、'.join(SHOPS[s]['name'] for s in shops_here)}）。"
+                + (f"最划算的是 {SHOPS[b['shop']]['name']} 的 {face_text(b)}，售价 {usd(b['usd'])}，比按当日汇率折算的面值 {pct(b['prem'])}。" if b else "")
+                + (f"用这个价格订阅，最省的是" + "、".join(f"{n}（实付约 {usd(net)}，比美区 {pct(vs)}）" for n, _, _, net, vs in cheap) + "。" if cheap else ""))
+        faq = [(f"{name}区 App Store 礼品卡哪里买最便宜？",
+                "按今日报价，" + "；".join(f"{SHOPS[s]['name']} 最低溢价 {pct(x['prem'])}（{face_text(x)} 卖 {usd(x['usd'])}）" for s, x in shop_best.items() if x) + "。"),
+               (f"{name}区礼品卡能在别的地区用吗？", f"不能。App Store 礼品卡锁区，{name}区的卡只能充值到地区设为{name}的 Apple 账户。"),
+               ("礼品卡溢价是什么意思？", f"礼品卡售价（美元）除以按当日汇率折算的面值减 1。例如 +5% 表示花 $1.05 买到价值 $1 的{cur_code}余额。")]
+        if cc != "us":
+            faq.append(("用礼品卡订阅 AI 会员实际要花多少？", "实付 ≈ 本地标价 × 最划算礼品卡的单位价格，已经包含礼品卡溢价；不同面额凑整会有少量余额剩在账户里，可以下个月继续用。"))
+        faq_html = "".join(f"<details><summary>{e(q)}</summary><p>{e(a)}</p></details>" for q, a in faq)
+        cr_html, cr_ld = crumbs([("首页", "/"), ("礼品卡", "/gift-cards/"), (f"{name}区 App Store 礼品卡", path)])
+        pays = "".join(f'<li><b>{e(SHOPS[s]["name"])}</b>：{e(SHOPS[s]["pay"])}</li>' for s in shops_here)
+        body = f"""{cr_html}
+<h1>{flag(cc)} {e(name)}区 App Store 礼品卡价格对比</h1>
+<p class="meta">报价抓取于 {e(GIFT['time'])}（北京时间）· 汇率 {e(day['fx_source'])} · 每日更新</p>
+<p class="lead">{e(lead)}</p>
+<div class="bar"><h2>各家报价</h2>{cur_select()}</div>
+<div class="tablewrap"><table class="prices sortable"><thead><tr><th>平台</th><th data-sort=num>面额</th><th data-sort=num>售价</th><th data-sort=num>面值折合</th><th data-sort=num>溢价</th><th></th></tr></thead><tbody>{trs}</tbody></table></div>
+<p class="hint">按溢价从低到高排序。「面值折合」是面额按当日汇率换成美元；溢价越低越划算。小面额卡的价格常被四舍五入，参考意义不大。</p>
+{f'<h2>用{name}区礼品卡订阅 AI 会员</h2><div class="tablewrap"><table class="prices sortable"><thead><tr><th>会员</th><th>{name}区标价</th><th data-sort=num>按汇率</th><th data-sort=num>礼品卡实付</th><th data-sort=num>比美区</th></tr></thead><tbody>{sub_rows}</tbody></table></div>' if sub_rows else ''}
+<h2>付款方式</h2><ul class="list">{pays}</ul>
+<p class="note">礼品卡锁区：只能充值到地区为{e(name)}的 Apple 账户。跨区注册和订阅需遵守 Apple 及各服务商条款。外链为第三方平台，购买前请核对面额和地区；本站可能从部分链接获得推广佣金，不影响排序（按溢价排序）。</p>
+<h2>常见问题</h2><div class="faq">{faq_html}</div>
+<p class="src"><a href="/gift-cards/">其他地区礼品卡</a> · <a href="/about/">方法说明</a></p>"""
+        title = f"{name}区 App Store 礼品卡哪里买最便宜？{len(shops_here)} 家平台报价对比（{zh_date(GIFT['date'])}）"
+        desc = (f"{name}区苹果礼品卡今日报价：" + (f"最低 {SHOPS[b['shop']]['name']} {face_text(b)} 售 {usd(b['usd'])}，溢价 {pct(b['prem'])}。" if b else "")
+                + "附用礼品卡订阅 ChatGPT、Claude、Gemini 等会员的实付价格。")
+        ld = [cr_ld, {"@context": "https://schema.org", "@type": "FAQPage",
+                      "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in faq]}]
+        write(path, page(title, desc, path, body, ld, GIFT["date"]))
+        idx.append((cc, name, b, len(rows), shops_here, cheap))
+    trs = "".join(
+        f'<tr><td><a href="/gift-cards/apple/{cc}/">{flag(cc)} {e(name)}区</a></td><td>{e("、".join(SHOPS[s]["name"] for s in shops))}</td>'
+        f'<td data-v="{b["prem"] if b else 9:.4f}">{pct(b["prem"]) if b else "—"}</td><td>{e(face_text(b)) + " · " + money(b["usd"]) if b else "—"}</td>'
+        f'<td>{"<br>".join(f"{e(n)} {money(net)}" for n, _, _, net, _ in ch[:2]) or "—"}</td></tr>'
+        for cc, name, b, n, shops, ch in idx)
+    cr_html, cr_ld = crumbs([("首页", "/"), ("礼品卡", "/gift-cards/")])
+    body = f"""{cr_html}
+<h1>App Store 礼品卡价格对比</h1>
+<p class="lead">跨区订阅 AI 会员，最常用的付款方式是当地 App Store 礼品卡。我们每天抓取 Bitrefill、SEAGM、Eneba 的公开报价，按当日汇率算出每张卡的溢价，并直接换算成订阅会员的实付价格。</p>
+<div class="bar"><h2>各地区最划算的礼品卡</h2>{cur_select()}</div>
+<div class="tablewrap"><table class="prices sortable"><thead><tr><th>地区</th><th>平台</th><th data-sort=num>最低溢价</th><th>对应面额 · 售价</th><th>最省的会员（礼品卡实付）</th></tr></thead><tbody>{trs}</tbody></table></div>
+<p class="note">溢价 = 售价 ÷ 按当日汇率折算的面值 − 1，只统计面值 $4 以上的卡。礼品卡锁区，只能用于对应地区的 Apple 账户。本站可能从部分外链获得推广佣金，不影响排序。</p>
+<p class="src">数据更新于 {e(GIFT['time'])}（北京时间）。</p>"""
+    write("/gift-cards/", page("App Store 礼品卡价格对比：土耳其、印尼、巴西、印度、日本、美区 · 比比价",
+                               "各地区苹果 App Store 礼品卡每日报价和溢价对比，附用礼品卡订阅 ChatGPT、Claude、Gemini 会员的实付价格。",
+                               "/gift-cards/", body, [cr_ld], GIFT["date"]))
+    return ["/gift-cards/"] + [f"/gift-cards/apple/{x[0]}/" for x in idx]
+
+
+def write_redirects():
+    lines = ["# generated: outbound links, see site_src/generate.py"] + [f"/go/{k} {v} 302" for k, v in sorted(GO.items())]
+    open(os.path.join(DIST, "_redirects"), "w").write("\n".join(lines) + "\n")
+
+
 def build_static():
     os.makedirs(os.path.join(DIST, "assets"), exist_ok=True)
     for f in ("style.css", "sort.js"):
@@ -724,6 +893,7 @@ def main():
     prev_day = days[-2] if len(days) > 1 else None
     prev = rows_of(prev_day) if prev_day else None
     CHANNELS.update(load_channels())
+    GIFT.update(load_gift())
     DEALS.extend(load_deals(dt.datetime.now(dt.timezone(dt.timedelta(hours=8))).date().isoformat()))
     for p, pl, _, _ in PLANS:
         if (p, pl) in cur:
@@ -743,9 +913,11 @@ def main():
     build_home(day, cur, chg, prev)
     build_about(day)
     build_deals(day)
+    gift_urls = build_gift(day, cur)
     build_data(days, cur)
-    build_meta(days, cur)
+    build_meta(days, cur, gift_urls)
     build_static()
+    write_redirects()
     n = sum(len(fs) for _, _, fs in os.walk(DIST))
     print(f"built {n} files for {day['date']} into dist/")
 

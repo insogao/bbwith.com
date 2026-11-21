@@ -86,3 +86,4 @@ table.prices{border-collapse:collapse;width:100%;font-size:15px;font-variant-num
 .deals li{display:flex;flex-wrap:wrap;gap:4px 12px;padding:4px 0}
 .deals li span{color:var(--muted);font-size:14px}
 @media (prefers-color-scheme:dark){.deals{background:#2b2214;border-color:#6b4d1f}}
+.btn.small{padding:4px 10px;font-size:13px;white-space:nowrap}
