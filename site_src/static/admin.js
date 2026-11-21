@@ -2,10 +2,7 @@
   "use strict";
   var api = window.bbApi, esc = window.bbEsc, root = document.getElementById("admin");
   function login() {
-    root.innerHTML = '<form id="login"><label>管理员密钥<input type="password" name="k" autocomplete="off"></label> <button class="btn small">进入</button></form>';
-    document.getElementById("login").onsubmit = function (e) {
-      e.preventDefault(); localStorage.setItem("bbwith-admin", this.k.value); load();
-    };
+    root.innerHTML = '<p>没有管理权限。请用管理员邮箱通过 Cloudflare Access 登录后刷新本页（<a href="/cdn-cgi/access/login">登录</a>）。</p>';
   }
   function table(rows, cols) {
     return '<div class="tablewrap"><table class="prices"><thead><tr>' + cols.map(function (c) { return "<th>" + c[0] + "</th>"; }).join("") +
@@ -39,8 +36,7 @@
         "<h2>外链点击（按链接）</h2>" + table(j.clicks, [["链接", function (c) { return "/go/" + esc(c.key); }], ["点击", function (c) { return c.n; }]]) +
         "<h2>外链点击（按来源页面）</h2>" + table(j.click_src, [["来源", function (c) { return esc(c.src); }], ["点击", function (c) { return c.n; }]]) +
         "<h2>页面浏览</h2>" + table(j.pv, [["页面", function (p) { return esc(p.path); }], ["浏览", function (p) { return p.n; }]]) +
-        '<p><button class="btn small ghost" id="logout">退出</button></p>';
-      document.getElementById("logout").onclick = function () { localStorage.removeItem("bbwith-admin"); login(); };
+        '<p><a class="btn small ghost" href="/cdn-cgi/access/logout">退出登录</a></p>';
     }).catch(function (e) { if (/管理员/.test(e.message)) login(); else root.innerHTML = "<p>加载失败：" + esc(e.message) + "</p>"; });
   }
   root.addEventListener("click", function (e) {

@@ -210,7 +210,7 @@ export async function onRequest(ctx) {
   const route = routes[`${request.method} ${path}`];
   try {
     if (!route) throw new HttpError(404, "没有这个接口");
-    if (path.startsWith("admin/") && !isAdmin(request, env)) throw new HttpError(401, "需要管理员密钥");
+    if (path.startsWith("admin/") && !(await isAdmin(request, env))) throw new HttpError(401, "需要管理员密钥");
     const DB = await db(env);
     return await route({ DB, request, env, url: new URL(request.url) });
   } catch (e) {

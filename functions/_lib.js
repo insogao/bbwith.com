@@ -79,7 +79,45 @@ export function str(v, max, name, required = true) {
   return s;
 }
 
-export function isAdmin(request, env) {
+// Admin = a request that passed Cloudflare Access (Google / email login), verified by its signed JWT.
+// env.ACCESS_TEAM: e.g. "bbwith" for bbwith.cloudflareaccess.com; env.ACCESS_AUD: the application's AUD tag;
+// env.ADMIN_EMAILS: comma-separated allowed emails. ADMIN_TOKEN still works as a fallback if it is set.
+let certs = null, certsAt = 0;
+function b64url(s) {
+  s = s.replace(/-/g, "+").replace(/_/g, "/");
+  const bin = atob(s + "===".slice((s.length + 3) % 4));
+  return Uint8Array.from(bin, (c) => c.charCodeAt(0));
+}
+async function accessEmail(request, env) {
+  const jwt = request.headers.get("cf-access-jwt-assertion") ||
+    (request.headers.get("cookie") || "").match(/CF_Authorization=([^;]+)/)?.[1];
+  if (!jwt || !env.ACCESS_TEAM || !env.ACCESS_AUD) return null;
+  const [h, p, sig] = jwt.split(".");
+  if (!sig) return null;
+  const header = JSON.parse(new TextDecoder().decode(b64url(h)));
+  const claims = JSON.parse(new TextDecoder().decode(b64url(p)));
+  if (Date.now() - certsAt > 3600e3 || !certs) {
+    certs = (await (await fetch(`https://${env.ACCESS_TEAM}.cloudflareaccess.com/cdn-cgi/access/certs`)).json()).keys;
+    certsAt = Date.now();
+  }
+  const jwk = certs.find((k) => k.kid === header.kid);
+  if (!jwk) return null;
+  const key = await crypto.subtle.importKey("jwk", jwk, { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" }, false, ["verify"]);
+  const ok = await crypto.subtle.verify("RSASSA-PKCS1-v1_5", key, b64url(sig), new TextEncoder().encode(h + "." + p));
+  const aud = Array.isArray(claims.aud) ? claims.aud : [claims.aud];
+  if (!ok || !aud.includes(env.ACCESS_AUD) || claims.exp * 1000 < Date.now()) return null;
+  return (claims.email || "").toLowerCase();
+}
+
+export async function isAdmin(request, env) {
   const t = (request.headers.get("authorization") || "").replace(/^Bearer\s+/i, "");
-  return !!env.ADMIN_TOKEN && t.length > 0 && t === env.ADMIN_TOKEN;
+  if (env.ADMIN_TOKEN && t && t === env.ADMIN_TOKEN) return true;
+  try {
+    const email = await accessEmail(request, env);
+    const allowed = (env.ADMIN_EMAILS || "").toLowerCase().split(",").map((x) => x.trim()).filter(Boolean);
+    return !!email && allowed.includes(email);
+  } catch (e) {
+    console.error(e);
+    return false;
+  }
 }
