@@ -780,6 +780,9 @@ def build_pricing(day):
     rows = ""
     for pid, p in sorted(PRICING["products"].items(), key=lambda kv: kv[1]["name"]):
         plans = p.get("plans") or []
+        monthly = {(x.get("name"), x.get("currency")): x["price"] for x in plans if x.get("period") == "month"}
+        # a "yearly" price equal to the monthly one is a misread monthly-equivalent; drop it
+        plans = [x for x in plans if not (x.get("period") == "year" and monthly.get((x.get("name"), x.get("currency"))) == x["price"])]
         path = f"/ai-pricing/{pid}/"
         trs = ""
         for x in plans:
