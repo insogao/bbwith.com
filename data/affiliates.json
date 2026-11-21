@@ -1,1 +1,12 @@
-{"_comment": "联盟推广参数：注册各家联盟计划后，把追踪参数填在这里（例如 \"ref=abc123\"），/go/ 跳转会自动带上。留空则跳转到原始页面。", "bitrefill": "", "seagm": "", "eneba": ""}
+{
+ "_comment": "联盟推广参数：注册各家联盟计划后，把追踪参数填在这里（例如 \"ref=abc123\"），/go/ 跳转会自动带上。留空则跳转到原始页面。",
+ "bitrefill": "",
+ "seagm": "",
+ "eneba": "",
+ "youworld": {
+  "url": "https://www.wmslz.com/s/QvXQZHV62Zj",
+  "code": "Q:/p CZ3182 $724",
+  "share_text": "https://www.wmslz.com/s/QvXQZHV62Zj#🔍附.z`hi.🔎此消息，打开支怤ba`o.搜一下，体验由我付小程序  Q:/p CZ3182 $724",
+  "terms": "新用户首次进入，首单消费满 $100，双方各得 $5 礼金"
+ }
+}

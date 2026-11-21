@@ -140,3 +140,12 @@
     };
   }
 })();
+// copy buttons: <button data-copy="text">
+document.addEventListener("click", function (ev) {
+  var b = ev.target.closest && ev.target.closest("[data-copy]");
+  if (!b) return;
+  var t = b.getAttribute("data-copy"), old = b.textContent;
+  var done = function () { b.textContent = "已复制，打开支付宝即可"; setTimeout(function () { b.textContent = old; }, 2500); };
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(done, function () { prompt("复制下面的口令：", t); });
+  else prompt("复制下面的口令：", t);
+});

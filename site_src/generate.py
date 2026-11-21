@@ -1082,6 +1082,9 @@ def add_manual_gift(usd_cny):
 
 def go(shop, slug, key):
     aff = AFF.get(shop, "")
+    if isinstance(aff, dict):  # a full referral link replaces the shop URL
+        GO[key] = aff["url"]
+        return f"/go/{key}"
     url = SHOPS[shop]["url"].format(slug=slug)
     if aff:
         url += ("&" if "?" in url else "?") + aff
@@ -1110,6 +1113,17 @@ def best_rate(cc, fx, min_face_usd=4):
     """Best USD per local unit among cards worth at least a few dollars (tiny cards are rounded oddly)."""
     rs = [r for r in gift_rows(cc, fx) if r["fair"] >= min_face_usd]
     return rs[0] if rs else None
+
+
+def youworld_box():
+    y = AFF.get("youworld")
+    if not isinstance(y, dict):
+        return ""
+    return f"""<aside class="deals refer"><h2>由我付：支付宝付人民币买美区卡</h2>
+<div class="refer-body"><img src="/assets/youworld-qr.svg" width="132" height="132" alt="用支付宝扫码打开由我付小程序">
+<div><p>由我付是支付宝里的小程序，只能在手机上用。<b>手机</b>：点「去购买」直接跳转支付宝；<b>电脑</b>：用支付宝扫左边的二维码；也可以复制口令，打开支付宝自动识别。</p>
+<p><button type="button" class="btn small" data-copy="{e(y['share_text'])}">复制支付宝口令</button> <code>{e(y['code'])}</code></p>
+<p class="small">这是本站的邀请链接：{e(y['terms'])}（本站也会得到同样的奖励，不影响价格排序）。</p></div></div></aside>"""
 
 
 def manual_note(r):
@@ -1193,6 +1207,7 @@ def build_gift(day, cur):
 <div class="bar"><h2>各家报价</h2>{cur_select()}</div>
 <div class="tablewrap"><table class="prices sortable"><thead><tr><th>平台</th><th data-sort=num>面额</th><th data-sort=num>售价</th><th data-sort=num>面值折合</th><th data-sort=num>溢价</th><th></th></tr></thead><tbody>{trs}</tbody></table></div>
 <p class="hint">按溢价从低到高排序。「面值折合」是面额按当日汇率换成美元；溢价越低越划算。小面额卡的价格常被四舍五入，参考意义不大。</p>
+{youworld_box() if any(r["shop"] == "youworld" for r in rows) else ""}
 {f'<h2>用{name}区礼品卡订阅 AI 会员</h2><div class="tablewrap"><table class="prices sortable"><thead><tr><th>会员</th><th>{name}区标价</th><th data-sort=num>按汇率</th><th data-sort=num>礼品卡实付</th><th data-sort=num>比美区</th></tr></thead><tbody>{sub_rows}</tbody></table></div>' if sub_rows else ''}
 <h2>付款方式</h2><ul class="list">{pays}</ul>
 <p class="note">礼品卡锁区：只能充值到地区为{e(name)}的 Apple 账户。跨区注册和订阅需遵守 Apple 及各服务商条款。外链为第三方平台，购买前请核对面额和地区；本站可能从部分链接获得推广佣金，不影响排序（按溢价排序）。</p>
@@ -1231,7 +1246,7 @@ def write_redirects():
 
 def build_static():
     os.makedirs(os.path.join(DIST, "assets"), exist_ok=True)
-    for f in ("style.css", "sort.js", "app.js", "admin.js"):
+    for f in ("style.css", "sort.js", "app.js", "admin.js", "youworld-qr.svg"):
         shutil.copy(os.path.join(HERE, "static", f), os.path.join(DIST, "assets", f))
     for f in os.listdir(os.path.join(HERE, "static")):
         if f in ("favicon.svg", "_headers", "_redirects", "404.html") or (f.endswith(".txt") and len(f) == 36):
