@@ -1,0 +1,698 @@
+{
+"af": {
+"zh": "阿富汗",
+"en": "Afghanistan"
+},
+"ao": {
+"zh": "安哥拉",
+"en": "Angola"
+},
+"ai": {
+"zh": "安圭拉",
+"en": "Anguilla"
+},
+"al": {
+"zh": "阿尔巴尼亚",
+"en": "Albania"
+},
+"ae": {
+"zh": "阿拉伯联合酋长国",
+"en": "United Arab Emirates"
+},
+"ar": {
+"zh": "阿根廷",
+"en": "Argentina"
+},
+"am": {
+"zh": "亚美尼亚",
+"en": "Armenia"
+},
+"ag": {
+"zh": "安提瓜和巴布达",
+"en": "Antigua & Barbuda"
+},
+"au": {
+"zh": "澳大利亚",
+"en": "Australia"
+},
+"at": {
+"zh": "奥地利",
+"en": "Austria"
+},
+"az": {
+"zh": "阿塞拜疆",
+"en": "Azerbaijan"
+},
+"be": {
+"zh": "比利时",
+"en": "Belgium"
+},
+"bj": {
+"zh": "贝宁",
+"en": "Benin"
+},
+"bf": {
+"zh": "布基纳法索",
+"en": "Burkina Faso"
+},
+"bg": {
+"zh": "保加利亚",
+"en": "Bulgaria"
+},
+"bh": {
+"zh": "巴林",
+"en": "Bahrain"
+},
+"bs": {
+"zh": "巴哈马",
+"en": "Bahamas"
+},
+"ba": {
+"zh": "波斯尼亚和黑塞哥维那",
+"en": "Bosnia & Herzegovina"
+},
+"by": {
+"zh": "白俄罗斯",
+"en": "Belarus"
+},
+"bz": {
+"zh": "伯利兹",
+"en": "Belize"
+},
+"bm": {
+"zh": "百慕大",
+"en": "Bermuda"
+},
+"bo": {
+"zh": "玻利维亚",
+"en": "Bolivia"
+},
+"br": {
+"zh": "巴西",
+"en": "Brazil"
+},
+"bb": {
+"zh": "巴巴多斯",
+"en": "Barbados"
+},
+"bn": {
+"zh": "文莱",
+"en": "Brunei"
+},
+"bt": {
+"zh": "不丹",
+"en": "Bhutan"
+},
+"bw": {
+"zh": "博茨瓦纳",
+"en": "Botswana"
+},
+"ca": {
+"zh": "加拿大",
+"en": "Canada"
+},
+"ch": {
+"zh": "瑞士",
+"en": "Switzerland"
+},
+"cl": {
+"zh": "智利",
+"en": "Chile"
+},
+"cn": {
+"zh": "中国",
+"en": "China"
+},
+"ci": {
+"zh": "科特迪瓦",
+"en": "Côte d’Ivoire"
+},
+"cm": {
+"zh": "喀麦隆",
+"en": "Cameroon"
+},
+"cd": {
+"zh": "刚果（金）",
+"en": "Congo - Kinshasa"
+},
+"cg": {
+"zh": "刚果（布）",
+"en": "Congo - Brazzaville"
+},
+"co": {
+"zh": "哥伦比亚",
+"en": "Colombia"
+},
+"cv": {
+"zh": "佛得角",
+"en": "Cape Verde"
+},
+"cr": {
+"zh": "哥斯达黎加",
+"en": "Costa Rica"
+},
+"ky": {
+"zh": "开曼群岛",
+"en": "Cayman Islands"
+},
+"cy": {
+"zh": "塞浦路斯",
+"en": "Cyprus"
+},
+"cz": {
+"zh": "捷克",
+"en": "Czechia"
+},
+"de": {
+"zh": "德国",
+"en": "Germany"
+},
+"dm": {
+"zh": "多米尼克",
+"en": "Dominica"
+},
+"dk": {
+"zh": "丹麦",
+"en": "Denmark"
+},
+"do": {
+"zh": "多米尼加共和国",
+"en": "Dominican Republic"
+},
+"dz": {
+"zh": "阿尔及利亚",
+"en": "Algeria"
+},
+"ec": {
+"zh": "厄瓜多尔",
+"en": "Ecuador"
+},
+"eg": {
+"zh": "埃及",
+"en": "Egypt"
+},
+"es": {
+"zh": "西班牙",
+"en": "Spain"
+},
+"ee": {
+"zh": "爱沙尼亚",
+"en": "Estonia"
+},
+"fi": {
+"zh": "芬兰",
+"en": "Finland"
+},
+"fj": {
+"zh": "斐济",
+"en": "Fiji"
+},
+"fr": {
+"zh": "法国",
+"en": "France"
+},
+"fm": {
+"zh": "密克罗尼西亚",
+"en": "Micronesia"
+},
+"ga": {
+"zh": "加蓬",
+"en": "Gabon"
+},
+"gb": {
+"zh": "英国",
+"en": "United Kingdom"
+},
+"ge": {
+"zh": "格鲁吉亚",
+"en": "Georgia"
+},
+"gh": {
+"zh": "加纳",
+"en": "Ghana"
+},
+"gm": {
+"zh": "冈比亚",
+"en": "Gambia"
+},
+"gw": {
+"zh": "几内亚比绍",
+"en": "Guinea-Bissau"
+},
+"gr": {
+"zh": "希腊",
+"en": "Greece"
+},
+"gd": {
+"zh": "格林纳达",
+"en": "Grenada"
+},
+"gt": {
+"zh": "危地马拉",
+"en": "Guatemala"
+},
+"gy": {
+"zh": "圭亚那",
+"en": "Guyana"
+},
+"hk": {
+"zh": "中国香港特别行政区",
+"en": "Hong Kong SAR China"
+},
+"hn": {
+"zh": "洪都拉斯",
+"en": "Honduras"
+},
+"hr": {
+"zh": "克罗地亚",
+"en": "Croatia"
+},
+"hu": {
+"zh": "匈牙利",
+"en": "Hungary"
+},
+"id": {
+"zh": "印度尼西亚",
+"en": "Indonesia"
+},
+"in": {
+"zh": "印度",
+"en": "India"
+},
+"ie": {
+"zh": "爱尔兰",
+"en": "Ireland"
+},
+"iq": {
+"zh": "伊拉克",
+"en": "Iraq"
+},
+"is": {
+"zh": "冰岛",
+"en": "Iceland"
+},
+"il": {
+"zh": "以色列",
+"en": "Israel"
+},
+"it": {
+"zh": "意大利",
+"en": "Italy"
+},
+"jm": {
+"zh": "牙买加",
+"en": "Jamaica"
+},
+"jo": {
+"zh": "约旦",
+"en": "Jordan"
+},
+"jp": {
+"zh": "日本",
+"en": "Japan"
+},
+"kz": {
+"zh": "哈萨克斯坦",
+"en": "Kazakhstan"
+},
+"ke": {
+"zh": "肯尼亚",
+"en": "Kenya"
+},
+"kg": {
+"zh": "吉尔吉斯斯坦",
+"en": "Kyrgyzstan"
+},
+"kh": {
+"zh": "柬埔寨",
+"en": "Cambodia"
+},
+"kn": {
+"zh": "圣基茨和尼维斯",
+"en": "St. Kitts & Nevis"
+},
+"kr": {
+"zh": "韩国",
+"en": "South Korea"
+},
+"kw": {
+"zh": "科威特",
+"en": "Kuwait"
+},
+"la": {
+"zh": "老挝",
+"en": "Laos"
+},
+"lb": {
+"zh": "黎巴嫩",
+"en": "Lebanon"
+},
+"lr": {
+"zh": "利比里亚",
+"en": "Liberia"
+},
+"ly": {
+"zh": "利比亚",
+"en": "Libya"
+},
+"lc": {
+"zh": "圣卢西亚",
+"en": "St. Lucia"
+},
+"lk": {
+"zh": "斯里兰卡",
+"en": "Sri Lanka"
+},
+"lt": {
+"zh": "立陶宛",
+"en": "Lithuania"
+},
+"lu": {
+"zh": "卢森堡",
+"en": "Luxembourg"
+},
+"lv": {
+"zh": "拉脱维亚",
+"en": "Latvia"
+},
+"mo": {
+"zh": "中国澳门特别行政区",
+"en": "Macao SAR China"
+},
+"ma": {
+"zh": "摩洛哥",
+"en": "Morocco"
+},
+"md": {
+"zh": "摩尔多瓦",
+"en": "Moldova"
+},
+"mg": {
+"zh": "马达加斯加",
+"en": "Madagascar"
+},
+"mv": {
+"zh": "马尔代夫",
+"en": "Maldives"
+},
+"mx": {
+"zh": "墨西哥",
+"en": "Mexico"
+},
+"mk": {
+"zh": "北马其顿",
+"en": "North Macedonia"
+},
+"ml": {
+"zh": "马里",
+"en": "Mali"
+},
+"mt": {
+"zh": "马耳他",
+"en": "Malta"
+},
+"mm": {
+"zh": "缅甸",
+"en": "Myanmar (Burma)"
+},
+"me": {
+"zh": "黑山",
+"en": "Montenegro"
+},
+"mn": {
+"zh": "蒙古",
+"en": "Mongolia"
+},
+"mz": {
+"zh": "莫桑比克",
+"en": "Mozambique"
+},
+"mr": {
+"zh": "毛里塔尼亚",
+"en": "Mauritania"
+},
+"ms": {
+"zh": "蒙特塞拉特",
+"en": "Montserrat"
+},
+"mu": {
+"zh": "毛里求斯",
+"en": "Mauritius"
+},
+"mw": {
+"zh": "马拉维",
+"en": "Malawi"
+},
+"my": {
+"zh": "马来西亚",
+"en": "Malaysia"
+},
+"na": {
+"zh": "纳米比亚",
+"en": "Namibia"
+},
+"ne": {
+"zh": "尼日尔",
+"en": "Niger"
+},
+"ng": {
+"zh": "尼日利亚",
+"en": "Nigeria"
+},
+"ni": {
+"zh": "尼加拉瓜",
+"en": "Nicaragua"
+},
+"nl": {
+"zh": "荷兰",
+"en": "Netherlands"
+},
+"no": {
+"zh": "挪威",
+"en": "Norway"
+},
+"np": {
+"zh": "尼泊尔",
+"en": "Nepal"
+},
+"nr": {
+"zh": "瑙鲁",
+"en": "Nauru"
+},
+"nz": {
+"zh": "新西兰",
+"en": "New Zealand"
+},
+"om": {
+"zh": "阿曼",
+"en": "Oman"
+},
+"pk": {
+"zh": "巴基斯坦",
+"en": "Pakistan"
+},
+"pa": {
+"zh": "巴拿马",
+"en": "Panama"
+},
+"pe": {
+"zh": "秘鲁",
+"en": "Peru"
+},
+"ph": {
+"zh": "菲律宾",
+"en": "Philippines"
+},
+"pw": {
+"zh": "帕劳",
+"en": "Palau"
+},
+"pg": {
+"zh": "巴布亚新几内亚",
+"en": "Papua New Guinea"
+},
+"pl": {
+"zh": "波兰",
+"en": "Poland"
+},
+"pt": {
+"zh": "葡萄牙",
+"en": "Portugal"
+},
+"py": {
+"zh": "巴拉圭",
+"en": "Paraguay"
+},
+"qa": {
+"zh": "卡塔尔",
+"en": "Qatar"
+},
+"ro": {
+"zh": "罗马尼亚",
+"en": "Romania"
+},
+"ru": {
+"zh": "俄罗斯",
+"en": "Russia"
+},
+"rw": {
+"zh": "卢旺达",
+"en": "Rwanda"
+},
+"sa": {
+"zh": "沙特阿拉伯",
+"en": "Saudi Arabia"
+},
+"sn": {
+"zh": "塞内加尔",
+"en": "Senegal"
+},
+"sg": {
+"zh": "新加坡",
+"en": "Singapore"
+},
+"sb": {
+"zh": "所罗门群岛",
+"en": "Solomon Islands"
+},
+"sl": {
+"zh": "塞拉利昂",
+"en": "Sierra Leone"
+},
+"sv": {
+"zh": "萨尔瓦多",
+"en": "El Salvador"
+},
+"rs": {
+"zh": "塞尔维亚",
+"en": "Serbia"
+},
+"st": {
+"zh": "圣多美和普林西比",
+"en": "São Tomé & Príncipe"
+},
+"sr": {
+"zh": "苏里南",
+"en": "Suriname"
+},
+"sk": {
+"zh": "斯洛伐克",
+"en": "Slovakia"
+},
+"si": {
+"zh": "斯洛文尼亚",
+"en": "Slovenia"
+},
+"se": {
+"zh": "瑞典",
+"en": "Sweden"
+},
+"sz": {
+"zh": "斯威士兰",
+"en": "Eswatini"
+},
+"sc": {
+"zh": "塞舌尔",
+"en": "Seychelles"
+},
+"tc": {
+"zh": "特克斯和凯科斯群岛",
+"en": "Turks & Caicos Islands"
+},
+"td": {
+"zh": "乍得",
+"en": "Chad"
+},
+"th": {
+"zh": "泰国",
+"en": "Thailand"
+},
+"tj": {
+"zh": "塔吉克斯坦",
+"en": "Tajikistan"
+},
+"tm": {
+"zh": "土库曼斯坦",
+"en": "Turkmenistan"
+},
+"to": {
+"zh": "汤加",
+"en": "Tonga"
+},
+"tt": {
+"zh": "特立尼达和多巴哥",
+"en": "Trinidad & Tobago"
+},
+"tn": {
+"zh": "突尼斯",
+"en": "Tunisia"
+},
+"tr": {
+"zh": "土耳其",
+"en": "Türkiye"
+},
+"tw": {
+"zh": "台湾",
+"en": "Taiwan"
+},
+"tz": {
+"zh": "坦桑尼亚",
+"en": "Tanzania"
+},
+"ug": {
+"zh": "乌干达",
+"en": "Uganda"
+},
+"ua": {
+"zh": "乌克兰",
+"en": "Ukraine"
+},
+"uy": {
+"zh": "乌拉圭",
+"en": "Uruguay"
+},
+"us": {
+"zh": "美国",
+"en": "United States"
+},
+"uz": {
+"zh": "乌兹别克斯坦",
+"en": "Uzbekistan"
+},
+"vc": {
+"zh": "圣文森特和格林纳丁斯",
+"en": "St. Vincent & Grenadines"
+},
+"ve": {
+"zh": "委内瑞拉",
+"en": "Venezuela"
+},
+"vg": {
+"zh": "英属维尔京群岛",
+"en": "British Virgin Islands"
+},
+"vn": {
+"zh": "越南",
+"en": "Vietnam"
+},
+"vu": {
+"zh": "瓦努阿图",
+"en": "Vanuatu"
+},
+"ye": {
+"zh": "也门",
+"en": "Yemen"
+},
+"za": {
+"zh": "南非",
+"en": "South Africa"
+},
+"zm": {
+"zh": "赞比亚",
+"en": "Zambia"
+},
+"zw": {
+"zh": "津巴布韦",
+"en": "Zimbabwe"
+}
+}
