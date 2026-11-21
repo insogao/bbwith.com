@@ -1,6 +1,6 @@
 {
  "date": "2026-11-21",
- "time": "2026-11-21T12:22+08:00",
+ "time": "2026-11-21T12:30+08:00",
  "source": "16688",
  "currency": "CNY",
  "usd_cny": 6.69198,
@@ -20,7 +20,7 @@
     "min": 104.55,
     "p25": 110.0,
     "median": 120.0,
-    "sales": 74636,
+    "sales": 74642,
     "trimmed": 0,
     "routes": {
      "us-ios": {
@@ -36,7 +36,7 @@
       "min": 106.0,
       "p25": 110.0,
       "median": 115.0,
-      "sales": 42305,
+      "sales": 42306,
       "trimmed": 0
      },
      "other": {
@@ -44,7 +44,7 @@
       "min": 104.55,
       "p25": 109.0,
       "median": 123.5,
-      "sales": 29876,
+      "sales": 29881,
       "trimmed": 0
      },
      "jp": {
@@ -62,7 +62,7 @@
     "min": 45.0,
     "p25": 69.0,
     "median": 107.19,
-    "sales": 33432,
+    "sales": 33441,
     "trimmed": 0
    },
    "account-short": {
@@ -70,7 +70,7 @@
     "min": 10.5,
     "p25": 23.88,
     "median": 38.4,
-    "sales": 23152,
+    "sales": 23154,
     "trimmed": 12
    },
    "account-long": {
@@ -78,7 +78,7 @@
     "min": 39.99,
     "p25": 60.0,
     "median": 72.5,
-    "sales": 9838,
+    "sales": 9841,
     "trimmed": 0
    }
   },
@@ -292,7 +292,7 @@
     "min": 570.0,
     "p25": 612.0,
     "median": 640.0,
-    "sales": 9460,
+    "sales": 9461,
     "trimmed": 0,
     "routes": {
      "other": {
@@ -316,7 +316,7 @@
       "min": 570.0,
       "p25": 595.0,
       "median": 627.0,
-      "sales": 7341,
+      "sales": 7342,
       "trimmed": 0
      },
      "ph": {
@@ -368,7 +368,7 @@
     "min": 12.0,
     "p25": 30.0,
     "median": 50.0,
-    "sales": 6287,
+    "sales": 6288,
     "trimmed": 20
    }
   },
@@ -430,7 +430,7 @@
     "min": 5.18,
     "p25": 6.0,
     "median": 7.9,
-    "sales": 3284,
+    "sales": 3285,
     "trimmed": 0
    },
    "topup": {
@@ -466,7 +466,7 @@
     "min": 6.6,
     "p25": 13.0,
     "median": 16.4,
-    "sales": 55978,
+    "sales": 55995,
     "trimmed": 0
    },
    "topup": {
@@ -492,7 +492,7 @@
     "min": 19.0,
     "p25": 30.5,
     "median": 31.55,
-    "sales": 890,
+    "sales": 893,
     "trimmed": 0
    }
   },
@@ -528,7 +528,7 @@
     "min": 225.0,
     "p25": 260.0,
     "median": 304.925,
-    "sales": 985,
+    "sales": 986,
     "trimmed": 0
    },
    "account-short": {
