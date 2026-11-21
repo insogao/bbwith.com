@@ -1,22 +1,145 @@
 [
- {"id": "chatgpt", "name": "ChatGPT", "url": "https://chatgpt.com/pricing", "region": "global"},
- {"id": "claude", "name": "Claude", "url": "https://claude.com/pricing", "region": "global"},
- {"id": "gemini", "name": "Google AI（Gemini）", "url": "https://gemini.google/subscriptions/", "region": "global"},
- {"id": "grok", "name": "Grok / SuperGrok", "url": "https://x.ai/grok", "region": "global"},
- {"id": "perplexity", "name": "Perplexity", "url": "https://www.perplexity.ai/pro", "region": "global"},
- {"id": "cursor", "name": "Cursor", "url": "https://cursor.com/pricing", "region": "global"},
- {"id": "windsurf", "name": "Windsurf", "url": "https://windsurf.com/pricing", "region": "global"},
- {"id": "copilot", "name": "GitHub Copilot", "url": "https://github.com/features/copilot/plans", "region": "global"},
- {"id": "midjourney", "name": "Midjourney", "url": "https://docs.midjourney.com/hc/en-us/articles/27870484040333-Comparing-Midjourney-Plans", "region": "global"},
- {"id": "suno", "name": "Suno", "url": "https://suno.com/pricing", "region": "global"},
- {"id": "elevenlabs", "name": "ElevenLabs", "url": "https://elevenlabs.io/pricing", "region": "global"},
- {"id": "lovart", "name": "Lovart", "url": "https://www.lovart.ai/pricing", "region": "global"},
- {"id": "kling", "name": "可灵 Kling", "url": "https://klingai.com/global/membership/membership-plan", "region": "global"},
- {"id": "manus", "name": "Manus", "url": "https://manus.im/pricing", "region": "global"},
- {"id": "runninghub", "name": "RunningHub", "url": "https://www.runninghub.cn/vip-rights", "region": "cn"},
- {"id": "liblib", "name": "LiblibAI 哩布哩布", "url": "https://www.liblib.art/pricing", "region": "cn"},
- {"id": "jimeng", "name": "即梦 / Dreamina", "url": "https://dreamina.capcut.com/ai-tool/pricing", "region": "global"},
- {"id": "kimi", "name": "Kimi", "url": "https://www.kimi.com/membership/pricing", "region": "cn"},
- {"id": "notion", "name": "Notion AI", "url": "https://www.notion.com/pricing", "region": "global"},
- {"id": "poe", "name": "Poe", "url": "https://poe.com/about", "region": "global"}
+ {
+  "id": "chatgpt",
+  "name": "ChatGPT",
+  "url": "https://chatgpt.com/pricing",
+  "region": "global",
+  "urls": [
+   "https://openai.com/chatgpt/pricing/",
+   "https://chatgpt.com/pricing"
+  ]
+ },
+ {
+  "id": "claude",
+  "name": "Claude",
+  "url": "https://claude.com/pricing",
+  "region": "global"
+ },
+ {
+  "id": "gemini",
+  "name": "Google AI（Gemini）",
+  "url": "https://gemini.google/subscriptions/",
+  "region": "global"
+ },
+ {
+  "id": "grok",
+  "name": "Grok / SuperGrok",
+  "url": "https://x.ai/grok",
+  "region": "global",
+  "urls": [
+   "https://grok.com/plans",
+   "https://x.ai/grok"
+  ]
+ },
+ {
+  "id": "perplexity",
+  "name": "Perplexity",
+  "url": "https://www.perplexity.ai/pro",
+  "region": "global"
+ },
+ {
+  "id": "cursor",
+  "name": "Cursor",
+  "url": "https://cursor.com/pricing",
+  "region": "global"
+ },
+ {
+  "id": "windsurf",
+  "name": "Windsurf",
+  "url": "https://windsurf.com/pricing",
+  "region": "global"
+ },
+ {
+  "id": "copilot",
+  "name": "GitHub Copilot",
+  "url": "https://github.com/features/copilot/plans",
+  "region": "global"
+ },
+ {
+  "id": "midjourney",
+  "name": "Midjourney",
+  "url": "https://docs.midjourney.com/hc/en-us/articles/27870484040333-Comparing-Midjourney-Plans",
+  "region": "global",
+  "urls": [
+   "https://docs.midjourney.com/hc/en-us/articles/27870484040333-Comparing-Midjourney-Plans",
+   "https://www.midjourney.com/plans"
+  ]
+ },
+ {
+  "id": "suno",
+  "name": "Suno",
+  "url": "https://suno.com/pricing",
+  "region": "global"
+ },
+ {
+  "id": "elevenlabs",
+  "name": "ElevenLabs",
+  "url": "https://elevenlabs.io/pricing",
+  "region": "global"
+ },
+ {
+  "id": "lovart",
+  "name": "Lovart",
+  "url": "https://www.lovart.ai/pricing",
+  "region": "global"
+ },
+ {
+  "id": "kling",
+  "name": "可灵 Kling",
+  "url": "https://klingai.com/global/membership/membership-plan",
+  "region": "global",
+  "urls": [
+   "https://app.klingai.com/global/membership/membership-plan",
+   "https://klingai.com/global/membership/membership-plan"
+  ]
+ },
+ {
+  "id": "manus",
+  "name": "Manus",
+  "url": "https://manus.im/pricing",
+  "region": "global"
+ },
+ {
+  "id": "runninghub",
+  "name": "RunningHub",
+  "url": "https://www.runninghub.cn/vip-rights",
+  "region": "cn",
+  "urls": [
+   "https://www.runninghub.ai/pricing",
+   "https://www.runninghub.ai/vip-rights",
+   "https://www.runninghub.cn/vip-rights"
+  ]
+ },
+ {
+  "id": "liblib",
+  "name": "LiblibAI 哩布哩布",
+  "url": "https://www.liblib.art/pricing",
+  "region": "cn",
+  "urls": [
+   "https://www.liblib.art/pricing",
+   "https://www.liblib.art/vip"
+  ]
+ },
+ {
+  "id": "jimeng",
+  "name": "即梦 / Dreamina",
+  "url": "https://dreamina.capcut.com/ai-tool/pricing",
+  "region": "global",
+  "urls": [
+   "https://dreamina.capcut.com/ai-tool/subscription",
+   "https://dreamina.capcut.com/ai-tool/pricing"
+  ]
+ },
+ {
+  "id": "kimi",
+  "name": "Kimi",
+  "url": "https://www.kimi.com/membership/pricing",
+  "region": "cn"
+ },
+ {
+  "id": "notion",
+  "name": "Notion AI",
+  "url": "https://www.notion.com/pricing",
+  "region": "global"
+ }
 ]

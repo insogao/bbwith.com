@@ -156,7 +156,7 @@ def page(title, description, path, body, ld=(), date=None, noindex=False, extra_
 <body>
 <header class="top"><div class="wrap">
 <a class="brand" href="/"><span class="logo">比</span>比比价 <small>bbwith.com</small></a>
-<nav><a href="/news/">早报</a><a href="/deals/">优惠</a><a href="/gift-cards/">礼品卡</a><a href="/daily/">日报</a><a href="/data/">数据下载</a><a href="/about/">方法说明</a></nav>
+<nav><a href="/news/">早报</a><a href="/deals/">优惠</a><a href="/ai-pricing/">官方价格</a><a href="/gift-cards/">礼品卡</a><a href="/daily/">日报</a><a href="/data/">数据下载</a><a href="/about/">方法说明</a></nav>
 </div></header>
 <main class="wrap">
 {body}
@@ -720,12 +720,104 @@ def build_deals(day):
         write(path, page(f"{d['title']}（{zh_date(d['start'])}）· 比比价", d["summary"][:150], path, body, ld, d["verified_on"]))
     rows = lambda ds: "".join(f'<li><a href="{deal_url(d)}">{e(d["title"])}</a> <small>{e(d["discount"])} · {e(deal_period(d))}</small></li>' for d in ds) or "<li>暂无</li>"
     cr_html, cr_ld = crumbs([("首页", "/"), ("优惠快讯", "/deals/")])
-    body = f"""{cr_html}<h1>AI 会员优惠快讯</h1>
-<p class="lead">ChatGPT、Claude、Gemini、Grok、Cursor 等 AI 会员的限时优惠、降价和新方案。每条都先在官方页面核实后再发布，到期自动下架。</p>
-<h2>进行中</h2><ul class="list">{rows([d for d in DEALS if d['active']])}</ul>
+    auto = auto_promos()
+    auto_html = "".join(
+        f'<li><a href="/ai-pricing/{e(p["id"])}/"><b>{e(p["name"])}</b></a>：{e(x["title"])}'
+        f'{("（" + e(x["detail"]) + "）") if x.get("detail") else ""}'
+        f'<br><small>{e(x.get("audience") or "")}{" · 截止 " + e(x["ends"]) if x.get("ends") else ""} · 首次发现 {e((x.get("first_seen") or "")[:10])} · '
+        f'<a href="{e(p["url"])}" rel="nofollow noopener" target="_blank">官网页面</a></small></li>' for p, x in auto)
+    body = f"""{cr_html}<h1>AI 会员优惠</h1>
+<p class="lead">ChatGPT、Claude、Gemini、Midjourney、可灵、Lovart、LiblibAI 等 AI 会员正在进行的优惠。「已核实快讯」由编辑核实后发布；「官网正在进行」每天自动打开 {len(PRICING.get("products", {}))} 家官网价格页识别，页面上的优惠撤下后自动消失。</p>
+<h2>已核实快讯</h2><ul class="list">{rows([d for d in DEALS if d['active']])}</ul>
+<h2>官网正在进行的优惠（每天自动识别）</h2>
+{f'<ul class="list">{auto_html}</ul>' if auto_html else '<p>今天没有在官网价格页上识别到限时优惠。</p>'}
+<p class="note">自动识别由 AI 读取官网价格页文字完成，可能有误，请以官网结账页为准。更新于 {e(PRICING.get("time", ""))}（北京时间）。<a href="/ai-pricing/">查看各家 AI 官方价格 →</a></p>
 <h2>已结束</h2><ul class="list">{rows([d for d in DEALS if not d['active']])}</ul>"""
-    write("/deals/", page("AI 会员优惠快讯：ChatGPT、Claude、Gemini、Grok 限时折扣 · 比比价",
-                          "AI 会员限时优惠、降价和新方案快讯，官方核实后发布，到期自动下架。", "/deals/", body, [cr_ld], day["date"]))
+    write("/deals/", page("AI 会员优惠：ChatGPT、Claude、Gemini、Midjourney、可灵等限时折扣 · 比比价",
+                          "AI 会员限时优惠、降价和新方案：编辑核实的快讯，加上每天自动识别的各家官网优惠。", "/deals/", body, [cr_ld], day["date"]))
+
+
+# ---------- official pricing pages ----------
+
+PRICING = {}
+PERIOD = {"month": "月", "year": "年", "year_monthly": "月（按年付）", "once": "一次性", "credits": "积分包"}
+
+
+def load_pricing():
+    f = os.path.join(ROOT, "data", "pricing", "latest.json")
+    return json.load(open(f, encoding="utf8")) if os.path.exists(f) else {}
+
+
+def auto_promos():
+    today = dt.date.today().isoformat()
+    out = []
+    for p in PRICING.get("products", {}).values():
+        if p.get("status") != "ok":
+            continue
+        for x in p.get("promos") or []:
+            if x.get("ends") and x["ends"] < today:
+                continue
+            out.append((p, x))
+    return out
+
+
+def plan_price(x):
+    cur = x.get("currency") or ""
+    v = x["price"]
+    usd_v = v / FX_ALL[cur] if cur in FX_ALL and FX_ALL[cur] else None
+    shown = f"{v:,.2f}".rstrip("0").rstrip(".") + f" {cur}"
+    return shown, usd_v
+
+
+FX_ALL = {}
+
+
+def build_pricing(day):
+    if not PRICING.get("products"):
+        return []
+    FX_ALL.update(day["fx"])
+    urls = []
+    rows = ""
+    for pid, p in sorted(PRICING["products"].items(), key=lambda kv: kv[1]["name"]):
+        plans = p.get("plans") or []
+        path = f"/ai-pricing/{pid}/"
+        trs = ""
+        for x in plans:
+            shown, usd_v = plan_price(x)
+            trs += (f'<tr><td>{e(x.get("name", ""))}</td><td>{e(PERIOD.get(x.get("period"), x.get("period") or ""))}</td>'
+                    f'<td>{e(shown)}</td><td data-v="{usd_v or 0:.2f}">{money(usd_v) if usd_v else "—"}</td><td>{e(x.get("note") or "")}</td></tr>')
+        promos = "".join(f'<li><b>{e(x["title"])}</b>{("：" + e(x["detail"])) if x.get("detail") else ""}'
+                         f'<br><small>{e(x.get("audience") or "")}{" · 截止 " + e(x["ends"]) if x.get("ends") else ""}</small></li>'
+                         for x in p.get("promos") or [])
+        status = "" if p.get("status") == "ok" else f'<p class="note">最近一次（{e(p.get("checked", ""))}）未能读取：{e(p.get("status", ""))}。下面是之前读到的价格。</p>'
+        cheapest = min((plan_price(x)[1] for x in plans if x.get("period") == "month" and (plan_price(x)[1] or 0) > 0), default=None)
+        lead = (f"{p['name']} 官网目前列出 {len(plans)} 个付费方案"
+                + (f"，月付最低约 {usd(cheapest)}" if cheapest else "") + "。"
+                + (f"正在进行的优惠：{'；'.join(x['title'] for x in p.get('promos') or [])}。" if p.get("promos") else "")
+                + (f"{p['annual_discount']}。" if p.get("annual_discount") else ""))
+        cr_html, cr_ld = crumbs([("首页", "/"), ("AI 官方价格", "/ai-pricing/"), (p["name"], path)])
+        body = f"""{cr_html}<h1>{e(p['name'])} 会员价格（官网）</h1>
+<p class="meta">读取自 <a href="{e(p['url'])}" rel="nofollow noopener" target="_blank">官网价格页</a> · 更新于 {e(p.get('updated') or p.get('checked', ''))}（北京时间）· 每天自动检查</p>
+<p class="lead">{e(lead)}</p>{status}
+{f'<h2>正在进行的优惠</h2><ul class="list">{promos}</ul>' if promos else ''}
+<div class="bar"><h2>付费方案</h2>{cur_select()}</div>
+<div class="tablewrap"><table class="prices sortable"><thead><tr><th>方案</th><th>计费</th><th>官网标价</th><th data-sort=num>折合</th><th>说明</th></tr></thead><tbody>{trs}</tbody></table></div>
+<p class="note">价格由 AI 从官网页面文字中识别，可能有误或因地区、登录状态而不同，请以官网结账页为准。官网价格多为美国或默认地区价格，不含税。</p>
+<p class="src"><a href="/ai-pricing/">全部 AI 官方价格</a> · <a href="/deals/">AI 会员优惠</a></p>"""
+        write(path, page(f"{p['name']} 会员多少钱？官网价格和优惠（{zh_date(day['date'])}）· 比比价",
+                         lead[:150], path, body, [cr_ld], day["date"]))
+        urls.append(path)
+        rows += (f'<tr><td><a href="{path}">{e(p["name"])}</a></td><td data-v="{cheapest or 0:.2f}">{money(cheapest) if cheapest else "—"}</td>'
+                 f'<td>{len(plans)}</td><td>{"🔥 " + e(p["promos"][0]["title"]) if p.get("promos") else ""}</td></tr>')
+    cr_html, cr_ld = crumbs([("首页", "/"), ("AI 官方价格", "/ai-pricing/")])
+    body = f"""{cr_html}<h1>AI 会员官方价格</h1>
+<p class="lead">每天自动打开 {len(PRICING['products'])} 家 AI 产品的官网价格页，整理付费方案、价格和正在进行的优惠。想看 App Store 各地区价格，请看<a href="/">首页比价</a>。</p>
+<div class="bar"><h2>一览</h2>{cur_select()}</div>
+<div class="tablewrap"><table class="prices sortable"><thead><tr><th>产品</th><th data-sort=num>月付最低</th><th>方案数</th><th>正在进行的优惠</th></tr></thead><tbody>{rows}</tbody></table></div>
+<p class="note">价格由 AI 从官网页面识别，以官网结账页为准。更新于 {e(PRICING.get('time', ''))}（北京时间）。</p>"""
+    write("/ai-pricing/", page("AI 会员官方价格一览：ChatGPT、Claude、Midjourney、可灵、Lovart、LiblibAI · 比比价",
+                               "每天自动更新的 AI 会员官网价格和限时优惠。", "/ai-pricing/", body, [cr_ld], day["date"]))
+    return ["/ai-pricing/"] + urls
 
 
 # ---------- merchants ----------
@@ -1142,6 +1234,7 @@ def main():
     GIFT.update(load_gift())
     BRIEFS.extend(load_briefs())
     MERCH.update(load_merch())
+    PRICING.update(load_pricing())
     DEALS.extend(load_deals(dt.datetime.now(dt.timezone(dt.timedelta(hours=8))).date().isoformat()))
     for p, pl, _, _ in PLANS:
         if (p, pl) in cur:
@@ -1160,8 +1253,9 @@ def main():
     build_daily_index(days)
     build_home(day, cur, chg, prev)
     build_about(day)
+    pricing_urls = build_pricing(day)
     build_deals(day)
-    gift_urls = build_gift(day, cur) + build_news(cur) + build_shops()
+    gift_urls = build_gift(day, cur) + build_news(cur) + build_shops() + pricing_urls
     build_merchant_pages()
     build_data(days, cur)
     build_meta(days, cur, gift_urls)

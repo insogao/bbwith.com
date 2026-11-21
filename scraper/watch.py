@@ -57,23 +57,28 @@ def render_all(targets):
         ctx = b.new_context(viewport={"width": 1280, "height": 900}, locale="en-US",
                             user_agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36")
         for t in targets:
-            pg = ctx.new_page()
-            try:
-                pg.goto(t["url"], wait_until="domcontentloaded", timeout=45000)
+            for url in t.get("urls") or [t["url"]]:
+                pg = ctx.new_page()
                 try:
-                    pg.wait_for_load_state("networkidle", timeout=15000)
-                except Exception:
-                    pass
-                pg.wait_for_timeout(2500)
-                text = pg.evaluate("document.body ? document.body.innerText : ''")
-                pg.screenshot(path=os.path.join(SHOTS, f"{t['id']}.jpg"), full_page=True, type="jpeg", quality=45)
-                out[t["id"]] = {"final_url": pg.url, "title": pg.title(), "text": re.sub(r"\n{3,}", "\n\n", text)[:14000]}
-                print(f"{t['id']}: {len(text)} chars, {pg.url}")
-            except Exception as e:
-                out[t["id"]] = {"error": repr(e)[:200]}
-                print(f"{t['id']}: failed {repr(e)[:120]}")
-            finally:
-                pg.close()
+                    pg.goto(url, wait_until="domcontentloaded", timeout=45000)
+                    try:
+                        pg.wait_for_load_state("networkidle", timeout=15000)
+                    except Exception:
+                        pass
+                    pg.wait_for_timeout(5000)
+                    text = pg.evaluate("document.body ? document.body.innerText : ''")
+                    print(f"{t['id']}: {len(text)} chars, {pg.url}")
+                    if len(text) < 800 or re.search(r"login|sign-?in|sso", pg.url, re.I):
+                        out.setdefault(t["id"], {"error": f"too little text or login at {pg.url}"})
+                        continue
+                    pg.screenshot(path=os.path.join(SHOTS, f"{t['id']}.jpg"), full_page=True, type="jpeg", quality=45)
+                    out[t["id"]] = {"final_url": pg.url, "title": pg.title(), "text": re.sub(r"\n{3,}", "\n\n", text)[:14000], "url": url}
+                    break
+                except Exception as e:
+                    out.setdefault(t["id"], {"error": repr(e)[:200]})
+                    print(f"{t['id']}: failed {repr(e)[:120]}")
+                finally:
+                    pg.close()
         b.close()
     return out
 
@@ -96,13 +101,13 @@ def main():
     for t in targets:
         pg = pages.get(t["id"], {})
         old = products.get(t["id"], {})
-        entry = {"id": t["id"], "name": t["name"], "url": t["url"], "region": t["region"], "checked": stamp}
+        entry = {"id": t["id"], "name": t["name"], "url": pg.get("url") or t["url"], "region": t["region"], "checked": stamp}
         if "--no-llm" in sys.argv or "text" not in pg or len(pg["text"]) < 300:
             entry.update({k: old.get(k) for k in ("plans", "promos", "annual_discount", "updated") if k in old})
             entry["status"] = "页面打不开" if "error" in pg else "页面内容太少（可能需要登录或被拦截）"
             products[t["id"]] = entry
             continue
-        r = llm(PROMPT.format(name=t["name"], url=t["url"], date=now.date().isoformat(), text=pg["text"]))
+        r = llm(PROMPT.format(name=t["name"], url=pg.get("url", t["url"]), date=now.date().isoformat(), text=pg["text"]))
         if not r or not r.get("ok"):
             entry.update({k: old.get(k) for k in ("plans", "promos", "annual_discount", "updated") if k in old})
             entry["status"] = "没有识别到价格（可能是登录页或验证页）"
