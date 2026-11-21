@@ -110,5 +110,136 @@
   "kind": "promo",
   "title": "Black Friday 活动",
   "detail": "Black Friday is almost here. Launch your campaign with Manus."
+ },
+ {
+  "t": "2026-11-22 06:43",
+  "id": "gemini",
+  "kind": "promo",
+  "title": "Black Friday 最高5折",
+  "detail": "精选 Google AI 方案最高省 50%（Member early access）"
+ },
+ {
+  "t": "2026-11-22 06:43",
+  "id": "perplexity",
+  "kind": "promo",
+  "title": "$40 免费 Computer credits",
+  "detail": "限时赠送 $40 Computer credits"
+ },
+ {
+  "t": "2026-11-22 06:43",
+  "id": "perplexity",
+  "kind": "promo",
+  "title": "$450 免费 Computer credits",
+  "detail": "限时赠送 $450 Computer credits"
+ },
+ {
+  "t": "2026-11-22 06:43",
+  "id": "suno",
+  "kind": "price",
+  "plan": "Pro",
+  "period": "month",
+  "from": "8 GBP",
+  "to": "10 USD"
+ },
+ {
+  "t": "2026-11-22 06:43",
+  "id": "suno",
+  "kind": "price",
+  "plan": "Pro",
+  "period": "year",
+  "from": "72 GBP",
+  "to": "96 USD"
+ },
+ {
+  "t": "2026-11-22 06:43",
+  "id": "suno",
+  "kind": "price",
+  "plan": "Premier",
+  "period": "month",
+  "from": "22 GBP",
+  "to": "30 USD"
+ },
+ {
+  "t": "2026-11-22 06:43",
+  "id": "suno",
+  "kind": "price",
+  "plan": "Premier",
+  "period": "year",
+  "from": "216 GBP",
+  "to": "288 USD"
+ },
+ {
+  "t": "2026-11-22 06:43",
+  "id": "suno",
+  "kind": "price",
+  "plan": "Platinum",
+  "period": "month",
+  "from": "90 GBP",
+  "to": "120 USD"
+ },
+ {
+  "t": "2026-11-22 06:43",
+  "id": "suno",
+  "kind": "price",
+  "plan": "Platinum",
+  "period": "year",
+  "from": "900 GBP",
+  "to": "1200 USD"
+ },
+ {
+  "t": "2026-11-22 06:43",
+  "id": "elevenlabs",
+  "kind": "promo",
+  "title": "黑五最高 55% off",
+  "detail": "ElevenLabs Black Friday pricing，最高 55% 折扣"
+ },
+ {
+  "t": "2026-11-22 06:43",
+  "id": "elevenlabs",
+  "kind": "promo",
+  "title": "Starter 首月 $1",
+  "detail": "Starter 首月 $1，之后 $6/月"
+ },
+ {
+  "t": "2026-11-22 06:43",
+  "id": "elevenlabs",
+  "kind": "promo",
+  "title": "Creator 首月 5 折",
+  "detail": "Creator 首月 $11，之后 $22/月（First month 50% off）"
+ },
+ {
+  "t": "2026-11-22 06:43",
+  "id": "elevenlabs",
+  "kind": "promo",
+  "title": "Startup Grants 12 个月免费",
+  "detail": "初创企业可获 12 个月免费，33M 字符"
+ },
+ {
+  "t": "2026-11-22 06:43",
+  "id": "lovart",
+  "kind": "promo",
+  "title": "Seedance 2.5 Flash 发布限时 5 折",
+  "detail": "升级会员限时 5 折，另赠最多 20 次免费生成（Pro 5 次、Ultimate 20 次）"
+ },
+ {
+  "t": "2026-11-22 06:43",
+  "id": "kling",
+  "kind": "promo",
+  "title": "月付首3个月 35% Off",
+  "detail": "Standard $6.5/月、Pro $24/月、Premier $135/月、Ultra+ $402/月"
+ },
+ {
+  "t": "2026-11-22 06:43",
+  "id": "kling",
+  "kind": "promo",
+  "title": "年付限时 50% Off",
+  "detail": "年付限时 50% 折扣"
+ },
+ {
+  "t": "2026-11-22 06:43",
+  "id": "kling",
+  "kind": "promo",
+  "title": "限时免费积分",
+  "detail": "登录领取限时免费积分，仅限 Kling AI 平台"
  }
 ]
