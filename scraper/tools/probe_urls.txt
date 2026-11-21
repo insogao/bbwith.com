@@ -1,0 +1,16 @@
+bot https://www.reddit.com/r/LocalLLaMA/top/.rss?t=day
+browser https://www.reddit.com/r/LocalLLaMA/top/.rss?t=day
+bot https://www.reddit.com/r/OpenAI/top.json?t=day&limit=10
+browser https://old.reddit.com/r/ClaudeAI/top/.rss?t=day
+bot https://hn.algolia.com/api/v1/search?query=gemini&tags=story&numericFilters=points>50
+bot https://public.api.bsky.app/xrpc/app.bsky.feed.searchPosts?q=gemini%203&sort=top&limit=10
+bot https://news.google.com/rss/search?q=Gemini+OR+Claude+OR+ChatGPT+when:1d&hl=en-US&gl=US&ceid=US:en
+bot https://news.smol.ai/rss.xml
+bot https://rsshub.app/twitter/user/OpenAI
+bot https://nitter.net/OpenAI/rss
+bot https://openrouter.ai/api/v1/models
+bot https://huggingface.co/api/daily_papers?limit=5
+bot https://simonwillison.net/atom/everything/
+bot https://www.jiqizhixin.com/rss
+bot https://www.qbitai.com/feed
+bot https://36kr.com/feed
