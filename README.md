@@ -37,6 +37,18 @@ cd dist && python -m http.server 8000
 
 每天的数据提交会自动触发一次 Pages 部署（免费版每月 500 次）。
 
+## 国内代充价（channels.yml）
+
+每 4 小时从 16688 货源广场抓取代充报价，只把汇总结果写入 `data/channels/<日期>.json`。需要在仓库 Settings → Secrets and variables → Actions 里添加：
+
+| Secret | 取值（登录 16688 后在浏览器开发者工具 → Application → Local Storage 里找） |
+|---|---|
+| `S16688_TOKEN` | `merchant-token` 里 JSON 的 `value` 字段 |
+| `S16688_DEVICE_KEY` | `merchant-device-key` |
+| `S16688_VISITOR_KEY` | `visitor-id` |
+
+没有设置 `S16688_TOKEN` 时工作流会直接跳过。
+
 ## 数据口径
 
 见网站的 /about/ 页面：只统计月付；大多数地区的标价含税，美国、加拿大等不含税；App Store 每个 App 只展示约 10 个内购项目，部分档位在部分地区抓不到。

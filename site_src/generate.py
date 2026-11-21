@@ -231,6 +231,43 @@ def summary_sentence(product, plan, rows, day):
 
 # ---------- pages ----------
 
+CHANNELS = {}  # latest data/channels/*.json, loaded in main()
+ROUTE_LABELS = {"ph": "菲区卡充", "us-ios": "美区 iOS", "eg": "埃及卡充", "cl": "智利卡充", "jp": "日区", "tr": "土区", "other": "未注明渠道"}
+
+
+def load_channels():
+    files = sorted(glob.glob(os.path.join(ROOT, "data", "channels", "20*.json")))
+    return json.load(open(files[-1], encoding="utf8")) if files else {}
+
+
+def channel_block(product, plan, rows):
+    """Domestic top-up (代充) reference prices for a plan, or "" when there is no data."""
+    c = CHANNELS.get("plans", {}).get(f"{product}/{plan}")
+    if not c or c["count"] < 3:
+        return ""
+    rate = CHANNELS["usd_cny"]
+    to_usd = lambda cny: cny / rate
+    us = next((r for r in rows if r["cc"] == "us"), None)
+    med = to_usd(c["median"])
+    cmp = ""
+    if us:
+        d = med / us["usd"] - 1
+        cmp = f"代充价中位数比美区 App Store 标价{'低' if d < 0 else '高'} {abs(d) * 100:.0f}%；"
+    lo = rows[0]
+    d2 = to_usd(c["p25"]) / lo["usd"] - 1
+    cmp += f"代充价的 25 分位比 App Store 最便宜地区（{cname(lo['cc'])}）{'低' if d2 < 0 else '高'} {abs(d2) * 100:.0f}%。"
+    routes = sorted(c["routes"].items(), key=lambda kv: kv[1]["median"])
+    rrows = "".join(f'<tr><td>{e(ROUTE_LABELS.get(k, k))}</td><td data-v="{to_usd(v["min"]):.2f}">{money(to_usd(v["min"]))}</td>'
+                    f'<td data-v="{to_usd(v["median"]):.2f}"><b>{money(to_usd(v["median"]))}</b></td><td>{v["count"]}</td></tr>'
+                    for k, v in routes if v["count"] >= 2)
+    return f"""<div class="bar"><h2>国内代充参考价</h2>{cur_select()}</div>
+<p class="lead">国内卡网货源里，「{e(full_name(product, plan))} 代充到自己账号、月付」共有 <b>{c['count']}</b> 条在售报价：
+最低 {money(to_usd(c['min']))}，25 分位 {money(to_usd(c['p25']))}，中位数 <b>{money(med)}</b>。{e(cmp)}</p>
+<div class="tablewrap"><table class="prices sortable"><thead><tr><th>卖家注明的充值渠道</th><th data-sort=num>最低</th><th data-sort=num>中位数</th><th>报价数</th></tr></thead><tbody>{rrows}</tbody></table></div>
+<p class="note">统计口径：只算「充值到自己账号」的月付代充，不含成品号、半价资格号、拼车、镜像和年卡；价格为货源平台标价，零售店铺通常会加价。数据更新于 {e(CHANNELS.get('time', '')[:16].replace('T', ' '))}（北京时间）。代充属于第三方服务，存在掉订阅、封号等风险，请自行判断。</p>
+"""
+
+
 def build_plan_page(product, plan, rows, prev_rows, day, all_plans):
     name = full_name(product, plan)
     path = url_plan(product, plan)
@@ -268,6 +305,7 @@ def build_plan_page(product, plan, rows, prev_rows, day, all_plans):
 <div class="chips">{siblings}</div>
 <div class="bar"><h2>最便宜的 10 个地区</h2>{cur_select()}</div>
 {price_table(rows, limit=10)}
+{channel_block(product, plan, rows)}
 <h2>全部 {len(rows)} 个地区</h2>
 <p class="hint">点击表头可以排序。美区一行已高亮。</p>
 {price_table(rows, prev=prev_map)}
@@ -336,6 +374,26 @@ def changes(cur, prev):
     return out
 
 
+def daily_channels(cur):
+    plans = CHANNELS.get("plans", {})
+    keys = [k for k in [x[:2] for x in PLANS] if f"{k[0]}/{k[1]}" in plans and plans[f"{k[0]}/{k[1]}"]["count"] >= 3 and k in cur]
+    if not keys:
+        return ""
+    rate = CHANNELS["usd_cny"]
+    rows = []
+    for k in keys:
+        c = plans[f"{k[0]}/{k[1]}"]
+        us = next((r for r in cur[k] if r["cc"] == "us"), None)
+        med = c["median"] / rate
+        d = (med / us["usd"] - 1) if us else None
+        rows.append(f'<tr><td><a href="{url_plan(*k)}">{e(full_name(*k))}</a></td><td><b>{money(med)}</b></td><td>{c["count"]}</td>'
+                    f'<td>{money(us["usd"]) if us else "—"}</td><td class="{"down" if (d or 0) < 0 else "up"}">{pct(d)}</td>'
+                    f'<td>{rank_html(cur[k], 1)}</td></tr>')
+    return f"""<div class="bar"><h2>国内代充 vs App Store</h2>{cur_select()}</div>
+<div class="tablewrap"><table class="prices"><thead><tr><th>档位</th><th>代充中位数</th><th>报价数</th><th>美区 App Store</th><th>代充比美区</th><th>App Store 最便宜地区</th></tr></thead><tbody>{''.join(rows)}</tbody></table></div>
+<p class="note">代充价来自国内卡网货源平台，只统计充值到自己账号的月付代充，不含成品号、资格号和年卡。</p>"""
+
+
 def build_daily(day, cur, prev_day, prev):
     date = day["date"]
     path = f"/daily/{date}/"
@@ -371,6 +429,7 @@ def build_daily(day, cur, prev_day, prev):
 <ul class="facts">{''.join(facts)}</ul>
 <h2>价格变动</h2>
 {chg_html}
+{daily_channels(cur)}
 <div class="bar"><h2>各档位最便宜的 3 个地区</h2>{cur_select()}</div>
 <div class="tablewrap"><table class="prices rank3"><thead><tr><th>档位</th><th>第 1 便宜</th><th>第 2 便宜</th><th>第 3 便宜</th></tr></thead><tbody>{summary_rows}</tbody></table></div>
 """
@@ -438,6 +497,7 @@ def build_about(day):
 <li>Google AI 只统计 Pro（5 TB）和 Ultra（30 TB）标准档；Google AI Plus 在不同地区附带的存储容量不同，暂未纳入。</li>
 <li>Codex 没有单独的 iOS App，包含在 ChatGPT 套餐内。</li>
 </ul>
+<h2>国内代充参考价</h2><p>ChatGPT 和 Claude 的档位页上另列了国内卡网货源平台的代充报价，每 4 小时更新一次。只统计「充值到自己账号」的月付代充，按卖家注明的充值渠道（菲区卡充、美区 iOS 等）分组，给出最低价、25 分位和中位数；成品号、半价资格号、拼车、镜像、年卡等不计入。本站不展示具体卖家，也不对任何卖家做担保。</p>
 <h2>使用须知</h2><p>本站只做价格参考，不出售任何订阅，也不提供绕过地区限制的方法。跨地区订阅可能违反 Apple 或服务商的条款，请自行判断。</p>
 <h2>引用与数据</h2><p>欢迎引用，请注明来源「比比价 bbwith.com」并附上链接。完整数据见 <a href="/data/">数据下载</a>，采用 CC BY 4.0 许可。</p>
 </div>"""
@@ -518,6 +578,7 @@ def main():
     cur = rows_of(day)
     prev_day = days[-2] if len(days) > 1 else None
     prev = rows_of(prev_day) if prev_day else None
+    CHANNELS.update(load_channels())
     for p, pl, _, _ in PLANS:
         if (p, pl) in cur:
             build_plan_page(p, pl, cur[(p, pl)], prev.get((p, pl)) if prev else None, day, cur)
