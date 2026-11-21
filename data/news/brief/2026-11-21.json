@@ -1,0 +1,198 @@
+{
+ "date": "2026-11-21",
+ "time": "2026-11-21 13:28",
+ "headline": "Gemini 4 Neon 登顶工程榜，Inkling 2 Mini 低价开源",
+ "model": "workbuddy/deepseek-v4.1-flash",
+ "inputs": 105,
+ "items": [
+  {
+   "title": "Gemini 4 Neon 登上工程指数第一",
+   "summary": "一个名为 Models Engineering Index 的榜单把 Gemini 4 Neon 排到第一，引发大量讨论。有开发者表示，Neon 在大型代码库的长程迁移任务上接近 Opus 5.5 的高档位，速度更快、花费更低；也有人质疑该榜单由提交者自建、测评题目规模偏小。另有实测者晒出用它两天做出的 3D 机器狗、卡牌游戏等作品。",
+   "take": "社区分成两派：真正上手的人称它已成日常主力，还有人抱怨 Google 的 API 开通流程太绕、试用成本高；没试过的人则怀疑 Google 模型偏重跑分、基准本身说服力不足。",
+   "kind": "model",
+   "products": [
+    "google-ai"
+   ],
+   "links": [
+    {
+     "name": "Hacker News",
+     "title": "Gemini 4 Neon is the new #1 on the Models Engineering Index",
+     "url": "https://git-aarvin.github.io/mei/"
+    },
+    {
+     "name": "Hacker News 讨论",
+     "title": "243 条评论",
+     "url": "https://news.ycombinator.com/item?id=50568130"
+    },
+    {
+     "name": "news.sulat.com",
+     "title": "What people have built with Gemini 4 Neon, and what they say after two days",
+     "url": "https://news.sulat.com/2026/11/20/gemini-neon-community-demos/"
+    }
+   ]
+  },
+  {
+   "title": "Thinking Machines 开源 Inkling 2 Mini",
+   "summary": "Thinking Machines Lab 在 OpenRouter 上架开放权重多模态模型 Inkling 2 Mini，总参数 26.4B、激活 3.4B，中间层会重复计算三次。它支持约 100 万 token 上下文，价格是每百万 token 输入 0.1 美元、输出 0.4 美元。Artificial Analysis 给出 20 分，与 Qwen3.8 27B 处于同一档。",
+   "take": "",
+   "kind": "model",
+   "products": [],
+   "links": [
+    {
+     "name": "OpenRouter 新上架模型",
+     "title": "Thinking Machines: Inkling 2 Mini",
+     "url": "https://openrouter.ai/thinkingmachines/inkling-2-mini"
+    },
+    {
+     "name": "news.sulat.com",
+     "title": "Thinking Machines’ Inkling 2 Mini scores 20 on Artificial Analysis with 5.4B active parameters",
+     "url": "https://news.sulat.com/2026/11/21/inkling-2-mini/"
+    }
+   ]
+  },
+  {
+   "title": "OpenAI 称新防护挡住推理蒸馏",
+   "summary": "OpenAI 发布文章介绍对抗蒸馏的防护思路，称新措施把针对 GPT-6.2 Astra 的推理抽取攻击成功率从 54% 降到 0.2%。手段覆盖模型训练、检测与执行层面的处置，目标是阻止外部批量提取模型能力。",
+   "take": "",
+   "kind": "industry",
+   "products": [
+    "chatgpt"
+   ],
+   "links": [
+    {
+     "name": "Google News",
+     "title": "Combatting adversarial distillation - OpenAI",
+     "url": "https://news.google.com/rss/articles/CBMibkFVX3lxTE1aNG5qZG9TaTJHTlRrTmJBUzNINzVJT1B2cXZZelBweXRiTXJ1ZGphVkM0MWxySk4ydDZEa2dfdnZReHlJYjlpcVBfaGlyeWJ1WmVJSUI1TzFzeDM3SERWZkd2d2VsNGVRRmhFYXBB?oc=5"
+    },
+    {
+     "name": "news.sulat.com",
+     "title": "OpenAI says new safeguards cut reasoning-extraction attacks on GPT-6.2 Astra from 54% to 0.2%",
+     "url": "https://news.sulat.com/2026/11/21/openai-adversarial-distillation/"
+    },
+    {
+     "name": "openai.com",
+     "title": "Combatting adversarial distillation",
+     "url": "https://openai.com/index/combatting-adversarial-distillation"
+    }
+   ]
+  },
+  {
+   "title": "Google AI 订阅黑五最高五折",
+   "summary": "据报道，Google 面向现有 AI 与存储订阅用户推出限时优惠：11 月 20 日至 26 日，AI Plus 与 AI Pro 年付方案最高可打五折。消息出自 Gemini 订阅业务负责人，想换档的用户可以趁这几天比价。",
+   "take": "",
+   "kind": "pricing",
+   "products": [
+    "google-ai"
+   ],
+   "links": [
+    {
+     "name": "news.sulat.com",
+     "title": "Google offers current AI subscribers up to 50% off AI Plus and annual AI Pro through 26 November",
+     "url": "https://news.sulat.com/2026/11/21/google-ai-black-friday/"
+    }
+   ]
+  },
+  {
+   "title": "ChatGPT Space 开放给 Plus 用户",
+   "summary": "OpenAI 从 11 月 20 日起把 ChatGPT Space 推给 Plus 订阅者，可以创建共享页面和幻灯片，并让内容从已连接的应用里自动更新，手机端也能编辑。同时 Dots 开始向少量 Plus 用户小范围测试，移动端改版也新增了 Dots 标签页。",
+   "take": "",
+   "kind": "product",
+   "products": [
+    "chatgpt"
+   ],
+   "links": [
+    {
+     "name": "news.sulat.com",
+     "title": "ChatGPT Space reaches Plus users, with pages and slides that update from connected apps",
+     "url": "https://news.sulat.com/2026/11/21/chatgpt-space/"
+    },
+    {
+     "name": "9to5mac.com",
+     "title": "OpenAI begins testing dots with ChatGPT Plus users, expands Business access",
+     "url": "https://9to5mac.com/2026/11/19/openai-begins-testing-dots-with-chatgpt-plus-users-expands-business-access/"
+    },
+    {
+     "name": "androidauthority.com",
+     "title": "OpenAI’s ChatGPT app redesign adds a dedicated Dots tab",
+     "url": "https://www.androidauthority.com/chatgpt-app-redesign-rollout-3737931/"
+    }
+   ]
+  },
+  {
+   "title": "Claude 移动端改版：Code 进首页",
+   "summary": "Anthropic 开始向 iOS 和 Android 推送重新设计的 Claude App，底部导航改为聊天、Projects、Code、Artifacts 四个入口。Code 会话可以直接从首页发起，Projects 也做了改版。",
+   "take": "",
+   "kind": "product",
+   "products": [
+    "claude"
+   ],
+   "links": [
+    {
+     "name": "news.sulat.com",
+     "title": "Claude’s new mobile app: a four-tab bar, Code sessions from the home screen and a Projects refresh",
+     "url": "https://news.sulat.com/2026/11/21/claude-mobile-app-redesign/"
+    }
+   ]
+  },
+  {
+   "title": "Anthropic 数学家称用 Claude 证明黎曼猜想",
+   "summary": "Anthropic 数学家 Levent Alpöge 表示，自己与 Claude 合作找到了黎曼猜想的证明，并认为该方法可推广到广义黎曼猜想，多家媒体跟进报道。与此同时，也有数学家提出了完全由人类完成的竞争性证明，学界的核验尚未结束。",
+   "take": "",
+   "kind": "industry",
+   "products": [
+    "claude"
+   ],
+   "links": [
+    {
+     "name": "theverge.com",
+     "title": "Anthropic mathematician claims to have solved prestigious Millennium Prize problem with Claude",
+     "url": "https://www.theverge.com/ai-artificial-intelligence/1010051/anthropic-riemann-hypothesis-millennium-prize-problem"
+    },
+    {
+     "name": "simonwillison.net",
+     "title": "Quoting Levent Alpöge",
+     "url": "https://simonwillison.net/2026/Nov/20/levent-alpoge/"
+    },
+    {
+     "name": "techcrunch.com",
+     "title": "AI claimed a solution to the 167-year-old Riemann hypothesis — and a human did, too",
+     "url": "https://techcrunch.com/2026/11/20/ai-claimed-a-solution-to-the-167-year-old-riemann-hypothesis-and-a-human-did-too/"
+    },
+    {
+     "name": "simonwillison.net",
+     "title": "Quoting Ravi Vakil",
+     "url": "https://simonwillison.net/2026/Nov/20/ravi-vakil/"
+    }
+   ]
+  },
+  {
+   "title": "AI 股抛售抹平纳指年内涨幅",
+   "summary": "Anthropic 上市第二个交易日股价继续走低，拖累科技股整体下挫，纳斯达克回吐 2026 年全部涨幅，标普与道指进入回调区间。据报道，承销商已关闭原本用于稳定股价的仓位。",
+   "take": "社区不少人认为，前沿实验室此时上市本身就是市场见顶的信号，并质疑这是把筹码卖给散户；也有讨论指出，股价波动更多反映估值预期，而非 AI 技术本身的前景。",
+   "kind": "industry",
+   "products": [],
+   "links": [
+    {
+     "name": "Hacker News",
+     "title": "Nasdaq erases all 2026 gains as AI sell-off dampens Anthropic’s second day",
+     "url": "https://www.theguardian.com/business/2026/nov/20/global-stock-markets-slump-anthropic-ipo-ai-sell-off"
+    },
+    {
+     "name": "Hacker News 讨论",
+     "title": "483 条评论",
+     "url": "https://news.ycombinator.com/item?id=50574383"
+    },
+    {
+     "name": "Google News",
+     "title": "Anthropic's IPO bank closed position meant to stabilize stock, removing source of support - Reuters",
+     "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxQSVpRUnlwbWF4cmpjRkg1N1ZnRU9Dc1ZIRFFQU3pyMHNac0tJSXlINUg5YUdLRl9mMUEzQTRkZTdQWHJwRkhJbmYyWV9VYkt4dDVTSGRib3VzbVVENWd1WWllZkhzR2E5SGhrNm5xOUM1QzBfdFFqZlNvNmJDUHFNeU1IdnRMclVkRmdsNTRxTWVZY0hQYWJHN05EZ2xxZTFORDZ0V1g2eWZEWnBGRnVEVVNROURGMVFCTzkwbA?oc=5"
+    },
+    {
+     "name": "news.sulat.com",
+     "title": "Nvidia is down 40% and the Nasdaq 17% from their peaks after six weeks of AI selling",
+     "url": "https://news.sulat.com/2026/11/21/ai-stocks-sell-off/"
+    }
+   ]
+  }
+ ]
+}
