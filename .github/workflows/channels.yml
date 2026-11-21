@@ -42,17 +42,19 @@ jobs:
           S16688_VISITOR_KEY: ${{ secrets.S16688_VISITOR_KEY }}
         run: python scraper/channels.py
 
+      - name: Verify merchant listings
+        continue-on-error: true
+        run: python scraper/merchants.py
+
       - name: Check the site builds
-        if: steps.check.outputs.skip != 'true'
         run: python site_src/generate.py
 
       - name: Commit data
-        if: steps.check.outputs.skip != 'true'
         run: |
           git config user.name "bbwith-bot"
           git config user.email "bbwith-bot@users.noreply.github.com"
-          git add data/channels
+          git add data/channels data/merchants
           if git diff --cached --quiet; then echo "nothing to commit"; exit 0; fi
-          git commit -m "data: domestic top-up prices $(TZ=Asia/Shanghai date '+%F %H:%M')"
+          git commit -m "data: domestic prices and merchant checks $(TZ=Asia/Shanghai date '+%F %H:%M')"
           git pull --rebase
           git push

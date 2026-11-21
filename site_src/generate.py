@@ -126,7 +126,7 @@ def jsonld(obj):
     return '<script type="application/ld+json">' + json.dumps(obj, ensure_ascii=False).replace("<", "\\u003c") + "</script>"
 
 
-def page(title, description, path, body, ld=(), date=None):
+def page(title, description, path, body, ld=(), date=None, noindex=False, extra_js=""):
     canonical = SITE + path
     lds = "\n".join(jsonld(x) for x in ld)
     return f"""<!doctype html>
@@ -145,6 +145,7 @@ def page(title, description, path, body, ld=(), date=None):
 <meta property="og:locale" content="zh_CN">
 <meta name="twitter:card" content="summary">
 {f'<meta property="article:modified_time" content="{date}">' if date else ''}
+{'<meta name="robots" content="noindex">' if noindex else ''}
 <meta name="msvalidate.01" content="939B2495BA3A4866A1D2B018A6455FBC">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="/assets/style.css">
@@ -162,9 +163,10 @@ def page(title, description, path, body, ld=(), date=None):
 </main>
 <footer class="foot"><div class="wrap">
 <p>比比价（bbwith.com）整理各地区 App Store 公开标价，仅供参考。本站与 OpenAI、Anthropic、Google、SpaceX/xAI、X、Perplexity、Cursor 均无关联。实际价格、可订阅档位和税费以结账页为准；跨地区订阅需遵守 Apple 和各服务商的条款。</p>
-<p><a href="/about/">数据来源与方法</a> · <a href="/data/">数据下载</a> · <a href="/llms.txt">llms.txt</a></p>
+<p><a href="/about/">数据来源与方法</a> · <a href="/merchant/join/">商家入驻</a> · <a href="/data/">数据下载</a> · <a href="/llms.txt">llms.txt</a></p>
 </div></footer>
 <script src="/assets/sort.js" defer></script>
+<script src="/assets/app.js" defer></script>{f'<script src="/assets/{extra_js}" defer></script>' if extra_js else ''}
 </body>
 </html>
 """
@@ -281,7 +283,7 @@ def types_table(types, rate):
 def channel_note():
     t = CHANNELS.get("time", "")[:16].replace("T", " ")
     return (f'<p class="note">数据来自国内卡网货源平台，价格为货源标价，零售店铺通常会加价；只统计月付，年卡、周卡、资格号、教程等不计入，明显偏离的引流低价已剔除。'
-            f'更新于 {e(t)}（北京时间）。代充、成品号都属于第三方服务，有掉订阅、封号等风险，本站不展示具体卖家，也不做担保。</p>')
+            f'更新于 {e(t)}（北京时间）。代充、成品号都属于第三方服务，有掉订阅、封号等风险；货源平台上的卖家本站不单独展示，也不做担保。</p>')
 
 
 def channel_block(product, plan, rows):
@@ -315,6 +317,7 @@ def channel_block(product, plan, rows):
 {types_table(types, rate)}
 {route_html}
 {channel_note()}
+{merchant_block(key)}
 """
 
 
@@ -573,7 +576,15 @@ def build_about(day):
 <li>Google AI 只统计 Pro（5 TB）和 Ultra（30 TB）标准档；Google AI Plus 在不同地区附带的存储容量不同，暂未纳入。</li>
 <li>Codex 没有单独的 iOS App，包含在 ChatGPT 套餐内。</li>
 </ul>
-<h2>国内渠道参考价</h2><p>各档位页和产品页另列了国内卡网货源平台的报价，每 4 小时更新一次。先把商品归到「产品 × 档位」，再按交付方式分开统计：代充（充到自己账号）、成品号（按质保是否满 25 天分两档）、Team / 车位、拼车 / 共享 / 镜像、优惠渠道（半价、学生、活动链接）。只统计月付，年卡、周卡、半价资格号、教程等不计入；低于中位数 30% 的引流价会被剔除。代充还按卖家注明的充值渠道（菲区卡充、美区 iOS 等）分组。本站不展示具体卖家，也不对任何卖家做担保。</p>
+<h2>国内渠道参考价</h2><p>各档位页和产品页另列了国内卡网货源平台的报价，每 4 小时更新一次。先把商品归到「产品 × 档位」，再按交付方式分开统计：代充（充到自己账号）、成品号（按质保是否满 25 天分两档）、Team / 车位、拼车 / 共享 / 镜像、优惠渠道（半价、学生、活动链接）。只统计月付，年卡、周卡、半价资格号、教程等不计入；低于中位数 30% 的引流价会被剔除。代充还按卖家注明的充值渠道（菲区卡充、美区 iOS 等）分组。货源平台上的卖家本站不单独展示，也不对任何卖家做担保。</p>
+<h2 id="merchants">商家报价</h2><p>商家可以<a href="/merchant/join/">免费入驻</a>，提交自己店铺的商品链接和价格。每个档位、每种交付方式只展示价格最低的前 5 个商品，不接受付费排名。本站爬虫每 4 小时打开商品页，核对申报价格是否出现在页面上、是否缺货，对不上就暂停展示。售后由商家负责；顾客可以<a href="/complaint/">投诉</a>，投诉需附订单凭证，经本站核实后公开并计入信用分，商家可以公开回复。</p>
+<h2 id="score">信用分</h2><p>满分 100，低于 50 分不进入排名，全部由数据自动计算：</p><ul>
+<li>价格核验（30）：30 小时内自动核价通过得 30；无法自动核价、由管理员 7 天内人工核过得 20；否则 0（不展示）。</li>
+<li>在架时长（15）：上架满 30 天得满分，按天数折算。</li>
+<li>质保条款（15）：质保 ≥ 30 天 15，≥ 25 天 12，≥ 14 天 8，≥ 7 天 5，其余 2。</li>
+<li>稳定性（15）：近 14 天自动核价的通过比例；核价不足 3 次按一半计。</li>
+<li>投诉（25）：近 90 天每条已公开、未解决的投诉扣 10 分，已解决的扣 3 分。</li></ul>
+<p>页面上的 👍👎 按 IP 统计，只供参考，不计入信用分。</p>
 <h2>使用须知</h2><p>本站只做价格参考，不出售任何订阅，也不提供绕过地区限制的方法。跨地区订阅可能违反 Apple 或服务商的条款，请自行判断。</p>
 <h2>引用与数据</h2><p>欢迎引用，请注明来源「比比价 bbwith.com」并附上链接。完整数据见 <a href="/data/">数据下载</a>，采用 CC BY 4.0 许可。</p>
 </div>"""
@@ -615,10 +626,10 @@ def build_data(days, cur):
 def build_meta(days, cur, gift_urls=()):
     day = days[-1]
     urls = ["/", "/daily/", "/about/", "/data/"] + [f"/{p}/" for p in PRODUCTS if any(k[0] == p for k in cur)] + \
-           [url_plan(*k) for k in cur] + [f"/daily/{d['date']}/" for d in days] + ["/deals/"] + [deal_url(d) for d in DEALS] + list(gift_urls)
+           [url_plan(*k) for k in cur] + [f"/daily/{d['date']}/" for d in days] + ["/deals/", "/merchant/join/"] + [deal_url(d) for d in DEALS] + list(gift_urls)
     sm = "".join(f"<url><loc>{SITE}{u}</loc><lastmod>{u.split('/')[2] if u.startswith('/daily/20') else day['date']}</lastmod></url>" for u in urls)
     write("/sitemap.xml", f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{sm}</urlset>\n')
-    write("/robots.txt", f"User-agent: *\nAllow: /\nDisallow: /go/\n\nSitemap: {SITE}/sitemap.xml\n")
+    write("/robots.txt", f"User-agent: *\nAllow: /\nDisallow: /go/\nDisallow: /api/\nDisallow: /admin/\nDisallow: /merchant/manage/\n\nSitemap: {SITE}/sitemap.xml\n")
     lines = [f"# 比比价 bbwith.com", "",
              f"> 每天对比 AI 会员在 {len(day['storefronts'])} 个 App Store 地区的标价，按当日汇率统一折算成美元。最新数据：{day['date']}。", "",
              "## 今日最便宜的 3 个地区（月付，App Store，比美区）", ""]
@@ -717,6 +728,155 @@ def build_deals(day):
                           "AI 会员限时优惠、降价和新方案快讯，官方核实后发布，到期自动下架。", "/deals/", body, [cr_ld], day["date"]))
 
 
+# ---------- merchants ----------
+
+MERCH = {}   # data/merchants/latest.json
+TOP_N = 5
+PART_LABEL = {"verify": ("价格核验", 30), "age": ("在架时长", 15), "warranty": ("质保条款", 15), "stable": ("稳定性", 15), "complaints": ("投诉", 25)}
+
+
+def load_merch():
+    f = os.path.join(ROOT, "data", "merchants", "latest.json")
+    return json.load(open(f, encoding="utf8")) if os.path.exists(f) else {}
+
+
+def score_badge(l):
+    s = l["score"]
+    cls = "good" if s >= 80 else ("ok" if s >= 60 else "low")
+    tip = "；".join(f"{PART_LABEL[k][0]} {v:g}/{PART_LABEL[k][1]}" for k, v in l["parts"].items())
+    return f'<span class="score {cls}" title="{e(tip)}">{s}</span>'
+
+
+def merchant_rows(ls, rate):
+    out = []
+    for l in ls:
+        out.append(f'<tr><td><a href="/shop/{l["merchant_id"]}/">{e(l["merchant"])}</a><br><small>{e(l["title"][:60])}</small></td>'
+                   f'<td data-v="{l["price"] / rate:.2f}"><b>{money(l["price"] / rate)}</b><br><small>¥{l["price"]:g}</small></td>'
+                   f'<td>{l["warranty_days"]} 天</td><td data-v="{l["score"]}">{score_badge(l)}</td>'
+                   f'<td><span class="vote" data-target="listing:{l["id"]}"></span></td>'
+                   f'<td>{out_link(f"/go/m{l["id"]}", "去购买")} <a class="small" href="/complaint/?id={l["id"]}" rel="nofollow">投诉</a></td></tr>')
+    return "".join(out)
+
+
+def merchant_block(key):
+    if not key or not MERCH.get("listings"):
+        return ""
+    rate = CHANNELS.get("usd_cny") or 7.1
+    ls = [l for l in MERCH["listings"] if l["plan_key"] == key and l["eligible"]]
+    if not ls:
+        return f'<p class="hint">还没有商家报价。<a href="/merchant/join/">商家入驻</a>：只展示自动核价通过的每类最低价前 {TOP_N} 名。</p>'
+    html_ = ""
+    for t, label in TYPE_ORDER:
+        group = sorted([l for l in ls if l["type"] == t], key=lambda l: (l["price"], -l["score"]))[:TOP_N]
+        if group:
+            html_ += (f'<h3>{e(label)}</h3><div class="tablewrap"><table class="prices sortable"><thead><tr><th>商家</th><th data-sort=num>售价</th>'
+                      f'<th>质保</th><th data-sort=num>信用分</th><th>评价</th><th></th></tr></thead><tbody>{merchant_rows(group, rate)}</tbody></table></div>')
+    t = MERCH.get("time", "")[:16].replace("T", " ")
+    return (f'<h2>商家报价（每类最低价前 {TOP_N} 名）</h2>{html_}'
+            f'<p class="note">只展示自动核价通过、信用分 ≥ 50 的商品，按价格排序，不接受付费排名。价格最近核验于 {e(t)}（UTC）。'
+            f'售后由商家负责，有问题可以<a href="/about/#merchants">投诉</a>；<a href="/about/#score">信用分怎么算</a> · <a href="/merchant/join/">商家入驻</a></p>')
+
+
+def build_shops():
+    if not MERCH.get("listings"):
+        return []
+    rate = CHANNELS.get("usd_cny") or 7.1
+    by = {}
+    for l in MERCH["listings"]:
+        by.setdefault(l["merchant_id"], []).append(l)
+    urls = []
+    for mid, ls in by.items():
+        name = ls[0]["merchant"]
+        cs = [c for c in MERCH.get("complaints", []) if c["merchant_id"] == mid]
+        rows = ""
+        for l in sorted(ls, key=lambda l: l["plan_key"]):
+            ck = l["check"]
+            rows += (f'<tr><td>{e(channel_label(l["plan_key"]))}<br><small>{e(l["title"][:60])}</small></td><td>{e(dict(TYPE_ORDER).get(l["type"], l["type"]))}</td>'
+                     f'<td><b>{money(l["price"] / rate)}</b><br><small>¥{l["price"]:g}</small></td><td>{l["warranty_days"]} 天</td><td>{score_badge(l)}</td>'
+                     f'<td>{"✅ 通过" if ck["ok"] else "⚠️ " + e(ck["why"])}</td><td><span class="vote" data-target="listing:{l["id"]}"></span></td>'
+                     f'<td>{out_link(f"/go/m{l["id"]}", "去购买")}</td></tr>')
+        crows = "".join(
+            f'<div class="complaint"><p><b>{e(c["problem"])}</b> · {e((c["published_at"] or "")[:10])} · {"已解决" if c["resolved"] else "未解决"}</p>'
+            f'<p>{e(c["detail"])}</p>{f"<p class=take><b>商家回复：</b>{e(c["reply"])}</p>" if c.get("reply") else ""}</div>' for c in cs) or "<p>暂无公开投诉。</p>"
+        path = f"/shop/{mid}/"
+        cr_html, cr_ld = crumbs([("首页", "/"), ("商家", "/merchant/join/"), (name, path)])
+        body = f"""{cr_html}<h1>{e(name)}</h1>
+<p class="meta">比比价入驻商家 · 价格由本站爬虫自动核验</p>
+<div class="bar"><h2>商品</h2>{cur_select()}</div>
+<div class="tablewrap"><table class="prices"><thead><tr><th>档位</th><th>交付方式</th><th>售价</th><th>质保</th><th>信用分</th><th>最近核价</th><th>评价</th><th></th></tr></thead><tbody>{rows}</tbody></table></div>
+<h2>投诉记录</h2>{crows}
+<p class="note">信用分由本站根据核价记录、在架时长、质保条款和投诉自动计算，<a href="/about/#score">规则见这里</a>。评价（👍👎）按 IP 计，只供参考，不计入信用分。售后由商家负责。</p>"""
+        write(path, page(f"{name} · 比比价入驻商家", f"{name} 在比比价的商品、核价记录、信用分和投诉。", path, body, [cr_ld], noindex=True))
+        urls.append(path)
+    return []  # shop pages are noindex for now; not in the sitemap
+
+
+PLAN_OPTIONS = None
+
+
+def plan_options():
+    keys = list(CHANNEL_TO_PLAN) + [k for k in CHANNEL_LABELS if k not in CHANNEL_TO_PLAN]
+    return "".join(f'<option value="{k}">{e(channel_label(k))}</option>' for k in keys)
+
+
+def type_options():
+    return "".join(f'<option value="{t}">{e(l)}</option>' for t, l in TYPE_ORDER)
+
+
+def build_merchant_pages():
+    row = f"""<template id="listing-row"><div class="row"><div class="grid">
+<label>商品标题<input name="title" required maxlength="120" placeholder="与店铺商品页标题一致"></label>
+<label>档位<select name="plan_key">{plan_options()}</select></label>
+<label>交付方式<select name="type">{type_options()}</select></label>
+<label>质保天数<input name="warranty_days" type="number" min="0" value="30"></label>
+<label>售价（元）<input name="price" type="number" step="0.01" min="0.01" required></label>
+<label class="wide">商品链接<input name="url" type="url" required placeholder="https://… 顾客下单的商品页"></label>
+</div><button type="button" class="btn small ghost del-row">删除这行</button></div></template>"""
+    rules = f"""<ol class="list">
+<li><b>只展示每类最低价前 {TOP_N} 名</b>：按档位（如 ChatGPT Plus）和交付方式（代充、成品号等）分组，按价格排序。不接受付费排名，以后如有推广位会单独标注「推广」。</li>
+<li><b>价格以商品页为准</b>：本站爬虫每 4 小时打开你的商品链接，核对申报价格是否出现在页面上、是否缺货。对不上就暂停展示，改对后自动恢复。页面需要登录或完全由脚本渲染、无法自动核价的，请联系管理员人工核价（每 7 天一次）。</li>
+<li><b>信用分</b>由核价记录、在架时长、质保条款和投诉自动计算，低于 50 分不进入排名。<a href="/about/#score">规则详见方法说明</a>。</li>
+<li><b>售后由商家负责</b>：发货、质保、退款都按你店铺页面写明的规则执行。顾客可以在本站投诉，投诉需附订单凭证，经本站核实后公开；你可以在管理页公开回复。</li>
+<li>代充、成品号等服务可能违反 OpenAI、Anthropic 等服务商条款，请在商品页如实告知风险。虚假宣传、收钱不发货、恶意刷评价的，直接停用。</li>
+</ol>"""
+    cr_html, cr_ld = crumbs([("首页", "/"), ("商家入驻", "/merchant/join/")])
+    body = f"""{cr_html}<h1>商家入驻</h1>
+<p class="lead">免费入驻。你的商品会出现在对应会员档位页的「商家报价」里，和各地区 App Store 价格、国内渠道参考价放在一起比较。</p>
+<h2>入驻须知</h2>{rules}
+<form id="join-form" class="form">
+<h2>店铺信息</h2>
+<div class="grid"><label>店铺名称<input name="name" required maxlength="40"></label>
+<label>联系方式（仅管理员可见）<input name="contact" required maxlength="100" placeholder="微信 / QQ / Telegram / 邮箱"></label></div>
+<h2>商品</h2><div id="rows"></div>
+<p><button type="button" class="btn small ghost" id="add-row">再加一个商品</button></p>
+<p><label class="check"><input type="checkbox" name="agree" required> 我已阅读并同意上面的入驻须知</label></p>
+<p><button class="btn">提交审核</button> <span id="join-msg" class="hint"></span></p>
+</form>
+<div id="join-done" hidden><h2>已提交，等待审核</h2>
+<p>下面是你的<b>商品管理链接</b>，用来改价格、加商品、回复投诉。<b>它只显示这一次，请立刻收藏或保存</b>，丢了需要联系管理员重新核实身份。</p>
+<p><input id="manage-link" readonly style="width:100%"></p><p><a class="btn" id="manage-open" href="#">打开管理页</a></p></div>
+{row}"""
+    write("/merchant/join/", page("商家入驻 · 比比价", "AI 会员代充、成品号商家免费入驻比比价：自动核价，只展示每类最低价前 5 名。",
+                                  "/merchant/join/", body, [cr_ld]))
+    body = f"""<h1>商品管理</h1><div id="manage"><p>加载中…</p></div>
+<template id="plan-options">{plan_options()}</template><template id="type-options">{type_options()}</template>"""
+    write("/merchant/manage/", page("商品管理 · 比比价", "比比价商家商品管理。", "/merchant/manage/", body, noindex=True))
+    probs = "".join(f"<option>{p}</option>" for p in ["未发货", "掉订阅", "封号", "与描述不符", "售后不处理", "其他"])
+    body = f"""<h1>投诉商家</h1>
+<p class="lead">投诉经本站核实后才会公开，并计入商家信用分。请如实填写，恶意投诉会被驳回。</p>
+<form id="complaint-form" class="form"><div class="grid">
+<label>商品编号<input name="listing_id" required inputmode="numeric"></label>
+<label>问题类型<select name="problem">{probs}</select></label>
+<label class="wide">经过（会公开，请不要写个人信息）<textarea name="detail" rows="5" required maxlength="1000"></textarea></label>
+<label class="wide">订单凭证（不公开）：订单号、付款时间、卡密前几位等<input name="order_ref" required maxlength="200"></label>
+<label class="wide">联系方式（不公开，选填，方便我们核实）<input name="contact" maxlength="100"></label></div>
+<p><button class="btn">提交投诉</button> <span id="complaint-msg" class="hint"></span></p></form>
+<div id="complaint-done" hidden><h2>已收到</h2><p>我们会核实后公开，并通知商家回复。</p></div>"""
+    write("/complaint/", page("投诉商家 · 比比价", "投诉比比价入驻商家。", "/complaint/", body, noindex=True))
+    body = '<h1>管理后台</h1><div id="admin"><p>加载中…</p></div>'
+    write("/admin/", page("管理后台 · 比比价", "admin", "/admin/", body, noindex=True, extra_js="admin.js"))
+
+
 # ---------- AI brief ----------
 
 BRIEFS = []
@@ -755,7 +915,7 @@ def build_news(cur):
                               if d["active"] and d["product"] in x["products"] and x["kind"] == "pricing")
             arts.append(f"""<article class="brief"><h2><span class="tag">{KIND_LABEL[x['kind']]}</span> {e(x['title'])}</h2>
 <p>{e(x['summary'])}</p>{f'<p class="take"><b>社区怎么看：</b>{e(x["take"])}</p>' if x['take'] else ''}
-{f'<ul class="list small">{prices}</ul>' if prices else ''}<p class="src">来源：{links}</p></article>""")
+{f'<ul class="list small">{prices}</ul>' if prices else ''}<p class="src">来源：{links} <span class="vote" data-target="brief:{b['date']}:{n}"></span></p></article>""")
         nav = []
         if i > 0:
             nav.append(f'<a href="/news/{BRIEFS[i - 1]["date"]}/">← {zh_date(BRIEFS[i - 1]["date"])}</a>')
@@ -950,13 +1110,13 @@ def build_gift(day, cur):
 
 
 def write_redirects():
-    lines = ["# generated: outbound links, see site_src/generate.py"] + [f"/go/{k} {v} 302" for k, v in sorted(GO.items())]
-    open(os.path.join(DIST, "_redirects"), "w").write("\n".join(lines) + "\n")
+    """/go/<key> is served by functions/go/[[key]].js (counts clicks); it reads this map."""
+    json.dump(GO, open(os.path.join(DIST, "go-map.json"), "w"), ensure_ascii=False, indent=0)
 
 
 def build_static():
     os.makedirs(os.path.join(DIST, "assets"), exist_ok=True)
-    for f in ("style.css", "sort.js"):
+    for f in ("style.css", "sort.js", "app.js", "admin.js"):
         shutil.copy(os.path.join(HERE, "static", f), os.path.join(DIST, "assets", f))
     for f in os.listdir(os.path.join(HERE, "static")):
         if f in ("favicon.svg", "_headers", "_redirects", "404.html") or (f.endswith(".txt") and len(f) == 36):
@@ -976,6 +1136,7 @@ def main():
     CHANNELS.update(load_channels())
     GIFT.update(load_gift())
     BRIEFS.extend(load_briefs())
+    MERCH.update(load_merch())
     DEALS.extend(load_deals(dt.datetime.now(dt.timezone(dt.timedelta(hours=8))).date().isoformat()))
     for p, pl, _, _ in PLANS:
         if (p, pl) in cur:
@@ -995,7 +1156,8 @@ def main():
     build_home(day, cur, chg, prev)
     build_about(day)
     build_deals(day)
-    gift_urls = build_gift(day, cur) + build_news(cur)
+    gift_urls = build_gift(day, cur) + build_news(cur) + build_shops()
+    build_merchant_pages()
     build_data(days, cur)
     build_meta(days, cur, gift_urls)
     build_static()

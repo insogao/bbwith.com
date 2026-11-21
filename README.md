@@ -60,6 +60,13 @@ cd dist && python -m http.server 8000
 所有外链都走 `/go/<平台>-<地区>`，由生成的 `_redirects` 做 302 跳转，链接带 `rel="nofollow sponsored"`，robots.txt 屏蔽 `/go/`。
 注册联盟计划后，把追踪参数填进 `data/affiliates.json`（如 `"bitrefill": "ref=xxxx"`），跳转会自动带上。
 
+## 商家入驻、投诉、点赞、点击统计（Pages Functions + D1）
+
+- `functions/api/[[path]].js`：入驻、商品管理、投诉、点赞点踩、浏览统计、管理后台接口；`functions/go/[[key]].js`：外链跳转并计数。
+- 需要在 Cloudflare Pages 项目里绑定 D1 数据库（变量名 `DB`），并设置加密环境变量 `ADMIN_TOKEN`（管理后台 /admin/ 的密钥）。表在第一次请求时自动建好。
+- `scraper/merchants.py` 每 4 小时（随 channels.yml）核价、算信用分，写 `data/merchants/latest.json`，生成器据此展示每类最低价前 5 名。
+- 不要在仓库里放 wrangler.toml：Pages 会把它当成配置，覆盖面板里的绑定。
+
 ## 数据口径
 
 见网站的 /about/ 页面：只统计月付；大多数地区的标价含税，美国、加拿大等不含税；App Store 每个 App 只展示约 10 个内购项目，部分档位在部分地区抓不到。

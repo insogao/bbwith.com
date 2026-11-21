@@ -93,3 +93,18 @@ table.prices{border-collapse:collapse;width:100%;font-size:15px;font-variant-num
 .brief .take{background:#f6f4ef;border-radius:6px;padding:8px 12px}
 .list.small{font-size:14px;color:var(--muted)}
 @media (prefers-color-scheme:dark){.brief .take{background:#24231f}.brief .tag{background:#163a34;color:#8fd6c8}}
+.vote{display:inline-flex;gap:4px;vertical-align:middle}
+.vote button{border:1px solid var(--line,#ddd);background:transparent;border-radius:999px;padding:1px 8px;font-size:13px;cursor:pointer;color:inherit}
+.vote button.on{background:#e3f1ee;border-color:#0d6b5e}
+.score{display:inline-block;min-width:2.2em;text-align:center;border-radius:6px;padding:1px 6px;font-weight:700;font-size:13px}
+.score.good{background:#dff3e4;color:#17643a}.score.ok{background:#fff3d6;color:#7a5a00}.score.low{background:#fde4e1;color:#9b2c20}
+.form .grid,.row .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.form label,.row label{display:flex;flex-direction:column;gap:4px;font-size:14px}
+.form label.wide,.row label.wide{grid-column:1/-1}
+.form label.check{flex-direction:row;align-items:center;gap:6px}
+.form input,.form select,.form textarea,.row input,.row select,#manage textarea{font:inherit;padding:7px 9px;border:1px solid var(--line,#ccc);border-radius:6px;background:var(--bg,#fff);color:inherit}
+.row{border:1px solid var(--line,#e5e2da);border-radius:var(--radius,8px);padding:12px;margin:10px 0}
+.btn.ghost{background:transparent;color:inherit;border:1px solid var(--line,#ccc)}
+.complaint{border-left:3px solid #e0a96d;padding:4px 12px;margin:10px 0}
+.small{font-size:13px}
+@media (prefers-color-scheme:dark){.vote button.on{background:#163a34}}
