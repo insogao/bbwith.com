@@ -169,6 +169,19 @@ def page(title, description, path, body, ld=(), date=None):
 """
 
 
+def rank_html(rows, n=3, sep="<br>"):
+    """Top-n cheapest regions with % vs US, as HTML."""
+    out = []
+    for i, r in enumerate(rows[:n], 1):
+        vs = f'（<span class="{"down" if (r["vs_us"] or 0) < -0.005 else ("up" if (r["vs_us"] or 0) > 0.005 else "")}">{pct(r["vs_us"])}</span>）' if r["vs_us"] is not None else ""
+        out.append(f'<span class="rk"><i>{i}</i>{flag(r["cc"])}&nbsp;{e(cname(r["cc"]))}&nbsp;<b>{money(r["usd"])}</b>{vs}</span>')
+    return sep.join(out)
+
+
+def rank_text(rows, n=3):
+    return "、".join(f"{i}. {cname(r['cc'])} {usd(r['usd'])}（{pct(r['vs_us'])}）" for i, r in enumerate(rows[:n], 1))
+
+
 def crumbs(items):
     """items: [(name, path)]"""
     html_ = '<nav class="crumbs">' + " / ".join(
@@ -287,8 +300,7 @@ def build_product_page(product, plans_rows, day):
         us = next((r for r in rows if r["cc"] == "us"), None)
         lo = rows[0]
         rows_html.append(f'<tr><td><a href="{url_plan(p, pl)}">{e(plan_label(p, pl))}</a></td><td>{e(us["display"]) if us else "—"}</td>'
-                         f'<td>{flag(lo["cc"])} {e(cname(lo["cc"]))}</td>'
-                         f'<td><b>{money(lo["usd"])}</b></td><td class="down">{pct(lo["vs_us"])}</td><td>{len(rows)}</td></tr>')
+                         f'<td>{rank_html(rows, 3)}</td><td>{len(rows)}</td></tr>')
     name0 = info["name"].split("（")[0]
     title = f"{name0} 会员各地区 App Store 价格对比：哪个地区最便宜（{zh_date(day['date'])}）"
     desc = f"{name0} 各档会员在 {len(day['storefronts'])} 个 App Store 地区的月付标价，统一折算成美元，对比最便宜和最贵的地区，每日更新。"
@@ -297,7 +309,7 @@ def build_product_page(product, plans_rows, day):
 <p class="meta">更新于 {zh_date(day['date'])} · App：{e(info['app'])}（{e(info['vendor'])}）</p>
 {f'<p class="note">{e(info["note"])}</p>' if info["note"] else ''}
 <div class="bar"><h2>各档位最便宜地区</h2>{cur_select()}</div>
-<div class="tablewrap"><table class="prices"><thead><tr><th>档位</th><th>美区标价</th><th>最便宜地区</th><th>最低价（<span class=mh>USD</span>）</th><th>比美区</th><th>地区数</th></tr></thead>
+<div class="tablewrap"><table class="prices"><thead><tr><th>档位</th><th>美区标价</th><th>最便宜的 3 个地区（<span class=mh>USD</span>）</th><th>地区数</th></tr></thead>
 <tbody>{''.join(rows_html)}</tbody></table></div>
 <p class="src"><a href="/about/">方法说明</a> · <a href="/data/">数据下载</a></p>
 """
@@ -333,8 +345,8 @@ def build_daily(day, cur, prev_day, prev):
     for (p, pl), rows in headline_rows(cur):
         lo = rows[0]
         us = next((r for r in rows if r["cc"] == "us"), None)
-        facts.append(f"<li><a href=\"{url_plan(p, pl)}\">{e(full_name(p, pl))}</a>：最低在{e(cname(lo['cc']))}，"
-                     f"{e(lo['display'])}，约 {usd(lo['usd'])}" + (f"（美区 {e(us['display'])}）" if us else "") + "</li>")
+        facts.append(f"<li><a href=\"{url_plan(p, pl)}\">{e(full_name(p, pl))}</a>"
+                     + (f"（美区 {e(us['display'])}）" if us else "") + f"：{e(rank_text(rows))}</li>")
     if prev is None:
         chg_html = "<p>这是第一期日报，从明天开始会列出相对前一天的价格变动。</p>"
     elif not chg:
@@ -345,9 +357,9 @@ def build_daily(day, cur, prev_day, prev):
                         for k, r, p, d in chg[:50])
         chg_html = f"<p>与{zh_date(prev_day['date'])}相比，共有 {len(chg)} 处本地标价变动：</p><ul>{items}</ul>"
     summary_rows = "".join(
-        f'<tr><td><a href="{url_plan(p, pl)}">{e(full_name(p, pl))}</a></td><td>{flag(rows[0]["cc"])} {e(cname(rows[0]["cc"]))}</td>'
-        f'<td><b>{money(rows[0]["usd"])}</b></td><td class="down">{pct(rows[0]["vs_us"])}</td>'
-        f'<td>{money(next((r["usd"] for r in rows if r["cc"] == "us"), 0))}</td></tr>'
+        f'<tr><td><a href="{url_plan(p, pl)}">{e(full_name(p, pl))}</a><br><small>美区 {money(next((r["usd"] for r in rows if r["cc"] == "us"), 0))}</small></td>'
+        + "".join(f"<td>{rank_html(rows[i:i + 1], 1)}</td>" if len(rows) > i else "<td>—</td>" for i in range(3)).replace("<i>1</i>", "")
+        + '</tr>'
         for (p, pl), rows in sorted(cur.items(), key=lambda kv: [x[:2] for x in PLANS].index(kv[0])))
     desc = (f"{zh_date(date)} AI 会员 App Store 各地区价格日报：ChatGPT、Claude、Gemini、Grok、X、Perplexity、Cursor 共 "
             f"{len(cur)} 个档位的最便宜地区与价格变动。")
@@ -359,8 +371,8 @@ def build_daily(day, cur, prev_day, prev):
 <ul class="facts">{''.join(facts)}</ul>
 <h2>价格变动</h2>
 {chg_html}
-<div class="bar"><h2>各档位最便宜地区</h2>{cur_select()}</div>
-<div class="tablewrap"><table class="prices"><thead><tr><th>档位</th><th>最便宜地区</th><th>最低价（<span class=mh>USD</span>）</th><th>比美区</th><th>美区价（<span class=mh>USD</span>）</th></tr></thead><tbody>{summary_rows}</tbody></table></div>
+<div class="bar"><h2>各档位最便宜的 3 个地区</h2>{cur_select()}</div>
+<div class="tablewrap"><table class="prices rank3"><thead><tr><th>档位</th><th>第 1 便宜</th><th>第 2 便宜</th><th>第 3 便宜</th></tr></thead><tbody>{summary_rows}</tbody></table></div>
 """
     ld = [cr_ld, {"@context": "https://schema.org", "@type": "Article", "headline": title, "datePublished": date,
                   "dateModified": date, "inLanguage": "zh-CN", "mainEntityOfPage": SITE + path,
@@ -386,14 +398,13 @@ def build_home(day, cur, chg, prev):
         if not plans:
             continue
         plans.sort(key=lambda kv: [x[:2] for x in PLANS].index(kv[0]))
-        lis = "".join(f'<li><a href="{url_plan(*k)}"><span>{e(plan_label(*k))}</span><b>{money(v[0]["usd"])}</b>'
-                      f'<em>{flag(v[0]["cc"])} {e(cname(v[0]["cc"]))}</em></a></li>' for k, v in plans)
+        lis = "".join(f'<li><a href="{url_plan(*k)}"><span>{e(plan_label(*k))}</span>'
+                      f'<em>{rank_html(v, 3, "")}</em></a></li>' for k, v in plans)
         cards.append(f'<section class="card"><h3><a href="/{product}/">{e(info["name"])}</a></h3><ul>{lis}</ul></section>')
     facts = []
     for (p, pl), rows in headline_rows(cur)[:5]:
         lo = rows[0]
-        facts.append(f"<li>{e(full_name(p, pl))} 最便宜在{e(cname(lo['cc']))}：{e(lo['display'])}，约 {usd(lo['usd'])}"
-                     + (f"，比美区低 {abs(lo['vs_us']) * 100:.0f}%" if lo["vs_us"] is not None and lo["vs_us"] < -0.005 else "") + "。</li>")
+        facts.append(f"<li>{e(full_name(p, pl))} 最便宜的 3 个地区：{e(rank_text(rows))}。</li>")
     chg_line = (f"今天共有 {len(chg)} 处标价变动。" if chg else ("今天各地区标价没有变化。" if prev is not None else ""))
     title = f"AI 会员哪个地区最便宜？ChatGPT、Claude、Gemini、Grok 各地区 App Store 价格对比 | 比比价"
     desc = (f"每天对比 ChatGPT、Claude、Google AI（Gemini）、Grok、X Premium、Perplexity、Cursor 在 {len(day['storefronts'])} 个"
@@ -404,7 +415,7 @@ def build_home(day, cur, chg, prev):
 <ul class="facts">{''.join(facts)}</ul>
 <p><a class="btn" href="/daily/{date}/">看今日日报</a></p>
 </section>
-<div class="bar"><h2>各产品最便宜地区（月付）</h2>{cur_select()}</div>
+<div class="bar"><h2>各档位最便宜的 3 个地区（月付）</h2>{cur_select()}</div>
 <div class="cards">{''.join(cards)}</div>
 <p class="src">价格为各地区 App Store 标价，大多数地区含税，美国、加拿大等地区不含税。<a href="/about/">方法说明</a></p>
 """
@@ -474,12 +485,12 @@ def build_meta(days, cur):
     write("/robots.txt", f"User-agent: *\nAllow: /\n\nSitemap: {SITE}/sitemap.xml\n")
     lines = [f"# 比比价 bbwith.com", "",
              f"> 每天对比 AI 会员在 {len(day['storefronts'])} 个 App Store 地区的标价，按当日汇率统一折算成美元。最新数据：{day['date']}。", "",
-             "## 今日最低价（月付，App Store）", ""]
+             "## 今日最便宜的 3 个地区（月付，App Store，比美区）", ""]
     for (p, pl), rows in sorted(cur.items(), key=lambda kv: [x[:2] for x in PLANS].index(kv[0])):
         lo = rows[0]
         us = next((r for r in rows if r["cc"] == "us"), None)
-        lines.append(f"- [{full_name(p, pl)}]({SITE}{url_plan(p, pl)})：最低 {COUNTRIES.get(lo['cc'], {}).get('zh')}（{lo['cc'].upper()}）{lo['display']} ≈ ${lo['usd']:.2f}"
-                     + (f"；美区 {us['display']}" if us else ""))
+        lines.append(f"- [{full_name(p, pl)}]({SITE}{url_plan(p, pl)})" + (f"（美区 {us['display']}）" if us else "")
+                     + "：" + "；".join(f"{i}. {COUNTRIES.get(r['cc'], {}).get('zh')}（{r['cc'].upper()}）{r['display']} ≈ ${r['usd']:.2f}，{pct(r['vs_us'])}" for i, r in enumerate(rows[:3], 1)))
     lines += ["", "## 页面", "", f"- [今日日报]({SITE}/daily/{day['date']}/)", f"- [方法说明]({SITE}/about/)",
               f"- [数据下载 CSV]({SITE}/data/latest.csv)", f"- [数据下载 JSON]({SITE}/data/latest.json)", "",
               "## 口径", "", "- 价格为各地区 App Store 公开标价，大多数地区含税，美国、加拿大等不含税。",
