@@ -49,6 +49,11 @@ cd dist && python -m http.server 8000
 
 没有设置 `S16688_TOKEN` 时工作流会直接跳过。
 
+## 优惠快讯（data/deals/）
+
+每条优惠一个 JSON 文件（格式见 `data/deals/google-ai-black-friday-2026.json`），**先在官方页面核实再添加**；到 `end` 日期后自动移到「已结束」。
+`news.yml` 每天两次扫描 AI/科技资讯 RSS，把疑似优惠/价格新闻开成带 `deal-candidate` 标签的 Issue，核实后再写成快讯文件。
+
 ## 数据口径
 
 见网站的 /about/ 页面：只统计月付；大多数地区的标价含税，美国、加拿大等不含税；App Store 每个 App 只展示约 10 个内购项目，部分档位在部分地区抓不到。

@@ -1,0 +1,24 @@
+{
+  "id": "google-ai-black-friday-2026",
+  "title": "Google AI Plus / Pro 黑五最高 5 折（订阅会员抢先）",
+  "product": "google-ai",
+  "plans": ["pro"],
+  "plan_note": "官方说法是「部分 Google AI 方案」；报道提到 AI Plus 和 AI Pro 年付，Ultra 不在列",
+  "discount": "最高 50% off",
+  "summary": "Google 在黑色星期五期间给部分 Google AI 方案最高 5 折。11 月 20 日到 26 日（美国时间）是现有 Google AI / Google One 订阅用户的抢先期；据 Google Gemini 订阅产品负责人在 X 上的回复，非订阅用户从 11 月 27 日黑五当天开始可以参加。具体折扣因账号而异，登录 Google One 后才显示价格。",
+  "eligibility": "11/20–11/26：现有订阅用户；11/27 起：非订阅用户",
+  "regions": "官方未列出；日本区官网已显示活动横幅",
+  "start": "2026-11-20",
+  "end": "2026-12-02",
+  "end_confirmed": false,
+  "how": "登录 Google 账号后打开 Google One 的 Google AI 方案页，页面顶部横幅「特典を見る / 查看优惠」进入；以结账页显示的价格为准，注意到期后会按原价自动续费。",
+  "status": "verified",
+  "verified_on": "2026-11-21",
+  "verified_how": "在已登录的 Google One 官方方案页（日本区）看到「メンバー限定早期アクセス: ブラック フライデーで一部の Google AI プランが最大 50% オフ」横幅",
+  "added": "2026-11-21",
+  "sources": [
+    {"name": "Google One 官方 Google AI 方案页（登录后显示横幅）", "url": "https://one.google.com/about/google-ai-plans/"},
+    {"name": "Sulat AI & Tech News 报道", "url": "https://news.sulat.com/2026/11/21/google-ai-black-friday/"},
+    {"name": "Google Gemini 订阅产品负责人 Vikas Kansal 的 X 帖子", "url": "https://x.com/vikaskansalhq/status/2123833450297995624"}
+  ]
+}

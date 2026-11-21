@@ -155,7 +155,7 @@ def page(title, description, path, body, ld=(), date=None):
 <body>
 <header class="top"><div class="wrap">
 <a class="brand" href="/"><span class="logo">比</span>比比价 <small>bbwith.com</small></a>
-<nav><a href="/daily/">日报</a><a href="/data/">数据下载</a><a href="/about/">方法说明</a></nav>
+<nav><a href="/deals/">优惠</a><a href="/daily/">日报</a><a href="/data/">数据下载</a><a href="/about/">方法说明</a></nav>
 </div></header>
 <main class="wrap">
 {body}
@@ -371,6 +371,7 @@ def build_plan_page(product, plan, rows, prev_rows, day, all_plans):
 <p class="meta">更新于 {zh_date(date)} · 月付标价 · 按当日汇率折算（{e(day['fx_source'])}）</p>
 <p class="lead">{e(summary_sentence(product, plan, rows, day))}</p>
 <div class="chips">{siblings}</div>
+{deal_banner(product, plan)}
 <div class="bar"><h2>最便宜的 10 个地区</h2>{cur_select()}</div>
 {price_table(rows, limit=10)}
 {channel_block(product, plan, rows)}
@@ -413,6 +414,7 @@ def build_product_page(product, plans_rows, day):
     body = f"""{cr_html}
 <h1>{e(info['name'])} 各档会员 App Store 价格</h1>
 <p class="meta">更新于 {zh_date(day['date'])} · App：{e(info['app'])}（{e(info['vendor'])}）</p>
+{deal_banner(product)}
 {f'<p class="note">{e(info["note"])}</p>' if info["note"] else ''}
 <div class="bar"><h2>各档位最便宜地区</h2>{cur_select()}</div>
 <div class="tablewrap"><table class="prices"><thead><tr><th>档位</th><th>美区标价</th><th>最便宜的 3 个地区（<span class=mh>USD</span>）</th><th>地区数</th></tr></thead>
@@ -497,6 +499,7 @@ def build_daily(day, cur, prev_day, prev):
 <p class="meta">覆盖 {len(day['storefronts'])} 个 App Store 地区 · 价格按当日汇率折算成美元</p>
 <h2>今日要点</h2>
 <ul class="facts">{''.join(facts)}</ul>
+{deal_banner()}
 <h2>价格变动</h2>
 {chg_html}
 {daily_channels(cur)}
@@ -544,6 +547,7 @@ def build_home(day, cur, chg, prev):
 <ul class="facts">{''.join(facts)}</ul>
 <p><a class="btn" href="/daily/{date}/">看今日日报</a></p>
 </section>
+{deal_banner()}
 <div class="bar"><h2>各档位最便宜的 3 个地区（月付）</h2>{cur_select()}</div>
 <div class="cards">{''.join(cards)}</div>
 <p class="src">价格为各地区 App Store 标价，大多数地区含税，美国、加拿大等地区不含税。<a href="/about/">方法说明</a></p>
@@ -609,8 +613,8 @@ def build_data(days, cur):
 def build_meta(days, cur):
     day = days[-1]
     urls = ["/", "/daily/", "/about/", "/data/"] + [f"/{p}/" for p in PRODUCTS if any(k[0] == p for k in cur)] + \
-           [url_plan(*k) for k in cur] + [f"/daily/{d['date']}/" for d in days]
-    sm = "".join(f"<url><loc>{SITE}{u}</loc><lastmod>{day['date'] if not u.startswith('/daily/20') else u.split('/')[2]}</lastmod></url>" for u in urls)
+           [url_plan(*k) for k in cur] + [f"/daily/{d['date']}/" for d in days] + ["/deals/"] + [deal_url(d) for d in DEALS]
+    sm = "".join(f"<url><loc>{SITE}{u}</loc><lastmod>{u.split('/')[2] if u.startswith('/daily/20') else day['date']}</lastmod></url>" for u in urls)
     write("/sitemap.xml", f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{sm}</urlset>\n')
     write("/robots.txt", f"User-agent: *\nAllow: /\n\nSitemap: {SITE}/sitemap.xml\n")
     lines = [f"# 比比价 bbwith.com", "",
@@ -621,11 +625,83 @@ def build_meta(days, cur):
         us = next((r for r in rows if r["cc"] == "us"), None)
         lines.append(f"- [{full_name(p, pl)}]({SITE}{url_plan(p, pl)})" + (f"（美区 {us['display']}）" if us else "")
                      + "：" + "；".join(f"{i}. {COUNTRIES.get(r['cc'], {}).get('zh')}（{r['cc'].upper()}）{r['display']} ≈ ${r['usd']:.2f}，{pct(r['vs_us'])}" for i, r in enumerate(rows[:3], 1)))
+    act = [d for d in DEALS if d["active"]]
+    if act:
+        lines += ["", "## 进行中的优惠（已核实）", ""] + [f"- [{d['title']}]({SITE}{deal_url(d)})：{d['discount']}，{deal_period(d)}；{d['eligibility']}" for d in act]
     lines += ["", "## 页面", "", f"- [今日日报]({SITE}/daily/{day['date']}/)", f"- [方法说明]({SITE}/about/)",
               f"- [数据下载 CSV]({SITE}/data/latest.csv)", f"- [数据下载 JSON]({SITE}/data/latest.json)", "",
               "## 口径", "", "- 价格为各地区 App Store 公开标价，大多数地区含税，美国、加拿大等不含税。",
               "- 只统计月付；跨地区订阅需遵守 Apple 和服务商条款。", "- 引用请注明来源：比比价 bbwith.com。", ""]
     write("/llms.txt", "\n".join(lines))
+
+
+DEALS = []  # loaded in main()
+
+
+def load_deals(today):
+    out = []
+    for f in sorted(glob.glob(os.path.join(ROOT, "data", "deals", "*.json"))):
+        d = json.load(open(f, encoding="utf8"))
+        d["active"] = d["start"] <= today <= (d.get("end") or "9999-12-31")
+        out.append(d)
+    out.sort(key=lambda d: (not d["active"], d["start"]), reverse=False)
+    return out
+
+
+def deal_url(d):
+    return f"/deals/{d['id']}/"
+
+
+def deal_period(d):
+    end = d.get("end")
+    tail = (zh_date(end) + ("" if d.get("end_confirmed") else "（预计，官方未公布截止日）")) if end else "截止时间未公布"
+    return f"{zh_date(d['start'])} – {tail}"
+
+
+def deal_banner(product=None, plan=None):
+    ds = [d for d in DEALS if d["active"] and (product is None or d["product"] == product)
+          and (plan is None or plan in d.get("plans", []))]
+    if not ds:
+        return ""
+    items = "".join(f'<li><a href="{deal_url(d)}"><b>{e(d["title"])}</b></a><span>{e(d["discount"])} · {e(deal_period(d))}</span></li>' for d in ds)
+    return f'<aside class="deals"><h2>🔥 限时优惠</h2><ul>{items}</ul></aside>'
+
+
+def build_deals(day):
+    for d in DEALS:
+        path = deal_url(d)
+        src = "".join(f'<li><a href="{e(x["url"])}" rel="nofollow noopener" target="_blank">{e(x["name"])}</a></li>' for x in d["sources"])
+        info = PRODUCTS.get(d["product"], {"name": d["product"]})
+        status = "已核实" if d["status"] == "verified" else "待核实"
+        cr_html, cr_ld = crumbs([("首页", "/"), ("优惠快讯", "/deals/"), (d["title"], path)])
+        body = f"""{cr_html}
+<h1>{e(d['title'])}</h1>
+<p class="meta">{'进行中' if d['active'] else '已结束'} · {e(deal_period(d))} · {status}于 {zh_date(d['verified_on'])}</p>
+<p class="lead">{e(d['summary'])}</p>
+<div class="tablewrap"><table class="prices"><tbody>
+<tr><th>产品</th><td><a href="/{e(d['product'])}/">{e(info['name'])}</a>（{e(d.get('plan_note', ''))}）</td></tr>
+<tr><th>优惠</th><td>{e(d['discount'])}</td></tr>
+<tr><th>适用人群</th><td>{e(d['eligibility'])}</td></tr>
+<tr><th>地区</th><td>{e(d['regions'])}</td></tr>
+<tr><th>时间</th><td>{e(deal_period(d))}</td></tr>
+<tr><th>怎么参加</th><td style="white-space:normal">{e(d['how'])}</td></tr>
+</tbody></table></div>
+<p class="note">核实方式：{e(d['verified_how'])}。优惠内容以官方页面和结账页为准，可能随时调整或提前结束。</p>
+<h2>来源</h2><ul class="list">{src}</ul>
+<p class="src"><a href="/deals/">全部优惠快讯</a> · <a href="/{e(d['product'])}/">{e(info['name'])} 各地区价格</a></p>"""
+        ld = [cr_ld, {"@context": "https://schema.org", "@type": "Article", "headline": d["title"], "datePublished": d["added"],
+                      "dateModified": d["verified_on"], "expires": d.get("end"), "inLanguage": "zh-CN", "description": d["summary"],
+                      "mainEntityOfPage": SITE + path, "author": {"@type": "Organization", "name": SITE_NAME, "url": SITE},
+                      "publisher": {"@type": "Organization", "name": SITE_NAME, "url": SITE}}]
+        write(path, page(f"{d['title']}（{zh_date(d['start'])}）· 比比价", d["summary"][:150], path, body, ld, d["verified_on"]))
+    rows = lambda ds: "".join(f'<li><a href="{deal_url(d)}">{e(d["title"])}</a> <small>{e(d["discount"])} · {e(deal_period(d))}</small></li>' for d in ds) or "<li>暂无</li>"
+    cr_html, cr_ld = crumbs([("首页", "/"), ("优惠快讯", "/deals/")])
+    body = f"""{cr_html}<h1>AI 会员优惠快讯</h1>
+<p class="lead">ChatGPT、Claude、Gemini、Grok、Cursor 等 AI 会员的限时优惠、降价和新方案。每条都先在官方页面核实后再发布，到期自动下架。</p>
+<h2>进行中</h2><ul class="list">{rows([d for d in DEALS if d['active']])}</ul>
+<h2>已结束</h2><ul class="list">{rows([d for d in DEALS if not d['active']])}</ul>"""
+    write("/deals/", page("AI 会员优惠快讯：ChatGPT、Claude、Gemini、Grok 限时折扣 · 比比价",
+                          "AI 会员限时优惠、降价和新方案快讯，官方核实后发布，到期自动下架。", "/deals/", body, [cr_ld], day["date"]))
 
 
 def build_static():
@@ -648,6 +724,7 @@ def main():
     prev_day = days[-2] if len(days) > 1 else None
     prev = rows_of(prev_day) if prev_day else None
     CHANNELS.update(load_channels())
+    DEALS.extend(load_deals(dt.datetime.now(dt.timezone(dt.timedelta(hours=8))).date().isoformat()))
     for p, pl, _, _ in PLANS:
         if (p, pl) in cur:
             build_plan_page(p, pl, cur[(p, pl)], prev.get((p, pl)) if prev else None, day, cur)
@@ -665,6 +742,7 @@ def main():
     build_daily_index(days)
     build_home(day, cur, chg, prev)
     build_about(day)
+    build_deals(day)
     build_data(days, cur)
     build_meta(days, cur)
     build_static()
