@@ -68,6 +68,11 @@ def cname(cc):
 
 
 def usd(v):
+    """Display an amount held in USD; shown in CNY by default (Chinese readers pay in RMB)."""
+    r = FX.get("CNY")
+    if r:
+        x = v * r
+        return f"¥{x:,.2f}" if x < 1000 else f"¥{x:,.0f}"
     return f"${v:,.2f}" if v < 1000 else f"${v:,.0f}"
 
 
@@ -77,13 +82,17 @@ def money(v):
 
 
 FX = {}  # filled in main(): currency -> units per USD, for the selector
-FX_CHOICES = [("USD", "美元 USD"), ("CNY", "人民币 CNY"), ("EUR", "欧元 EUR"), ("GBP", "英镑 GBP"),
+FX_CHOICES = [("CNY", "人民币 ¥"), ("USD", "美元 $"), ("EUR", "欧元 EUR"), ("GBP", "英镑 GBP"),
               ("JPY", "日元 JPY"), ("HKD", "港币 HKD"), ("SGD", "新加坡元 SGD")]
 
 
 def cur_select():
+    return ""  # the single currency switch lives in the header
+
+
+def cur_select_header():
     opts = "".join(f'<option value="{c}">{e(n)}</option>' for c, n in FX_CHOICES if c in FX)
-    return f'<label class="cursel">显示币种 <select id="cur">{opts}</select></label>'
+    return f'<select id="cur" class="cur" aria-label="显示币种">{opts}</select>'
 
 
 
@@ -177,12 +186,13 @@ def page(title, description, path, body, ld=(), date=None, noindex=False, extra_
 <script>window.FX={json.dumps(FX)}</script>
 {lds}
 </head>
-<body>
+<body class="{'home' if path == '/' else ''}">
 <header class="top"><div class="wrap">
 <a class="brand" href="/"><span class="logo">比</span>比比价</a>
 <nav class="main">{nav_main(path)}</nav>
 <div class="search"><input type="search" class="qbox" placeholder="搜会员、地区、礼品卡…" autocomplete="off" aria-label="搜索"><div class="qres" hidden></div></div>
-<nav class="info"><span>资讯</span><a href="/news/">早报</a><a href="/deals/">优惠</a><a href="/guides/">教程</a></nav>
+<nav class="info"><a href="/deals/">优惠</a><a href="/guides/">教程</a><a href="/news/">早报</a></nav>
+{cur_select_header()}
 </div></header>
 <main class="wrap">
 {body}
@@ -220,8 +230,15 @@ def crumbs(items):
     return html_, ld
 
 
-def price_table(rows, prev=None, limit=None, cls=""):
-    head = "<tr><th>#</th><th>地区</th><th data-sort=num>价格（<span class=mh>USD</span>）</th><th>本地标价</th><th data-sort=num>比美区</th>" + \
+def cur_suffix(r):
+    return "" if r["currency"] in r["display"] else f" <small>{r['currency']}</small>"
+
+
+def price_table(rows, prev=None, limit=None, cls="", fold=None):
+    if prev is not None and not any(p is None or p["currency"] != r["currency"] or abs(p["local"] - r["local"]) > 1e-9
+                                    for r in rows for p in [prev.get(r["cc"])]):
+        prev = None  # nothing changed today: drop the empty column
+    head = "<tr><th>#</th><th>地区</th><th data-sort=num>折合（<span class=mh>CNY</span>）</th><th>本地标价</th><th data-sort=num>比美区</th>" + \
            ("<th data-sort=num>较前一日</th>" if prev is not None else "") + "</tr>"
     body = []
     for i, r in enumerate(rows[:limit] if limit else rows, 1):
@@ -238,8 +255,16 @@ def price_table(rows, prev=None, limit=None, cls=""):
         us = ' class="us"' if r["cc"] == "us" else ""
         vs = r["vs_us"]
         body.append(f'<tr{us}><td>{i}</td><td>{flag(r["cc"])} {e(cname(r["cc"]))}</td><td data-v="{r["usd"]:.4f}"><b>{money(r["usd"])}</b></td>'
-                    f'<td>{e(r["display"])} <small>{r["currency"]}</small></td>'
+                    f'<td>{e(r["display"])}{cur_suffix(r)}</td>'
                     f'<td data-v="{vs if vs is not None else 0:.4f}" class="{"down" if (vs or 0) < -0.005 else ("up" if (vs or 0) > 0.005 else "")}">{pct(vs)}</td>{chg}</tr>')
+    if fold and len(body) > fold + 5:
+        n_more = len(body) - fold
+        same = sum(1 for r in rows[fold:] if r["vs_us"] is not None and abs(r["vs_us"]) < 0.005)
+        hint = f"展开其余 {n_more} 个地区" + (f"（其中 {same} 个与美区同价）" if same else "")
+        cols = 6 if prev is not None else 5
+        return (f'<div class="tablewrap"><table class="prices sortable {cls}"><thead>{head}</thead><tbody>{"".join(body[:fold])}</tbody>'
+                f'<tbody class="more" hidden>{"".join(body[fold:])}</tbody>'
+                f'<tbody class="morebtn"><tr><td colspan="{cols}"><button type="button" class="linkbtn" data-more>{hint} ▾</button></td></tr></tbody></table></div>')
     return f'<div class="tablewrap"><table class="prices sortable {cls}"><thead>{head}</thead><tbody>{"".join(body)}</tbody></table></div>'
 
 
@@ -254,7 +279,7 @@ def summary_sentence(product, plan, rows, day):
          f"最贵的是{cname(hi['cc'])}（{hi['display']}，约 {usd(hi['usd'])}）")
     if us:
         s += f"；美区标价 {us['display']}"
-    s += f"；所有地区的中位数约 {usd(med)}。价格均为按当日汇率折算的美元。"
+    s += f"；所有地区的中位数约 {usd(med)}。价格均按当日汇率折算成人民币。"
     return s
 
 
@@ -277,7 +302,7 @@ CHANNEL_TO_PLAN = {"chatgpt/go": ("chatgpt", "go"), "chatgpt/plus": ("chatgpt", 
                    "grok/supergrok-heavy": ("grok", "supergrok-heavy"), "cursor/pro": ("cursor", "pro"),
                    "cursor/pro-plus": ("cursor", "pro-plus"), "cursor/ultra": ("cursor", "ultra")}
 CHANNEL_LABELS = {"chatgpt/team": "Team / Business", "claude/max-5x": "Max 5x", "claude/max-20x": "Max 20x（App Store 称 Ultra）",
-                  "claude/team": "Team", "google-ai/plus": "AI Plus", "google-ai/ultra": "Ultra（卖家档位不一）", "grok/plus": "Grok Plus（8 美元档）"}
+                  "claude/team": "Team", "google-ai/plus": "Plus", "google-ai/ultra": "Ultra（卖家档位不一）", "grok/plus": "Plus（8 美元档）"}
 TYPE_ORDER = [("topup", "代充（充到自己账号）"), ("account-long", "成品号（质保 ≥ 25 天）"), ("account-short", "成品号（短质保 / 首登）"),
               ("seat", "Team / 车位"), ("shared", "拼车 / 共享 / 镜像"), ("promo", "优惠渠道（半价、学生、活动链接）")]
 
@@ -366,6 +391,8 @@ def build_channels_hub(cur):
         mp = CHANNEL_TO_PLAN.get(k)
         us = next((r for r in cur.get(mp, []) if r["cc"] == "us"), None) if mp else None
         name = f'<a href="{url_plan(*mp)}#channels"><b>{e(channel_label(k))}</b></a>' if mp else f"<b>{e(channel_label(k))}</b>"
+        if not any(v.get(t) and v[t]["count"] >= 2 for t, _ in cols):
+            continue
         cells = ""
         for t, _ in cols:
             x = v.get(t)
@@ -373,12 +400,12 @@ def build_channels_hub(cur):
                       if x and x["count"] >= 2 else '<td data-v="99999">—</td>')
         trs += (f'<tr><td>{name}'
                 f'{("<br><small>美区 App Store " + money(us["usd"]) + "</small>") if us else ""}</td>{cells}'
-                f'<td>{merch.get(k, 0) or "—"}</td></tr>')
+                + (f'<td>{merch.get(k, 0) or "—"}</td>' if merch else "") + '</tr>')
     cr_html, cr_ld = crumbs([("首页", "/"), ("代充 · 成品号", "/channels/")])
     body = f"""{cr_html}<h1>代充、成品号、拼车价格行情</h1>
 <p class="lead">国内卡网上 ChatGPT、Claude、Gemini、Grok、Cursor 会员的代充、成品号和拼车价格，每 4 小时更新一次，按中位数比较，最低价的引流报价已剔除。想直接下单，看各档位页里的「商家报价」：只展示自动核价通过的最低价前 5 名。</p>
 <div class="bar"><h2>各档位行情（中位价）</h2>{cur_select()}</div>
-<div class="tablewrap"><table class="prices sortable"><thead><tr><th>会员档位</th>{''.join(f'<th data-sort=num>{e(n)}</th>' for _, n in cols)}<th>入驻商家</th></tr></thead><tbody>{trs}</tbody></table></div>
+<div class="tablewrap"><table class="prices sortable"><thead><tr><th>会员档位</th>{''.join(f'<th data-sort=num>{e(n)}</th>' for _, n in cols)}{"<th>入驻商家</th>" if merch else ""}</tr></thead><tbody>{trs}</tbody></table></div>
 {channel_note()}
 <h2>怎么选</h2><ul class="list">
 <li><b>代充</b>：充到你自己的账号，账号安全性最高，价格通常比美区 App Store 便宜。</li>
@@ -442,25 +469,23 @@ def build_plan_page(product, plan, rows, prev_rows, day, all_plans):
     faq_html = "".join(f"<details><summary>{e(q)}</summary><p>{e(a)}</p></details>" for q, a in faq)
     body = f"""{cr_html}
 <h1>{e(name)} 各地区 App Store 价格</h1>
-<p class="meta">更新于 {zh_date(date)} · 月付标价 · 按当日汇率折算（{e(day['fx_source'])}）</p>
-<p class="lead">{e(summary_sentence(product, plan, rows, day))}</p>
+<p class="meta">更新于 {zh_date(date)} · 月付标价 · 按当日汇率折算</p>
 <div class="chips">{siblings}</div>
+<p class="lead">{e(summary_sentence(product, plan, rows, day))}</p>
+{f'<p class="pre">⚠️ 中国大陆 App Store 下载不了 {e(PRODUCTS[product]["app"])}，用 App Store 订阅需要外区 Apple ID，见<a href="/guides/apple-id-low-price-region/">注册教程</a>。</p>' if "cn" in unavailable else ''}
 {plan_note(product, plan)}
 {deal_banner(product, plan)}
 {f'<h2>官网和 App Store 哪个便宜</h2>{channel_compare(product, plan, rows)}' if channel_compare(product, plan, rows) else ''}
-<div class="bar"><h2>最便宜的 10 个地区</h2>{cur_select()}</div>
-{price_table(rows, limit=10)}
+<h2>各地区 App Store 价格（共 {len(rows)} 个地区）</h2>
+{price_table(rows, prev=prev_map, fold=15)}
 {channel_block(product, plan, rows)}
 {gift_note_for_plan(rows, day)}
-<h2>全部 {len(rows)} 个地区</h2>
-<p class="hint">点击表头可以排序。美区一行已高亮。</p>
-{price_table(rows, prev=prev_map)}
 {f'<p class="note">在以下地区 App Store 无法下载这个 App：{"、".join(cname(c) for c in unavailable)}。</p>' if unavailable else ''}
 {f'<p class="note">以下地区能下载 App，但本次没有抓到这一档的标价（App Store 每个 App 只展示约 10 个内购项目）：{"、".join(cname(c) for c in missing[:40])}{" 等" if len(missing) > 40 else ""}。</p>' if missing else ''}
 {f'<p class="note">{e(PRODUCTS[product]["note"])}</p>' if PRODUCTS[product]["note"] else ''}
 <h2>常见问题</h2>
 <div class="faq">{faq_html}</div>
-<p class="src">数据来源：各地区 App Store 公开页面的「App 内购买项目」。<a href="/about/">查看方法说明</a> · <a href="/data/">下载数据</a></p>
+<p class="src">数据来源：各地区 App Store 公开页面的「App 内购买项目」，每天更新。</p>
 """
     ld = [cr_ld,
           {"@context": "https://schema.org", "@type": "FAQPage",
@@ -746,7 +771,6 @@ def build_home(day, cur, chg, prev):
 <p class="lead">ChatGPT、Claude、Gemini、Grok 等 AI 会员在哪里买最便宜：各地区 App Store、官网、礼品卡、代充，一站比较。最新数据 {zh_date(date)}。{chg_line}</p>
 <div class="search big"><input type="search" class="qbox" placeholder="试试「ChatGPT Plus」「土耳其礼品卡」「Claude Max」" autocomplete="off" aria-label="搜索"><div class="qres" hidden></div></div>
 </section>
-{core}
 <div class="bar" id="prices"><h2>各档位最便宜的 3 个地区（月付）</h2>{cur_select()}</div>
 <div class="cards">{''.join(cards)}</div>
 <p class="src">价格为各地区 App Store 标价，大多数地区含税，美国、加拿大等地区不含税。<a href="/daily/{date}/">今日价格日报</a> · <a href="/ai-pricing/">更多 AI 产品的官网价格</a></p>

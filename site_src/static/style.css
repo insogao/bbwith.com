@@ -178,3 +178,33 @@ table.prices{border-collapse:collapse;width:100%;font-size:15px;font-variant-num
   .top .search{order:2;flex:1 1 0;min-width:0}
   .top .brand{order:1}
 }
+/* ---- step 1 fixes ---- */
+select.cur{font:inherit;font-size:13px;padding:6px 8px;border:1px solid var(--line);border-radius:999px;background:var(--card);color:var(--fg)}
+body.home .top .search{visibility:hidden}
+.pre{background:#fff6e5;border:1px solid #f1d39a;border-radius:10px;padding:10px 14px;font-size:15px}
+.linkbtn{background:none;border:0;color:#0d6b5e;font:inherit;font-weight:600;cursor:pointer;padding:6px 0}
+tbody.morebtn td{text-align:center;background:var(--bg)}
+.top nav.info{gap:14px;font-size:14px}
+.top nav.info a{color:var(--fg);opacity:.75}
+@media (prefers-color-scheme:dark){.pre{background:#2b2214;border-color:#6b4d1f}}
+@media (max-width:640px){
+  body.home .top .search{display:none}
+  .top nav.info{display:none}
+  select.cur{order:2;margin-left:auto}
+  /* tables become stacked cards; every cell shows its column name */
+  .tablewrap{overflow:visible;border:0;background:none}
+  table.prices:not(.rank3) thead{display:none}
+  table.prices:not(.rank3),table.prices:not(.rank3) tbody,table.prices:not(.rank3) tr,table.prices:not(.rank3) td{display:block;width:100%}
+  table.prices:not(.rank3) tbody[hidden]{display:none}
+  table.prices:not(.rank3) tr{background:var(--card);border:1px solid var(--line);border-radius:12px;margin:0 0 10px;padding:8px 12px}
+  table.prices:not(.rank3) td{display:flex;justify-content:space-between;gap:12px;border:0;padding:4px 0;text-align:right;white-space:normal}
+  table.prices:not(.rank3) td[data-label]::before{content:attr(data-label);color:var(--muted);font-size:13px;text-align:left;flex:0 0 auto}
+  table.prices:not(.rank3) td:first-child{font-weight:600}
+  table.prices:not(.rank3) td .btn{margin-left:auto}
+  tbody.morebtn tr{border:0;background:none}
+  tbody.morebtn td{justify-content:center}
+}
+@media (max-width:640px){
+  table.prices:not(.rank3) td[data-label="#"]{display:none}
+  select.cur{max-width:96px;padding:5px 6px}
+}

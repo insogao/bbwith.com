@@ -27,20 +27,38 @@ document.querySelectorAll("table.sortable").forEach(function (table) {
     return (SYM[c] || c + " ") + v.toLocaleString("en-US", { minimumFractionDigits: digits, maximumFractionDigits: digits });
   }
   function apply(c) {
-    if (!window.FX[c]) c = "USD";
+    if (!window.FX[c]) c = "CNY";
     document.querySelectorAll(".m").forEach(function (el) {
       el.textContent = fmt(parseFloat(el.getAttribute("data-usd")) * window.FX[c], c);
     });
     document.querySelectorAll(".mh").forEach(function (el) { el.textContent = c; });
     sel.forEach(function (s) { s.value = c; });
   }
-  var saved = "USD";
-  try { saved = localStorage.getItem("bbwith-cur") || "USD"; } catch (e) {}
+  var saved = "CNY";
+  try { saved = localStorage.getItem("bbwith-cur2") || "CNY"; } catch (e) {}
   apply(saved);
   sel.forEach(function (s) {
     s.addEventListener("change", function () {
-      try { localStorage.setItem("bbwith-cur", s.value); } catch (e) {}
+      try { localStorage.setItem("bbwith-cur2", s.value); } catch (e) {}
       apply(s.value);
     });
   });
 })();
+
+// "show the rest" rows in long tables
+document.addEventListener("click", function (ev) {
+  var b = ev.target.closest && ev.target.closest("[data-more]");
+  if (!b) return;
+  var t = b.closest("table"), more = t.querySelector("tbody.more");
+  more.hidden = !more.hidden;
+  b.textContent = more.hidden ? b.getAttribute("data-label") : "收起 ▴";
+});
+document.querySelectorAll("[data-more]").forEach(function (b) { b.setAttribute("data-label", b.textContent); });
+
+// phones: every table cell gets its column name, so CSS can lay rows out as cards
+document.querySelectorAll("table.prices:not(.rank3)").forEach(function (t) {
+  var heads = Array.prototype.map.call(t.querySelectorAll("thead th"), function (th) { return th.textContent.replace(/[↕▾▴]/g, "").trim(); });
+  t.querySelectorAll("tbody tr").forEach(function (tr) {
+    Array.prototype.forEach.call(tr.cells, function (td, i) { if (heads[i] && !td.hasAttribute("colspan")) td.setAttribute("data-label", heads[i]); });
+  });
+});

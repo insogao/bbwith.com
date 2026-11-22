@@ -22,8 +22,9 @@
   // votes: <span class="vote" data-target="listing:12"></span>
   var boxes = $$(".vote[data-target]");
   function paint(box, s) {
-    box.innerHTML = '<button type="button" data-v="1" class="' + (s.mine === 1 ? "on" : "") + '" title="有用">👍 <b>' + (s.up || 0) +
-      '</b></button><button type="button" data-v="-1" class="' + (s.mine === -1 ? "on" : "") + '" title="不靠谱">👎 <b>' + (s.down || 0) + "</b></button>";
+    var n = function (x) { return x ? " <b>" + x + "</b>" : ""; };  // no "0" counters
+    box.innerHTML = '<button type="button" data-v="1" class="' + (s.mine === 1 ? "on" : "") + '" title="有用">👍' + n(s.up) +
+      '</button><button type="button" data-v="-1" class="' + (s.mine === -1 ? "on" : "") + '" title="不靠谱">👎' + n(s.down) + "</button>";
     box._s = s;
   }
   if (boxes.length) {
