@@ -241,5 +241,54 @@
   "kind": "promo",
   "title": "限时免费积分",
   "detail": "登录领取限时免费积分，仅限 Kling AI 平台"
+ },
+ {
+  "t": "2026-11-23 06:42",
+  "id": "perplexity",
+  "kind": "promo",
+  "title": "Pro 限时赠送 $40 Computer credits",
+  "detail": "订阅 Pro 可获 $40 免费 Computer credits"
+ },
+ {
+  "t": "2026-11-23 06:42",
+  "id": "perplexity",
+  "kind": "promo",
+  "title": "Max 限时赠送 $450 Computer credits",
+  "detail": "订阅 Max 可获 $450 免费 Computer credits"
+ },
+ {
+  "t": "2026-11-23 06:42",
+  "id": "copilot",
+  "kind": "promo",
+  "title": "Copilot Fusion 使用 7 折",
+  "detail": "Copilot Fusion 使用费 30% off"
+ },
+ {
+  "t": "2026-11-23 06:42",
+  "id": "elevenlabs",
+  "kind": "promo",
+  "title": "首月 $1",
+  "detail": "首月仅 $1；Starter 之后 $6/月"
+ },
+ {
+  "t": "2026-11-23 06:42",
+  "id": "elevenlabs",
+  "kind": "promo",
+  "title": "黑五最高 55% 折扣",
+  "detail": "ElevenLabs Black Friday pricing，最高 55% off"
+ },
+ {
+  "t": "2026-11-23 06:42",
+  "id": "elevenlabs",
+  "kind": "promo",
+  "title": "Startup Grants Program",
+  "detail": "免费 12 个月，33M 字符，有效期 12 个月"
+ },
+ {
+  "t": "2026-11-23 06:42",
+  "id": "lovart",
+  "kind": "promo",
+  "title": "Seedance 2.5 Flash 限时升级优惠",
+  "detail": "升级会员限时5折，另赠最多20次免费生成"
  }
 ]
