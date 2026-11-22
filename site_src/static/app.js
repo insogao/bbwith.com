@@ -288,9 +288,8 @@ document.addEventListener("click", function (ev) {
       c.style.setProperty("--h", hue);
       c.querySelector(".arc").style.strokeDasharray = (frac * 100).toFixed(2) + " 100";
       c.querySelector(".sec").setAttribute("transform", "rotate(" + ((nowMs / 1000 % 60) * 6).toFixed(1) + " 32 32)");
-      var lh = left / 3600;
-      c.querySelector(".fr-pct").innerHTML = left <= 0 ? "…" : lh >= 1 ? Math.floor(lh) + "<small>小时</small>" : Math.ceil(left / 60) + "<small>分钟</small>";
-      c.querySelector(".ago").textContent = "数据是 " + dur(age) + "前的";
+      c.querySelector(".ago").textContent = dur(age) + "前更新";
+      c.title = c.querySelector(".fr-n").textContent + "：" + dur(age) + "前更新";
       var cd = c.querySelector(".cd");
       if (left > 0) { cd.textContent = clock(left); c.classList.remove("busy", "late"); }
       else if (left > -1800) { cd.textContent = "正在更新…"; c.classList.add("busy"); }

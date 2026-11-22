@@ -782,12 +782,12 @@ def overview_table(day, cur):
                           f'<span class="pr">{money(v_)}<small class="fx" title="当地标价 × 买礼品卡的成本（最便宜平台）">{money(r["usd"])} × {k_ * 100:.0f}%</small></span></li>'
                           for i, (v_, k_, r) in enumerate(paid[:3]))
             cheaper = [r for r in rows if r["usd"] < paid[0][0] and r["cc"] not in {x[2]["cc"] for x in paid}][:2]
-            foot = (f'<li class="nogift">标价更低、暂无礼品卡报价：' + "、".join(f'{flag(r["cc"])} {e(cname(r["cc"]))} {money(r["usd"])}' for r in cheaper) + "</li>") if cheaper else ""
+            foot = (f'<li class="nogift">标价更低，但<a href="/gift-cards/#no-card">暂无能充 App Store 的礼品卡</a>：' + "、".join(f'{flag(r["cc"])} {e(cname(r["cc"]))} {money(r["usd"])}' for r in cheaper) + "</li>") if cheaper else ""
             cells["app"] = (paid[0][0], "", url_plan(p, pl), "", f'<ol class="top3">{top}{foot}</ol>')
         else:
             top = "".join(f'<li class="r{i + 1}">{sig(i)}<span class="rg">{flag(r["cc"])} {e(cname(r["cc"]))}</span><span class="pr">{money(r["usd"])}</span></li>'
                           for i, r in enumerate(rows[:3]))
-            cells["app"] = (lo["usd"], "", url_plan(p, pl), "", f'<ol class="top3">{top}<li class="nogift">按标价，这几个地区暂无礼品卡报价</li></ol>')
+            cells["app"] = (lo["usd"], "", url_plan(p, pl), "", f'<ol class="top3">{top}<li class="nogift">按标价算；这几个地区<a href="/gift-cards/#no-card">暂无能充 App Store 的礼品卡</a></li></ol>')
         ck = channel_key_for(p, pl)
         ch = CHANNELS.get("plans", {}).get(ck, {}) if ck else {}
         if rate and ch.get("topup", {}).get("count", 0) >= 3:
@@ -1534,13 +1534,12 @@ def freshness(day):
     items = [("App Store 价格", f"{len(day['storefronts'])} 个地区", _iso(day.get("time") or GIFT.get("time")), 86400),
              ("礼品卡报价", f"{len({i['shop'] for i in GIFT.get('items', [])})} 个平台", _iso(GIFT.get("time")), 86400),
              ("代充 · 成品号", f"{CHANNELS.get('listings_seen', 0):,} 条挂单", _iso(CHANNELS.get("time")), 4 * 3600)]
-    ring = ('<svg class="ring" viewBox="0 0 64 64" aria-hidden="true"><circle class="trk" cx="32" cy="32" r="27"/>'
-            '<circle class="arc" cx="32" cy="32" r="27" pathLength="100" transform="rotate(-90 32 32)"/>'
-            '<g class="sec"><circle cx="32" cy="5" r="4.2"/></g></svg>')
+    ring = ('<svg class="ring" viewBox="0 0 64 64" aria-hidden="true"><circle class="trk" cx="32" cy="32" r="25"/>'
+            '<circle class="arc" cx="32" cy="32" r="25" pathLength="100" transform="rotate(-90 32 32)"/>'
+            '<g class="sec"><circle cx="32" cy="7" r="7"/></g></svg>')
     cells = "".join(
-        f'<div class="fr" data-t="{t}" data-period="{per}"><div class="fr-ring">{ring}<span class="fr-pct"></span></div>'
-        f'<div class="fr-body"><div class="fr-h"><b>{e(n)}</b><span>{e(sub)}</span></div>'
-        f'<div class="fr-next">下次更新 <b class="cd">--:--:--</b></div><div class="fr-ago"><i class="dot"></i><span class="ago">—</span></div></div></div>'
+        f'<div class="fr" data-t="{t}" data-period="{per}" title="{e(n)}：{e(sub)}，数据每{"天" if per == 86400 else " 4 小时"}更新">{ring}'
+        f'<b class="fr-n">{e(n)}</b><span class="ago" hidden>—</span><span class="fr-next">下次 <b class="cd">--:--:--</b></span></div>'
         for n, sub, t, per in items if t)
     return f'<div class="fresh">{cells}</div>'
 
@@ -1824,6 +1823,13 @@ def build_gift(day, cur):
 <p class="lead">跨区订阅 AI 会员，最常用的付款方式是当地 App Store 礼品卡。我们每天抓取 Bitrefill、SEAGM、Eneba 的公开报价（由我付为人工核价），按当日汇率算出每张卡的溢价，换算成订阅会员的实付价格，并标出每家能不能用支付宝、微信和国内信用卡。</p>
 <div class="bar"><h2>各地区最划算的礼品卡</h2>{cur_select()}</div>
 <div class="tablewrap"><table class="prices sortable"><thead><tr><th>地区</th><th>平台 · 付款方式</th><th data-sort=num>最低溢价</th><th>对应面额 · 售价</th><th>最省的会员（礼品卡实付）</th></tr></thead><tbody>{trs}</tbody></table></div>
+<h2 id="no-card">为什么有些低价区没有礼品卡？</h2>
+<p>菲律宾这类 App Store 标价很低的地区，表里没有礼品卡，常见原因有两种：</p>
+<ul>
+<li><b>当地苹果只卖「Apple Store 礼品卡」，只能买硬件。</b>比如菲律宾，苹果官网卖的礼品卡条款写明只能用于菲律宾 Apple 在线商店，不能用于 App Store、iTunes 等数字服务（<a href="https://www.apple.com/legal/giftcards/applestore/ph/" rel="nofollow noopener" target="_blank">苹果菲律宾礼品卡条款</a>）。这类地区没有能给 Apple 账户充值的卡，网上卖的"菲区卡"要么买错了，要么是代充。</li>
+<li><b>当地有 App Store 卡，但本站跟踪的平台不卖或没收录。</b>礼品卡锁区，只能充值购买地区的 Apple 账户，所以没有当地卡就只能绑当地的银行卡或 PayPal 付款。</li>
+</ul>
+<p>所以首页「App Store 低价区 Top3」只给有礼品卡报价的地区排名，标价更低但没有卡的地区单独列在下面。</p>
 <h2>各平台支持哪些付款方式</h2>{pay_table(list(PAY))}
 {CN_CARD_TIPS}
 <p class="hint">第一次用？看<a href="/guides/subscribe-with-gift-card/">礼品卡订阅教程</a>和<a href="/guides/apple-id-low-price-region/">低价区 Apple ID 注册教程</a>。</p>
