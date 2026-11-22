@@ -312,3 +312,28 @@ table.overview ol.top3 li.r1 .pr .m{font-weight:700;color:#0d6b5e}
 table.overview ol.top3 .dash{margin:0 2px;color:#999}
 table.overview ol.top3 li.nogift{display:block;font-size:11px;color:var(--muted);padding-top:4px;white-space:normal}
 table.overview ol.top3{min-width:250px}
+table.overview ol.top3 .pr{display:flex;flex-direction:column;align-items:flex-end;line-height:1.2}
+table.overview ol.top3 .pr small.fx{font-size:11px;color:var(--muted);font-weight:400}
+table.overview ol.top3 .pr small.fx .m{color:var(--muted);font-weight:400 !important}
+table.overview ol.top3 li{padding:3px 0}
+/* home panels: offers / guides / brief */
+.hpanels{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:28px}
+.hp{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.hp h2{font-size:16px;margin:0 0 8px;display:flex;align-items:center;gap:6px}
+.hp h2 a{margin-left:auto;font-size:13px;font-weight:400}
+.hp ul{list-style:none;margin:0;padding:0}
+.hp li{padding:6px 0;border-top:1px solid var(--line);font-size:14px;line-height:1.45}
+.hp li:first-child{border-top:0}
+.hp li[hidden]{display:none}
+.hp .pn{display:inline-block;font-size:11px;font-weight:600;color:#0d6b5e;background:#e3f4ec;border-radius:4px;padding:1px 5px;margin-right:6px}
+.hp .hl{font-weight:600;margin:0 0 4px}
+@media (max-width:860px){.hpanels{grid-template-columns:1fr}}
+@media (prefers-color-scheme:dark){.hp{background:#1d1f1e}}
+.hpanels{margin:22px 0 30px}
+.hp li{padding:5px 0;font-size:13.5px}
+.hp li a{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hpanels{grid-template-columns:repeat(3,minmax(0,1fr))}
+.hp{min-width:0}
+@media (max-width:860px){.hpanels{grid-template-columns:minmax(0,1fr);gap:10px}.hp.brief{display:none}}
+@media (max-width:640px){.top nav.main a{padding:6px 9px;font-size:14px}}
+@media (max-width:640px){.top nav.main{gap:0}.top nav.main a{padding:6px 8px;font-size:13.5px}.top nav.main .badge{margin-left:2px}}

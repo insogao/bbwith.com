@@ -147,7 +147,8 @@ ASSET_V = _asset_version()  # changes whenever a static file changes, so browser
 NAV_MAIN = [("/", "订阅比价", ("/", "/chatgpt/", "/claude/", "/google-ai/", "/grok/", "/x/", "/perplexity/", "/cursor/", "/ai-pricing/", "/daily/")),
             ("/gift-cards/", "礼品卡", ("/gift-cards/",)),
             ("/channels/", "代充 · 成品号", ("/channels/", "/shop/", "/merchant/")),
-            ("/deals/", "优惠", ("/deals/",))]
+            ("/deals/", "优惠", ("/deals/",)),
+            ("/guides/", "教程", ("/guides/",))]
 FILTER_PATHS = ("/", "/gift-cards/", "/channels/", "/deals/", "/daily/")
 PF_NAMES = {"chatgpt": "ChatGPT", "claude": "Claude", "google-ai": "Gemini", "grok": "Grok", "x": "X", "perplexity": "Perplexity",
             "cursor": "Cursor"}
@@ -768,7 +769,7 @@ def overview_table(day, cur):
         for r in rows:
             rr = gift_shop_rates(r["cc"], day["fx"])
             if rr:
-                paid.append((r["local"] * min(rr), r["local"] * max(rr), r))
+                paid.append((r["local"] * min(rr), r["local"] * min(rr) / r["usd"], r))
         paid.sort(key=lambda t: t[0])
 
         def sig(i):
@@ -777,8 +778,9 @@ def overview_table(day, cur):
         def rng(lo_, hi_):
             return money(lo_) if hi_ - lo_ < 0.01 * lo_ else f'{money(lo_)}<span class="dash">–</span>{money(hi_)}'
         if paid:
-            top = "".join(f'<li class="r{i + 1}">{sig(i)}<span class="rg">{flag(r["cc"])} {e(cname(r["cc"]))}</span><span class="pr">{rng(l_, h_)}</span></li>'
-                          for i, (l_, h_, r) in enumerate(paid[:3]))
+            top = "".join(f'<li class="r{i + 1}">{sig(i)}<span class="rg">{flag(r["cc"])} {e(cname(r["cc"]))}</span>'
+                          f'<span class="pr">{money(v_)}<small class="fx" title="当地标价 × 买礼品卡的成本（最便宜平台）">{money(r["usd"])} × {k_ * 100:.0f}%</small></span></li>'
+                          for i, (v_, k_, r) in enumerate(paid[:3]))
             cheaper = [r for r in rows if r["usd"] < paid[0][0] and r["cc"] not in {x[2]["cc"] for x in paid}][:2]
             foot = (f'<li class="nogift">标价更低、暂无礼品卡报价：' + "、".join(f'{flag(r["cc"])} {e(cname(r["cc"]))} {money(r["usd"])}' for r in cheaper) + "</li>") if cheaper else ""
             cells["app"] = (paid[0][0], "", url_plan(p, pl), "", f'<ol class="top3">{top}{foot}</ol>')
@@ -809,9 +811,9 @@ def overview_table(day, cur):
         trs += (f'<tr data-prod="{p}"><td><a href="{url_plan(p, pl)}"><b>{e(full_name(p, pl))}</b></a></td>'
                 + td("off", "官网") + td("app", "App Store 低价区 Top3") + td("topup", "代充（中位）") + td("acct", "成品号（中位）") + "</tr>")
     return (f'<div class="tablewrap"><table class="prices overview sortable"><thead><tr><th>会员</th><th data-sort=num>官网</th>'
-            f'<th data-sort=num>App Store 低价区 Top3<small class="th-sub">含买礼品卡的成本</small></th><th data-sort=num>代充（中位）</th><th data-sort=num>成品号（中位）</th></tr></thead>'
+            f'<th data-sort=num>App Store 低价区 Top3<small class="th-sub">实付 = 标价 × 礼品卡成本</small></th><th data-sort=num>代充（中位）</th><th data-sort=num>成品号（中位）</th></tr></thead>'
             f'<tbody>{trs}</tbody></table></div>'
-            '<p class="hint"><b>App Store</b>：实际要花的钱 = 当地标价 × 买当地礼品卡的成本；区间是在不同平台买卡的差价，'
+            '<p class="hint"><b>App Store</b>：实际要花的钱 = 当地标价 × 买当地礼品卡的成本（按最便宜的平台算，例如 103% 表示买卡多花 3%），'
             '各平台报价和付款方式见<a href="/gift-cards/">礼品卡</a>。'
             '<b>官网</b>：网页用外币信用卡订阅的美国标价，结账时另加税。'
             '<b>代充 / 成品号</b>：国内渠道报价的中位数，逐条报价见<a href="/channels/">代充 · 成品号</a>；成品号是卖家开好会员的账号，不在你名下。</p>')
@@ -854,14 +856,10 @@ def build_home(day, cur, chg, prev):
 <p class="lead">ChatGPT、Claude、Gemini、Grok 等 AI 会员在哪里买最便宜：各地区 App Store、官网、礼品卡、代充，一站比较。最新数据 {zh_date(date)}。{chg_line}</p>
 <div class="search big"><input type="search" class="qbox" placeholder="试试「ChatGPT Plus」「土耳其礼品卡」「Claude Max」" autocomplete="off" aria-label="搜索"><div class="qres" hidden></div></div>
 </section>
+{home_panels()}
 <h2>每个会员，各种买法的到手价</h2>
 {overview_table(day, cur)}
 <p class="src">每天更新：App Store {len(day['storefronts'])} 个地区（大多含税，美国、加拿大等不含税）、礼品卡、国内渠道每 4 小时一次。<a href="/daily/{date}/">今日价格日报</a> · <a href="/ai-pricing/">更多 AI 产品的官网价格</a></p>
-<section class="news-strip"><h2>资讯</h2>
-{deal_banner()}
-{brief_home()}
-<p class="small"><a href="/news/">AI 早报</a> · <a href="/deals/">会员优惠</a> · <a href="/guides/">订阅教程</a></p>
-</section>
 """
     ld = [{"@context": "https://schema.org", "@type": "WebSite", "name": SITE_NAME, "url": SITE + "/", "inLanguage": "zh-CN"},
           {"@context": "https://schema.org", "@type": "Organization", "name": SITE_NAME, "url": SITE + "/"}]
@@ -1520,6 +1518,26 @@ def build_news(cur):
                          f'{cr_html}<h1>{e(latest["headline"])}</h1>{latest_html}'
                          f'<h2>往期早报</h2><ul class="list">{rows}</ul>', [cr_ld], latest["date"]))
     return ["/news/"] + urls
+
+
+def home_panels():
+    """Three equal cards under the price table: offers, how-tos, today's brief."""
+    deals = [(deal_url(d), PRODUCTS.get(d["product"], {}).get("name", ""), d["title"], d["product"]) for d in DEALS if d["active"]]
+    deals += [(f"/ai-pricing/{p['id']}/", p["name"], x["title"], PRICING_PROD.get(p["id"], "other")) for p, x in auto_promos()]
+    n_deals = len(deals)
+    dl = "".join(f'<li data-prod="{pr}"><a href="{u}"><span class="pn">{e(n)}</span>{e(t)}</a></li>' for u, n, t, pr in [(u, PF_NAMES.get(pr) or n.split("（")[0], t, pr) for u, n, t, pr in deals[:3]])
+    gl = "".join(f'<li><a href="/guides/{e(g["slug"])}/">{e(g["title"].split("？")[0].split("：")[0])}</a></li>' for g in GUIDES[:3])
+    bh = ""
+    if BRIEFS:
+        b = BRIEFS[-1]
+        bh = (f'<p class="hl"><a href="/news/{b["date"]}/">{e(b["headline"])}</a></p>'
+              + "<ul>" + "".join(f"<li>{e(x['title'])}</li>" for x in b["items"][:3]) + "</ul>")
+    card = lambda icon, title, href, more, inner: (f'<section class="hp{" brief" if icon == "📰" else ""}"><h2><span>{icon}</span>{title}<a href="{href}">{more} →</a></h2>{inner}</section>')
+    return ('<div class="hpanels">'
+            + card("🔥", "正在进行的优惠", "/deals/", f"全部 {n_deals} 条", f'<ul>{dl}</ul>' if dl else "<p>暂无</p>")
+            + card("📘", "新手教程", "/guides/", "全部教程", f"<ul>{gl}</ul>")
+            + (card("📰", f"AI 早报 · {zh_date(BRIEFS[-1]['date'])[5:]}", "/news/", "往期", bh) if BRIEFS else "")
+            + "</div>")
 
 
 def brief_home():
