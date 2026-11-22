@@ -283,3 +283,26 @@ td.shops .shopcell{display:flex;margin:3px 0}
   table.overview td .alts{flex-basis:100%;text-align:right;margin-top:2px}
   table.overview td .alts .alt{display:inline;margin-left:10px;white-space:nowrap}
 }
+/* App Store Top3: ranked rows with signal bars */
+table.overview ol.top3{list-style:none;margin:0;padding:0;min-width:190px}
+table.overview ol.top3 li{display:flex;align-items:center;gap:8px;padding:2px 0;font-size:13px;color:#555}
+table.overview ol.top3 li.r1{font-size:15px;color:var(--fg)}
+table.overview ol.top3 li.r1 .m{font-weight:700;color:#0d6b5e}
+table.overview ol.top3 .rg{flex:1;white-space:nowrap}
+table.overview ol.top3 .m{font-variant-numeric:tabular-nums;white-space:nowrap}
+.sig{display:inline-flex;align-items:flex-end;gap:2px;height:12px;flex:none}
+.sig s{display:block;width:3px;background:#d5d2cc;border-radius:1px;text-decoration:none}
+.sig s:nth-child(1){height:5px}.sig s:nth-child(2){height:8px}.sig s:nth-child(3){height:12px}
+.sig s.on{background:#12a37f}
+table.overview td.t3 a{display:block}
+@media (max-width:640px){
+  table.overview td.t3{flex-direction:column;align-items:stretch}
+  table.overview td.t3 a{width:100%;margin-top:4px}
+}
+@media (max-width:640px){
+  table.overview td.t3 a{margin-top:0}
+  table.overview td.t3::before{margin-bottom:2px}
+  table.overview ol.top3 li{text-align:left;justify-content:flex-start}
+  table.overview ol.top3 .rg{text-align:left}
+}
+@media (max-width:640px){table.overview td.t3{gap:2px}}

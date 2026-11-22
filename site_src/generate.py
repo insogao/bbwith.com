@@ -761,9 +761,11 @@ def overview_table(day, cur):
         if off:
             cells["off"] = (off["usd"], money(off["usd"]), url_plan(p, pl) + "#official", "美国价 · 不含税")
         lo = rows[0]
-        # cheapest region in bold, the next two underneath, so one odd region doesn't decide the answer
-        more = "".join(f'<span class="alt">{flag(r["cc"])} {e(cname(r["cc"]))} {money(r["usd"])}</span>' for r in rows[1:3])
-        cells["app"] = (lo["usd"], money(lo["usd"]), url_plan(p, pl), f"{flag(lo['cc'])} {e(cname(lo['cc']))}", more)
+        # the three cheapest regions as one ranked list; signal bars show the rank (3 green = cheapest)
+        top = "".join(
+            f'<li class="r{i + 1}"><i class="sig">{"".join(f"<s class={chr(34)}on{chr(34)}></s>" if j < 3 - i else "<s></s>" for j in range(3))}</i>'
+            f'<span class="rg">{flag(r["cc"])} {e(cname(r["cc"]))}</span>{money(r["usd"])}</li>' for i, r in enumerate(rows[:3]))
+        cells["app"] = (lo["usd"], money(lo["usd"]), url_plan(p, pl), "", f'<ol class="top3">{top}</ol>')
         best_gift = None
         for cc in GIFT_NAMES:
             r = next((x for x in rows if x["cc"] == cc), None)
@@ -791,8 +793,10 @@ def overview_table(day, cur):
             v, m, href, sub = cells[k][:4]
             more = cells[k][4] if len(cells[k]) > 4 else ""
             ext = ' rel="nofollow noopener" target="_blank"' if href.startswith("http") else ""
+            if more:  # ranked list replaces the single price
+                return f'<td data-label="{label}" data-v="{v:.2f}" class="{"best" if k == best else ""} t3"><a href="{href}"{ext}>{more}</a></td>'
             return (f'<td data-label="{label}" data-v="{v:.2f}" class="{"best" if k == best else ""}"><a href="{href}"{ext}><b>{m}</b>'
-                    f'{f"<small>{sub}</small>" if sub else ""}</a>{f"<div class=alts>{more}</div>" if more else ""}</td>')
+                    f'{f"<small>{sub}</small>" if sub else ""}</a></td>')
         trs += (f'<tr data-prod="{p}"><td><a href="{url_plan(p, pl)}"><b>{e(full_name(p, pl))}</b></a></td>'
                 + td("off", "官网") + td("app", "App Store 最低区") + td("gift", "礼品卡实付") + td("topup", "代充（中位）") + td("acct", "成品号（中位）") + "</tr>")
     return (f'<div class="tablewrap"><table class="prices overview sortable"><thead><tr><th>会员</th><th data-sort=num>官网</th>'
