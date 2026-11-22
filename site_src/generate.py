@@ -784,8 +784,7 @@ def overview_table(day, cur):
         if rate and ch.get("account-long", {}).get("count", 0) >= 3:
             v = ch["account-long"]["median"] / rate
             cells["acct"] = (v, money(v), url_plan(p, pl) + "#channels", "质保 ≥ 25 天")
-        own = [k for k in ("off", "app", "gift", "topup") if k in cells]
-        best = min(own, key=lambda k: cells[k][0]) if own else None
+        best = None  # no cell highlight: gift card prices derive from App Store prices, so a "cheapest cell" says little
 
         def td(k, label):
             if k not in cells:
@@ -802,8 +801,7 @@ def overview_table(day, cur):
     return (f'<div class="tablewrap"><table class="prices overview sortable"><thead><tr><th>会员</th><th data-sort=num>官网</th>'
             f'<th data-sort=num>App Store 低价区 Top3</th><th data-sort=num>礼品卡实付</th><th data-sort=num>代充（中位）</th><th data-sort=num>成品号（中位）</th></tr></thead>'
             f'<tbody>{trs}</tbody></table></div>'
-            '<p class="hint"><span class="bestdot"></span> 绿色 = 充到<b>自己账号</b>的最便宜方式（官网、App Store、礼品卡、代充里最低的）。'
-            '「礼品卡实付」已算上买卡的溢价；「代充」是卖家把会员充到你的账号；「成品号」是卖家给你一个开好会员的账号，最便宜但账号不在你名下。'
+            '<p class="hint">「礼品卡实付」是用最划算的礼品卡支付 App Store 标价，已算上买卡的溢价；「代充」是卖家把会员充到你的账号；「成品号」是卖家给你一个开好会员的账号，最便宜但账号不在你名下。'
             '「官网」是网页用外币信用卡订阅的美国标价，结账时按账单地址另加税，国内卡还有银行的货币转换费，详见各会员页。'
             '点任意价格看详情。</p>')
 
