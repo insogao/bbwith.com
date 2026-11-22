@@ -133,3 +133,5 @@ table.prices{border-collapse:collapse;width:100%;font-size:15px;font-variant-num
 .paytbl td{text-align:center;vertical-align:top}
 .paytbl td:first-child,.paytbl td:last-child{text-align:left}
 .paytbl td:last-child{min-width:220px;white-space:normal}
+.brief .kicker{display:inline-block;margin:0 0 4px;font-size:12px;font-weight:600;color:#0d6b5e;background:#e3f1ee;border-radius:4px;padding:1px 6px}
+@media (prefers-color-scheme:dark){.brief .kicker{background:#163a34;color:#8fd6c8}}

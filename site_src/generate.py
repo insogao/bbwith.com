@@ -1262,7 +1262,7 @@ def build_news(cur):
             links = " · ".join(f'<a href="{e(l["url"])}" rel="nofollow noopener" target="_blank">{e(l["name"])}</a>' for l in x["links"][:5])
             prices = "".join(f'<li>本站已核实：<a href="{deal_url(d)}">{e(d["title"])}</a></li>' for d in DEALS
                               if d["active"] and d["product"] in x["products"] and x["kind"] == "pricing")
-            arts.append(f"""<article class="brief"><h2><span class="tag">{KIND_LABEL[x['kind']]}</span> {e(x['title'])}</h2>
+            arts.append(f"""<article class="brief"><p class="kicker" aria-hidden="true">{KIND_LABEL[x['kind']]}</p><h2>{e(x['title'])}</h2>
 <p>{e(x['summary'])}</p>{f'<p class="take"><b>社区怎么看：</b>{e(x["take"])}</p>' if x['take'] else ''}
 {f'<ul class="list small">{prices}</ul>' if prices else ''}<p class="src">来源：{links} <span class="vote" data-target="brief:{b['date']}:{n}"></span></p></article>""")
         nav = []
