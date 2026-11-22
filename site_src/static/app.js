@@ -215,6 +215,24 @@ document.addEventListener("click", function (ev) {
     });
     bar.querySelector(".pf-sum").textContent = all ? "全部产品" : sel.map(function (x) { return NAMES[x]; }).join("、");
     bar.classList.toggle("active", !all);
+    // deals badge follows the filter
+    var bd = document.querySelector(".top nav.main .badge[data-by]");
+    if (bd) {
+      var by = JSON.parse(bd.dataset.by), n = 0;
+      Object.keys(by).forEach(function (k) { if (all || sel.indexOf(k) >= 0) n += by[k]; });
+      bd.textContent = n; bd.hidden = !n;
+    }
+    // say so when the filter leaves a list empty, instead of a blank page
+    document.querySelectorAll(".fl").forEach(function (box) {
+      var items = box.querySelectorAll("[data-prod]");
+      var shown = Array.prototype.some.call(items, function (el) { return !el.hidden; });
+      box.querySelectorAll("h2").forEach(function (h) {
+        var nxt = h.nextElementSibling;
+        if (nxt && nxt.querySelector("[data-prod]")) h.hidden = !Array.prototype.some.call(nxt.querySelectorAll("[data-prod]"), function (el) { return !el.hidden; });
+      });
+      var em = box.querySelector(".fl-empty");
+      if (em) { em.hidden = shown || !items.length; var s2 = em.querySelector(".fl-sel"); if (s2) s2.textContent = sel.map(function (x) { return NAMES[x]; }).join("、"); }
+    });
     // keep the choice when moving between tabs
     document.querySelectorAll(".top nav.main a").forEach(function (a) {
       var u = a.getAttribute("href").split("?")[0];
@@ -227,6 +245,9 @@ document.addEventListener("click", function (ev) {
   bar.querySelector(".pf-toggle").addEventListener("click", function () {
     var c = bar.querySelector(".pf-chips"); c.hidden = !c.hidden;
     this.setAttribute("aria-expanded", String(!c.hidden));
+  });
+  document.addEventListener("click", function (ev) {
+    if (ev.target.closest("[data-pf-reset]")) { sel = []; apply(); }
   });
   bar.addEventListener("click", function (ev) {
     var b = ev.target.closest("[data-pf]");

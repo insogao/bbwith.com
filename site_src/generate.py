@@ -167,8 +167,10 @@ def prod_filter():
 def nav_main(path):
     def on(prefixes):
         return any(path == "/" if p == "/" else path.startswith(p) for p in prefixes)
-    n_deals = sum(1 for d in DEALS if d["active"]) + len(auto_promos())
-    badge = lambda u: f' <i class="badge">{n_deals}</i>' if u == "/deals/" and n_deals else ""
+    by = deal_counts()
+    n_deals = sum(by.values())
+    badge = lambda u: (f' <i class="badge" title="正在进行的优惠" data-by=\'{json.dumps(by)}\'>{n_deals}</i>'
+                       if u == "/deals/" and n_deals else "")
     return "".join(f'<a href="{u}"{" class=on" if on(pre) else ""}>{n}{badge(u)}</a>' for u, n, pre in NAV_MAIN)
 
 
@@ -595,6 +597,7 @@ def channel_compare(product, plan, rows):
 <tr><td>美区 App Store（iOS 内购）</td><td><b>{money(us['usd'])}</b></td><td class="{cls(gap)}">{pct(gap)}</td></tr>
 <tr><td>App Store 最便宜地区：{flag(lo['cc'])} {e(cname(lo['cc']))}</td><td><b>{money(lo['usd'])}</b></td><td class="{cls(lo_vs_off)}">{pct(lo_vs_off)}</td></tr>
 </tbody></table></div>
+<p class="hint" id="official"><b>官网价要加税吗？</b>要看账单地址。官网标价是美国价、不含税：美国按州加销售税，欧盟、英国、日本等地加增值税或消费税，金额在结账页显示（OpenAI 帮助中心有专门的税号、VAT 和销售税豁免说明）。用国内发行的 Visa / 万事达付美元，银行通常还收约 1%–1.5% 的货币转换费（各行规定不同），而且国内卡在官网经常被拒付。App Store 价格在多数地区已含增值税，美区 App Store 标价同样不含州销售税。</p>
 <p class="hint">本页其他地方的「比美区」都是和美区 App Store 价比较。{f"美区 App Store 比官网贵 {pct(gap)[1:]}，这是苹果渠道的加价。" if gap > 0.005 else ""}官网价 {zh_date(off['checked'])} 核实（<a href="{e(off['source'])}" rel="nofollow noopener" target="_blank">来源</a>）。</p>"""
 
 
@@ -760,7 +763,7 @@ def overview_table(day, cur):
         cells = {}
         off = official_of(p, pl)
         if off:
-            cells["off"] = (off["usd"], money(off["usd"]), off["source"], "")
+            cells["off"] = (off["usd"], money(off["usd"]), url_plan(p, pl) + "#official", "美国价 · 不含税")
         lo = rows[0]
         cells["app"] = (lo["usd"], money(lo["usd"]), url_plan(p, pl), f"{flag(lo['cc'])} {e(cname(lo['cc']))}")
         best_gift = None
@@ -798,6 +801,7 @@ def overview_table(day, cur):
             f'<tbody>{trs}</tbody></table></div>'
             '<p class="hint"><span class="bestdot"></span> 绿色 = 充到<b>自己账号</b>的最便宜方式（官网、App Store、礼品卡、代充里最低的）。'
             '「礼品卡实付」已算上买卡的溢价；「代充」是卖家把会员充到你的账号；「成品号」是卖家给你一个开好会员的账号，最便宜但账号不在你名下。'
+            '「官网」是网页用外币信用卡订阅的美国标价，结账时按账单地址另加税，国内卡还有银行的货币转换费，详见各会员页。'
             '点任意价格看详情。</p>')
 
 
@@ -1008,21 +1012,34 @@ def build_deals(day):
                       "mainEntityOfPage": SITE + path, "author": {"@type": "Organization", "name": SITE_NAME, "url": SITE},
                       "publisher": {"@type": "Organization", "name": SITE_NAME, "url": SITE}}]
         write(path, page(f"{d['title']}（{zh_date(d['start'])}）· 比比价", d["summary"][:150], path, body, ld, d["verified_on"]))
-    rows = lambda ds: "".join(f'<li data-prod="{d["product"]}"><a href="{deal_url(d)}">{e(d["title"])}</a> <small>{e(d["discount"])} · {e(deal_period(d))}</small></li>' for d in ds) or "<li>暂无</li>"
-    cr_html, cr_ld = crumbs([("首页", "/"), ("优惠快讯", "/deals/")])
-    auto = auto_promos()
-    auto_html = "".join(
-        f'<li data-prod="{PRICING_PROD.get(p["id"], "other")}"><a href="/ai-pricing/{e(p["id"])}/"><b>{e(p["name"])}</b></a>：{e(x["title"])}'
-        f'{("（" + e(x["detail"]) + "）") if x.get("detail") else ""}'
-        f'<br><small>{e(x.get("audience") or "")}{" · 截止 " + e(x["ends"]) if x.get("ends") else ""} · 首次发现 {e((x.get("first_seen") or "")[:10])} · '
-        f'<a href="{e(p["url"])}" rel="nofollow noopener" target="_blank">官网页面</a></small></li>' for p, x in auto)
+    rows = lambda ds: "".join(f'<li data-prod="{d["product"]}"><a href="{deal_url(d)}">{e(d["title"])}</a> <small>{e(d["discount"])} · {e(deal_period(d))}</small></li>' for d in ds)
+    cr_html, cr_ld = crumbs([("首页", "/"), ("优惠", "/deals/")])
+    # group the auto-detected offers by product, one card each
+    groups = {}
+    for p, x in auto_promos():
+        groups.setdefault(p["id"], (p, []))[1].append(x)
+    cards = ""
+    for pid, (p, xs) in groups.items():
+        items = "".join(
+            f'<li><b>{e(x["title"])}</b>{("：" + e(x["detail"])) if x.get("detail") else ""}'
+            f'{"<small>" + e(" · ".join(v for v in [x.get("audience") or "", ("截止 " + x["ends"]) if x.get("ends") else ""] if v)) + "</small>" if (x.get("audience") or x.get("ends")) else ""}</li>'
+            for x in xs)
+        cards += (f'<div class="dealcard" data-prod="{PRICING_PROD.get(pid, "other")}"><div class="dc-h"><a href="/ai-pricing/{e(pid)}/"><b>{e(p["name"])}</b></a>'
+                  f'<a class="dc-go" href="{e(p["url"])}" rel="nofollow noopener" target="_blank">去官网 →</a></div><ul>{items}</ul></div>')
+    verified = [d for d in DEALS if d["active"]]
+    ended = [d for d in DEALS if not d["active"]]
+    n_all = len(verified) + sum(len(xs) for _, xs in groups.values())
+    empty = (f'<p class="fl-empty" hidden>当前只看 <b class="fl-sel"></b>，暂时没有这些产品的优惠。'
+             f'<button type="button" class="linkbtn" data-pf-reset>看全部 {n_all} 条优惠</button></p>')
     body = f"""{cr_html}<h1>AI 会员优惠</h1>
-<p class="lead">ChatGPT、Claude、Gemini、Midjourney、可灵、Lovart、LiblibAI 等 AI 会员正在进行的优惠。「已核实快讯」由编辑核实后发布；「官网正在进行」每天自动打开 {len(PRICING.get("products", {}))} 家官网价格页识别，页面上的优惠撤下后自动消失。</p>
-<h2>已核实快讯</h2><ul class="list">{rows([d for d in DEALS if d['active']])}</ul>
-<h2>官网正在进行的优惠（每天自动识别）</h2>
-{f'<ul class="list">{auto_html}</ul>' if auto_html else '<p>今天没有在官网价格页上识别到限时优惠。</p>'}
-<p class="note">自动识别由 AI 读取官网价格页文字完成，可能有误，请以官网结账页为准。更新于 {e(PRICING.get("time", ""))}（北京时间）。<a href="/ai-pricing/">查看各家 AI 官方价格 →</a></p>
-<h2>已结束</h2><ul class="list">{rows([d for d in DEALS if not d['active']])}</ul>"""
+<p class="lead">各家 AI 会员正在进行的折扣、首月优惠和限时活动，每天自动更新。</p>
+<div class="fl">
+{f'<h2>编辑核实</h2><ul class="list">{rows(verified)}</ul>' if verified else ''}
+{f'<h2>官网正在进行</h2><div class="dealcards">{cards}</div>' if cards else '<p>今天没有在各家官网价格页上发现限时优惠。</p>'}
+{empty}
+</div>
+<p class="hint">「官网正在进行」由 AI 每天读取 {len(PRICING.get("products", {}))} 家官网价格页识别，可能有误，以官网结账页为准；活动撤下后自动消失。更新于 {e(PRICING.get("time", ""))}（北京时间）。<a href="/ai-pricing/">各家 AI 官方价格 →</a></p>
+{f'<h2>已结束</h2><ul class="list">{rows(ended)}</ul>' if ended else ''}"""
     write("/deals/", page("AI 会员优惠：ChatGPT、Claude、Gemini、Midjourney、可灵等限时折扣 · 比比价",
                           "AI 会员限时优惠、降价和新方案：编辑核实的快讯，加上每天自动识别的各家官网优惠。", "/deals/", body, [cr_ld], day["date"]))
 
@@ -1190,8 +1207,23 @@ def auto_promos():
         for x in p.get("promos") or []:
             if x.get("ends") and x["ends"] < today:
                 continue
+            # keep only offers with something concrete in them (a number, 免费, 折, off); drops teasers like "Black Friday is almost here"
+            if not re.search(r"\d|免费|折|半价|off|free", (x.get("title") or "") + (x.get("detail") or ""), re.I):
+                continue
             out.append((p, x))
     return out
+
+
+def deal_counts():
+    """Offers per product, so the nav badge can follow the product filter."""
+    c = {}
+    for d in DEALS:
+        if d["active"]:
+            c[d["product"]] = c.get(d["product"], 0) + 1
+    for p, _ in auto_promos():
+        k = PRICING_PROD.get(p["id"], "other")
+        c[k] = c.get(k, 0) + 1
+    return c
 
 
 def plan_price(x):
@@ -1562,6 +1594,26 @@ PAY = {
               "note": "第三方卖家平台，能用哪些付款方式取决于卖家、地区和商品；国内发行的卡被拒时可以换 PayPal。"},
 }
 PAY_ICON = {"yes": "✅", "no": "—", "maybe": "⚠️"}
+PAY_BADGE = [("alipay", "支付宝", "pb-ali"), ("wechat", "微信", "pb-wx"), ("card", "Visa/万事达", "pb-card"), ("paypal", "PayPal", "pb-pp"), ("crypto", "加密货币", "pb-crypto")]
+
+
+def pay_badges(shop):
+    """Small coloured tags for the ways a shop takes money; ⚠ when it works only sometimes."""
+    d = PAY.get(shop)
+    if not d:
+        return ""
+    out = ""
+    for k, label, cls in PAY_BADGE:
+        st, why = d[k]
+        if st == "no":
+            continue
+        tip = why or ("支持" if st == "yes" else "支持但常有问题")
+        out += f'<span class="pb {cls}{" maybe" if st == "maybe" else ""}" title="{e(tip)}">{label}{"?" if st == "maybe" else ""}</span>'
+    return f'<span class="pbs">{out}</span>'
+
+
+def shop_with_pay(shop):
+    return f'<span class="shopcell"><span class="sn">{e(SHOPS[shop]["name"])}</span>{pay_badges(shop)}</span>'
 
 
 def pay_table(shops):
@@ -1634,7 +1686,7 @@ def build_gift(day, cur):
         path = f"/gift-cards/apple/{cc}/"
         cur_code = rows[0]["cur"]
         trs = "".join(
-            f'<tr><td>{e(SHOPS[r["shop"]]["name"])}{manual_note(r)}</td><td data-v="{r["face"]}">{e(face_text(r))}</td><td data-v="{r["usd"]:.4f}"><b>{money(r["usd"])}</b></td>'
+            f'<tr><td>{shop_with_pay(r["shop"])}{manual_note(r)}</td><td data-v="{r["face"]}">{e(face_text(r))}</td><td data-v="{r["usd"]:.4f}"><b>{money(r["usd"])}</b></td>'
             f'<td data-v="{r["fair"]:.4f}">{money(r["fair"])}</td><td data-v="{r["prem"]:.4f}" class="{"down" if r["prem"] < -0.005 else ("up" if r["prem"] > 0.005 else "")}">{pct(r["prem"])}</td>'
             f'<td>{out_link(r["href"], "去购买")}</td></tr>' for r in rows)
         shops_here = sorted({r["shop"] for r in rows})
@@ -1698,7 +1750,7 @@ def build_gift(day, cur):
         write(path, page(title, desc, path, body, ld, GIFT["date"]))
         idx.append((cc, name, b, len(rows), shops_here, cheap_all))
     trs = "".join(
-        f'<tr><td><a href="/gift-cards/apple/{cc}/">{flag(cc)} {e(name)}区</a></td><td>{e("、".join(SHOPS[s]["name"] for s in shops))}</td>'
+        f'<tr><td><a href="/gift-cards/apple/{cc}/">{flag(cc)} {e(name)}区</a></td><td class="shops">{"".join(shop_with_pay(s) for s in sorted(shops, key=lambda s: (PAY.get(s, {}).get("alipay", ("no",))[0] != "yes", SHOPS[s]["name"])))}</td>'
         f'<td data-v="{b["prem"] if b else 9:.4f}">{pct(b["prem"]) if b else "—"}</td><td>{e(face_text(b)) + " · " + money(b["usd"]) if b else "—"}</td>'
         f'<td><ul class="top2">{"".join(f"<li data-prod={prod_of_url(u_)}>{e(n)} {money(net)}</li>" for n, u_, _, net, _ in ch) or "—"}</ul></td></tr>'
         for cc, name, b, n, shops, ch in idx)
@@ -1707,7 +1759,7 @@ def build_gift(day, cur):
 <h1>App Store 礼品卡价格对比</h1>
 <p class="lead">跨区订阅 AI 会员，最常用的付款方式是当地 App Store 礼品卡。我们每天抓取 Bitrefill、SEAGM、Eneba 的公开报价（由我付为人工核价），按当日汇率算出每张卡的溢价，换算成订阅会员的实付价格，并标出每家能不能用支付宝、微信和国内信用卡。</p>
 <div class="bar"><h2>各地区最划算的礼品卡</h2>{cur_select()}</div>
-<div class="tablewrap"><table class="prices sortable"><thead><tr><th>地区</th><th>平台</th><th data-sort=num>最低溢价</th><th>对应面额 · 售价</th><th>最省的会员（礼品卡实付）</th></tr></thead><tbody>{trs}</tbody></table></div>
+<div class="tablewrap"><table class="prices sortable"><thead><tr><th>地区</th><th>平台 · 付款方式</th><th data-sort=num>最低溢价</th><th>对应面额 · 售价</th><th>最省的会员（礼品卡实付）</th></tr></thead><tbody>{trs}</tbody></table></div>
 <h2>各平台支持哪些付款方式</h2>{pay_table(list(PAY))}
 {CN_CARD_TIPS}
 <p class="hint">第一次用？看<a href="/guides/subscribe-with-gift-card/">礼品卡订阅教程</a>和<a href="/guides/apple-id-low-price-region/">低价区 Apple ID 注册教程</a>。</p>

@@ -1,9 +1,61 @@
 {
- "_comment": "官网（网页/信用卡）月付标价，美国价、不含税。只填核实过的；checked 是核实日期，source 是核实来源。",
- "chatgpt/pro-100": {"usd": 100, "checked": "2026-11-22", "source": "https://help.openai.com/en/articles/9793128"},
- "chatgpt/pro-200": {"usd": 200, "checked": "2026-11-22", "source": "https://help.openai.com/en/articles/9793128", "note": "新订阅暂停中"},
- "claude/pro":      {"usd": 20,  "checked": "2026-11-22", "source": "https://claude.com/pricing"},
- "claude/max":      {"usd": 100, "checked": "2026-11-22", "source": "https://claude.com/pricing"},
- "claude/ultra":    {"usd": 200, "checked": "2026-11-22", "source": "https://claude.com/pricing"},
- "google-ai/pro":   {"usd": 19.99, "checked": "2026-11-22", "source": "https://gemini.google/subscriptions/"}
+ "_comment": "官网（网页/信用卡）月付标价，美国价、不含税（美国按州加销售税，欧盟等地加增值税，结账时显示）。只填核实过的；checked 是核实日期，source 是核实来源。",
+ "chatgpt/pro-100": {
+  "usd": 100,
+  "checked": "2026-11-22",
+  "source": "https://help.openai.com/en/articles/9793128"
+ },
+ "chatgpt/pro-200": {
+  "usd": 200,
+  "checked": "2026-11-22",
+  "source": "https://help.openai.com/en/articles/9793128",
+  "note": "新订阅暂停中"
+ },
+ "claude/pro": {
+  "usd": 20,
+  "checked": "2026-11-22",
+  "source": "https://claude.com/pricing"
+ },
+ "claude/max": {
+  "usd": 100,
+  "checked": "2026-11-22",
+  "source": "https://claude.com/pricing"
+ },
+ "claude/ultra": {
+  "usd": 200,
+  "checked": "2026-11-22",
+  "source": "https://claude.com/pricing"
+ },
+ "google-ai/pro": {
+  "usd": 19.99,
+  "checked": "2026-11-22",
+  "source": "https://gemini.google/subscriptions/"
+ },
+ "chatgpt/go": {
+  "usd": 8,
+  "checked": "2026-11-22",
+  "source": "https://openai.com/index/introducing-chatgpt-go/",
+  "note": "美国价，部分国家本地定价"
+ },
+ "chatgpt/plus": {
+  "usd": 20,
+  "checked": "2026-11-22",
+  "source": "https://help.openai.com/en/articles/6950777"
+ },
+ "perplexity/pro": {
+  "usd": 20,
+  "checked": "2026-11-22",
+  "source": "https://www.perplexity.ai/pro"
+ },
+ "perplexity/max": {
+  "usd": 200,
+  "checked": "2026-11-22",
+  "source": "https://www.perplexity.ai/pro"
+ },
+ "grok/supergrok": {
+  "usd": 30,
+  "checked": "2026-11-22",
+  "source": "https://x.ai/grok",
+  "note": "2026年10月起并入 X Subscription（Premium 档 $30）"
+ }
 }
