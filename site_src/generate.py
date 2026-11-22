@@ -538,11 +538,56 @@ def daily_channels(cur):
 <p class="note">代充价来自国内卡网货源平台，只统计充值到自己账号的月付代充。</p>"""
 
 
+DAILY_HOOKS = {}
+HOOK_NAMES = {"chatgpt/plus": "ChatGPT Plus", "chatgpt/go": "ChatGPT Go", "chatgpt/pro-100": "ChatGPT Pro 5x",
+              "chatgpt/pro-200": "ChatGPT Pro 20x", "claude/pro": "Claude Pro", "claude/max": "Claude Max 5x",
+              "claude/ultra": "Claude Max 20x", "google-ai/pro": "Google AI Pro", "grok/supergrok": "SuperGrok",
+              "x/premium": "X Premium", "perplexity/pro": "Perplexity Pro", "cursor/pro": "Cursor Pro"}
+
+
+def short_name(k):
+    return HOOK_NAMES.get("/".join(k), full_name(*k))
+
+
+def daily_hook(date, cur, chg):
+    """A specific, factual headline for the day: a price change if there is one, otherwise rotating savings."""
+    keys = [k for k, _ in headline_rows(cur)]
+    big = [(k, r, p, d) for k, r, p, d in chg if k in keys and abs(d) >= 0.03]
+    if big:
+        k, r, p, d = max(big, key=lambda x: abs(x[3]))
+        more = f"等 {len(chg)} 处变价" if len(chg) > 1 else ""
+        return f"{cname(r['cc'])}区 {short_name(k)} {'降价' if d < 0 else '涨价'} {abs(d) * 100:.0f}%，现 {usd(r['usd'])}{('，' + more) if more else ''}"
+    # rotate through the plans people search for most, so each day leads with a different one
+    n = dt.date.fromisoformat(date).toordinal()
+    pop = [k for k in [("chatgpt", "plus"), ("claude", "pro"), ("chatgpt", "go"), ("google-ai", "pro"), ("grok", "supergrok"),
+                       ("claude", "max"), ("x", "premium"), ("chatgpt", "pro-100"), ("cursor", "pro")] if k in cur]
+    keys = pop or keys
+    picks = []
+    for i in range(len(keys)):
+        k = keys[(n * 2 + i) % len(keys)]
+        rows = cur[k]
+        off = official_of(*k)
+        cheaper_than_site = not off or rows and rows[0]["usd"] < off["usd"] * 0.95
+        if rows and cheaper_than_site and rows[0]["vs_us"] is not None and rows[0]["vs_us"] < -0.08 and all(cur[p][0]["cc"] != rows[0]["cc"] or p == k for p in picks):
+            picks.append(k)
+        if len(picks) == 2:
+            break
+    short = {"印度尼西亚": "印尼", "巴基斯坦": "巴基斯坦", "沙特阿拉伯": "沙特"}
+    cn = lambda cc: short.get(cname(cc), cname(cc))
+    parts = [f"{short_name(k)} {cn(cur[k][0]['cc'])}区 {usd(cur[k][0]['usd'])}，省 {abs(cur[k][0]['vs_us']) * 100:.0f}%" for k in picks]
+    deal = next((d for d in DEALS if d["active"]), None)
+    if deal and n % 2 == 0 and parts:
+        parts = [parts[0], deal["title"].split("（")[0]]
+    return "；".join(parts) if parts else f"{len(cur)} 个 AI 会员档位的最低价地区"
+
+
 def build_daily(day, cur, prev_day, prev):
     date = day["date"]
     path = f"/daily/{date}/"
-    title = f"AI 会员 App Store 价格日报（{zh_date(date)}）"
     chg = changes(cur, prev)
+    hook = daily_hook(date, cur, chg)
+    DAILY_HOOKS[date] = hook
+    title = f"{hook}｜AI 会员价格日报 {zh_date(date)[5:]}"
     facts = []
     for (p, pl), rows in headline_rows(cur):
         lo = rows[0]
@@ -563,12 +608,12 @@ def build_daily(day, cur, prev_day, prev):
         + "".join(f"<td>{rank_html(rows[i:i + 1], 1)}</td>" if len(rows) > i else "<td>—</td>" for i in range(3)).replace("<i>1</i>", "")
         + '</tr>'
         for (p, pl), rows in sorted(cur.items(), key=lambda kv: [x[:2] for x in PLANS].index(kv[0])))
-    desc = (f"{zh_date(date)} AI 会员 App Store 各地区价格日报：ChatGPT、Claude、Gemini、Grok、X、Perplexity、Cursor 共 "
+    desc = (f"{hook}。{zh_date(date)} AI 会员 App Store 各地区价格日报：ChatGPT、Claude、Gemini、Grok、X、Perplexity、Cursor 共 "
             f"{len(cur)} 个档位的最便宜地区与价格变动。")
     cr_html, cr_ld = crumbs([("首页", "/"), ("日报", "/daily/"), (date, path)])
     body = f"""{cr_html}
-<h1>{e(title)}</h1>
-<p class="meta">覆盖 {len(day['storefronts'])} 个 App Store 地区 · 价格按当日汇率折算成美元</p>
+<h1>{e(hook)}</h1>
+<p class="meta">AI 会员 App Store 价格日报 · {zh_date(date)} · 覆盖 {len(day['storefronts'])} 个地区 · 价格按当日汇率折算成美元</p>
 <div class="bar"><h2>今日要点：热门会员最便宜的 3 个地区</h2>{cur_select()}</div>
 {rank_table(headline_rows(cur))}
 {deal_banner()}
@@ -587,7 +632,7 @@ def build_daily(day, cur, prev_day, prev):
 
 
 def build_daily_index(days):
-    items = "".join(f'<li><a href="/daily/{d["date"]}/">{zh_date(d["date"])} 价格日报</a></li>' for d in reversed(days))
+    items = "".join(f'<li><a href="/daily/{d["date"]}/">{zh_date(d["date"])}</a>：{e(DAILY_HOOKS.get(d["date"], "价格日报"))}</li>' for d in reversed(days))
     cr_html, cr_ld = crumbs([("首页", "/"), ("日报", "/daily/")])
     body = f"""{cr_html}<h1>AI 会员 App Store 价格日报</h1>
 <p class="lead">每天北京时间早上更新一次，记录各档会员在各地区 App Store 的最低价和标价变动。</p><ul class="list">{items}</ul>"""
@@ -1229,12 +1274,11 @@ def build_news(cur):
         cr_html, cr_ld = crumbs([("首页", "/"), ("AI 早报", "/news/"), (zh_date(b["date"]), path)])
         if i == len(BRIEFS) - 1:
             older = f'<a href="/news/{BRIEFS[i - 1]["date"]}/">← 前一期：{zh_date(BRIEFS[i - 1]["date"])}</a>' if i > 0 else ""
-            LATEST_BRIEF_HTML["body"] = f"""<p class="meta">整理自 Hacker News、Google 新闻、OpenRouter、官方博客和科技媒体的 {b['inputs']} 条信息 · AI 辅助撰写，每条附原文链接</p>
-<p class="lead">{e(b['headline'])}</p>{''.join(arts)}<p class="note">早报由 AI 根据公开来源归纳改写，可能有疏漏，请以原文和官方信息为准。</p><p class="src">{older}</p>"""
+            LATEST_BRIEF_HTML["body"] = f"""<p class="meta">AI 早报 · {zh_date(b['date'])} · 整理自 Hacker News、Google 新闻、OpenRouter、官方博客和科技媒体的 {b['inputs']} 条信息 · AI 辅助撰写，每条附原文链接</p>
+{''.join(arts)}<p class="note">早报由 AI 根据公开来源归纳改写，可能有疏漏，请以原文和官方信息为准。</p><p class="src">{older}</p>"""
         body = f"""{cr_html}
-<h1>AI 早报 · {zh_date(b['date'])}</h1>
-<p class="meta">整理自 Hacker News、Google 新闻、OpenRouter、官方博客和科技媒体的 {b['inputs']} 条信息 · AI 辅助撰写，每条附原文链接</p>
-<p class="lead">{e(b['headline'])}</p>
+<h1>{e(b['headline'])}</h1>
+<p class="meta">AI 早报 · {zh_date(b['date'])} · 整理自 Hacker News、Google 新闻、OpenRouter、官方博客和科技媒体的 {b['inputs']} 条信息 · AI 辅助撰写，每条附原文链接</p>
 {''.join(arts)}
 <p class="note">早报由 AI 根据公开来源归纳改写，可能有疏漏，请以原文和官方信息为准。</p>
 <p class="src">{' · '.join(nav)}</p>"""
@@ -1251,7 +1295,7 @@ def build_news(cur):
     cr_html, cr_ld = crumbs([("首页", "/"), ("AI 早报", "/news/")])
     write("/news/", page(f"AI 早报（每日更新）：{latest['headline']} · 比比价",
                          f"今日 AI 早报：{latest['headline']}。每天整理 AI 新模型发布、社区口碑、会员价格和限额变化，附原文链接。", "/news/",
-                         f'{cr_html}<h1>AI 早报 · {zh_date(latest["date"])}</h1>{latest_html}'
+                         f'{cr_html}<h1>{e(latest["headline"])}</h1>{latest_html}'
                          f'<h2>往期早报</h2><ul class="list">{rows}</ul>', [cr_ld], latest["date"]))
     return ["/news/"] + urls
 
