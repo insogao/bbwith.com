@@ -68,11 +68,7 @@ def cname(cc):
 
 
 def usd(v):
-    """Display an amount held in USD; shown in CNY by default (Chinese readers pay in RMB)."""
-    r = FX.get("CNY")
-    if r:
-        x = v * r
-        return f"¥{x:,.2f}" if x < 1000 else f"¥{x:,.0f}"
+    """Display an amount held in USD; pages start in USD and the header switch converts (assets/sort.js)."""
     return f"${v:,.2f}" if v < 1000 else f"${v:,.0f}"
 
 
@@ -82,7 +78,7 @@ def money(v):
 
 
 FX = {}  # filled in main(): currency -> units per USD, for the selector
-FX_CHOICES = [("CNY", "人民币 ¥"), ("USD", "美元 $"), ("EUR", "欧元 EUR"), ("GBP", "英镑 GBP"),
+FX_CHOICES = [("USD", "美元 $"), ("CNY", "人民币 ¥"), ("EUR", "欧元 EUR"), ("GBP", "英镑 GBP"),
               ("JPY", "日元 JPY"), ("HKD", "港币 HKD"), ("SGD", "新加坡元 SGD")]
 
 
@@ -148,7 +144,7 @@ def _asset_version():
 
 ASSET_V = _asset_version()  # changes whenever a static file changes, so browsers fetch the new one
 
-NAV_MAIN = [("/", "综合比价", ("/", "/chatgpt/", "/claude/", "/google-ai/", "/grok/", "/x/", "/perplexity/", "/cursor/", "/ai-pricing/", "/daily/")),
+NAV_MAIN = [("/", "订阅比价", ("/", "/chatgpt/", "/claude/", "/google-ai/", "/grok/", "/x/", "/perplexity/", "/cursor/", "/ai-pricing/", "/daily/")),
             ("/gift-cards/", "礼品卡", ("/gift-cards/",)),
             ("/channels/", "代充 · 成品号", ("/channels/", "/shop/", "/merchant/")),
             ("/deals/", "优惠", ("/deals/",))]
@@ -297,7 +293,7 @@ def summary_sentence(product, plan, rows, day):
          f"最贵的是{cname(hi['cc'])}（{hi['display']}，约 {usd(hi['usd'])}）")
     if us:
         s += f"；美区标价 {us['display']}"
-    s += f"；所有地区的中位数约 {usd(med)}。价格均按当日汇率折算成人民币。"
+    s += f"；所有地区的中位数约 {usd(med)}。价格均按当日汇率折算成美元（右上角可切换币种）。"
     return s
 
 
@@ -765,7 +761,9 @@ def overview_table(day, cur):
         if off:
             cells["off"] = (off["usd"], money(off["usd"]), url_plan(p, pl) + "#official", "美国价 · 不含税")
         lo = rows[0]
-        cells["app"] = (lo["usd"], money(lo["usd"]), url_plan(p, pl), f"{flag(lo['cc'])} {e(cname(lo['cc']))}")
+        # cheapest region in bold, the next two underneath, so one odd region doesn't decide the answer
+        more = "".join(f'<span class="alt">{flag(r["cc"])} {e(cname(r["cc"]))} {money(r["usd"])}</span>' for r in rows[1:3])
+        cells["app"] = (lo["usd"], money(lo["usd"]), url_plan(p, pl), f"{flag(lo['cc'])} {e(cname(lo['cc']))}", more)
         best_gift = None
         for cc in GIFT_NAMES:
             r = next((x for x in rows if x["cc"] == cc), None)
@@ -790,14 +788,15 @@ def overview_table(day, cur):
         def td(k, label):
             if k not in cells:
                 return f'<td data-label="{label}" class="na">—</td>'
-            v, m, href, sub = cells[k]
+            v, m, href, sub = cells[k][:4]
+            more = cells[k][4] if len(cells[k]) > 4 else ""
             ext = ' rel="nofollow noopener" target="_blank"' if href.startswith("http") else ""
             return (f'<td data-label="{label}" data-v="{v:.2f}" class="{"best" if k == best else ""}"><a href="{href}"{ext}><b>{m}</b>'
-                    f'{f"<small>{sub}</small>" if sub else ""}</a></td>')
+                    f'{f"<small>{sub}</small>" if sub else ""}</a>{f"<div class=alts>{more}</div>" if more else ""}</td>')
         trs += (f'<tr data-prod="{p}"><td><a href="{url_plan(p, pl)}"><b>{e(full_name(p, pl))}</b></a></td>'
                 + td("off", "官网") + td("app", "App Store 最低区") + td("gift", "礼品卡实付") + td("topup", "代充（中位）") + td("acct", "成品号（中位）") + "</tr>")
     return (f'<div class="tablewrap"><table class="prices overview sortable"><thead><tr><th>会员</th><th data-sort=num>官网</th>'
-            f'<th data-sort=num>App Store 最低区</th><th data-sort=num>礼品卡实付</th><th data-sort=num>代充（中位）</th><th data-sort=num>成品号（中位）</th></tr></thead>'
+            f'<th data-sort=num>App Store 最便宜 3 区</th><th data-sort=num>礼品卡实付</th><th data-sort=num>代充（中位）</th><th data-sort=num>成品号（中位）</th></tr></thead>'
             f'<tbody>{trs}</tbody></table></div>'
             '<p class="hint"><span class="bestdot"></span> 绿色 = 充到<b>自己账号</b>的最便宜方式（官网、App Store、礼品卡、代充里最低的）。'
             '「礼品卡实付」已算上买卡的溢价；「代充」是卖家把会员充到你的账号；「成品号」是卖家给你一个开好会员的账号，最便宜但账号不在你名下。'

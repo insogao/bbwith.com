@@ -27,19 +27,19 @@ document.querySelectorAll("table.sortable").forEach(function (table) {
     return (SYM[c] || c + " ") + v.toLocaleString("en-US", { minimumFractionDigits: digits, maximumFractionDigits: digits });
   }
   function apply(c) {
-    if (!window.FX[c]) c = "CNY";
+    if (!window.FX[c]) c = "USD";
     document.querySelectorAll(".m").forEach(function (el) {
       el.textContent = fmt(parseFloat(el.getAttribute("data-usd")) * window.FX[c], c);
     });
     document.querySelectorAll(".mh").forEach(function (el) { el.textContent = c; });
     sel.forEach(function (s) { s.value = c; });
   }
-  var saved = "CNY";
-  try { saved = localStorage.getItem("bbwith-cur2") || "CNY"; } catch (e) {}
+  var saved = "USD";
+  try { saved = localStorage.getItem("bbwith-cur3") || "USD"; } catch (e) {}
   apply(saved);
   sel.forEach(function (s) {
     s.addEventListener("change", function () {
-      try { localStorage.setItem("bbwith-cur2", s.value); } catch (e) {}
+      try { localStorage.setItem("bbwith-cur3", s.value); } catch (e) {}
       apply(s.value);
     });
   });
