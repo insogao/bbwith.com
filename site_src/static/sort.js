@@ -59,6 +59,6 @@ document.querySelectorAll("[data-more]").forEach(function (b) { b.setAttribute("
 document.querySelectorAll("table.prices:not(.rank3)").forEach(function (t) {
   var heads = Array.prototype.map.call(t.querySelectorAll("thead th"), function (th) { return th.textContent.replace(/[↕▾▴]/g, "").trim(); });
   t.querySelectorAll("tbody tr").forEach(function (tr) {
-    Array.prototype.forEach.call(tr.cells, function (td, i) { if (heads[i] && !td.hasAttribute("colspan")) td.setAttribute("data-label", heads[i]); });
+    Array.prototype.forEach.call(tr.cells, function (td, i) { if (heads[i] && !td.hasAttribute("colspan") && !td.hasAttribute("data-label")) td.setAttribute("data-label", heads[i]); });
   });
 });

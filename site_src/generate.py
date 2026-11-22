@@ -761,21 +761,31 @@ def overview_table(day, cur):
         if off:
             cells["off"] = (off["usd"], money(off["usd"]), url_plan(p, pl) + "#official", "美国价 · 不含税")
         lo = rows[0]
-        # the three cheapest regions as one ranked list; signal bars show the rank (3 green = cheapest)
-        top = "".join(
-            f'<li class="r{i + 1}"><i class="sig">{"".join(f"<s class={chr(34)}on{chr(34)}></s>" if j < 3 - i else "<s></s>" for j in range(3))}</i>'
-            f'<span class="rg">{flag(r["cc"])} {e(cname(r["cc"]))}</span>{money(r["usd"])}</li>' for i, r in enumerate(rows[:3]))
-        cells["app"] = (lo["usd"], money(lo["usd"]), url_plan(p, pl), "", f'<ol class="top3">{top}</ol>')
-        best_gift = None
-        for cc in GIFT_NAMES:
-            r = next((x for x in rows if x["cc"] == cc), None)
-            b = best_rate(cc, day["fx"]) if GIFT.get("items") else None
-            if r and b and cc != "us":
-                net = r["local"] * b["rate"]
-                if not best_gift or net < best_gift[0]:
-                    best_gift = (net, cc)
-        if best_gift:
-            cells["gift"] = (best_gift[0], money(best_gift[0]), f"/gift-cards/apple/{best_gift[1]}/", f"{flag(best_gift[1])} {e(GIFT_NAMES[best_gift[1]])}区卡")
+        # App Store routes you can actually pay for: list price x what the gift card costs in that region.
+        # Range = cheapest to dearest platform's best card. Ranked by the low end; regions with no card quote are left out
+        # of the ranking and named below it, so a cheap but unpayable region doesn't look like the answer.
+        paid = []
+        for r in rows:
+            rr = gift_shop_rates(r["cc"], day["fx"])
+            if rr:
+                paid.append((r["local"] * min(rr), r["local"] * max(rr), r))
+        paid.sort(key=lambda t: t[0])
+
+        def sig(i):
+            return '<i class="sig">' + "".join('<s class="on"></s>' if j < 3 - i else "<s></s>" for j in range(3)) + "</i>"
+
+        def rng(lo_, hi_):
+            return money(lo_) if hi_ - lo_ < 0.01 * lo_ else f'{money(lo_)}<span class="dash">–</span>{money(hi_)}'
+        if paid:
+            top = "".join(f'<li class="r{i + 1}">{sig(i)}<span class="rg">{flag(r["cc"])} {e(cname(r["cc"]))}</span><span class="pr">{rng(l_, h_)}</span></li>'
+                          for i, (l_, h_, r) in enumerate(paid[:3]))
+            cheaper = [r for r in rows if r["usd"] < paid[0][0] and r["cc"] not in {x[2]["cc"] for x in paid}][:2]
+            foot = (f'<li class="nogift">标价更低、暂无礼品卡报价：' + "、".join(f'{flag(r["cc"])} {e(cname(r["cc"]))} {money(r["usd"])}' for r in cheaper) + "</li>") if cheaper else ""
+            cells["app"] = (paid[0][0], "", url_plan(p, pl), "", f'<ol class="top3">{top}{foot}</ol>')
+        else:
+            top = "".join(f'<li class="r{i + 1}">{sig(i)}<span class="rg">{flag(r["cc"])} {e(cname(r["cc"]))}</span><span class="pr">{money(r["usd"])}</span></li>'
+                          for i, r in enumerate(rows[:3]))
+            cells["app"] = (lo["usd"], "", url_plan(p, pl), "", f'<ol class="top3">{top}<li class="nogift">按标价，这几个地区暂无礼品卡报价</li></ol>')
         ck = channel_key_for(p, pl)
         ch = CHANNELS.get("plans", {}).get(ck, {}) if ck else {}
         if rate and ch.get("topup", {}).get("count", 0) >= 3:
@@ -797,13 +807,14 @@ def overview_table(day, cur):
             return (f'<td data-label="{label}" data-v="{v:.2f}" class="{"best" if k == best else ""}"><a href="{href}"{ext}><b>{m}</b>'
                     f'{f"<small>{sub}</small>" if sub else ""}</a></td>')
         trs += (f'<tr data-prod="{p}"><td><a href="{url_plan(p, pl)}"><b>{e(full_name(p, pl))}</b></a></td>'
-                + td("off", "官网") + td("app", "App Store 最低区") + td("gift", "礼品卡实付") + td("topup", "代充（中位）") + td("acct", "成品号（中位）") + "</tr>")
+                + td("off", "官网") + td("app", "App Store 低价区 Top3") + td("topup", "代充（中位）") + td("acct", "成品号（中位）") + "</tr>")
     return (f'<div class="tablewrap"><table class="prices overview sortable"><thead><tr><th>会员</th><th data-sort=num>官网</th>'
-            f'<th data-sort=num>App Store 低价区 Top3</th><th data-sort=num>礼品卡实付</th><th data-sort=num>代充（中位）</th><th data-sort=num>成品号（中位）</th></tr></thead>'
+            f'<th data-sort=num>App Store 低价区 Top3<small class="th-sub">含买礼品卡的成本</small></th><th data-sort=num>代充（中位）</th><th data-sort=num>成品号（中位）</th></tr></thead>'
             f'<tbody>{trs}</tbody></table></div>'
-            '<p class="hint">「礼品卡实付」是用最划算的礼品卡支付 App Store 标价，已算上买卡的溢价；「代充」是卖家把会员充到你的账号；「成品号」是卖家给你一个开好会员的账号，最便宜但账号不在你名下。'
-            '「官网」是网页用外币信用卡订阅的美国标价，结账时按账单地址另加税，国内卡还有银行的货币转换费，详见各会员页。'
-            '点任意价格看详情。</p>')
+            '<p class="hint"><b>App Store</b>：实际要花的钱 = 当地标价 × 买当地礼品卡的成本；区间是在不同平台买卡的差价，'
+            '各平台报价和付款方式见<a href="/gift-cards/">礼品卡</a>。'
+            '<b>官网</b>：网页用外币信用卡订阅的美国标价，结账时另加税。'
+            '<b>代充 / 成品号</b>：国内渠道报价的中位数，逐条报价见<a href="/channels/">代充 · 成品号</a>；成品号是卖家开好会员的账号，不在你名下。</p>')
 
 
 def build_home(day, cur, chg, prev):
@@ -1572,6 +1583,15 @@ def gift_rows(cc, fx):
         rows.append(dict(it, fair=fair, prem=it["usd"] / fair - 1, rate=it["usd"] / it["face"], href=go(it["shop"], it["slug"], key)))
     rows.sort(key=lambda r: (r["prem"], -r["face"]))
     return rows
+
+
+def gift_shop_rates(cc, fx, min_face_usd=4):
+    """Each platform's best USD per local unit in one region (cards worth a few dollars and up)."""
+    best = {}
+    for r in gift_rows(cc, fx):
+        if r["fair"] >= min_face_usd and (r["shop"] not in best or r["rate"] < best[r["shop"]]):
+            best[r["shop"]] = r["rate"]
+    return list(best.values())
 
 
 def best_rate(cc, fx, min_face_usd=4):

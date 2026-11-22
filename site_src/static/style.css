@@ -306,3 +306,9 @@ table.overview td.t3 a{display:block}
   table.overview ol.top3 .rg{text-align:left}
 }
 @media (max-width:640px){table.overview td.t3{gap:2px}}
+.th-sub{display:block;font-weight:400;font-size:11px;color:var(--muted)}
+table.overview ol.top3 .pr{white-space:nowrap;font-variant-numeric:tabular-nums}
+table.overview ol.top3 li.r1 .pr .m{font-weight:700;color:#0d6b5e}
+table.overview ol.top3 .dash{margin:0 2px;color:#999}
+table.overview ol.top3 li.nogift{display:block;font-size:11px;color:var(--muted);padding-top:4px;white-space:normal}
+table.overview ol.top3{min-width:250px}
