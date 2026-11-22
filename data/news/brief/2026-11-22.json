@@ -1,57 +1,29 @@
 {
  "date": "2026-11-22",
- "time": "2026-11-22 07:59",
- "headline": "GPT-6.2 与 Opus 5.5 比性价比，开源小模型继续压价",
+ "time": "2026-11-22 14:22",
+ "headline": "GPT-6.2 Sol 以 85.2 分登顶对齐榜",
  "model": "workbuddy/deepseek-v4.1-flash",
- "inputs": 82,
+ "inputs": 75,
  "items": [
   {
-   "title": "Design Arena 游戏榜：GPT-6.2 包揽前三",
-   "summary": "Design Arena 的游戏开发榜单上，GPT-6.2 Astra 排第一，GPT-6 Astra 第二，GPT-6.2 Sol 第三。榜单数据显示 Astra 平均 6.8 分钟、每个游戏约 0.98 美元，Sol 为 4.6 分钟、0.22 美元。另有测评认为 GPT-6.2 Sol 准确度不如 Claude Opus 5.5，但按价格看可能是更划算的选择。",
+   "title": "对齐榜前七全是 OpenAI，Claude 居第八",
+   "summary": "Arena 更新的对齐指数中，OpenAI 有七款模型排在前七名，GPT-6.2 Sol 以 85.2 分居首。Claude Fable 5.2 首次上榜，以 78.2 分与 Kimi K3.1 Pro 并列第八。该榜单衡量模型在对齐相关测试中的表现，可以作为挑模型时的参考之一。",
    "take": "",
    "kind": "model",
    "products": [
-    "chatgpt",
-    "claude"
-   ],
-   "links": [
-    {
-     "name": "news.sulat.com",
-     "title": "OpenAI models take all top three Game Dev spots on Design Arena, led by GPT-6.2 Astra",
-     "url": "https://news.sulat.com/2026/11/21/design-arena-game-dev/"
-    },
-    {
-     "name": "Google News",
-     "title": "GPT-6.2 Sol vs. Claude Opus 5.5: Not as accurate, but still might be the better buy - The New Stack",
-     "url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE1BUTFOUzJWbzVvbVJfc0o2REJhbWIxSmxrUDRWRnoyWDFSZHo4R2MyX0ZIcGxnQS1HMzlCR3NSMWgxZ3pGVUJEU2o3WXQ2c1pjYjZxTDlQOTFPOS1WZktBaDY1TUI?oc=5"
-    }
-   ]
-  },
-  {
-   "title": "Claude Max 订阅折合 46.4 倍，单次跑分仍更贵",
-   "summary": "有人把订阅价值和 API 价格做了换算：100 美元的 Claude Max 约相当于 4,640 美元的 Opus 5.5 用量，倍率为 46.4 倍。用同一倍率重算 Bug Hunt Bench 后，Opus 5.5 每次跑分的成本仍接近 GPT-6.2 Sol 的两倍。套餐额度看上去划算，但模型本身的单价差距并没有消失。",
-   "take": "",
-   "kind": "pricing",
-   "products": [
-    "claude",
     "chatgpt"
    ],
    "links": [
     {
      "name": "news.sulat.com",
-     "title": "Even at Claude Max’s 46.4x, Opus 5.5 costs nearly twice as much per bench run as GPT-6.2 Sol",
-     "url": "https://news.sulat.com/2026/11/21/ai-subscription-multipliers/"
-    },
-    {
-     "name": "Google News",
-     "title": "GPT-6.2 Sol vs. Claude Opus 5.5: Not as accurate, but still might be the better buy - The New Stack",
-     "url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE1BUTFOUzJWbzVvbVJfc0o2REJhbWIxSmxrUDRWRnoyWDFSZHo4R2MyX0ZIcGxnQS1HMzlCR3NSMWgxZ3pGVUJEU2o3WXQ2c1pjYjZxTDlQOTFPOS1WZktBaDY1TUI?oc=5"
+     "title": "OpenAI takes the top seven places on Arena’s Alignment Index, led by GPT-6.2 Sol at 85.2",
+     "url": "https://news.sulat.com/2026/11/22/arena-alignment-index/"
     }
    ]
   },
   {
-   "title": "Inkling 2 Mini：1M 上下文，低价上架",
-   "summary": "Thinking Machines Lab 的开源权重多模态模型 Inkling 2 Mini 已登陆 OpenRouter，26.4B 总参数中 3.4B 为激活参数，上下文约 104 万 token，定价为输入 0.07 美元、输出 0.30 美元每百万 token。另据 exo 介绍，其引擎在 M5 Ultra Mac Studio 上让该模型跑到 210 token/秒，在 M5 Max MacBook Pro 上为 125 token/秒，但所用引擎尚未发布。",
+   "title": "Inkling 2 Mini 上下文达百万，价格很低",
+   "summary": "Thinking Machines Lab 在 OpenRouter 上架开放权重的多模态模型 Inkling 2 Mini：总参数 26.4B、激活 3.4B，上下文约 100 万 token，输入每百万 token 0.07 美元、输出 0.30 美元。另有团队称，借助尚在测试、未正式发布的一款引擎，在一台 M5 Ultra 的 Mac Studio 上把它跑到了每秒 210 个 token。想低成本尝试多模态，或想在本地跑模型的用户多了一个选择。",
    "take": "",
    "kind": "model",
    "products": [],
@@ -69,55 +41,68 @@
    ]
   },
   {
-   "title": "Claude 参与数学证明的说法引发争议",
-   "summary": "据报道，Anthropic 一名数学家称 Claude 帮助完成了黎曼猜想的证明，另有报道称已有两个团队参与核验。也有媒体质疑相关产出长达 25 万页、并未真正解决这个 167 年未解的问题，并指出同时存在一份完全由人类完成的证明。",
+   "title": "AWS Quick 免费版可用 Claude，注册只要邮箱",
+   "summary": "AWS Quick 的免费版注册只需要一个邮箱，AWS 发布说明把它的快速、均衡、智能三档分别对应 Claude Haiku 5.5、Sonnet 5.5 和 Opus 5.5。对还没订阅 Claude 的用户来说，这是无需付费就能接触到 Opus 级模型的一条途径。",
    "take": "",
-   "kind": "model",
-   "products": [
-    "claude"
-   ],
-   "links": [
-    {
-     "name": "Google News",
-     "title": "Two groups verify mathematician’s claim that Claude helped prove mathematics problem - The Guardian",
-     "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxNZjl5ODZTYXRNU2pfRmhEdnR0ckVzdE9iVVhrX3ZmZzZTMl9acTJENHAyUUFJazdRNGw1a2pES2pjWEpuTG1qTmtfNjBCd1NTQkxXb0c0X2pwSzZtNDJpWS1HbUR6aU5PUC1Gc1N0cXNEZEV5cTd2ZnYtWk9oWU95d3lERkRUOHdSQXRFSTY2OUllVktJenpTODQzU2g?oc=5"
-    },
-    {
-     "name": "techcrunch.com",
-     "title": "AI claimed a solution to the 167-year-old Riemann hypothesis — and a human did, too",
-     "url": "https://techcrunch.com/2026/11/20/ai-claimed-a-solution-to-the-167-year-old-riemann-hypothesis-and-a-human-did-too/"
-    },
-    {
-     "name": "Google News",
-     "title": "250,000-Page Math Slop: Why Anthropic Didn’t Solve the Riemann Hypothesis - Emerald Book",
-     "url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTFBmVi1paHdkZ0p0US1LNDM0UFlQb3gzVC1MaUtxTi1iQkFfUWVqajlKVVEyemk0OGtlNGJKVGZwWVdhSDNfTjJRMFVuRG12R2s?oc=5"
-    },
-    {
-     "name": "simonwillison.net",
-     "title": "Quoting Ravi Vakil",
-     "url": "https://simonwillison.net/2026/Nov/20/ravi-vakil/"
-    }
-   ]
-  },
-  {
-   "title": "Claude 手机端改版：四标签与 Code 入口",
-   "summary": "Anthropic 开始向 iOS 和 Android 推送改版后的 Claude 应用，底部栏分为 Chat、Projects、Code、Artifacts 四个入口，首页可以直接进入 Code 会话，Projects 也有更新。对移动端用户来说，写代码和管理项目的入口变得更靠前了。",
-   "take": "",
-   "kind": "product",
+   "kind": "pricing",
    "products": [
     "claude"
    ],
    "links": [
     {
      "name": "news.sulat.com",
-     "title": "Claude’s new mobile app: a four-tab bar, Code sessions from the home screen and a Projects refresh",
-     "url": "https://news.sulat.com/2026/11/21/claude-mobile-app-redesign/"
+     "title": "AWS Quick’s free plan needs only an email and uses Claude models",
+     "url": "https://news.sulat.com/2026/11/22/aws-quick-free-plan/"
     }
    ]
   },
   {
-   "title": "Gemini App 更新相机、GIF 与购物连接",
-   "summary": "Gemini 安卓版的相机界面做了重新设计，方便把照片快速加进提示词；同时开始支持生成 GIF，并新增 Target 和多家杂货连锁作为 Connected Apps。这些改动都面向日常场景，把拍照、表情包和购物逐步收进同一个入口。",
+   "title": "微软一次发布七款新模型，价格低于对手",
+   "summary": "微软 AI 推出七款 MAI 新模型，覆盖编程、语音等用途，据报道定价低于同类竞品。这些模型可用的渠道各不相同，用户需要按自己使用的平台确认能否调用。",
+   "take": "",
+   "kind": "model",
+   "products": [],
+   "links": [
+    {
+     "name": "news.sulat.com",
+     "title": "Microsoft’s seven new MAI models: prices, access and the fine print",
+     "url": "https://news.sulat.com/2026/11/22/microsoft-mai-ignite-models/"
+    }
+   ]
+  },
+  {
+   "title": "OpenCode 上 GLM 5.3 等模型价格降六成",
+   "summary": "OpenCode 的 Console 更新了价格：GLM 5.3 每百万 token 输入 0.56 美元、输出 1.76 美元，DeepSeek V4.1 Flash 分别是 0.12 和 0.48 美元。据其负责人说法，这比 Fireworks 和 Baseten 的标价低约 60%。经常跑编码 Agent 的用户换个渠道可以明显压低调用成本。",
+   "take": "",
+   "kind": "pricing",
+   "products": [],
+   "links": [
+    {
+     "name": "news.sulat.com",
+     "title": "OpenCode takes 60% off GLM 5.3 and DeepSeek V4.1 Flash, below Fireworks and Baseten list prices",
+     "url": "https://news.sulat.com/2026/11/22/opencode-price-cut/"
+    }
+   ]
+  },
+  {
+   "title": "ChatGPT 上线钱包，让 AI 代下单更安全",
+   "summary": "OpenAI 上线 ChatGPT Wallet，官方称这是让 AI 替用户购物时更安全的做法。对常让助手比价、代下单的用户来说，支付环节被单独做成了一个产品，具体开通方式和适用场景可留意官方说明。",
+   "take": "",
+   "kind": "product",
+   "products": [
+    "chatgpt"
+   ],
+   "links": [
+    {
+     "name": "Google News",
+     "title": "OpenAI launches ChatGPT Wallet, claiming it's a safe way to have AI shop for you - Mashable",
+     "url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTFBHeTFKZ0NySWhLdXF5bXRNLU5MOHJUUU9WcTVwOGFOc2xNaEstLVp6cy1Ia3BKTzJFczNBY2NOTW56SHJIWXRzY2UxY2NhQmJnQUgtZG5MemVpOG5XcWtUdjhWUzRjbjQ?oc=5"
+    }
+   ]
+  },
+  {
+   "title": "Gemini 安卓版相机改版，拍完可直接提问",
+   "summary": "Google 重新设计了安卓版 Gemini 的应用内相机，让用户更快把拍到的画面加进提问里。改动先在安卓端推送，平时用摄像头识物、拍题或看说明书都会直接受影响。",
    "take": "",
    "kind": "product",
    "products": [
@@ -125,72 +110,14 @@
    ],
    "links": [
     {
+     "name": "Google News",
+     "title": "Gemini app rolls out very slick camera redesign on Android - 9to5Google",
+     "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFAtS1hqLVBkSE54X0tEeENIOU8wNjU0c0VrU1JqdVZmZ21qRWItTGxzWVZ1NXNJX2dNQmdKUHFfVW5iZ2hoTUc5bEc4YVpTWHNUQmI1Tjd0NW9KdlNTakM4MmRGakJBQktJ?oc=5"
+    },
+    {
      "name": "9to5google.com",
      "title": "Gemini app rolls out very slick camera redesign on Android",
      "url": "https://9to5google.com/2026/11/21/gemini-camera-redesign/"
-    },
-    {
-     "name": "androidauthority.com",
-     "title": "Gemini can now be your go-to source for making GIFs",
-     "url": "https://www.androidauthority.com/gemini-gif-generation-rollout-3737901/"
-    },
-    {
-     "name": "androidauthority.com",
-     "title": "Gemini’s latest Connected Apps additions include Target and major grocery chains",
-     "url": "https://www.androidauthority.com/new-gemini-connected-apps-2-3737790/"
-    }
-   ]
-  },
-  {
-   "title": "ClawDOS：把 AI 编程 agent 搬进 DOS",
-   "summary": "ClawDOS 是一个运行在 DOS 环境下的 AI 编程 agent，相关帖子在 Hacker News 获得 155 分、50 条评论。它的实用价值有限，但展示了在极老的操作系统里跑 agent 的可行性。",
-   "take": "社区整体反应正面，觉得在 DOS 这类不寻常环境里启动 agent 很有趣；也有人指出，这类工作对仍在维护 WinXP、Win7 老设备的调试场景可能真有用。",
-   "kind": "product",
-   "products": [],
-   "links": [
-    {
-     "name": "Hacker News",
-     "title": "ClawDOS – An AI coding agent for DOS",
-     "url": "http://ricapar.net/ClawDOS/"
-    },
-    {
-     "name": "Hacker News 讨论",
-     "title": "50 条评论",
-     "url": "https://news.ycombinator.com/item?id=50586292"
-    }
-   ]
-  },
-  {
-   "title": "Anthropic 上市首周遇冷，AI 板块下跌",
-   "summary": "Anthropic 上周四在纳斯达克完成规模创纪录的 IPO，但随后股价走低，同期科技股经历 2020 年以来最差的一周，据 WSJ 报道 AI 板块市值蒸发约 4 万亿美元。多家媒体把这次下跌和市场对 AI 商业化速度的怀疑联系起来。",
-   "take": "",
-   "kind": "industry",
-   "products": [],
-   "links": [
-    {
-     "name": "Hacker News",
-     "title": "Anthropic's IPO Bust Deepens $4T AI Wipeout on Wall Street",
-     "url": "https://www.wsj.com/finance/stocks/anthropics-ipo-bust-punctuates-4-trillion-ai-wipeout-on-wall-street-f1f1ec90"
-    },
-    {
-     "name": "Hacker News 讨论",
-     "title": "5 条评论",
-     "url": "https://news.ycombinator.com/item?id=50582280"
-    },
-    {
-     "name": "Google News",
-     "title": "Anthropic’s record IPO collides with tech’s worst week on Wall Street since 2020 - CNBC",
-     "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTFBuZ3QwZ1Qzd0FwWVhzOWhhbWZ5YWEzNTI0anpyemhZQXF6LVM1d202X3VSVGthTFNUaE13UlNfWUx5VkNhTEduOHctbWZtVlloME45dGFBMDA3OGpWdDhXdTUxNFVhSFpya21aMnpGVHHSAXZBVV95cUxORlNoeVVtbW1fLU1EY01EellhNHg0VldaY0Y5R3Y5enVEaTdZZTZENDJMWFNrblBqTEtORGZFRlZacjBwOWQ2ZXNjSF9KZFNsNkQ4WEtTallYdnVHMm5JRVBMYWl5bHhlb19QUzlIcUZOTXh2U1hB?oc=5"
-    },
-    {
-     "name": "Google News",
-     "title": "\"This is a painful tech sell-off\": Anthropic shares slump - Axios",
-     "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTFAxcFNublNidGF2Ny1sSHRtV0gzV0RpU3R6REo4M2dUUjR5WnMxVm1zRUhVd0lvR1I5OG9Yel9aQkJiUUxBZV9rSmVfVDBWUEJZdU82cnM3TTc3WjVoMFYyMnJXTG5mN2tDSzB0bQ?oc=5"
-    },
-    {
-     "name": "Google News",
-     "title": "Anthropic broke records with its initial public offering on Thursday before a rocky first full day of trading. The markets plunged, reflecting the widening disconnect between Silicon Valley optimism over A.I.’s potential and Wall Street’s growing doubts about wheth - Facebook",
-     "url": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxORVpaVk52cFo5Q1l3dzhxRU5Lb3RES213dzBuc3JEeFFvZnJDY1RzREhUam1fcm14VmdmYVg2ZVFEdVBxMEhtUXJuTzdNMkN4aHJNTkJOOG1DaGwtbFE1WUp5djJnVC1tMFBfSXJUVjdqVTNjcV8wYjM1alVKRU83c1JhbWsxLXlIbExLdktLNU5vOFNmVFRiSnZYNzlqZFd1UGlfNXVwU1dvVDRLSlNEenRrYzJYWkxhQ3QtT1NoTUFsZm1ZZVpaQm1BamVjX2JBbGxZ?oc=5"
     }
    ]
   }
