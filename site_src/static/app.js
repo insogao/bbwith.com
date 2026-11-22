@@ -260,3 +260,36 @@ document.addEventListener("click", function (ev) {
   });
   apply();
 })();
+
+// data freshness: time since the last update and a countdown to the next one
+(function () {
+  var cells = document.querySelectorAll(".fr[data-t]");
+  if (!cells.length) return;
+  function dur(s) {
+    s = Math.max(0, Math.floor(s));
+    var d = Math.floor(s / 86400), h = Math.floor(s % 86400 / 3600), m = Math.floor(s % 3600 / 60);
+    if (d) return d + " 天 " + h + " 小时";
+    if (h) return h + " 小时 " + m + " 分";
+    return m ? m + " 分钟" : "刚刚";
+  }
+  function clock(s) {
+    s = Math.max(0, Math.floor(s));
+    var p = function (n) { return (n < 10 ? "0" : "") + n; };
+    return p(Math.floor(s / 3600)) + ":" + p(Math.floor(s % 3600 / 60)) + ":" + p(s % 60);
+  }
+  function tick() {
+    var now = Date.now() / 1000;
+    cells.forEach(function (c) {
+      var t = Date.parse(c.dataset.t) / 1000, per = +c.dataset.period;
+      if (isNaN(t)) return;
+      var age = now - t, left = per - age;
+      c.querySelector(".ago").textContent = (age < 60 ? "刚刚更新" : dur(age) + "前更新");
+      var nx = c.querySelector(".next");
+      if (left > 0) { nx.innerHTML = "下次 <b>" + clock(left) + "</b>"; c.className = "fr ok"; }
+      else if (left > -1800) { nx.textContent = "正在更新…"; c.className = "fr busy"; }
+      else { nx.textContent = "本轮更新延迟"; c.className = "fr late"; }
+      c.querySelector(".fr-bar i").style.width = Math.min(100, Math.max(0, age / per * 100)) + "%";
+    });
+  }
+  tick(); setInterval(tick, 1000);
+})();

@@ -337,3 +337,30 @@ table.overview ol.top3 li{padding:3px 0}
 @media (max-width:860px){.hpanels{grid-template-columns:minmax(0,1fr);gap:10px}.hp.brief{display:none}}
 @media (max-width:640px){.top nav.main a{padding:6px 9px;font-size:14px}}
 @media (max-width:640px){.top nav.main{gap:0}.top nav.main a{padding:6px 8px;font-size:13.5px}.top nav.main .badge{margin-left:2px}}
+/* data freshness strip */
+.fresh{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0 0 14px}
+.fr{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 14px}
+.fr-h{display:flex;align-items:center;gap:7px;font-size:13.5px}
+.fr-h span{margin-left:auto;color:var(--muted);font-size:12px}
+.fr .dot{width:8px;height:8px;border-radius:50%;background:#12a37f;flex:none;box-shadow:0 0 0 0 rgba(18,163,127,.5);animation:pulse 2s infinite}
+.fr.busy .dot{background:#e0a100;animation:none}
+.fr.late .dot{background:#c9c4bb;animation:none}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(18,163,127,.45)}70%{box-shadow:0 0 0 7px rgba(18,163,127,0)}100%{box-shadow:0 0 0 0 rgba(18,163,127,0)}}
+.fr-bar{height:4px;border-radius:2px;background:#eeebe5;margin:9px 0 7px;overflow:hidden}
+.fr-bar i{display:block;height:100%;background:linear-gradient(90deg,#12a37f,#7fd3b9);border-radius:2px;transition:width 1s linear}
+.fr.busy .fr-bar i{background:#e0a100}
+.fr-t{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.fr-t b{color:var(--fg);font-weight:600}
+@media (max-width:640px){.fresh{grid-template-columns:minmax(0,1fr);gap:6px}.fr{padding:8px 12px}.fr-bar{margin:6px 0 5px}}
+@media (prefers-color-scheme:dark){.fr{background:#1d1f1e}.fr-bar{background:#2a2d2b}}
+@media (prefers-reduced-motion:reduce){.fr .dot{animation:none}}
+@media (max-width:640px){
+  .fresh{gap:0;border:1px solid var(--line);border-radius:12px;background:#fff;overflow:hidden}
+  .fr{border:0;border-radius:0;border-top:1px solid var(--line);padding:7px 12px;display:grid;grid-template-columns:1fr auto;align-items:center;position:relative}
+  .fr:first-child{border-top:0}
+  .fr-h span{display:none}
+  .fr-t{gap:10px}
+  .fr-t .ago{display:none}
+  .fr-bar{position:absolute;left:0;right:0;bottom:0;height:2px;margin:0;border-radius:0;background:transparent}
+}
+@media (max-width:640px){.fr-t .ago{display:inline}.fr-t{font-size:11.5px}}

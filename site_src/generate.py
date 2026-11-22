@@ -858,8 +858,9 @@ def build_home(day, cur, chg, prev):
 </section>
 {home_panels()}
 <h2>每个会员，各种买法的到手价</h2>
+{freshness(day)}
 {overview_table(day, cur)}
-<p class="src">每天更新：App Store {len(day['storefronts'])} 个地区（大多含税，美国、加拿大等不含税）、礼品卡、国内渠道每 4 小时一次。<a href="/daily/{date}/">今日价格日报</a> · <a href="/ai-pricing/">更多 AI 产品的官网价格</a></p>
+<p class="src"><a href="/daily/{date}/">今日价格日报</a> · <a href="/ai-pricing/">更多 AI 产品的官网价格</a></p>
 """
     ld = [{"@context": "https://schema.org", "@type": "WebSite", "name": SITE_NAME, "url": SITE + "/", "inLanguage": "zh-CN"},
           {"@context": "https://schema.org", "@type": "Organization", "name": SITE_NAME, "url": SITE + "/"}]
@@ -1518,6 +1519,26 @@ def build_news(cur):
                          f'{cr_html}<h1>{e(latest["headline"])}</h1>{latest_html}'
                          f'<h2>往期早报</h2><ul class="list">{rows}</ul>', [cr_ld], latest["date"]))
     return ["/news/"] + urls
+
+
+def _iso(t):
+    """Data timestamps come as '2026-11-22T16:30+08:00', '2026-11-22 07:49' (Beijing) or UTC ISO; return ISO with offset."""
+    if not t:
+        return ""
+    t = t.strip().replace(" ", "T")
+    return t if ("+" in t[10:] or t.endswith("Z")) else t + "+08:00"
+
+
+def freshness(day):
+    """Live 'last updated / next update' strip; the page script ticks the clocks (assets/app.js)."""
+    items = [("App Store 价格", f"{len(day['storefronts'])} 个地区", _iso(day.get("time") or GIFT.get("time")), 86400),
+             ("礼品卡报价", f"{len({i['shop'] for i in GIFT.get('items', [])})} 个平台", _iso(GIFT.get("time")), 86400),
+             ("代充 · 成品号", f"{CHANNELS.get('listings_seen', 0):,} 条挂单", _iso(CHANNELS.get("time")), 4 * 3600)]
+    cells = "".join(
+        f'<div class="fr" data-t="{t}" data-period="{per}"><div class="fr-h"><i class="dot"></i><b>{e(n)}</b><span>{e(sub)}</span></div>'
+        f'<div class="fr-bar"><i></i></div><div class="fr-t"><span class="ago">—</span><span class="next">—</span></div></div>'
+        for n, sub, t, per in items if t)
+    return f'<div class="fresh">{cells}</div>'
 
 
 def home_panels():

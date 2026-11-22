@@ -2,6 +2,7 @@
 
 python scraper/build_data.py [YYYY-MM-DD]  -> data/daily/<date>.json (compact history, committed)
 """
+import datetime
 import glob
 import json
 import os
@@ -62,7 +63,7 @@ def build(day):
                 "multi": len({round(x[0], 2) for x in monthly}) > 1,
             })
     # compact history: local price per plan/storefront, plus the currency and FX rate used
-    hist = {"date": day, "fx_source": "open.er-api.com", "fx_updated": fx["time_last_update_utc"],
+    hist = {"date": day, "time": datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="minutes"), "fx_source": "open.er-api.com", "fx_updated": fx["time_last_update_utc"],
             "usd_cny": rates["CNY"], "storefronts": ccs, "unavailable": unavailable, "cur": {}, "fx": {}, "disp": {}, "p": {}}
     for r in rows:
         hist["cur"][r["cc"]] = r["currency"]
