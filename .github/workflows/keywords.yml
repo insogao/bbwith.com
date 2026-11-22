@@ -1,0 +1,26 @@
+name: Keyword discovery (weekly)
+on:
+  schedule:
+    - cron: "11 2 * * 1"   # Monday 10:11 Beijing time
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: data-commit
+  cancel-in-progress: false
+jobs:
+  keywords:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python scraper/keywords.py
+      - run: |
+          git config user.name "bbwith-bot"; git config user.email "bbwith-bot@users.noreply.github.com"
+          git add data/keywords
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "data: keyword suggestions $(date +%F) [skip ci]"
+          git pull --rebase; git push

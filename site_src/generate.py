@@ -377,6 +377,7 @@ def build_plan_page(product, plan, rows, prev_rows, day, all_plans):
 <div class="chips">{siblings}</div>
 {plan_note(product, plan)}
 {deal_banner(product, plan)}
+{f'<h2>官网和 App Store 哪个便宜</h2>{channel_compare(product, plan, rows)}' if channel_compare(product, plan, rows) else ''}
 <div class="bar"><h2>最便宜的 10 个地区</h2>{cur_select()}</div>
 {price_table(rows, limit=10)}
 {channel_block(product, plan, rows)}
@@ -438,8 +439,10 @@ def headline_rows(cur):
     return [(k, cur[k]) for k in keys if k in cur]
 
 
-def us_line(us):
-    return f"<br><small>美区 {money(us['usd'])}</small>" if us else ""
+def us_line(us, key=None):
+    off = official_of(*key) if key else None
+    parts = ([f"官网 {money(off['usd'])}"] if off else []) + ([f"美区 App Store {money(us['usd'])}"] if us else [])
+    return f"<br><small>{' · '.join(parts)}</small>" if parts else ""
 
 
 def rank_table(items, cls="rank3"):
@@ -449,9 +452,39 @@ def rank_table(items, cls="rank3"):
         us = next((r for r in rows if r["cc"] == "us"), None)
         cells = "".join(f"<td>{rank_html(rows[i:i + 1], 1).replace(f'<i>1</i>', '')}</td>" if len(rows) > i else "<td>—</td>" for i in range(3))
         trs += (f'<tr><td><a href="{url_plan(p, pl)}"><b>{e(full_name(p, pl))}</b></a>'
-                f'{us_line(us)}</td>{cells}</tr>')
+                f'{us_line(us, (p, pl))}</td>{cells}</tr>')
     return (f'<div class="tablewrap"><table class="prices {cls}"><thead><tr><th>会员</th><th>🥇 最便宜</th><th>🥈 第 2</th><th>🥉 第 3</th></tr></thead>'
-            f'<tbody>{trs}</tbody></table></div>')
+            f'<tbody>{trs}</tbody></table></div><p class="hint">括号里的百分比都是和<b>美区 App Store</b> 价比较；App Store 价常比官网网页订阅贵，例如 Claude Max 5x 官网 $100、美区 App Store $124.99。</p>')
+
+
+OFFICIAL = {}
+
+
+def load_official():
+    f = os.path.join(ROOT, "data", "official_prices.json")
+    return {k: v for k, v in json.load(open(f, encoding="utf8")).items() if not k.startswith("_")} if os.path.exists(f) else {}
+
+
+def official_of(product, plan):
+    return OFFICIAL.get(f"{product}/{plan}")
+
+
+def channel_compare(product, plan, rows):
+    """Official site vs US App Store vs cheapest App Store region, so the 'vs US' numbers are not misread."""
+    off = official_of(product, plan)
+    us = next((r for r in rows if r["cc"] == "us"), None)
+    if not off or not us:
+        return ""
+    lo = rows[0]
+    gap = us["usd"] / off["usd"] - 1
+    lo_vs_off = lo["usd"] / off["usd"] - 1
+    cls = lambda v: "down" if v < -0.005 else ("up" if v > 0.005 else "")
+    return f"""<div class="tablewrap"><table class="prices"><thead><tr><th>渠道</th><th>月付价格</th><th>比官网</th></tr></thead><tbody>
+<tr><td>官网订阅（网页，美国价，不含税）</td><td><b>{money(off['usd'])}</b></td><td>—</td></tr>
+<tr><td>美区 App Store（iOS 内购）</td><td><b>{money(us['usd'])}</b></td><td class="{cls(gap)}">{pct(gap)}</td></tr>
+<tr><td>App Store 最便宜地区：{flag(lo['cc'])} {e(cname(lo['cc']))}</td><td><b>{money(lo['usd'])}</b></td><td class="{cls(lo_vs_off)}">{pct(lo_vs_off)}</td></tr>
+</tbody></table></div>
+<p class="hint">本页其他地方的「比美区」都是和美区 App Store 价比较。{f"美区 App Store 比官网贵 {pct(gap)[1:]}，这是苹果渠道的加价。" if gap > 0.005 else ""}官网价 {zh_date(off['checked'])} 核实（<a href="{e(off['source'])}" rel="nofollow noopener" target="_blank">来源</a>）。</p>"""
 
 
 # time-sensitive notes shown on plan pages; keep the source and the date checked
@@ -1447,6 +1480,7 @@ def main():
     BRIEFS.extend(load_briefs())
     MERCH.update(load_merch())
     PRICING.update(load_pricing())
+    OFFICIAL.update(load_official())
     GUIDES.extend(load_guides())
     DEALS.extend(load_deals(dt.datetime.now(dt.timezone(dt.timedelta(hours=8))).date().isoformat()))
     for p, pl, _, _ in PLANS:

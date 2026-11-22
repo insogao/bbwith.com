@@ -1,0 +1,9 @@
+{
+ "_comment": "官网（网页/信用卡）月付标价，美国价、不含税。只填核实过的；checked 是核实日期，source 是核实来源。",
+ "chatgpt/pro-100": {"usd": 100, "checked": "2026-11-22", "source": "https://help.openai.com/en/articles/9793128"},
+ "chatgpt/pro-200": {"usd": 200, "checked": "2026-11-22", "source": "https://help.openai.com/en/articles/9793128", "note": "新订阅暂停中"},
+ "claude/pro":      {"usd": 20,  "checked": "2026-11-22", "source": "https://claude.com/pricing"},
+ "claude/max":      {"usd": 100, "checked": "2026-11-22", "source": "https://claude.com/pricing"},
+ "claude/ultra":    {"usd": 200, "checked": "2026-11-22", "source": "https://claude.com/pricing"},
+ "google-ai/pro":   {"usd": 19.99, "checked": "2026-11-22", "source": "https://gemini.google/subscriptions/"}
+}
