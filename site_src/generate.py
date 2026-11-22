@@ -432,7 +432,8 @@ def build_product_page(product, plans_rows, day):
 
 
 def headline_rows(cur):
-    keys = [("chatgpt", "go"), ("chatgpt", "plus"), ("chatgpt", "pro-100"), ("claude", "pro"), ("claude", "max"),
+    keys = [("chatgpt", "go"), ("chatgpt", "plus"), ("chatgpt", "pro-100"), ("chatgpt", "pro-200"), ("claude", "pro"), ("claude", "max"),
+            ("claude", "ultra"),
             ("google-ai", "pro"), ("grok", "supergrok"), ("x", "premium"), ("perplexity", "pro"), ("cursor", "pro")]
     return [(k, cur[k]) for k in keys if k in cur]
 
