@@ -149,3 +149,41 @@ document.addEventListener("click", function (ev) {
   if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(done, function () { prompt("复制下面的口令：", t); });
   else prompt("复制下面的口令：", t);
 });
+// ---- site search: header and home boxes (.qbox + sibling .qres), index from /search.json ----
+(function () {
+  var idx = null, loading = null;
+  function load() {
+    if (idx) return Promise.resolve(idx);
+    if (!loading) loading = fetch("/search.json").then(function (r) { return r.json(); }).then(function (j) {
+      idx = j.map(function (x) { x.h = (x.t + " " + x.k).toLowerCase(); x.tl = x.t.toLowerCase(); return x; }); return idx;
+    });
+    return loading;
+  }
+  function find(q) {
+    var toks = q.toLowerCase().replace(/区$/, "").split(/[\s,，]+/).filter(Boolean);
+    if (!toks.length) return [];
+    return idx.filter(function (x) { return toks.every(function (t) { return x.h.indexOf(t) >= 0; }); })
+      .map(function (x) { var s = 0; toks.forEach(function (t) { if (x.tl.indexOf(t) >= 0) s += 2; }); if (x.tl.indexOf(toks[0]) === 0) s += 1; return [s, x]; })
+      .sort(function (a, b) { return b[0] - a[0]; }).slice(0, 8).map(function (p) { return p[1]; });
+  }
+  var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return "&#" + c.charCodeAt(0) + ";"; }); };
+  document.querySelectorAll(".qbox").forEach(function (box) {
+    var res = box.parentNode.querySelector(".qres"), sel = -1, cur = [];
+    function render() {
+      if (!cur.length) { res.innerHTML = box.value.trim() ? '<p class="qnone">没找到，换个说法试试，比如「Claude Pro」「土耳其」</p>' : ""; res.hidden = !box.value.trim(); return; }
+      res.innerHTML = cur.map(function (x, i) {
+        return '<a href="' + esc(x.u) + '" class="' + (i === sel ? "on" : "") + '"><span>' + esc(x.t) + '</span><small>' + esc(x.g) + (x.d ? " · " + esc(x.d) : "") + "</small></a>";
+      }).join("");
+      res.hidden = false;
+    }
+    box.addEventListener("focus", load);
+    box.addEventListener("input", function () { load().then(function () { cur = find(box.value); sel = -1; render(); }); });
+    box.addEventListener("keydown", function (ev) {
+      if (ev.key === "ArrowDown") { sel = Math.min(sel + 1, cur.length - 1); render(); ev.preventDefault(); }
+      else if (ev.key === "ArrowUp") { sel = Math.max(sel - 1, 0); render(); ev.preventDefault(); }
+      else if (ev.key === "Enter" && cur.length) { location.href = cur[Math.max(sel, 0)].u; }
+      else if (ev.key === "Escape") { res.hidden = true; }
+    });
+    document.addEventListener("click", function (ev) { if (!box.parentNode.contains(ev.target)) res.hidden = true; });
+  });
+})();

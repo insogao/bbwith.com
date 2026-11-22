@@ -127,6 +127,17 @@ def jsonld(obj):
     return '<script type="application/ld+json">' + json.dumps(obj, ensure_ascii=False).replace("<", "\\u003c") + "</script>"
 
 
+NAV_MAIN = [("/", "会员比价", ("/", "/chatgpt/", "/claude/", "/google-ai/", "/grok/", "/x/", "/perplexity/", "/cursor/", "/ai-pricing/", "/daily/")),
+            ("/gift-cards/", "充值卡", ("/gift-cards/",)),
+            ("/channels/", "代充 · 成品号", ("/channels/", "/shop/", "/merchant/"))]
+
+
+def nav_main(path):
+    def on(prefixes):
+        return any(path == "/" if p == "/" else path.startswith(p) for p in prefixes)
+    return "".join(f'<a href="{u}"{" class=on" if on(pre) else ""}>{n}</a>' for u, n, pre in NAV_MAIN)
+
+
 def page(title, description, path, body, ld=(), date=None, noindex=False, extra_js=""):
     canonical = SITE + path
     lds = "\n".join(jsonld(x) for x in ld)
@@ -156,15 +167,17 @@ def page(title, description, path, body, ld=(), date=None, noindex=False, extra_
 </head>
 <body>
 <header class="top"><div class="wrap">
-<a class="brand" href="/"><span class="logo">比</span>比比价 <small>bbwith.com</small></a>
-<nav><a href="/news/">早报</a><a href="/deals/">优惠</a><a href="/ai-pricing/">官方价格</a><a href="/guides/">教程</a><a href="/gift-cards/">礼品卡</a><a href="/daily/">日报</a><a href="/data/">数据下载</a><a href="/about/">方法说明</a></nav>
+<a class="brand" href="/"><span class="logo">比</span>比比价</a>
+<nav class="main">{nav_main(path)}</nav>
+<div class="search"><input type="search" class="qbox" placeholder="搜会员、地区、礼品卡…" autocomplete="off" aria-label="搜索"><div class="qres" hidden></div></div>
+<nav class="info"><span>资讯</span><a href="/news/">早报</a><a href="/deals/">优惠</a><a href="/guides/">教程</a></nav>
 </div></header>
 <main class="wrap">
 {body}
 </main>
 <footer class="foot"><div class="wrap">
 <p>比比价（bbwith.com）整理各地区 App Store 公开标价，仅供参考。本站与 OpenAI、Anthropic、Google、SpaceX/xAI、X、Perplexity、Cursor 均无关联。实际价格、可订阅档位和税费以结账页为准；跨地区订阅需遵守 Apple 和各服务商的条款。</p>
-<p><a href="/about/">数据来源与方法</a> · <a href="/merchant/join/">商家入驻</a> · <a href="/data/">数据下载</a> · <a href="/llms.txt">llms.txt</a></p>
+<p><a href="/news/">AI 早报</a> · <a href="/deals/">优惠</a> · <a href="/guides/">教程</a> · <a href="/daily/">价格日报</a> · <a href="/ai-pricing/">各家官网价格</a> · <a href="/merchant/join/">商家入驻</a> · <a href="/about/">关于本站</a></p>
 </div></footer>
 <script src="/assets/sort.js" defer></script>
 <script src="/assets/app.js" defer></script>{f'<script src="/assets/{extra_js}" defer></script>' if extra_js else ''}
@@ -313,13 +326,58 @@ def channel_block(product, plan, rows):
         if rrows:
             route_html = (f'<h3>代充按充值渠道</h3><div class="tablewrap"><table class="prices sortable"><thead><tr><th>卖家注明的渠道</th><th>报价数</th>'
                           f'<th data-sort=num>最低</th><th data-sort=num>中位数</th></tr></thead><tbody>{rrows}</tbody></table></div>')
-    return f"""<div class="bar"><h2>国内渠道参考价</h2>{cur_select()}</div>
+    return f"""<div class="bar" id="channels"><h2>国内渠道参考价</h2>{cur_select()}</div>
 {f'<p class="lead">{lead}</p>' if lead else ''}
 {types_table(types, rate)}
 {route_html}
 {channel_note()}
 {merchant_block(key)}
 """
+
+
+def build_channels_hub(cur):
+    plans = CHANNELS.get("plans", {})
+    if not plans:
+        return []
+    rate = CHANNELS["usd_cny"]
+    order = list(CHANNEL_TO_PLAN) + list(CHANNEL_LABELS)
+    cols = [("topup", "代充"), ("account-long", "成品号（长质保）"), ("account-short", "成品号（短质保）"), ("shared", "拼车 / 共享")]
+    merch = {}
+    for l in MERCH.get("listings", []):
+        if l["eligible"]:
+            merch[l["plan_key"]] = merch.get(l["plan_key"], 0) + 1
+    trs = ""
+    for k in sorted(plans, key=lambda k: order.index(k) if k in order else 99):
+        v = plans[k]
+        if sum(t["count"] for t in v.values()) < 3:
+            continue
+        mp = CHANNEL_TO_PLAN.get(k)
+        us = next((r for r in cur.get(mp, []) if r["cc"] == "us"), None) if mp else None
+        name = f'<a href="{url_plan(*mp)}#channels"><b>{e(channel_label(k))}</b></a>' if mp else f"<b>{e(channel_label(k))}</b>"
+        cells = ""
+        for t, _ in cols:
+            x = v.get(t)
+            cells += (f'<td data-v="{x["median"] / rate:.2f}">{money(x["median"] / rate)}<br><small>{x["count"]} 条</small></td>'
+                      if x and x["count"] >= 2 else '<td data-v="99999">—</td>')
+        trs += (f'<tr><td>{name}'
+                f'{("<br><small>美区 App Store " + money(us["usd"]) + "</small>") if us else ""}</td>{cells}'
+                f'<td>{merch.get(k, 0) or "—"}</td></tr>')
+    cr_html, cr_ld = crumbs([("首页", "/"), ("代充 · 成品号", "/channels/")])
+    body = f"""{cr_html}<h1>代充、成品号、拼车价格行情</h1>
+<p class="lead">国内卡网上 ChatGPT、Claude、Gemini、Grok、Cursor 会员的代充、成品号和拼车价格，每 4 小时更新一次，按中位数比较，最低价的引流报价已剔除。想直接下单，看各档位页里的「商家报价」：只展示自动核价通过的最低价前 5 名。</p>
+<div class="bar"><h2>各档位行情（中位价）</h2>{cur_select()}</div>
+<div class="tablewrap"><table class="prices sortable"><thead><tr><th>会员档位</th>{''.join(f'<th data-sort=num>{e(n)}</th>' for _, n in cols)}<th>入驻商家</th></tr></thead><tbody>{trs}</tbody></table></div>
+{channel_note()}
+<h2>怎么选</h2><ul class="list">
+<li><b>代充</b>：充到你自己的账号，账号安全性最高，价格通常比美区 App Store 便宜。</li>
+<li><b>成品号</b>：卖家给你一个已开通会员的账号，最省事，但账号不在你名下，注意质保天数。</li>
+<li><b>拼车 / 共享</b>：多人共用一个账号或镜像站，最便宜，但隐私和稳定性最差。</li>
+</ul>
+<p class="hint">风险须知见<a href="/guides/low-price-region-risks/">低价区和代充的风险</a>。商家想上架？<a href="/merchant/join/">商家入驻</a>。</p>"""
+    write("/channels/", page("ChatGPT、Claude 代充和成品号多少钱？国内渠道价格行情 · 比比价",
+                             "ChatGPT Plus、Claude Pro / Max、Gemini、Grok、Cursor 代充、成品号、拼车的国内价格行情，每 4 小时更新。",
+                             "/channels/", body, [cr_ld], CHANNELS.get("date")))
+    return ["/channels/"]
 
 
 def product_channels(product):
@@ -658,17 +716,33 @@ def build_home(day, cur, chg, prev):
     title = f"AI 会员哪个地区最便宜？ChatGPT、Claude、Gemini、Grok 各地区 App Store 价格对比 | 比比价"
     desc = (f"每天对比 ChatGPT、Claude、Google AI（Gemini）、Grok、X Premium、Perplexity、Cursor 在 {len(day['storefronts'])} 个"
             f" App Store 地区的会员标价，统一折算成美元，找出最便宜的地区。")
+    plus = cur.get(("chatgpt", "plus"), [])
+    tr = best_rate("tr", day["fx"]) if GIFT.get("items") else None
+    alipay = [SHOPS[k]["name"].split(" ")[0] for k, v in PAY.items() if v["alipay"][0] == "yes"]
+    ch = CHANNELS.get("plans", {}).get("chatgpt/plus", {}).get("topup")
+    n_merch = len({l["merchant_id"] for l in MERCH.get("listings", []) if l["eligible"]})
+    core = f"""<div class="core">
+<a class="core-card" href="#prices"><b>会员比价</b><span>App Store {len(day['storefronts'])} 个地区 + 官网价，每天更新</span>
+{f'<em>ChatGPT Plus 最低：{e(cname(plus[0]["cc"]))} {money(plus[0]["usd"])}（{pct(plus[0]["vs_us"])}）</em>' if plus else ''}</a>
+<a class="core-card" href="/gift-cards/"><b>充值卡</b><span>各地区 App Store 礼品卡比价，标出能不能用支付宝</span>
+{f'<em>土区卡最低溢价 {pct(tr["prem"])} · 支付宝可买：{e("、".join(alipay))}</em>' if tr else ''}</a>
+<a class="core-card" href="/channels/"><b>代充 · 成品号</b><span>国内卡网行情和核价过的商家报价</span>
+{f'<em>ChatGPT Plus 代充中位价 {money(ch["median"] / CHANNELS["usd_cny"])}{f" · {n_merch} 家入驻商家" if n_merch else ""}</em>' if ch else ''}</a>
+</div>"""
     body = f"""<section class="hero">
-<h1>AI 会员各地区价格，比比再买</h1>
-<p class="lead">每天抓取 {len(day['storefronts'])} 个 App Store 地区的公开标价，按当日汇率统一折算成美元（也可以切换成其他币种）。最新数据：{zh_date(date)}。{chg_line}</p>
-<ul class="facts">{''.join(facts)}</ul>
-<p><a class="btn" href="/daily/{date}/">看今日日报</a></p>
+<h1>AI 会员，比比再买</h1>
+<p class="lead">ChatGPT、Claude、Gemini、Grok 等 AI 会员在哪里买最便宜：各地区 App Store、官网、礼品卡、代充，一站比较。最新数据 {zh_date(date)}。{chg_line}</p>
+<div class="search big"><input type="search" class="qbox" placeholder="试试「ChatGPT Plus」「土耳其礼品卡」「Claude Max」" autocomplete="off" aria-label="搜索"><div class="qres" hidden></div></div>
 </section>
+{core}
+<div class="bar" id="prices"><h2>各档位最便宜的 3 个地区（月付）</h2>{cur_select()}</div>
+<div class="cards">{''.join(cards)}</div>
+<p class="src">价格为各地区 App Store 标价，大多数地区含税，美国、加拿大等地区不含税。<a href="/daily/{date}/">今日价格日报</a> · <a href="/ai-pricing/">更多 AI 产品的官网价格</a></p>
+<section class="news-strip"><h2>资讯</h2>
 {deal_banner()}
 {brief_home()}
-<div class="bar"><h2>各档位最便宜的 3 个地区（月付）</h2>{cur_select()}</div>
-<div class="cards">{''.join(cards)}</div>
-<p class="src">价格为各地区 App Store 标价，大多数地区含税，美国、加拿大等地区不含税。<a href="/about/">方法说明</a></p>
+<p class="small"><a href="/news/">AI 早报</a> · <a href="/deals/">会员优惠</a> · <a href="/guides/">订阅教程</a></p>
+</section>
 """
     ld = [{"@context": "https://schema.org", "@type": "WebSite", "name": SITE_NAME, "url": SITE + "/", "inLanguage": "zh-CN"},
           {"@context": "https://schema.org", "@type": "Organization", "name": SITE_NAME, "url": SITE + "/"}]
@@ -1540,6 +1614,31 @@ def build_gift(day, cur):
     return ["/gift-cards/"] + [f"/gift-cards/apple/{x[0]}/" for x in idx]
 
 
+ALIASES = {"chatgpt": "gpt openai 奇特 chat gpt", "claude": "克劳德 anthropic cc", "google-ai": "gemini 谷歌 google one 双子座",
+           "grok": "xai 马斯克 supergrok", "x": "twitter 推特", "perplexity": "pplx", "cursor": "cursor 编程"}
+
+
+def build_search_index(cur):
+    items = []
+    for (p, pl), rows in cur.items():
+        regions = " ".join(cname(r["cc"]) for r in rows[:8])
+        items.append({"t": full_name(p, pl), "u": url_plan(p, pl), "g": "会员比价",
+                      "d": f"最低 {cname(rows[0]['cc'])} ${rows[0]['usd']:.2f}" if rows else "",
+                      "k": f"{p} {pl} {ALIASES.get(p, '')} {plan_label(p, pl)} {regions} 价格 多少钱 便宜 代充 成品号"})
+    for p, info in PRODUCTS.items():
+        items.append({"t": f"{info['name']} 全部档位", "u": f"/{p}/", "g": "会员比价", "d": "", "k": f"{p} {ALIASES.get(p, '')}"})
+    for cc, name in GIFT_NAMES.items():
+        b_ = best_rate(cc, FX_ALL or {}) if GIFT.get("items") and FX_ALL else None
+        items.append({"t": f"{name}区 App Store 礼品卡", "u": f"/gift-cards/apple/{cc}/", "g": "充值卡",
+                      "d": f"最低溢价 {pct(b_['prem'])}" if b_ else "", "k": f"{cc} {name} {name}区 礼品卡 充值卡 gift card itunes apple 苹果 支付宝"})
+    items.append({"t": "代充、成品号价格行情", "u": "/channels/", "g": "代充 · 成品号", "d": "", "k": "代充 成品号 拼车 共享 账号 卡网"})
+    for g in GUIDES:
+        items.append({"t": g["title"], "u": f"/guides/{g['slug']}/", "g": "教程", "d": "", "k": g["description"]})
+    for pid, p in PRICING.get("products", {}).items():
+        items.append({"t": f"{p['name']} 官网价格", "u": f"/ai-pricing/{pid}/", "g": "官网价格", "d": "", "k": f"{pid} {p['name']} 会员 多少钱"})
+    json.dump(items, open(os.path.join(DIST, "search.json"), "w"), ensure_ascii=False, separators=(",", ":"))
+
+
 def write_redirects():
     """/go/<key> is served by functions/go/[[key]].js (counts clicks); it reads this map."""
     json.dump(GO, open(os.path.join(DIST, "go-map.json"), "w"), ensure_ascii=False, indent=0)
@@ -1592,12 +1691,14 @@ def main():
     build_about(day)
     pricing_urls = build_pricing(day)
     build_deals(day)
-    gift_urls = build_gift(day, cur) + build_news(cur) + build_shops() + pricing_urls + build_guides(day, cur)
+    gift_urls = build_gift(day, cur) + build_news(cur) + build_shops() + pricing_urls + build_guides(day, cur) + build_channels_hub(cur)
     build_merchant_pages()
     build_data(days, cur)
     build_meta(days, cur, gift_urls)
     build_static()
     write_redirects()
+    FX_ALL.update(day["fx"])
+    build_search_index(cur)
     n = sum(len(fs) for _, _, fs in os.walk(DIST))
     print(f"built {n} files for {day['date']} into dist/")
 
