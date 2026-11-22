@@ -375,6 +375,7 @@ def build_plan_page(product, plan, rows, prev_rows, day, all_plans):
 <p class="meta">更新于 {zh_date(date)} · 月付标价 · 按当日汇率折算（{e(day['fx_source'])}）</p>
 <p class="lead">{e(summary_sentence(product, plan, rows, day))}</p>
 <div class="chips">{siblings}</div>
+{plan_note(product, plan)}
 {deal_banner(product, plan)}
 <div class="bar"><h2>最便宜的 10 个地区</h2>{cur_select()}</div>
 {price_table(rows, limit=10)}
@@ -431,9 +432,41 @@ def build_product_page(product, plans_rows, day):
 
 
 def headline_rows(cur):
-    keys = [("chatgpt", "plus"), ("chatgpt", "go"), ("claude", "pro"), ("google-ai", "pro"), ("grok", "supergrok"),
-            ("x", "premium"), ("perplexity", "pro"), ("cursor", "pro")]
+    keys = [("chatgpt", "go"), ("chatgpt", "plus"), ("chatgpt", "pro-100"), ("claude", "pro"), ("claude", "max"),
+            ("google-ai", "pro"), ("grok", "supergrok"), ("x", "premium"), ("perplexity", "pro"), ("cursor", "pro")]
     return [(k, cur[k]) for k in keys if k in cur]
+
+
+def us_line(us):
+    return f"<br><small>美区 {money(us['usd'])}</small>" if us else ""
+
+
+def rank_table(items, cls="rank3"):
+    """[(key, rows)] -> table: plan (+ US price) and the 3 cheapest regions, one per column."""
+    trs = ""
+    for (p, pl), rows in items:
+        us = next((r for r in rows if r["cc"] == "us"), None)
+        cells = "".join(f"<td>{rank_html(rows[i:i + 1], 1).replace(f'<i>1</i>', '')}</td>" if len(rows) > i else "<td>—</td>" for i in range(3))
+        trs += (f'<tr><td><a href="{url_plan(p, pl)}"><b>{e(full_name(p, pl))}</b></a>'
+                f'{us_line(us)}</td>{cells}</tr>')
+    return (f'<div class="tablewrap"><table class="prices {cls}"><thead><tr><th>会员</th><th>🥇 最便宜</th><th>🥈 第 2</th><th>🥉 第 3</th></tr></thead>'
+            f'<tbody>{trs}</tbody></table></div>')
+
+
+# time-sensitive notes shown on plan pages; keep the source and the date checked
+PLAN_NOTES = {
+    ("chatgpt", "pro-200"): ("OpenAI 自 2026 年 9 月 10 日起暂停新订阅和升级到 Pro $200（20x），已订阅的用户不受影响；Pro $100（5x）照常开放。",
+                             "https://help.openai.com/en/articles/9793128", "2026-11-22"),
+    ("chatgpt", "pro-100"): ("Pro $100 的用量是 Plus 的 5 倍，Pro $200 是 20 倍，两档功能相同。",
+                             "https://help.openai.com/en/articles/9793128", "2026-11-22"),
+}
+
+
+def plan_note(product, plan):
+    n = PLAN_NOTES.get((product, plan))
+    if not n:
+        return ""
+    return f'<p class="note">{e(n[0])}（<a href="{e(n[1])}" rel="nofollow noopener" target="_blank">OpenAI 帮助中心</a>，{zh_date(n[2])}核实）</p>'
 
 
 def changes(cur, prev):
@@ -502,14 +535,14 @@ def build_daily(day, cur, prev_day, prev):
     body = f"""{cr_html}
 <h1>{e(title)}</h1>
 <p class="meta">覆盖 {len(day['storefronts'])} 个 App Store 地区 · 价格按当日汇率折算成美元</p>
-<h2>今日要点</h2>
-<ul class="facts">{''.join(facts)}</ul>
+<div class="bar"><h2>今日要点：热门会员最便宜的 3 个地区</h2>{cur_select()}</div>
+{rank_table(headline_rows(cur))}
 {deal_banner()}
 <h2>价格变动</h2>
 {chg_html}
 {daily_channels(cur)}
-<div class="bar"><h2>各档位最便宜的 3 个地区</h2>{cur_select()}</div>
-<div class="tablewrap"><table class="prices rank3"><thead><tr><th>档位</th><th>第 1 便宜</th><th>第 2 便宜</th><th>第 3 便宜</th></tr></thead><tbody>{summary_rows}</tbody></table></div>
+<h2>全部 {len(cur)} 个档位</h2>
+{rank_table(sorted(cur.items(), key=lambda kv: [x[:2] for x in PLANS].index(kv[0])))}
 """
     ld = [cr_ld, {"@context": "https://schema.org", "@type": "Article", "headline": title, "datePublished": date,
                   "dateModified": date, "inLanguage": "zh-CN", "mainEntityOfPage": SITE + path,

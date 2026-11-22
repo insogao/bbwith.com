@@ -112,3 +112,21 @@ table.prices{border-collapse:collapse;width:100%;font-size:15px;font-variant-num
 .refer-body img{background:#fff;border-radius:8px;padding:4px}
 .refer-body>div{flex:1;min-width:220px}
 .refer code{font-size:13px}
+/* mobile: header nav scrolls sideways, rank tables become stacked cards */
+.top .brand,.top a:first-child{white-space:nowrap}
+@media (max-width:640px){
+  .top{flex-wrap:nowrap;gap:10px}
+  .top nav{overflow-x:auto;white-space:nowrap;-webkit-overflow-scrolling:touch;scrollbar-width:none;flex:1;min-width:0}
+  .top nav::-webkit-scrollbar{display:none}
+  .top nav a{display:inline-block}
+  .rank3 thead{display:none}
+  .rank3,.rank3 tbody,.rank3 tr,.rank3 td{display:block;width:100%}
+  .rank3 tr{padding:10px 12px;border-bottom:1px solid var(--line,#e5e2da)}
+  .rank3 td{border:0;padding:3px 0;white-space:normal}
+  .rank3 td:first-child{padding-bottom:6px}
+  .rank3 td:first-child br{display:none}
+  .rank3 td:first-child small{margin-left:8px}
+  .rank3 td:nth-child(2)::before{content:"🥇 "}
+  .rank3 td:nth-child(3)::before{content:"🥈 "}
+  .rank3 td:nth-child(4)::before{content:"🥉 "}
+}
