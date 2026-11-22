@@ -1312,8 +1312,8 @@ def brief_home():
 
 GIFT = {}   # latest data/giftcards/*.json
 GO = {}     # /go/<slug> -> destination; written to _redirects
-SHOPS = {"bitrefill": {"name": "Bitrefill", "pay": "加密货币（BTC、USDT 等）", "url": "https://www.bitrefill.com/us/en/gift-cards/{slug}/"},
-         "seagm": {"name": "SEAGM", "pay": "信用卡、PayPal 等", "url": "https://www.seagm.com/{slug}"},
+SHOPS = {"bitrefill": {"name": "Bitrefill", "pay": "加密货币为主，也支持银行卡（有限额）", "url": "https://www.bitrefill.com/us/en/gift-cards/{slug}/"},
+         "seagm": {"name": "SEAGM", "pay": "支付宝、微信、信用卡、PayPal", "url": "https://www.seagm.com/{slug}"},
          "eneba": {"name": "Eneba", "pay": "信用卡、PayPal 等（平台上的第三方卖家）", "url": "https://www.eneba.com/{slug}"},
          "youworld": {"name": "由我付 YouWorld", "pay": "支付宝（人民币），需手机号登录", "url": "https://up.youworld.cn/{slug}"}}
 GIFT_NAMES = {"tr": "土耳其", "id": "印尼", "br": "巴西", "in": "印度", "jp": "日本", "us": "美国"}
@@ -1367,6 +1367,45 @@ def best_rate(cc, fx, min_face_usd=4):
     """Best USD per local unit among cards worth at least a few dollars (tiny cards are rounded oddly)."""
     rs = [r for r in gift_rows(cc, fx) if r["fair"] >= min_face_usd]
     return rs[0] if rs else None
+
+
+# payment methods per shop, checked 2026-11-22 against each shop's help center (and user reports for CN cards)
+# value: (status, note); status: "yes" | "no" | "maybe"
+PAY_COLS = [("alipay", "支付宝"), ("wechat", "微信支付"), ("card", "Visa / 万事达"), ("paypal", "PayPal"), ("crypto", "加密货币")]
+PAY = {
+    "youworld": {"alipay": ("yes", "人民币直付"), "wechat": ("no", ""), "card": ("no", ""), "paypal": ("no", ""), "crypto": ("no", ""),
+                 "note": "支付宝小程序，需手机号登录；只卖美区卡。"},
+    "seagm": {"alipay": ("yes", "仅限中国大陆用户"), "wechat": ("yes", ""), "card": ("yes", ""), "paypal": ("yes", ""), "crypto": ("no", ""),
+              "note": "每种付款方式都有手续费，结账时显示；支付宝付人民币曾标注 0% 手续费，以结账页为准。中文界面。"},
+    "bitrefill": {"alipay": ("no", ""), "wechat": ("no", ""), "card": ("maybe", "支持，有额度限制"), "paypal": ("no", ""),
+                  "crypto": ("yes", "BTC、ETH、USDT、USDC 等"),
+                  "note": "以加密货币为主；Binance Pay 已于 2026 年 6 月停用。银行卡和 Apple Pay 有单笔额度限制。"},
+    "eneba": {"alipay": ("no", ""), "wechat": ("no", ""), "card": ("maybe", "可能被拒"), "paypal": ("yes", ""), "crypto": ("no", ""),
+              "note": "第三方卖家平台，能用哪些付款方式取决于卖家、地区和商品；国内发行的卡被拒时可以换 PayPal。"},
+}
+PAY_ICON = {"yes": "✅", "no": "—", "maybe": "⚠️"}
+
+
+def pay_table(shops):
+    shops = [x for x in ["youworld", "seagm", "bitrefill", "eneba"] if x in shops]
+    head = "".join(f"<th>{e(n)}</th>" for _, n in PAY_COLS)
+    trs = ""
+    for sh in shops:
+        d = PAY[sh]
+        cells = "".join(f'<td title="{e(d[k][1])}">{PAY_ICON[d[k][0]]}{("<br><small>" + e(d[k][1]) + "</small>") if d[k][1] else ""}</td>' for k, _ in PAY_COLS)
+        trs += f'<tr><td><b>{e(SHOPS[sh]["name"])}</b></td>{cells}<td class="small">{e(d["note"])}</td></tr>'
+    return (f'<div class="tablewrap"><table class="prices paytbl"><thead><tr><th>平台</th>{head}<th>说明</th></tr></thead><tbody>{trs}</tbody></table></div>'
+            f'<p class="hint">✅ 支持 · ⚠️ 支持但常有问题 · — 不支持。2026年11月22日按各平台帮助中心核对，付款方式可能随时调整，以结账页为准。</p>')
+
+
+CN_CARD_TIPS = """<h2>用国内信用卡买礼品卡，要注意什么</h2><ul class="list">
+<li><b>能用支付宝就用支付宝</b>：国内发行的 Visa / 万事达卡在海外礼品卡网站上经常被风控拒付，有时同一张卡第一次成功、第二次就失败。SEAGM 和由我付可以直接用支付宝付人民币，最省心。</li>
+<li><b>3D 验证容易失败</b>：付款时银行会发短信验证码（3D Secure）。网友经验不一：有人关掉代理才通过，有人要换到卡片所在地区的网络。失败时先换个网络环境再试，不要短时间内反复刷同一张卡。</li>
+<li><b>账单地址照实填</b>：账单地址和发卡行登记的不一致，是外币卡被拒的常见原因之一。</li>
+<li><b>银联单标卡基本用不了</b>，需要 Visa 或万事达的双币卡或单标卡；各家银行的风控规则不同，被拒时换一家银行的卡可能就行。</li>
+<li><b>PayPal 是备选</b>：Eneba、SEAGM 支持 PayPal，国内卡绑定 PayPal 后付款，通过率往往更高。</li>
+<li>无论哪种方式，<b>先小额试一次</b>，确认能正常到卡再买大面额。</li>
+</ul>"""
 
 
 def youworld_box():
@@ -1447,6 +1486,10 @@ def build_gift(day, cur):
                 + (f"用这个价格订阅，最省的是" + "、".join(f"{n}（实付约 {usd(net)}，比美区 {pct(vs)}）" for n, _, _, net, vs in cheap) + "。" if cheap else ""))
         faq = [(f"{name}区 App Store 礼品卡哪里买最便宜？",
                 "按今日报价，" + "；".join(f"{SHOPS[s]['name']} 最低溢价 {pct(x['prem'])}（{face_text(x)} 卖 {usd(x['usd'])}）" for s, x in shop_best.items() if x) + "。"),
+               (f"{name}区礼品卡能用支付宝或微信买吗？",
+                "可以用支付宝的：" + ("、".join(SHOPS[x]["name"] for x in shops_here if PAY.get(x, {}).get("alipay", ("no",))[0] == "yes") or "本页的平台都不支持")
+                + "；可以用微信的：" + ("、".join(SHOPS[x]["name"] for x in shops_here if PAY.get(x, {}).get("wechat", ("no",))[0] == "yes") or "本页的平台都不支持")
+                + "。国内信用卡在海外网站常被拒付，优先用支付宝。"),
                (f"{name}区礼品卡能在别的地区用吗？", f"不能。App Store 礼品卡锁区，{name}区的卡只能充值到地区设为{name}的 Apple 账户。"),
                ("礼品卡溢价是什么意思？", f"礼品卡售价（美元）除以按当日汇率折算的面值减 1。例如 +5% 表示花 $1.05 买到价值 $1 的{cur_code}余额。")]
         if cc != "us":
@@ -1463,7 +1506,8 @@ def build_gift(day, cur):
 <p class="hint">按溢价从低到高排序。「面值折合」是面额按当日汇率换成美元；溢价越低越划算。小面额卡的价格常被四舍五入，参考意义不大。</p>
 {youworld_box() if any(r["shop"] == "youworld" for r in rows) else ""}
 {f'<h2>用{name}区礼品卡订阅 AI 会员</h2><div class="tablewrap"><table class="prices sortable"><thead><tr><th>会员</th><th>{name}区标价</th><th data-sort=num>按汇率</th><th data-sort=num>礼品卡实付</th><th data-sort=num>比美区</th></tr></thead><tbody>{sub_rows}</tbody></table></div>' if sub_rows else ''}
-<h2>付款方式</h2><ul class="list">{pays}</ul>
+<h2>付款方式：支付宝、微信、信用卡哪个能用</h2>{pay_table(shops_here)}
+{CN_CARD_TIPS}
 <p class="note">礼品卡锁区：只能充值到地区为{e(name)}的 Apple 账户。跨区注册和订阅需遵守 Apple 及各服务商条款。外链为第三方平台，购买前请核对面额和地区；本站可能从部分链接获得推广佣金，不影响排序（按溢价排序）。</p>
 <h2>常见问题</h2><div class="faq">{faq_html}</div>
 <p class="src"><a href="/gift-cards/">其他地区礼品卡</a> · <a href="/about/">方法说明</a></p>"""
@@ -1482,9 +1526,11 @@ def build_gift(day, cur):
     cr_html, cr_ld = crumbs([("首页", "/"), ("礼品卡", "/gift-cards/")])
     body = f"""{cr_html}
 <h1>App Store 礼品卡价格对比</h1>
-<p class="lead">跨区订阅 AI 会员，最常用的付款方式是当地 App Store 礼品卡。我们每天抓取 Bitrefill、SEAGM、Eneba 的公开报价，按当日汇率算出每张卡的溢价，并直接换算成订阅会员的实付价格。</p>
+<p class="lead">跨区订阅 AI 会员，最常用的付款方式是当地 App Store 礼品卡。我们每天抓取 Bitrefill、SEAGM、Eneba 的公开报价（由我付为人工核价），按当日汇率算出每张卡的溢价，换算成订阅会员的实付价格，并标出每家能不能用支付宝、微信和国内信用卡。</p>
 <div class="bar"><h2>各地区最划算的礼品卡</h2>{cur_select()}</div>
 <div class="tablewrap"><table class="prices sortable"><thead><tr><th>地区</th><th>平台</th><th data-sort=num>最低溢价</th><th>对应面额 · 售价</th><th>最省的会员（礼品卡实付）</th></tr></thead><tbody>{trs}</tbody></table></div>
+<h2>各平台支持哪些付款方式</h2>{pay_table(list(PAY))}
+{CN_CARD_TIPS}
 <p class="hint">第一次用？看<a href="/guides/subscribe-with-gift-card/">礼品卡订阅教程</a>和<a href="/guides/apple-id-low-price-region/">低价区 Apple ID 注册教程</a>。</p>
 <p class="note">溢价 = 售价 ÷ 按当日汇率折算的面值 − 1，只统计面值 $4 以上的卡。礼品卡锁区，只能用于对应地区的 Apple 账户。本站可能从部分外链获得推广佣金，不影响排序。</p>
 <p class="src">数据更新于 {e(GIFT['time'])}（北京时间）。</p>"""

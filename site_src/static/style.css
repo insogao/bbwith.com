@@ -130,3 +130,6 @@ table.prices{border-collapse:collapse;width:100%;font-size:15px;font-variant-num
   .rank3 td:nth-child(3)::before{content:"🥈 "}
   .rank3 td:nth-child(4)::before{content:"🥉 "}
 }
+.paytbl td{text-align:center;vertical-align:top}
+.paytbl td:first-child,.paytbl td:last-child{text-align:left}
+.paytbl td:last-child{min-width:220px;white-space:normal}
