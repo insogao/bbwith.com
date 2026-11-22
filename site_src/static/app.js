@@ -188,3 +188,54 @@ document.addEventListener("click", function (ev) {
     document.addEventListener("click", function (ev) { if (!box.parentNode.contains(ev.target)) res.hidden = true; });
   });
 })();
+// ---- product filter (second dimension). State: ?p=a,b  >  localStorage  >  all ----
+(function () {
+  var bar = document.querySelector(".pfilter");
+  if (!bar) return;
+  var NAMES = {};
+  bar.querySelectorAll("[data-pf]").forEach(function (b) { NAMES[b.dataset.pf] = b.textContent; });
+  function read() {
+    var q = new URLSearchParams(location.search).get("p");
+    var v = q !== null ? q : (function () { try { return localStorage.getItem("bbwith-prods") || ""; } catch (e) { return ""; } })();
+    return v.split(",").filter(function (x) { return NAMES[x] && x !== "all"; });
+  }
+  var sel = read();
+  function apply() {
+    var all = !sel.length;
+    document.querySelectorAll("[data-prod]").forEach(function (el) {
+      el.hidden = !all && el.dataset.prod.split(" ").every(function (p) { return sel.indexOf(p) < 0; });
+    });
+    // lists that should show only their first two matching items
+    document.querySelectorAll("ul.top2").forEach(function (ul) {
+      var n = 0;
+      Array.prototype.forEach.call(ul.children, function (li) { if (!li.hidden) { n++; if (n > 2) li.hidden = true; } });
+    });
+    bar.querySelectorAll("[data-pf]").forEach(function (b) {
+      b.classList.toggle("on", b.dataset.pf === "all" ? all : sel.indexOf(b.dataset.pf) >= 0);
+    });
+    bar.querySelector(".pf-sum").textContent = all ? "全部产品" : sel.map(function (x) { return NAMES[x]; }).join("、");
+    bar.classList.toggle("active", !all);
+    // keep the choice when moving between tabs
+    document.querySelectorAll(".top nav.main a").forEach(function (a) {
+      var u = a.getAttribute("href").split("?")[0];
+      a.setAttribute("href", all ? u : u + "?p=" + sel.join(","));
+    });
+    try { localStorage.setItem("bbwith-prods", sel.join(",")); } catch (e) {}
+    var url = location.pathname + (all ? "" : "?p=" + sel.join(",")) + location.hash;
+    history.replaceState(null, "", url);
+  }
+  bar.querySelector(".pf-toggle").addEventListener("click", function () {
+    var c = bar.querySelector(".pf-chips"); c.hidden = !c.hidden;
+    this.setAttribute("aria-expanded", String(!c.hidden));
+  });
+  bar.addEventListener("click", function (ev) {
+    var b = ev.target.closest("[data-pf]");
+    if (!b) return;
+    var k = b.dataset.pf;
+    if (k === "all") sel = [];
+    else if (sel.indexOf(k) >= 0) sel.splice(sel.indexOf(k), 1);
+    else sel.push(k);
+    apply();
+  });
+  apply();
+})();

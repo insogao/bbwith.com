@@ -148,15 +148,28 @@ def _asset_version():
 
 ASSET_V = _asset_version()  # changes whenever a static file changes, so browsers fetch the new one
 
-NAV_MAIN = [("/", "会员比价", ("/", "/chatgpt/", "/claude/", "/google-ai/", "/grok/", "/x/", "/perplexity/", "/cursor/", "/ai-pricing/", "/daily/")),
-            ("/gift-cards/", "充值卡", ("/gift-cards/",)),
-            ("/channels/", "代充 · 成品号", ("/channels/", "/shop/", "/merchant/"))]
+NAV_MAIN = [("/", "综合比价", ("/", "/chatgpt/", "/claude/", "/google-ai/", "/grok/", "/x/", "/perplexity/", "/cursor/", "/ai-pricing/", "/daily/")),
+            ("/gift-cards/", "礼品卡", ("/gift-cards/",)),
+            ("/channels/", "代充 · 成品号", ("/channels/", "/shop/", "/merchant/")),
+            ("/deals/", "优惠", ("/deals/",))]
+FILTER_PATHS = ("/", "/gift-cards/", "/channels/", "/deals/", "/daily/")
+PF_NAMES = {"chatgpt": "ChatGPT", "claude": "Claude", "google-ai": "Gemini", "grok": "Grok", "x": "X", "perplexity": "Perplexity",
+            "cursor": "Cursor"}
+
+
+def prod_filter():
+    chips = "".join(f'<button type="button" data-pf="{k}">{e(n)}</button>' for k, n in PF_NAMES.items())
+    return (f'<div class="pfilter"><button type="button" class="pf-toggle" aria-expanded="false">只看：<b class="pf-sum">全部产品</b> ▾</button>'
+            f'<div class="pf-chips" hidden><button type="button" data-pf="all" class="on">全部</button>{chips}'
+            f'<span class="pf-hint">可多选，切换标签时保持</span></div></div>')
 
 
 def nav_main(path):
     def on(prefixes):
         return any(path == "/" if p == "/" else path.startswith(p) for p in prefixes)
-    return "".join(f'<a href="{u}"{" class=on" if on(pre) else ""}>{n}</a>' for u, n, pre in NAV_MAIN)
+    n_deals = sum(1 for d in DEALS if d["active"]) + len(auto_promos())
+    badge = lambda u: f' <i class="badge">{n_deals}</i>' if u == "/deals/" and n_deals else ""
+    return "".join(f'<a href="{u}"{" class=on" if on(pre) else ""}>{n}{badge(u)}</a>' for u, n, pre in NAV_MAIN)
 
 
 def page(title, description, path, body, ld=(), date=None, noindex=False, extra_js=""):
@@ -191,9 +204,8 @@ def page(title, description, path, body, ld=(), date=None, noindex=False, extra_
 <a class="brand" href="/"><span class="logo">比</span>比比价</a>
 <nav class="main">{nav_main(path)}</nav>
 <div class="search"><input type="search" class="qbox" placeholder="搜会员、地区、礼品卡…" autocomplete="off" aria-label="搜索"><div class="qres" hidden></div></div>
-<nav class="info"><a href="/deals/">优惠</a><a href="/guides/">教程</a><a href="/news/">早报</a></nav>
 {cur_select_header()}
-</div></header>
+</div>{f'<div class="subbar"><div class="wrap">{prod_filter()}</div></div>' if any(path == x if x == "/" else path.startswith(x) for x in FILTER_PATHS) else ""}</header>
 <main class="wrap">
 {body}
 </main>
@@ -228,6 +240,10 @@ def crumbs(items):
     ld = {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
         {"@type": "ListItem", "position": i + 1, "name": n, "item": SITE + p} for i, (n, p) in enumerate(items)]}
     return html_, ld
+
+
+def prod_of_url(u):
+    return u.strip("/").split("/")[0]
 
 
 def cur_suffix(r):
@@ -398,7 +414,7 @@ def build_channels_hub(cur):
             x = v.get(t)
             cells += (f'<td data-v="{x["median"] / rate:.2f}">{money(x["median"] / rate)}<br><small>{x["count"]} 条</small></td>'
                       if x and x["count"] >= 2 else '<td data-v="99999">—</td>')
-        trs += (f'<tr><td>{name}'
+        trs += (f'<tr data-prod="{k.split("/")[0]}"><td>{name}'
                 f'{("<br><small>美区 App Store " + money(us["usd"]) + "</small>") if us else ""}</td>{cells}'
                 + (f'<td>{merch.get(k, 0) or "—"}</td>' if merch else "") + '</tr>')
     cr_html, cr_ld = crumbs([("首页", "/"), ("代充 · 成品号", "/channels/")])
@@ -546,7 +562,7 @@ def rank_table(items, cls="rank3"):
     for (p, pl), rows in items:
         us = next((r for r in rows if r["cc"] == "us"), None)
         cells = "".join(f"<td>{rank_html(rows[i:i + 1], 1).replace(f'<i>1</i>', '')}</td>" if len(rows) > i else "<td>—</td>" for i in range(3))
-        trs += (f'<tr><td><a href="{url_plan(p, pl)}"><b>{e(full_name(p, pl))}</b></a>'
+        trs += (f'<tr data-prod="{p}"><td><a href="{url_plan(p, pl)}"><b>{e(full_name(p, pl))}</b></a>'
                 f'{us_line(us, (p, pl))}</td>{cells}</tr>')
     return (f'<div class="tablewrap"><table class="prices {cls}"><thead><tr><th>会员</th><th>🥇 最便宜</th><th>🥈 第 2</th><th>🥉 第 3</th></tr></thead>'
             f'<tbody>{trs}</tbody></table></div><p class="hint">括号里的百分比都是和<b>美区 App Store</b> 价比较；App Store 价常比官网网页订阅贵，例如 Claude Max 5x 官网 $100、美区 App Store $124.99。</p>')
@@ -734,6 +750,57 @@ def build_daily_index(days):
     write("/daily/", page("AI 会员价格日报 · 比比价", "AI 会员 App Store 各地区价格日报归档，每天更新。", "/daily/", body, [cr_ld]))
 
 
+def overview_table(day, cur):
+    """One row per plan, each channel's to-hand price side by side; the cheapest way to pay into your own account is marked."""
+    rate = CHANNELS.get("usd_cny")
+    trs = ""
+    for (p, pl), rows in sorted(cur.items(), key=lambda kv: [x[:2] for x in PLANS].index(kv[0])):
+        if not rows:
+            continue
+        cells = {}
+        off = official_of(p, pl)
+        if off:
+            cells["off"] = (off["usd"], money(off["usd"]), off["source"], "")
+        lo = rows[0]
+        cells["app"] = (lo["usd"], money(lo["usd"]), url_plan(p, pl), f"{flag(lo['cc'])} {e(cname(lo['cc']))}")
+        best_gift = None
+        for cc in GIFT_NAMES:
+            r = next((x for x in rows if x["cc"] == cc), None)
+            b = best_rate(cc, day["fx"]) if GIFT.get("items") else None
+            if r and b and cc != "us":
+                net = r["local"] * b["rate"]
+                if not best_gift or net < best_gift[0]:
+                    best_gift = (net, cc)
+        if best_gift:
+            cells["gift"] = (best_gift[0], money(best_gift[0]), f"/gift-cards/apple/{best_gift[1]}/", f"{flag(best_gift[1])} {e(GIFT_NAMES[best_gift[1]])}区卡")
+        ck = channel_key_for(p, pl)
+        ch = CHANNELS.get("plans", {}).get(ck, {}) if ck else {}
+        if rate and ch.get("topup", {}).get("count", 0) >= 3:
+            v = ch["topup"]["median"] / rate
+            cells["topup"] = (v, money(v), url_plan(p, pl) + "#channels", f'{ch["topup"]["count"]} 条报价')
+        if rate and ch.get("account-long", {}).get("count", 0) >= 3:
+            v = ch["account-long"]["median"] / rate
+            cells["acct"] = (v, money(v), url_plan(p, pl) + "#channels", "质保 ≥ 25 天")
+        own = [k for k in ("off", "app", "gift", "topup") if k in cells]
+        best = min(own, key=lambda k: cells[k][0]) if own else None
+
+        def td(k, label):
+            if k not in cells:
+                return f'<td data-label="{label}" class="na">—</td>'
+            v, m, href, sub = cells[k]
+            ext = ' rel="nofollow noopener" target="_blank"' if href.startswith("http") else ""
+            return (f'<td data-label="{label}" data-v="{v:.2f}" class="{"best" if k == best else ""}"><a href="{href}"{ext}><b>{m}</b>'
+                    f'{f"<small>{sub}</small>" if sub else ""}</a></td>')
+        trs += (f'<tr data-prod="{p}"><td><a href="{url_plan(p, pl)}"><b>{e(full_name(p, pl))}</b></a></td>'
+                + td("off", "官网") + td("app", "App Store 最低区") + td("gift", "礼品卡实付") + td("topup", "代充（中位）") + td("acct", "成品号（中位）") + "</tr>")
+    return (f'<div class="tablewrap"><table class="prices overview sortable"><thead><tr><th>会员</th><th data-sort=num>官网</th>'
+            f'<th data-sort=num>App Store 最低区</th><th data-sort=num>礼品卡实付</th><th data-sort=num>代充（中位）</th><th data-sort=num>成品号（中位）</th></tr></thead>'
+            f'<tbody>{trs}</tbody></table></div>'
+            '<p class="hint"><span class="bestdot"></span> 绿色 = 充到<b>自己账号</b>的最便宜方式（官网、App Store、礼品卡、代充里最低的）。'
+            '「礼品卡实付」已算上买卡的溢价；「代充」是卖家把会员充到你的账号；「成品号」是卖家给你一个开好会员的账号，最便宜但账号不在你名下。'
+            '点任意价格看详情。</p>')
+
+
 def build_home(day, cur, chg, prev):
     date = day["date"]
     cards = []
@@ -771,9 +838,9 @@ def build_home(day, cur, chg, prev):
 <p class="lead">ChatGPT、Claude、Gemini、Grok 等 AI 会员在哪里买最便宜：各地区 App Store、官网、礼品卡、代充，一站比较。最新数据 {zh_date(date)}。{chg_line}</p>
 <div class="search big"><input type="search" class="qbox" placeholder="试试「ChatGPT Plus」「土耳其礼品卡」「Claude Max」" autocomplete="off" aria-label="搜索"><div class="qres" hidden></div></div>
 </section>
-<div class="bar" id="prices"><h2>各档位最便宜的 3 个地区（月付）</h2>{cur_select()}</div>
-<div class="cards">{''.join(cards)}</div>
-<p class="src">价格为各地区 App Store 标价，大多数地区含税，美国、加拿大等地区不含税。<a href="/daily/{date}/">今日价格日报</a> · <a href="/ai-pricing/">更多 AI 产品的官网价格</a></p>
+<h2>每个会员，各种买法的到手价</h2>
+{overview_table(day, cur)}
+<p class="src">每天更新：App Store {len(day['storefronts'])} 个地区（大多含税，美国、加拿大等不含税）、礼品卡、国内渠道每 4 小时一次。<a href="/daily/{date}/">今日价格日报</a> · <a href="/ai-pricing/">更多 AI 产品的官网价格</a></p>
 <section class="news-strip"><h2>资讯</h2>
 {deal_banner()}
 {brief_home()}
@@ -941,11 +1008,11 @@ def build_deals(day):
                       "mainEntityOfPage": SITE + path, "author": {"@type": "Organization", "name": SITE_NAME, "url": SITE},
                       "publisher": {"@type": "Organization", "name": SITE_NAME, "url": SITE}}]
         write(path, page(f"{d['title']}（{zh_date(d['start'])}）· 比比价", d["summary"][:150], path, body, ld, d["verified_on"]))
-    rows = lambda ds: "".join(f'<li><a href="{deal_url(d)}">{e(d["title"])}</a> <small>{e(d["discount"])} · {e(deal_period(d))}</small></li>' for d in ds) or "<li>暂无</li>"
+    rows = lambda ds: "".join(f'<li data-prod="{d["product"]}"><a href="{deal_url(d)}">{e(d["title"])}</a> <small>{e(d["discount"])} · {e(deal_period(d))}</small></li>' for d in ds) or "<li>暂无</li>"
     cr_html, cr_ld = crumbs([("首页", "/"), ("优惠快讯", "/deals/")])
     auto = auto_promos()
     auto_html = "".join(
-        f'<li><a href="/ai-pricing/{e(p["id"])}/"><b>{e(p["name"])}</b></a>：{e(x["title"])}'
+        f'<li data-prod="{PRICING_PROD.get(p["id"], "other")}"><a href="/ai-pricing/{e(p["id"])}/"><b>{e(p["name"])}</b></a>：{e(x["title"])}'
         f'{("（" + e(x["detail"]) + "）") if x.get("detail") else ""}'
         f'<br><small>{e(x.get("audience") or "")}{" · 截止 " + e(x["ends"]) if x.get("ends") else ""} · 首次发现 {e((x.get("first_seen") or "")[:10])} · '
         f'<a href="{e(p["url"])}" rel="nofollow noopener" target="_blank">官网页面</a></small></li>' for p, x in auto)
@@ -1105,6 +1172,7 @@ def build_guides(day, cur):
 # ---------- official pricing pages ----------
 
 PRICING = {}
+PRICING_PROD = {"chatgpt": "chatgpt", "claude": "claude", "gemini": "google-ai", "grok": "grok", "perplexity": "perplexity", "cursor": "cursor"}
 PERIOD = {"month": "月", "year": "年", "year_monthly": "月（按年付）", "once": "一次性", "credits": "积分包"}
 
 
@@ -1581,7 +1649,7 @@ def build_gift(day, cur):
             vs = net / us["usd"] - 1 if us and cc != "us" else None
             subs.append((full_name(p, pl), url_plan(p, pl), r, net, vs))
         sub_rows = "".join(
-            f'<tr><td><a href="{u}">{e(n)}</a></td><td>{e(r["display"])}</td><td data-v="{r["usd"]:.4f}">{money(r["usd"])}</td>'
+            f'<tr data-prod="{u.strip("/").split("/")[0]}"><td><a href="{u}">{e(n)}</a></td><td>{e(r["display"])}</td><td data-v="{r["usd"]:.4f}">{money(r["usd"])}</td>'
             f'<td data-v="{net:.4f}"><b>{money(net)}</b></td><td data-v="{vs or 0:.4f}" class="{"down" if (vs or 0) < -0.005 else ("up" if (vs or 0) > 0.005 else "")}">{pct(vs) if vs is not None else "—"}</td></tr>'
             for n, u, r, net, vs in subs)
         cheap, seen_p = [], set()
@@ -1590,6 +1658,7 @@ def build_gift(day, cur):
             if prod not in seen_p and x[4] < -0.005:
                 seen_p.add(prod)
                 cheap.append(x)
+        cheap_all = cheap
         cheap = cheap[:3]
         lead = (f"{zh_date(GIFT['date'])}抓到 {len(rows)} 个{name}区 App Store 礼品卡报价（{'、'.join(SHOPS[s]['name'] for s in shops_here)}）。"
                 + (f"最划算的是 {SHOPS[b['shop']]['name']} 的 {face_text(b)}，售价 {usd(b['usd'])}，比按当日汇率折算的面值 {pct(b['prem'])}。" if b else "")
@@ -1627,11 +1696,11 @@ def build_gift(day, cur):
         ld = [cr_ld, {"@context": "https://schema.org", "@type": "FAQPage",
                       "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in faq]}]
         write(path, page(title, desc, path, body, ld, GIFT["date"]))
-        idx.append((cc, name, b, len(rows), shops_here, cheap))
+        idx.append((cc, name, b, len(rows), shops_here, cheap_all))
     trs = "".join(
         f'<tr><td><a href="/gift-cards/apple/{cc}/">{flag(cc)} {e(name)}区</a></td><td>{e("、".join(SHOPS[s]["name"] for s in shops))}</td>'
         f'<td data-v="{b["prem"] if b else 9:.4f}">{pct(b["prem"]) if b else "—"}</td><td>{e(face_text(b)) + " · " + money(b["usd"]) if b else "—"}</td>'
-        f'<td>{"<br>".join(f"{e(n)} {money(net)}" for n, _, _, net, _ in ch[:2]) or "—"}</td></tr>'
+        f'<td><ul class="top2">{"".join(f"<li data-prod={prod_of_url(u_)}>{e(n)} {money(net)}</li>" for n, u_, _, net, _ in ch) or "—"}</ul></td></tr>'
         for cc, name, b, n, shops, ch in idx)
     cr_html, cr_ld = crumbs([("首页", "/"), ("礼品卡", "/gift-cards/")])
     body = f"""{cr_html}

@@ -208,3 +208,45 @@ tbody.morebtn td{text-align:center;background:var(--bg)}
   table.prices:not(.rank3) td[data-label="#"]{display:none}
   select.cur{max-width:96px;padding:5px 6px}
 }
+/* ---- channel tabs + product filter ---- */
+.top nav.main .badge{display:inline-block;font-style:normal;font-size:11px;line-height:16px;min-width:16px;padding:0 4px;border-radius:999px;background:#e5484d;color:#fff;margin-left:4px;vertical-align:1px}
+.pfilter{margin:14px 0 4px;position:relative}
+.pf-toggle{font:inherit;font-size:14px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px 14px;cursor:pointer;color:var(--fg)}
+.pfilter.active .pf-toggle{border-color:#0d6b5e;color:#0d6b5e}
+.pf-chips{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px;padding:12px;background:var(--card);border:1px solid var(--line);border-radius:12px}
+.pf-chips button{font:inherit;font-size:14px;padding:5px 12px;border-radius:999px;border:1px solid var(--line);background:var(--bg);color:var(--fg);cursor:pointer}
+.pf-chips button.on{background:#0d6b5e;border-color:#0d6b5e;color:#fff}
+.pf-hint{color:var(--muted);font-size:12px;margin-left:4px}
+[data-prod][hidden]{display:none !important}
+/* overview matrix */
+table.overview td a{display:flex;flex-direction:column;color:var(--fg)}
+table.overview td a:hover{text-decoration:none}
+table.overview td a:hover b{text-decoration:underline}
+table.overview td small{color:var(--muted);font-size:12px}
+table.overview td.best{background:#e3f4ec}
+table.overview td.best b{color:#0d6b5e}
+table.overview td.na{color:var(--muted)}
+.bestdot{display:inline-block;width:10px;height:10px;border-radius:3px;background:#e3f4ec;border:1px solid #0d6b5e;vertical-align:-1px}
+ul.top2{list-style:none;margin:0;padding:0}
+@media (prefers-color-scheme:dark){table.overview td.best{background:#163a34}}
+@media (max-width:640px){
+  table.overview td.na{display:none}
+  table.overview td a{flex-direction:row;justify-content:flex-end;gap:8px;align-items:baseline}
+}
+.pf-chips[hidden]{display:none}
+.subbar{border-top:1px solid var(--line);background:var(--bg)}
+.subbar .wrap{height:auto;display:block;padding-top:8px;padding-bottom:8px}
+.subbar .pfilter{margin:0}
+.subbar .pf-toggle{padding:4px 12px;font-size:13px}
+.subbar .pf-chips{margin-top:8px}
+table.overview td:first-child b{font-size:15px}
+@media (max-width:640px){
+  table.overview td:first-child::before{content:none}
+  table.overview td:first-child{font-size:16px;padding-bottom:6px;justify-content:flex-start}
+  .subbar .wrap{padding-top:6px;padding-bottom:6px}
+}
+@media (max-width:640px){
+  table.prices:not(.rank3) td[data-label]::before{flex:1 1 auto}
+  table.prices:not(.rank3) td br{display:none}
+  table.prices:not(.rank3) td small{margin-left:6px}
+}
