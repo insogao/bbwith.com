@@ -127,6 +127,18 @@ def jsonld(obj):
     return '<script type="application/ld+json">' + json.dumps(obj, ensure_ascii=False).replace("<", "\\u003c") + "</script>"
 
 
+def _asset_version():
+    import hashlib
+    h = hashlib.sha1()
+    for f in ("style.css", "sort.js", "app.js", "admin.js"):
+        fp = os.path.join(ROOT, "site_src", "static", f)
+        if os.path.exists(fp):
+            h.update(open(fp, "rb").read())
+    return h.hexdigest()[:10]
+
+
+ASSET_V = _asset_version()  # changes whenever a static file changes, so browsers fetch the new one
+
 NAV_MAIN = [("/", "会员比价", ("/", "/chatgpt/", "/claude/", "/google-ai/", "/grok/", "/x/", "/perplexity/", "/cursor/", "/ai-pricing/", "/daily/")),
             ("/gift-cards/", "充值卡", ("/gift-cards/",)),
             ("/channels/", "代充 · 成品号", ("/channels/", "/shop/", "/merchant/"))]
@@ -160,7 +172,7 @@ def page(title, description, path, body, ld=(), date=None, noindex=False, extra_
 {'<meta name="robots" content="noindex">' if noindex else ''}
 <meta name="msvalidate.01" content="939B2495BA3A4866A1D2B018A6455FBC">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="/assets/style.css">
+<link rel="stylesheet" href="/assets/style.css?v={ASSET_V}">
 <link rel="alternate" type="application/json" href="/data/latest.json" title="最新价格数据">
 <script>window.FX={json.dumps(FX)}</script>
 {lds}
@@ -179,8 +191,8 @@ def page(title, description, path, body, ld=(), date=None, noindex=False, extra_
 <p>比比价（bbwith.com）整理各地区 App Store 公开标价，仅供参考。本站与 OpenAI、Anthropic、Google、SpaceX/xAI、X、Perplexity、Cursor 均无关联。实际价格、可订阅档位和税费以结账页为准；跨地区订阅需遵守 Apple 和各服务商的条款。</p>
 <p><a href="/news/">AI 早报</a> · <a href="/deals/">优惠</a> · <a href="/guides/">教程</a> · <a href="/daily/">价格日报</a> · <a href="/ai-pricing/">各家官网价格</a> · <a href="/merchant/join/">商家入驻</a> · <a href="/about/">关于本站</a></p>
 </div></footer>
-<script src="/assets/sort.js" defer></script>
-<script src="/assets/app.js" defer></script>{f'<script src="/assets/{extra_js}" defer></script>' if extra_js else ''}
+<script src="/assets/sort.js?v={ASSET_V}" defer></script>
+<script src="/assets/app.js?v={ASSET_V}" defer></script>{f'<script src="/assets/{extra_js}?v={ASSET_V}" defer></script>' if extra_js else ''}
 </body>
 </html>
 """
