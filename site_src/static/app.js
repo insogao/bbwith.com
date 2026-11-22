@@ -261,7 +261,8 @@ document.addEventListener("click", function (ev) {
   apply();
 })();
 
-// data freshness: time since the last update and a countdown to the next one
+// data freshness: a ring that drains until the next update, colour going green -> amber as the data ages,
+// with a dot orbiting once a minute so the clock visibly runs
 (function () {
   var cells = document.querySelectorAll(".fr[data-t]");
   if (!cells.length) return;
@@ -270,7 +271,7 @@ document.addEventListener("click", function (ev) {
     var d = Math.floor(s / 86400), h = Math.floor(s % 86400 / 3600), m = Math.floor(s % 3600 / 60);
     if (d) return d + " 天 " + h + " 小时";
     if (h) return h + " 小时 " + m + " 分";
-    return m ? m + " 分钟" : "刚刚";
+    return m ? m + " 分钟" : "不到 1 分钟";
   }
   function clock(s) {
     s = Math.max(0, Math.floor(s));
@@ -278,18 +279,24 @@ document.addEventListener("click", function (ev) {
     return p(Math.floor(s / 3600)) + ":" + p(Math.floor(s % 3600 / 60)) + ":" + p(s % 60);
   }
   function tick() {
-    var now = Date.now() / 1000;
+    var nowMs = Date.now(), now = nowMs / 1000;
     cells.forEach(function (c) {
       var t = Date.parse(c.dataset.t) / 1000, per = +c.dataset.period;
       if (isNaN(t)) return;
-      var age = now - t, left = per - age;
-      c.querySelector(".ago").textContent = (age < 60 ? "刚刚更新" : dur(age) + "前更新");
-      var nx = c.querySelector(".next");
-      if (left > 0) { nx.innerHTML = "下次 <b>" + clock(left) + "</b>"; c.className = "fr ok"; }
-      else if (left > -1800) { nx.textContent = "正在更新…"; c.className = "fr busy"; }
-      else { nx.textContent = "本轮更新延迟"; c.className = "fr late"; }
-      c.querySelector(".fr-bar i").style.width = Math.min(100, Math.max(0, age / per * 100)) + "%";
+      var age = now - t, left = per - age, frac = Math.min(1, Math.max(0, left / per));
+      var hue = Math.round(35 + 125 * frac);           // 160 = fresh green ... 35 = amber
+      c.style.setProperty("--h", hue);
+      c.querySelector(".arc").style.strokeDasharray = (frac * 100).toFixed(2) + " 100";
+      c.querySelector(".sec").setAttribute("transform", "rotate(" + ((nowMs / 1000 % 60) * 6).toFixed(1) + " 32 32)");
+      var lh = left / 3600;
+      c.querySelector(".fr-pct").innerHTML = left <= 0 ? "…" : lh >= 1 ? Math.floor(lh) + "<small>小时</small>" : Math.ceil(left / 60) + "<small>分钟</small>";
+      c.querySelector(".ago").textContent = "数据是 " + dur(age) + "前的";
+      var cd = c.querySelector(".cd");
+      if (left > 0) { cd.textContent = clock(left); c.classList.remove("busy", "late"); }
+      else if (left > -1800) { cd.textContent = "正在更新…"; c.classList.add("busy"); }
+      else { cd.textContent = "延迟中"; c.classList.add("late"); }
     });
+    requestAnimationFrame(function () {});
   }
-  tick(); setInterval(tick, 1000);
+  tick(); setInterval(tick, 250);
 })();

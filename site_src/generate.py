@@ -1534,9 +1534,13 @@ def freshness(day):
     items = [("App Store 价格", f"{len(day['storefronts'])} 个地区", _iso(day.get("time") or GIFT.get("time")), 86400),
              ("礼品卡报价", f"{len({i['shop'] for i in GIFT.get('items', [])})} 个平台", _iso(GIFT.get("time")), 86400),
              ("代充 · 成品号", f"{CHANNELS.get('listings_seen', 0):,} 条挂单", _iso(CHANNELS.get("time")), 4 * 3600)]
+    ring = ('<svg class="ring" viewBox="0 0 64 64" aria-hidden="true"><circle class="trk" cx="32" cy="32" r="27"/>'
+            '<circle class="arc" cx="32" cy="32" r="27" pathLength="100" transform="rotate(-90 32 32)"/>'
+            '<g class="sec"><circle cx="32" cy="5" r="4.2"/></g></svg>')
     cells = "".join(
-        f'<div class="fr" data-t="{t}" data-period="{per}"><div class="fr-h"><i class="dot"></i><b>{e(n)}</b><span>{e(sub)}</span></div>'
-        f'<div class="fr-bar"><i></i></div><div class="fr-t"><span class="ago">—</span><span class="next">—</span></div></div>'
+        f'<div class="fr" data-t="{t}" data-period="{per}"><div class="fr-ring">{ring}<span class="fr-pct"></span></div>'
+        f'<div class="fr-body"><div class="fr-h"><b>{e(n)}</b><span>{e(sub)}</span></div>'
+        f'<div class="fr-next">下次更新 <b class="cd">--:--:--</b></div><div class="fr-ago"><i class="dot"></i><span class="ago">—</span></div></div></div>'
         for n, sub, t, per in items if t)
     return f'<div class="fresh">{cells}</div>'
 
