@@ -1,0 +1,47 @@
+name: Pick shop products
+
+# Once a day the site's LLM tops up data/merchants/watch.json from the latest 16688 candidates
+# (scraper/shoppick.py), then the new products are checked once (scraper/shopwatch.py).
+on:
+  schedule:
+    - cron: "41 1 * * *"   # 09:41 Beijing, after the 08:17 channels run
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "Re-pick every plan"
+        type: boolean
+        default: false
+
+concurrency:
+  group: data-commit
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  pick:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Pick
+        env:
+          SUPBI_AI_BASE_URL: ${{ secrets.SUPBI_AI_BASE_URL }}
+          SUPBI_AI_API_KEY: ${{ secrets.SUPBI_AI_API_KEY }}
+          SUPBI_AI_MODEL: ${{ secrets.SUPBI_AI_MODEL }}
+        run: |
+          python -u scraper/shoppick.py ${{ inputs.force && '--force' || '' }}
+          if ! git diff --quiet data/merchants/watch.json; then python -u scraper/shopwatch.py; fi
+      - name: Commit
+        run: |
+          git config user.name "bbwith-bot"
+          git config user.email "bot@bbwith.com"
+          git add data/merchants
+          git diff --cached --quiet && exit 0
+          git commit -m "data: shop picks $(TZ=Asia/Shanghai date '+%F %H:%M')"
+          git pull --rebase
+          git push

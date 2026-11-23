@@ -27,7 +27,7 @@ sys.path.insert(0, HERE)
 import shopwatch  # noqa: E402
 
 DIR = os.path.join(ROOT, "data", "merchants")
-MIN_LIVE, MAX_PER_PLAN, PER_PLAN_CANDIDATES = 3, 5, 12
+MIN_LIVE, MAX_PER_PLAN, PER_PLAN_CANDIDATES = 3, 5, 10
 PLAN_NAMES = {"chatgpt/go": "ChatGPT Go", "chatgpt/plus": "ChatGPT Plus", "chatgpt/pro-100": "ChatGPT Pro 5x（$100）",
               "chatgpt/pro-200": "ChatGPT Pro 20x（$200）", "claude/pro": "Claude Pro", "claude/max-5x": "Claude Max 5x",
               "claude/max-20x": "Claude Max 20x", "google-ai/pro": "Google AI Pro（Gemini）", "grok/supergrok": "SuperGrok"}

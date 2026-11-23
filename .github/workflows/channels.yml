@@ -46,16 +46,6 @@ jobs:
         continue-on-error: true
         run: python scraper/shopwatch.py
 
-      - name: Pick shop products (AI)
-        continue-on-error: true
-        env:
-          SUPBI_AI_BASE_URL: ${{ secrets.SUPBI_AI_BASE_URL }}
-          SUPBI_AI_API_KEY: ${{ secrets.SUPBI_AI_API_KEY }}
-          SUPBI_AI_MODEL: ${{ secrets.SUPBI_AI_MODEL }}
-        run: |
-          python scraper/shoppick.py
-          if ! git diff --quiet data/merchants/watch.json; then python scraper/shopwatch.py; fi
-
       - name: Verify merchant listings
         continue-on-error: true
         run: python scraper/merchants.py
