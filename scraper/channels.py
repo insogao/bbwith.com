@@ -314,6 +314,35 @@ def aggregate(items):
     return out
 
 
+PICK_PLANS = ("chatgpt/go", "chatgpt/plus", "chatgpt/pro-100", "chatgpt/pro-200", "claude/pro", "claude/max-5x", "claude/max-20x",
+              "google-ai/pro", "grok/supergrok")
+
+
+def write_candidates(items, when):
+    """Cheapest trustworthy-looking 代充 listings per plan, for scraper/shoppick.py to choose from.
+    Only fields needed to look a product up on its public page are kept."""
+    by = {}
+    for g in items:
+        if g.get("status", 1) != 1:
+            continue
+        name = g.get("name", "")
+        c = classify(name)
+        if not c or c["type"] != "topup" or NO_GUARANTEE.search(name):
+            continue
+        key = f'{c["product"]}/{c["plan"]}'
+        if key not in PICK_PLANS:
+            continue
+        keep = {k: v for k, v in g.items() if re.search(r"no$|_no|id$|name|price|sales|stock|shop|merchant", k, re.I) and not isinstance(v, (dict, list))}
+        by.setdefault(key, []).append(keep)
+    out = {}
+    for key, rows in by.items():
+        rows.sort(key=lambda r: float(r.get("price") or 1e9))
+        med = statistics.median(float(r.get("price") or 0) for r in rows)
+        out[key] = [r for r in rows if float(r.get("price") or 0) >= med * 0.3][:25]
+    json.dump({"time": when, "plans": out}, open(os.path.join(ROOT, "data", "channels", "candidates.json"), "w", encoding="utf8"),
+              ensure_ascii=False, indent=0)
+
+
 def main():
     if "--selftest" in sys.argv:
         sys.exit(0 if selftest() else 1)
@@ -326,6 +355,7 @@ def main():
     out = {"date": now.date().isoformat(), "time": now.isoformat(timespec="minutes"), "source": "16688",
            "currency": "CNY", "usd_cny": fx["rates"]["CNY"], "listings_seen": len(items), "plans": plans}
     os.makedirs(os.path.join(ROOT, "data", "channels"), exist_ok=True)
+    write_candidates(items, out["time"])
     path = os.path.join(ROOT, "data", "channels", f"{out['date']}.json")
     json.dump(out, open(path, "w", encoding="utf8"), ensure_ascii=False, indent=1)
     print(len(items), "listings")
