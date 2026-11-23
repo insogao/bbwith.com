@@ -1,0 +1,199 @@
+{
+ "date": "2026-11-24",
+ "time": "2026-11-24 07:59",
+ "headline": "GPT-6.2 Sol进ChatGPT聊天，旧模型将退役",
+ "model": "workbuddy/deepseek-v4.1-flash",
+ "inputs": 110,
+ "fact_check": [
+  "fix: Gemini 4 Neon登顶AI棋榜，26局仅2负 (将“用户增长上领先 OpenAI”改为来源可支持的“在势头方面领先 OpenAI”。)",
+  "fix: Gemini 4 Carbon对AI Pro开放，编程工具可用 (将无来源支持的“Gemini 4 系列”改为来源可支持的“模型”。)",
+  "fix: Google AI模式接入钱包，回答更个性化 (来源对 Drive/Gemini 上线时间说法不一，删去“几周内跟进”的具体时间。)",
+  "fix: 两州起诉Grok生成非法图像 (删去来源未支持的“平台或收紧限制”及用户可能被过滤/封禁、整改等推测。)"
+ ],
+ "items": [
+  {
+   "title": "GPT-6.2 Sol进ChatGPT聊天标签",
+   "summary": "OpenAI 把 GPT-6.2 Sol 从 Work 和 Codex 扩展到 ChatGPT 的聊天标签，距该模型首次亮相不到一周。同时，OpenAI 为两个旧模型设定了退役日期。普通聊天用户现在可以在 Chat 标签里直接选用新模型，依赖旧模型的用户需要留意迁移。",
+   "take": "",
+   "kind": "model",
+   "products": [
+    "chatgpt"
+   ],
+   "links": [
+    {
+     "name": "9to5mac.com",
+     "title": "ChatGPT expands GPT-6.2 Sol as OpenAI sets retirement date for two models",
+     "url": "https://9to5mac.com/2026/11/23/chatgpt-expands-gpt-6-2-sol-as-openai-sets-retirement-date-for-two-models/"
+    }
+   ]
+  },
+  {
+   "title": "Z.ai发布GLM-5.4，编程套餐更省还能看图",
+   "summary": "Z.ai 发布 GLM-5.4，称这是其首个 Loop Transformer 模型，支持视觉输入，并降低了 Coding Plan 的每 token 额度消耗。官方博客确认模型基座为 750B，API 和开放权重在计划中；测试显示输入上下文可达 1,048,576 token，原生支持图片和 PDF。对使用 GLM 编程套餐的用户来说，同等额度能处理更多请求，也能直接读图和文档。",
+   "take": "",
+   "kind": "model",
+   "products": [],
+   "links": [
+    {
+     "name": "news.sulat.com",
+     "title": "Z.ai launches GLM-5.4, its first Loop Transformer, with vision and lower Coding Plan credit rates",
+     "url": "https://news.sulat.com/2026/11/23/glm-coding-plan/"
+    },
+    {
+     "name": "testingcatalog.com",
+     "title": "Z.ai launches GLM-5.4, its first Loop Transformer model",
+     "url": "https://www.testingcatalog.com/z-ai-launches-glm-5-4-its-first-loop-transformer-model/"
+    }
+   ]
+  },
+  {
+   "title": "Gemini 4 Neon登顶AI棋榜，26局仅2负",
+   "summary": "Gemini 4 Neon 在 dubesor 的 AI 国际象棋榜上以 1924 Elo 排第一，26 局取得 24 胜 2 负。报道同时称这款模型在势头方面领先 OpenAI。榜单一旁标注的误差范围为 ±141，因此 90 分的领先幅度需要谨慎看待。",
+   "take": "",
+   "kind": "model",
+   "products": [
+    "google-ai"
+   ],
+   "links": [
+    {
+     "name": "news.sulat.com",
+     "title": "Gemini 4 Neon takes first on the AI Chess Leaderboard at 1924 Elo, with 24 wins and 2 losses",
+     "url": "https://news.sulat.com/2026/11/23/ai-chess-leaderboard/"
+    },
+    {
+     "name": "Google News",
+     "title": "Google's Gemini 4 Neon gains momentum ahead of OpenAI, data shows - Yahoo Finance",
+     "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxQdzhLV2dQMTdJZVVqZlgzelozTmM1WTRicDBaM3hneU1xdUJKczF3bG9nVVFoWWVrZ3BMSFFSN2l5V0paVHR2VGJ1ZDlIS2V1UUtWT3I1VTNlbXJPanJ1WUVheEljWFRfUlBOVWEtNnRHdGJSQXBSSWdWdHFrWjhuTjVLVEM4c3phRmszRzFOREpHODFjejNxM1Ezc1g2dGxoS3Q5bHVvdkpjVzBrSGFz?oc=5"
+    }
+   ]
+  },
+  {
+   "title": "Gemini 4 Carbon对AI Pro开放，编程工具可用",
+   "summary": "Google 把 Gemini 4 Carbon 引入 Antigravity，付费的 AI Pro 订阅者可以使用。此前本月已有多款模型发布。对 AI Pro 会员来说，这是在编程工具里多了一个新模型选项。",
+   "take": "",
+   "kind": "model",
+   "products": [
+    "google-ai"
+   ],
+   "links": [
+    {
+     "name": "9to5google.com",
+     "title": "Gemini 4 Carbon is now available in Google Antigravity for AI Pro",
+     "url": "https://9to5google.com/2026/11/23/antigravity-gemini-4-carbon/"
+    }
+   ]
+  },
+  {
+   "title": "Claude上线Ship，可自动审查并批准合并请求",
+   "summary": "Anthropic 开放 Claude Ship 测试版，包含 Code Review、PR Steward 和 Claude Approvals 三个代理，能审查、修复并批准 GitHub 上的合并请求。团队可以用策略文件规定哪些改动必须由谁批准。官方文档也列出了当前缺口，使用前需要先确认权限边界。",
+   "take": "",
+   "kind": "product",
+   "products": [
+    "claude"
+   ],
+   "links": [
+    {
+     "name": "Google News",
+     "title": "Anthropic launches Claude Ship, letting AI agents review, fix, and approve code changes - TechCrunch",
+     "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxPOUdkSUFqUUdSaDIwclBOdjhNS2ltR3hsOW4tQTlMTzAzVjVrazZLN3J1eWJsYm02NDBOcUFlLXdoRV9CY3F2OHdwb215cm5mamdRZTBBS19keDhieXZiQ080SnJlTFVsNEpjNkEzMlBjOUhTSHNHTzZwNHJiYTBzSnpDemUwdFNxTXNDRHB3VEs5cnhIUTJpZ1FMd3Z1OTBXRG00Q0dlSmlqUW53eEd2dDJKaVJlRDVQdXFB?oc=5"
+    },
+    {
+     "name": "news.sulat.com",
+     "title": "Anthropic launches Claude Ship, three agents that review, fix and approve GitHub pull requests",
+     "url": "https://news.sulat.com/2026/11/24/claude-ship/"
+    },
+    {
+     "name": "9to5mac.com",
+     "title": "Anthropic launches new Claude Ship feature for builders",
+     "url": "https://9to5mac.com/2026/11/23/anthropic-launches-new-claude-ship-feature-for-builders/"
+    },
+    {
+     "name": "testingcatalog.com",
+     "title": "Anthropic launches Claude Ship to review and approve PRs",
+     "url": "https://www.testingcatalog.com/anthropic-launches-claude-ship-to-review-and-approve-prs/"
+    }
+   ]
+  },
+  {
+   "title": "Google AI模式接入钱包，回答更个性化",
+   "summary": "Google 从 11 月 23 日起让 AI 模式的 Personal Intelligence 连接 Google Wallet，Drive 和 Gemini 应用也在接入范围中。用户需要主动选择加入，连接后的数据可用于生成更个性化的回答。相关隐私政策允许这些连接数据影响广告，介意的话要留意授权范围。",
+   "take": "",
+   "kind": "product",
+   "products": [
+    "google-ai"
+   ],
+   "links": [
+    {
+     "name": "news.sulat.com",
+     "title": "Google lets AI Mode read your Wallet spending from today, with Drive and Gemini chats to follow",
+     "url": "https://news.sulat.com/2026/11/24/ai-mode-personal-intelligence/"
+    },
+    {
+     "name": "9to5google.com",
+     "title": "AI Mode adding Google Drive, Wallet, & Gemini app integration",
+     "url": "https://9to5google.com/2026/11/23/ai-mode-wallet-gemini/"
+    },
+    {
+     "name": "blog.google",
+     "title": "A more tailored Google Search that’s uniquely yours",
+     "url": "https://blog.google/products-and-platforms/products/search/google-search-personal-intelligence-apps/"
+    },
+    {
+     "name": "techcrunch.com",
+     "title": "Google Search’s AI Mode can now tap into Drive and Wallet for more personalized responses",
+     "url": "https://techcrunch.com/2026/11/23/google-searchs-ai-mode-can-now-tap-into-drive-and-wallet-for-more-personalized-responses/"
+    }
+   ]
+  },
+  {
+   "title": "美国多家银行规定AI代理操作损失由客户承担",
+   "summary": "Wells Fargo 从 11 月 24 日起的新协议规定，使用 AI 代理操作账户的风险由客户自行承担。Chase、Citi、PNC、Bank of America 和 Citizens 也在条款中让客户对代理行为负责。对想用 AI 助手代操作银行账户的用户来说，出错或被骗时可能难以把责任推给银行。",
+   "take": "",
+   "kind": "industry",
+   "products": [],
+   "links": [
+    {
+     "name": "news.sulat.com",
+     "title": "US banks put AI agent losses on customers as Wells Fargo’s terms start 24 November",
+     "url": "https://news.sulat.com/2026/11/23/banks-ai-agent-terms/"
+    },
+    {
+     "name": "9to5mac.com",
+     "title": "As Apple works on AI agent features, banks are already blocking them",
+     "url": "https://9to5mac.com/2026/11/23/as-apple-works-on-ai-agent-features-banks-are-already-blocking-them/"
+    }
+   ]
+  },
+  {
+   "title": "两州起诉Grok生成非法图像",
+   "summary": "弗吉尼亚和俄勒冈分别起诉 SpaceX，指其 Grok 生成儿童性虐待材料和报复色情图像，违反州消费者保护法。诉讼称平台没有采用行业标准防护。",
+   "take": "",
+   "kind": "industry",
+   "products": [
+    "grok"
+   ],
+   "links": [
+    {
+     "name": "Google News",
+     "title": "US states sue SpaceX over Grok AI’s creation of child sexual abuse material - Al Jazeera",
+     "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxQTFFieDlnaXIxeGhqTDYtdDhwNEFyMnNJM29SY3poc2F6R3VIek9OeXJad2dKU3ZiZ1hhZ3BIRW9vX1RVaS05ZFJCcnlEbWdsS3NzRkJtVGIxTENDdzJDSk90NE1ySDNuSF9IYlVsOVpmcGRYRnZwLWJMSUdMY0d3WUFvblRNN3BrWmRoY1JqQzctM2ItcDF0S1V1cVd3dzhmU213d0F0UDdHX0hySEFRRXIyWUJmM3BlWW1Z0gHAAUFVX3lxTE9OWFJXNU4tM0gxYzRpdDBWelp4Tm5uZlF1SUVGQVA2MXc1aldsSVJYOXhCeHNnTFBUcm1odVpaSUNKTmw5OVhMVFhJX2JLb3J1TG9IVG1oTTZIZ2FzZXBpZzMzbng3UU8yMUpnUDFYWk5FMnpaVlhOZU5QVVVPaHZjUklmVU13dFppdFd0aWpjcDk0TUFaclBQZXhGSndwYTdWNUtkRGlfTDZjSVhEcEFCM3pfX1djOWhFSmMzZTk0NQ?oc=5"
+    },
+    {
+     "name": "Google News",
+     "title": "Virginia, Oregon sue Musk's SpaceX over Grok AI's creation of child sexual abuse images - Reuters",
+     "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxObnVxU21QWWFOSHYzcW1sajgxS25DUndFTGd6dTh6UzdyaFR5U0QtMWlROWIxZ01IcU0wNG5FLXRaMWZoS1o0dHhEUUFiaDItWFVIbE01S1pTbDZxYVZGN1hMaHlNYXBZck84N3JPaW1xcW5VMHdNeFBHSWZmRVN6MzlHZjdEcl8wTkVERGhBU3M0dVBXSHBFUHNpM1pCc1Q0MV9HTWlveVJSV1hiSEFaWjJDMEI0b2p2bzBIZEdrampIVFlVWEE?oc=5"
+    },
+    {
+     "name": "Google News",
+     "title": "States sue SpaceX to stop Grok from generating child sex images, revenge porn - Ars Technica",
+     "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxOWXFIRlRpQkkyY0F5YUVjb1RmN1g2cUdPWHJ3ZkhTVnVzcVNJaG5QY0lHRlV1cEdBNmFqWHQ3c0lpWEU1RGlLanphd1pPbmZjc0dvME9UcXFsNWNSTWJ0VDNsTmcyWGVNaG1lRzAwTEMxNXVycHc3YjItWkVXRXFiNDRZeWVWVEZzZ2NLd2FCOHVhSGVVTEJDMTEwdG1JVVRJdDBVSzQyS0lhY1Q5MnNYZmZFdmVWUlR2TmhzdG1R?oc=5"
+    },
+    {
+     "name": "theverge.com",
+     "title": "Oregon and Virginia sue SpaceX over Grok’s porn deepfakes",
+     "url": "https://www.theverge.com/ai-artificial-intelligence/1040255/x-grok-ai-deepfakes-oregon-virginia-lawsuit"
+    }
+   ]
+  }
+ ]
+}
