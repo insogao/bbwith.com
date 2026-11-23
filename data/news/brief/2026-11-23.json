@@ -1,102 +1,39 @@
 {
  "date": "2026-11-23",
- "time": "2026-11-23 07:58",
- "headline": "OpenAI 包揽对齐指数前七，GPT-6.2 居首",
+ "time": "2026-11-23 18:44",
+ "headline": "GLM-5.4 上线编程套餐，每周配额多 50% 并支持视觉",
  "model": "workbuddy/deepseek-v4.1-flash",
- "inputs": 88,
+ "inputs": 97,
+ "fact_check": [
+  "fix: 开源和本地应用可借用你的 ChatGPT 套餐额度 (把范围限定为来源所说的开源和本地应用，并删去来源未提的可用模型细节。)",
+  "fix: Claude Code 内加入实时 AI 编码成本控制 (删去来源未提的“看花费”、按量付费和套餐限额等推断。)",
+  "fix: Inkling 2 Mini 能本地跑，据称超过去年的 Claude (删去来源未提的“今年本地 AI 代表之一”“流程正在变得简单”和脱离云端订阅的推荐。)",
+  "fix: OpenAI 首席科学家提议给各家 AI 设共同上限 (删去来源未提的“可复现”及关于发布节奏的推断。)",
+  "fix: Gemini 任务要手动开联网，才能装包和调接口 (来源未提权限范围，删去该说法和附带建议。)"
+ ],
  "items": [
   {
-   "title": "OpenAI 包揽对齐指数前七，GPT-6.2 居首",
-   "summary": "据 Arena 更新的对齐指数，OpenAI 有七款模型排在第一到第七位，其中 GPT-6.2 Sol 以 85.2 分居首。Anthropic 的 Claude Fable 5.2 首次上榜排在第八，得分 78.2，与 Kimi K3.1 Pro 并列。这份榜单衡量的是模型在对齐类问题上的表现，选模型时可以拿它当参考，但它不代表综合能力排名。",
+   "title": "Z.ai 发布 GLM-5.4，编程套餐周配额增加一半",
+   "summary": "Z.ai 推出 GLM-5.4，这是它第一个 Loop Transformer 架构的旗舰模型，已上线所有 Coding Plan，带视觉能力，每周配额提升 50%。官方博客确认基础规模为 750B，API 和开放权重都在计划中；第三方测试显示输入上下文可达 1,048,576 token。对已订阅编程套餐的用户，同样的套餐能跑更多任务，也能处理图片。",
    "take": "",
    "kind": "model",
    "products": [],
    "links": [
     {
      "name": "news.sulat.com",
-     "title": "OpenAI takes the top seven places on Arena’s Alignment Index, led by GPT-6.2 Sol at 85.2",
-     "url": "https://news.sulat.com/2026/11/22/arena-alignment-index/"
-    }
-   ]
-  },
-  {
-   "title": "Gemini 4 Neon 登顶 AI 象棋榜第一",
-   "summary": "Gemini 4 Neon 在一份 AI 国际象棋榜上以 1924 Elo 排在第一，26 局取得 24 胜 2 负。榜单也标注它的领先幅度小于评分旁的 ±141 误差范围，优势还不算稳固。另一份统计显示，53 小时内 16,341 次 T3 Code 安装中有 9% 来自原本使用 Opus 5.5 的用户，说明部分编程用户已经在换用它。",
-   "take": "",
-   "kind": "model",
-   "products": [
-    "google-ai"
-   ],
-   "links": [
-    {
-     "name": "news.sulat.com",
-     "title": "Gemini 4 Neon takes first on the AI Chess Leaderboard at 1924 Elo, with 24 wins and 2 losses",
-     "url": "https://news.sulat.com/2026/11/23/ai-chess-leaderboard/"
+     "title": "Z.ai launches GLM-5.4, its first Loop Transformer, with vision and 50% more Coding Plan quota",
+     "url": "https://news.sulat.com/2026/11/23/glm-coding-plan/"
     },
     {
-     "name": "news.sulat.com",
-     "title": "Adam Holter’s T3 Code chart shows 9% of Opus-led installs ran Gemini 4 Neon",
-     "url": "https://news.sulat.com/2026/11/22/t3-code-neon-usage/"
+     "name": "testingcatalog.com",
+     "title": "Z.ai launches GLM-5.4, its first Loop Transformer model",
+     "url": "https://www.testingcatalog.com/z-ai-launches-glm-5-4-its-first-loop-transformer-model/"
     }
    ]
   },
   {
-   "title": "微软一次发布 7 个 MAI 模型，价格低于竞品",
-   "summary": "微软 AI 一口气推出 7 个 MAI 模型，覆盖编程、语音等用途，定价定在低于同类竞品的水平。官方同时说明了每个模型的可用渠道和测试方式。对用户来说，这是主流闭源模型之外多出来的一个更便宜的选择，实际效果还要看后续评测。",
-   "take": "",
-   "kind": "model",
-   "products": [],
-   "links": [
-    {
-     "name": "news.sulat.com",
-     "title": "Microsoft’s seven new MAI models: prices, access and the fine print",
-     "url": "https://news.sulat.com/2026/11/22/microsoft-mai-ignite-models/"
-    }
-   ]
-  },
-  {
-   "title": "Claude 被指协助证明黎曼猜想，AI 再碰千禧年难题",
-   "summary": "据 Semafor 和一篇流传较广的 Substack 文章，数学家 Levent Alpöge 在 Claude 的帮助下解决了黎曼猜想。中文媒体还报道，Anthropic 的数学家借助 Claude 推进了另一道千禧年难题，并牵出一份写了 12 年、940 页的人类手稿。这类消息反映的是前沿模型在数学推理上的作用，普通用户日常使用未必能直接感受到。",
-   "take": "",
-   "kind": "model",
-   "products": [
-    "claude"
-   ],
-   "links": [
-    {
-     "name": "Google News",
-     "title": "Levent Alpöge has solved the Riemann Hypothesis with help of Claude! What does it mean? - Marcus on AI | Substack",
-     "url": "https://news.google.com/rss/articles/CBMiekFVX3lxTE5JR1c5X2dZenJPXzBPcWhjYmxTRk1mMmtQZ0h0elM2UWpDdkxPSFd0aUs2WmpKbG83OVhYUGlBWjJ1Ul9waEl1WlExWmZaZmZ6dmlEUEdDdkZiN2FPTm5TRXI4VVpJYmk2U2xTdkdWSWJpczUwdks1clV3?oc=5"
-    },
-    {
-     "name": "Google News",
-     "title": "Claude helps topple Riemann problem - Semafor",
-     "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxPQWlrb1BVcndvaEt1UEhQTWU5aWZaUjNiM08tNFFuckJRYWJseTFEdUp3RTZ3bkFxRm9XWDlFbVNOM1JDQzQwdXJQZFd0STNjTlIyaXJBSzFITlFFY1VabWh5c3pTOFllaU5XTjY5bXdGODZPSGxGeXVnOUNONTVjdmpoaG4?oc=5"
-    },
-    {
-     "name": "qbitai.com",
-     "title": "A社数学家用Claude又证明另一千禧难题，逼出一份写了12年的940页纯人类手稿",
-     "url": "https://www.qbitai.com/2026/11/511870.html"
-    }
-   ]
-  },
-  {
-   "title": "OpenCode 把 GLM 5.3、DeepSeek 新模型降价六成",
-   "summary": "OpenCode 的 Console 把 GLM 5.3 调到每百万 token 输入 0.56 美元、输出 1.76 美元，DeepSeek V4.1 Flash 调到 0.12 和 0.48 美元。官方称这比 Fireworks 和 Baseten 的标价低约 60%。用这两款模型做开发的人，可以直接换到这个渠道降低 API 成本。",
-   "take": "",
-   "kind": "pricing",
-   "products": [],
-   "links": [
-    {
-     "name": "news.sulat.com",
-     "title": "OpenCode takes 60% off GLM 5.3 and DeepSeek V4.1 Flash, below Fireworks and Baseten list prices",
-     "url": "https://news.sulat.com/2026/11/22/opencode-price-cut/"
-    }
-   ]
-  },
-  {
-   "title": "开源应用可让你用 ChatGPT 会员额度跑 API 请求",
-   "summary": "OpenAI 的开发者文档新增了一种登录方式：开源和本地应用可以在用户授权后，直接用该用户的 ChatGPT 套餐发起 Responses API 请求。应用方拿不到用户的聊天内容，可用额度和限制按 OpenAI 的规则执行。对会员来说，订阅额度可以覆盖一部分原本要另外付费的 API 开销。",
+   "title": "开源和本地应用可借用你的 ChatGPT 套餐额度",
+   "summary": "OpenAI 开发者文档新增一种授权登录方式：开源和本地应用可以请用户用自己的 ChatGPT 账号登录，再用该账号的套餐发起 Responses API 请求，而应用看不到用户的聊天内容。对会员来说，订阅额度不再只限官方客户端，开源和本地应用也能用上；具体限额多少，由文档规定。",
    "take": "",
    "kind": "pricing",
    "products": [
@@ -111,9 +48,49 @@
    ]
   },
   {
-   "title": "OpenAI 公开预训练困惑度，提议给 AI 研发设上限",
-   "summary": "OpenAI 首席科学家 Jakub Pachocki 发文公开公司基础模型从 GPT-3.5 到 GPT-6.2 Astra 的预训练困惑度曲线，还画出一个未公开的内部模型，并提议各实验室约定一条不越过的开发上限。文章的核心主张是，要给 AI 研发设速度限制，先得统一衡量方式。",
-   "take": "Hacker News 上有人觉得这是难得的简单基准，比越来越复杂的评测直观；也有人指出 GPT-4 与 o3 的困惑度接近但能力差距明显，认为这个指标已经不能代表智能，还有人对用困惑度衡量智能本身存疑。",
+   "title": "Claude Code 内加入实时 AI 编码成本控制",
+   "summary": "据 Techzine Global 报道，Claude Code 内加入了实时的 AI 编码成本控制，开发者在写代码时就能控制成本。",
+   "take": "",
+   "kind": "pricing",
+   "products": [
+    "claude"
+   ],
+   "links": [
+    {
+     "name": "Google News",
+     "title": "Developers get real-time AI coding cost controls inside Claude Code - Techzine Global",
+     "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxOSzV2SGR3WVhTaklPZWFaRXNSd25lcFVKVDNXejlvdGdDcnJ0SWQzMHhhMm9ReHNOV1lENTNZZ2ZwTm1Zb0dmMzFKendaNEFMcTJ4R29sMS13TjlQSi1vdm9qQTNSZnduZzdoREZER0VYUkswY1c1QXhYOTlrTGNBcjhpdVhiekRJNEw3Y1JlQ1ZvNzVVZHQ3VXdIYWwyZFVwZUZpNER2cG9oZGJoOVlSc00wRzk4Z1Q2N2c?oc=5"
+    }
+   ]
+  },
+  {
+   "title": "Inkling 2 Mini 能本地跑，据称超过去年的 Claude",
+   "summary": "据 Techzine Global 报道，主打本地运行的 Inkling 2 Mini 表现超过去年的 Claude 模型。同期一份本地 AI 入门指南把 Inkling、Qwen 与 Unsloth 放在一起介绍。硬件门槛仍不低。",
+   "take": "HN 讨论主要围绕硬件：有人问普通笔记本要多少显存才不卡顿，也有人质疑文中 32GB 显存的说法；有用户分享在带 NPU 的锐龙笔记本上跑 9B 模型，认为质量仍比不上最新的前沿模型。",
+   "kind": "model",
+   "products": [],
+   "links": [
+    {
+     "name": "Google News",
+     "title": "Inkling 2 Mini: 2026’s local AI outperforms last year’s Claude - Techzine Global",
+     "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxPZVBnUmFiRUM4aWhrVzFSMzdJTXlBSjZ0eEU2Z0xfWFlkbUJ3ajZwMEVxQkdOQTJXaDB5T3J0M3hpWDVlM201Q1NvNlJ6WERPRmVlajNsOGZ6T2JkUlluTGJvOEtvVDVMRHNhREhkR251OG5KbkUtY0NyeVU0Um1hSWxSVHRrQ3hnWUpTQXBYZDlfR09HVHZlQWZfdG8tMWNJQWJ4aFRLUGRnRkVXN1E?oc=5"
+    },
+    {
+     "name": "Hacker News",
+     "title": "A Beginner's Guide to Local AI with Inkling, Qwen, and Unsloth",
+     "url": "https://www.gpupartner.com/blog/beginners-guide-local-ai-inkling-qwen-unsloth"
+    },
+    {
+     "name": "Hacker News 讨论",
+     "title": "221 条评论",
+     "url": "https://news.ycombinator.com/item?id=50603845"
+    }
+   ]
+  },
+  {
+   "title": "OpenAI 首席科学家提议给各家 AI 设共同上限",
+   "summary": "OpenAI 首席科学家 Jakub Pachocki 发表文章，公开从 GPT-3.5 到 GPT-6.2 Astra 的基础模型困惑度数据，并提出各实验室可以承诺不越过某些能力门槛，前提是先就衡量方式达成一致。",
+   "take": "HN 上有人认为把困惑度当成智能指标会误导，因为图上 GPT-4 和 o3 差别不大、实际提升却很明显；也有人觉得这种简单指标，比越来越复杂的评测榜更有参考价值。",
    "kind": "industry",
    "products": [],
    "links": [
@@ -124,18 +101,18 @@
     },
     {
      "name": "Hacker News 讨论",
-     "title": "302 条评论",
+     "title": "401 条评论",
      "url": "https://news.ycombinator.com/item?id=50601525"
-    },
-    {
-     "name": "Google News",
-     "title": "Perplexity and Intelligence - OpenAI",
-     "url": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE96Sm1EaVlsMHctNGtBMDBYdVRreWpySVdVS1RhSVZCUzk3enZHQmlIS3lWY2Rmajh2Q3RNZWU2RDEwc3ZEX2tONEpsbEN6RXowZk1ySVdaWXVVR09jX21aelV6UQ?oc=5"
     },
     {
      "name": "news.sulat.com",
      "title": "OpenAI publishes its pretraining perplexity numbers and proposes common limits across labs",
      "url": "https://news.sulat.com/2026/11/23/openai-pretraining-perplexity/"
+    },
+    {
+     "name": "Google News",
+     "title": "OpenAI scientist proposes industry AI limits tied to model intelligence metric - Reuters",
+     "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxPa0ZQb0xtalJ5djRmZmkwQnhmdDBlMEtncDUtUEJsUFBtWmptbkdVQ3c5QjY2TzhKN0NFT2ZzYnZmenQxY1lrUWFFYjJsdS1KazdRUkJINEJRemQ1alh6TGtnNW1nRE92bTF3RW9FMTIyODB3UmpBaW5oSzFDWDFVT3FXdjZDVzQ0TVNVd29nQzZvY3ByWVpBLUlhRVg0bFZiRHUxVjhqclptLUMycDJlYVBsQXQ4a28tRnFnbQ?oc=5"
     },
     {
      "name": "techcrunch.com",
@@ -145,16 +122,39 @@
    ]
   },
   {
-   "title": "AWS Quick 免费版只要邮箱，背后跑 Claude 模型",
-   "summary": "AWS Quick 的免费版只需一个邮箱就能注册使用，官方发布说明把它的快速、均衡、智能三档分别对应 Claude Haiku 5.5、Sonnet 5.5 和 Opus 5.5。对想低成本体验 Claude 的用户，这是一个不用先买订阅的入口。",
+   "title": "Grok Bot 测试本机操作和全局听写，都还没上线",
+   "summary": "据 TestingCatalog 发现，Grok Bot 的 Mac 应用里出现了本地 Computer Use 设置和系统级听写工具，前者让 Bot 直接操作本机，后者能在任意应用中听写。两项功能都尚未发布，目前 Bots 仍在云端电脑上运行。",
    "take": "",
-   "kind": "pricing",
-   "products": [],
+   "kind": "product",
+   "products": [
+    "grok"
+   ],
    "links": [
     {
      "name": "news.sulat.com",
-     "title": "AWS Quick’s free plan needs only an email and uses Claude models",
-     "url": "https://news.sulat.com/2026/11/22/aws-quick-free-plan/"
+     "title": "Grok Bot for Mac is getting local Computer Use and dictation in any app, TestingCatalog finds",
+     "url": "https://news.sulat.com/2026/11/23/grok-bot-computer-use-dictation/"
+    },
+    {
+     "name": "testingcatalog.com",
+     "title": "Grok Bot to get local Computer Use and Dictation in any app",
+     "url": "https://www.testingcatalog.com/grok-bot-to-get-local-computer-use-and-dictation-in-any-app/"
+    }
+   ]
+  },
+  {
+   "title": "Gemini 任务要手动开联网，才能装包和调接口",
+   "summary": "Gemini 的 Tasks 远程电脑默认不联网，用户需要在任务设置里打开网络访问，它才能安装软件包、调用外部 API。Google 表示关闭这个开关会删除已保存的文件。",
+   "take": "",
+   "kind": "product",
+   "products": [
+    "google-ai"
+   ],
+   "links": [
+    {
+     "name": "news.sulat.com",
+     "title": "Gemini Tasks can now put its remote computer online, but only after you switch network access on",
+     "url": "https://news.sulat.com/2026/11/23/gemini-tasks-network-access/"
     }
    ]
   }
