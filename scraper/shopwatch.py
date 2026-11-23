@@ -94,17 +94,43 @@ def check(item):
     }
 
 
+GRACE_HOURS = 12   # a read error keeps the last good reading this long (about 3 runs) before the row is hidden
+
+
 def main():
     watch = json.load(open(os.path.join(DIR, "watch.json")))["items"]
-    now = dt.datetime.now(dt.timezone.utc).isoformat(timespec="minutes")
+    now_dt = dt.datetime.now(dt.timezone.utc)
+    now = now_dt.isoformat(timespec="minutes")
+    lp = os.path.join(DIR, "shops.json")
+    last = {r["goods_no"]: r for r in (json.load(open(lp)).get("items", []) if os.path.exists(lp) else [])}
     out = []
     for it in watch:
+        g, prev = it["goods_no"], last.get(it["goods_no"], {})
         try:
-            out.append(check(it))
+            r = check(it)
+            r["checked"] = now
+            r["missing"] = 0
+            r["since"] = prev.get("since") if prev.get("in_stock") == r["in_stock"] and prev.get("ok") else now
         except Exception as ex:  # one bad product must not stop the rest
-            why = "商品已下架" if "不存在" in str(ex) else f"读取失败：{ex}"[:80]
-            out.append({"goods_no": it["goods_no"], "plan": it["plan"], "type": it["type"], "ok": False, "why": why})
+            gone = "不存在" in str(ex) or "下架" in str(ex)
+            if gone:
+                # removed on the shop: hidden right away; after two runs in a row it counts as confirmed (same idea as PriceAI)
+                n = prev.get("missing", 0) + 1
+                r = {"goods_no": g, "plan": it["plan"], "type": it["type"], "ok": False, "missing": n,
+                     "why": "商品已下架" if n >= 2 else "商品暂时读不到，等下一轮确认",
+                     "gone_since": prev.get("gone_since") or now, "shop": prev.get("shop", ""), "title": prev.get("title", "")}
+            elif prev.get("ok") and prev.get("checked") and now_dt - dt.datetime.fromisoformat(prev["checked"]) < dt.timedelta(hours=GRACE_HOURS):
+                # network / API hiccup: keep showing the last good reading, marked as such
+                r = dict(prev, stale=True, why=f"本轮读取失败，显示 {prev['checked'][:16]} 的数据")
+            else:
+                r = {"goods_no": g, "plan": it["plan"], "type": it["type"], "ok": False, "why": f"连续读取失败：{ex}"[:80],
+                     "shop": prev.get("shop", ""), "title": prev.get("title", "")}
+        out.append(r)
         time.sleep(0.8)
+    removed = [r for r in out if r.get("missing", 0) >= 2 and r.get("gone_since")
+               and now_dt - dt.datetime.fromisoformat(r["gone_since"]) > dt.timedelta(days=7)]
+    if removed:  # shown in the Actions log; delete these lines from watch.json
+        print("下架超过 7 天，建议从 watch.json 删除：", ", ".join(r["goods_no"] for r in removed))
     json.dump({"time": now, "source": "16688 公开商品页接口", "items": out},
               open(os.path.join(DIR, "shops.json"), "w"), ensure_ascii=False, indent=1)
     hp = os.path.join(DIR, "shops_history.json")

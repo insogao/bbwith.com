@@ -1,5 +1,5 @@
 {
- "time": "2026-11-23T06:17+00:00",
+ "time": "2026-11-23T06:21+00:00",
  "source": "16688 公开商品页接口",
  "items": [
   {
@@ -7,7 +7,11 @@
    "plan": "chatgpt/plus",
    "type": "topup",
    "ok": false,
-   "why": "商品已下架"
+   "missing": 1,
+   "why": "商品暂时读不到，等下一轮确认",
+   "gone_since": "2026-11-23T06:21+00:00",
+   "shop": "",
+   "title": ""
   },
   {
    "goods_no": "G76222918",
@@ -20,11 +24,11 @@
    "title": "【菲区卡充】G-T-P Plus20刀 官方直充 月卡 【质保订阅30天】",
    "price": 106,
    "total": 108.97,
-   "stock": 75,
+   "stock": 74,
    "manual": false,
    "in_stock": true,
-   "sales": "6560人付款",
-   "shop_sales": "5914人付款",
+   "sales": "6561人付款",
+   "shop_sales": "5915人付款",
    "months": 1,
    "deposit": 0,
    "region": "中国湖南",
@@ -37,7 +41,10 @@
     "可能要过 KYC 身份验证",
     "封号不赔"
    ],
-   "url": "https://www.16688.com.cn/goods/G76222918"
+   "url": "https://www.16688.com.cn/goods/G76222918",
+   "checked": "2026-11-23T06:21+00:00",
+   "missing": 0,
+   "since": null
   },
   {
    "goods_no": "G42288503",
@@ -66,7 +73,10 @@
    "risks": [
     "会员到期后才能充"
    ],
-   "url": "https://www.16688.com.cn/goods/G42288503"
+   "url": "https://www.16688.com.cn/goods/G42288503",
+   "checked": "2026-11-23T06:21+00:00",
+   "missing": 0,
+   "since": null
   },
   {
    "goods_no": "G92285725",
@@ -79,11 +89,11 @@
    "title": "💥💥💥【官网直充】GT-P Plus 1个月会员充自己号（1号1卡1付）同步官方售后 24小时全自动充值",
    "price": 105.9,
    "total": 108.87,
-   "stock": 64,
+   "stock": 54,
    "manual": false,
    "in_stock": true,
-   "sales": "8173人付款",
-   "shop_sales": "7642人付款",
+   "sales": "8183人付款",
+   "shop_sales": "7652人付款",
    "months": 1,
    "deposit": 0,
    "region": "中国湖南",
@@ -93,7 +103,10 @@
    ],
    "warranty": "售后同步官方",
    "risks": [],
-   "url": "https://www.16688.com.cn/goods/G92285725"
+   "url": "https://www.16688.com.cn/goods/G92285725",
+   "checked": "2026-11-23T06:21+00:00",
+   "missing": 0,
+   "since": null
   },
   {
    "goods_no": "G99064927",
@@ -120,7 +133,10 @@
    ],
    "warranty": "质保 30 天",
    "risks": [],
-   "url": "https://www.16688.com.cn/goods/G99064927"
+   "url": "https://www.16688.com.cn/goods/G99064927",
+   "checked": "2026-11-23T06:21+00:00",
+   "missing": 0,
+   "since": null
   },
   {
    "goods_no": "G75173659",
@@ -149,14 +165,21 @@
    "risks": [
     "封号不赔"
    ],
-   "url": "https://www.16688.com.cn/goods/G75173659"
+   "url": "https://www.16688.com.cn/goods/G75173659",
+   "checked": "2026-11-23T06:21+00:00",
+   "missing": 0,
+   "since": null
   },
   {
    "goods_no": "G58733320",
    "plan": "claude/pro",
    "type": "topup",
    "ok": false,
-   "why": "商品已下架"
+   "missing": 1,
+   "why": "商品暂时读不到，等下一轮确认",
+   "gone_since": "2026-11-23T06:21+00:00",
+   "shop": "",
+   "title": ""
   },
   {
    "goods_no": "G31983591",
@@ -185,7 +208,10 @@
    "risks": [
     "可能要过 KYC 身份验证"
    ],
-   "url": "https://www.16688.com.cn/goods/G31983591"
+   "url": "https://www.16688.com.cn/goods/G31983591",
+   "checked": "2026-11-23T06:21+00:00",
+   "missing": 0,
+   "since": null
   },
   {
    "goods_no": "G52145908",
@@ -215,7 +241,10 @@
     "可能要过 KYC 身份验证",
     "封号不赔"
    ],
-   "url": "https://www.16688.com.cn/goods/G52145908"
+   "url": "https://www.16688.com.cn/goods/G52145908",
+   "checked": "2026-11-23T06:21+00:00",
+   "missing": 0,
+   "since": null
   },
   {
    "goods_no": "G33385423",
@@ -249,7 +278,10 @@
     "新注册账号不建议充",
     "会员到期后才能充"
    ],
-   "url": "https://www.16688.com.cn/goods/G33385423"
+   "url": "https://www.16688.com.cn/goods/G33385423",
+   "checked": "2026-11-23T06:21+00:00",
+   "missing": 0,
+   "since": null
   },
   {
    "goods_no": "G41662442",
@@ -282,7 +314,10 @@
     "新注册账号不建议充",
     "掉订阅不负责"
    ],
-   "url": "https://www.16688.com.cn/goods/G41662442"
+   "url": "https://www.16688.com.cn/goods/G41662442",
+   "checked": "2026-11-23T06:21+00:00",
+   "missing": 0,
+   "since": null
   },
   {
    "goods_no": "G53770261",
@@ -313,7 +348,10 @@
     "封号不赔",
     "新注册账号不建议充"
    ],
-   "url": "https://www.16688.com.cn/goods/G53770261"
+   "url": "https://www.16688.com.cn/goods/G53770261",
+   "checked": "2026-11-23T06:21+00:00",
+   "missing": 0,
+   "since": null
   }
  ]
 }
