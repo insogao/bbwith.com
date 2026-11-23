@@ -128,8 +128,12 @@ if CF:
         try:
             g = gql("""query($z:String!,$t:Time!){viewer{zones(filter:{zoneTag:$z}){
                 errs: httpRequestsAdaptiveGroups(limit:50, filter:{datetime_geq:$t, edgeResponseStatus_geq:500}, orderBy:[count_DESC]){count dimensions{clientRequestPath edgeResponseStatus}}
+                errwho: httpRequestsAdaptiveGroups(limit:20, filter:{datetime_geq:$t, edgeResponseStatus_geq:500}, orderBy:[count_DESC]){count dimensions{userAgent clientCountryName datetimeHour originResponseStatus cacheStatus}}
+                total: httpRequestsAdaptiveGroups(limit:20, filter:{datetime_geq:$t}, orderBy:[count_DESC]){count dimensions{edgeResponseStatus}}
                 bots: httpRequestsAdaptiveGroups(limit:40, filter:{datetime_geq:$t}, orderBy:[count_DESC]){count dimensions{userAgent}}}}}""",
                     {"z": zid, "t": since})
+            out["errors_who_24h"] = [dict(x["dimensions"], n=x["count"]) for x in g["errwho"]]
+            out["status_24h"] = {str(x["dimensions"]["edgeResponseStatus"]): x["count"] for x in g["total"]}
             out["errors_24h"] = [{"path": x["dimensions"]["clientRequestPath"], "status": x["dimensions"]["edgeResponseStatus"], "n": x["count"]} for x in g["errs"]]
             bots = {}
             for x in g["bots"]:
