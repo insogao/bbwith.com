@@ -1396,6 +1396,8 @@ def shops_block(key):
             days = (dt.datetime.fromisoformat(h[-1][0]) - dt.datetime.fromisoformat(h[0][0])).days
         up = sum(x[2] for x in h) / len(h) if h else 1
         mon = f'有货率 {up * 100:.0f}% · 已监控 {days} 天' if days >= 1 else "今天开始监控"
+        if r.get("stale"):
+            mon += "<br>⚠️ 本轮没读到，显示 " + e(r["checked"][5:16].replace("T", " ")) + "（UTC）的数据"
         shop_meta = " · ".join(x for x in [f'入驻 {r["months"]} 个月' if r.get("months") else "",
                                             f'保证金 ¥{r["deposit"]:g}' if r.get("deposit") else "无保证金",
                                             r.get("shop_sales") or ""] if x)
