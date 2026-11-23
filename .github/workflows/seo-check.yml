@@ -52,3 +52,27 @@ jobs:
           sites = json.load(r).get("d", [])
           print("Bing sites:", [(s.get("Url"), s.get("IsVerified")) for s in sites])
           EOF
+
+      - name: Cloudflare analytics
+        env:
+          CF_TOKEN: ${{ secrets.CLOUDFLARE_ANALYTICS_TOKEN }}
+        run: |
+          python3 - <<'PY'
+          import datetime as dt, json, os, urllib.request
+          t = os.environ.get("CF_TOKEN", "")
+          if not t:
+              raise SystemExit("CLOUDFLARE_ANALYTICS_TOKEN is not set")
+          h = {"Authorization": "Bearer " + t, "Content-Type": "application/json"}
+          z = json.load(urllib.request.urlopen(urllib.request.Request("https://api.cloudflare.com/client/v4/zones?name=bbwith.com", headers=h), timeout=30))
+          zid = z["result"][0]["id"]
+          print("zone found:", z["result"][0]["name"])
+          since = (dt.date.today() - dt.timedelta(days=7)).isoformat()
+          q = {"query": """query($z:String!,$d:Date!){viewer{zones(filter:{zoneTag:$z}){
+                 httpRequests1dGroups(limit:10, filter:{date_geq:$d}){ sum{requests pageViews} uniq{uniques} dimensions{date} }}}}""",
+               "variables": {"z": zid, "d": since}}
+          r = json.load(urllib.request.urlopen(urllib.request.Request("https://api.cloudflare.com/client/v4/graphql", data=json.dumps(q).encode(), headers=h), timeout=30))
+          if r.get("errors"):
+              print("graphql errors:", r["errors"])
+          g = r["data"]["viewer"]["zones"][0]["httpRequests1dGroups"]
+          print("7-day requests:", sum(x["sum"]["requests"] for x in g), "page views:", sum(x["sum"]["pageViews"] for x in g))
+          PY
