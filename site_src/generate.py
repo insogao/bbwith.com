@@ -1603,7 +1603,7 @@ def build_news(cur):
                          f'{cr_html}<h1>{e(latest["headline"])}</h1>{latest_html}'
                          f'<h2>往期早报</h2><ul class="list">{rows}</ul>', [cr_ld], latest["date"],
                          canonical_path=f"/news/{latest['date']}/"))  # same text as the dated issue: let that page rank
-    return ["/news/"] + urls
+    return urls  # /news/ is canonicalised to the latest issue, so it stays out of the sitemap
 
 
 def _iso(t):
