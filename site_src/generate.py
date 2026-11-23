@@ -10,6 +10,7 @@ import datetime as dt
 import glob
 import html
 import io
+import hashlib
 import json
 import os
 import shutil
@@ -120,7 +121,20 @@ def url_plan(product, plan):
     return f"/{product}/{plan}/"
 
 
+PAGE_HASH = {}  # path -> hash of the page text without clocks, build stamps and asset versions
+
+
+def _content_hash(html):
+    t = re.sub(r"\?v=[0-9a-f]+", "", html)
+    t = re.sub(r'data-t="[^"]*"', "", t)
+    t = re.sub(r"\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}(:\d{2})?([+-]\d{2}:\d{2}|Z)?", "", t)
+    t = re.sub(r'"date(Modified|Published)":\s*"[^"]*"', "", t)
+    return hashlib.sha1(t.encode()).hexdigest()[:16]
+
+
 def write(path, content):
+    if path.endswith("/"):
+        PAGE_HASH[path] = _content_hash(content)
     full = os.path.join(DIST, path.lstrip("/"))
     if full.endswith("/"):
         full += "index.html"
@@ -1951,6 +1965,31 @@ def build_search_index(cur):
     json.dump(items, open(os.path.join(DIST, "search.json"), "w"), ensure_ascii=False, separators=(",", ":"))
 
 
+def real_lastmod(today):
+    """Rewrite sitemap lastmod so a date only moves when the page text really changed.
+    Remembered in data/lastmod.json, which the daily job commits."""
+    f = os.path.join(ROOT, "data", "lastmod.json")
+    seen = json.load(open(f)) if os.path.exists(f) else {}
+    sm_path = os.path.join(DIST, "sitemap.xml")
+    sm = open(sm_path, encoding="utf8").read()
+
+    def fix(m):
+        url, old = m.group(1), m.group(2)
+        path = url[len(SITE):] or "/"
+        h = PAGE_HASH.get(path)
+        if not h:
+            return m.group(0)
+        prev = seen.get(path)
+        date = prev[1] if prev and prev[0] == h else today
+        if path.startswith("/daily/20") or path.startswith("/news/20"):
+            date = min(date, old) if old else date  # a dated issue keeps its own date unless it was rebuilt with changes
+        seen[path] = [h, date]
+        return f"<url><loc>{url}</loc><lastmod>{date}</lastmod></url>"
+    sm = re.sub(r"<url><loc>([^<]+)</loc><lastmod>([^<]*)</lastmod></url>", fix, sm)
+    open(sm_path, "w", encoding="utf8").write(sm)
+    json.dump(seen, open(f, "w"), ensure_ascii=False, indent=0, sort_keys=True)
+
+
 def write_redirects():
     """/go/<key> is served by functions/go/[[key]].js (counts clicks); it reads this map."""
     json.dump(GO, open(os.path.join(DIST, "go-map.json"), "w"), ensure_ascii=False, indent=0)
@@ -2010,6 +2049,7 @@ def main():
     build_merchant_pages()
     build_data(days, cur)
     build_meta(days, cur, gift_urls)
+    real_lastmod(day["date"])
     build_static()
     write_redirects()
     FX_ALL.update(day["fx"])

@@ -52,7 +52,7 @@ jobs:
         run: |
           git config user.name "bbwith-bot"
           git config user.email "bbwith-bot@users.noreply.github.com"
-          git add data/daily data/giftcards scraper/storefronts.json
+          git add data/daily data/giftcards data/lastmod.json scraper/storefronts.json
           if git diff --cached --quiet; then
             echo "nothing to commit"
             exit 0

@@ -1,0 +1,302 @@
+{
+"/": [
+"f1734ac9528c5f54",
+"2026-11-23"
+],
+"/about/": [
+"39a762d91ac761d9",
+"2026-11-23"
+],
+"/ai-pricing/": [
+"5ac3d715c3f67939",
+"2026-11-23"
+],
+"/ai-pricing/chatgpt/": [
+"eb61af1f1fadd9e2",
+"2026-11-23"
+],
+"/ai-pricing/claude/": [
+"2003c40a784a89ae",
+"2026-11-23"
+],
+"/ai-pricing/copilot/": [
+"569b72b5491a0fe3",
+"2026-11-23"
+],
+"/ai-pricing/cursor/": [
+"5689121e5db01fd7",
+"2026-11-23"
+],
+"/ai-pricing/elevenlabs/": [
+"beb0c8d5f8af4026",
+"2026-11-23"
+],
+"/ai-pricing/gemini/": [
+"3162c341c6a4208f",
+"2026-11-23"
+],
+"/ai-pricing/grok/": [
+"4812be03366273cf",
+"2026-11-23"
+],
+"/ai-pricing/jimeng/": [
+"97a9ed0dfb821956",
+"2026-11-23"
+],
+"/ai-pricing/kimi/": [
+"8abbf3b1435ab159",
+"2026-11-23"
+],
+"/ai-pricing/kling/": [
+"20c30af3baf2b693",
+"2026-11-23"
+],
+"/ai-pricing/liblib/": [
+"6a7972bf8392ebdb",
+"2026-11-23"
+],
+"/ai-pricing/lovart/": [
+"b4a7169b662bbf3f",
+"2026-11-23"
+],
+"/ai-pricing/manus/": [
+"65e295c65b2e1307",
+"2026-11-23"
+],
+"/ai-pricing/midjourney/": [
+"ee19ff2fa71f2f55",
+"2026-11-23"
+],
+"/ai-pricing/notion/": [
+"882d87e92dc1ba0d",
+"2026-11-23"
+],
+"/ai-pricing/perplexity/": [
+"32583c964e8ef843",
+"2026-11-23"
+],
+"/ai-pricing/poe/": [
+"5f2e65eadf409bdc",
+"2026-11-23"
+],
+"/ai-pricing/runninghub/": [
+"05b81c565d1c7dc3",
+"2026-11-23"
+],
+"/ai-pricing/suno/": [
+"18d1c19d0378a203",
+"2026-11-23"
+],
+"/ai-pricing/windsurf/": [
+"facf901d4972c7cb",
+"2026-11-23"
+],
+"/channels/": [
+"16a127983eab4f6f",
+"2026-11-23"
+],
+"/chatgpt/": [
+"7460b7075ccecc7b",
+"2026-11-23"
+],
+"/chatgpt/go/": [
+"eb2177afe3e4862c",
+"2026-11-23"
+],
+"/chatgpt/plus/": [
+"d608311602efbc19",
+"2026-11-23"
+],
+"/chatgpt/pro-100/": [
+"2201e9afcb039402",
+"2026-11-23"
+],
+"/chatgpt/pro-200/": [
+"7a2f039a6dc25e5f",
+"2026-11-23"
+],
+"/chatgpt/pro-500/": [
+"9fa6cfa7d952eed0",
+"2026-11-23"
+],
+"/claude/": [
+"ebc5e119a5b974f5",
+"2026-11-23"
+],
+"/claude/max/": [
+"a95bb4c22d6beafa",
+"2026-11-23"
+],
+"/claude/pro/": [
+"6ee3912e61afcc01",
+"2026-11-23"
+],
+"/claude/ultra/": [
+"289417f43f0acddd",
+"2026-11-23"
+],
+"/cursor/": [
+"121cd0870dd3abfc",
+"2026-11-23"
+],
+"/cursor/pro-plus/": [
+"d387e14f4e7a73eb",
+"2026-11-23"
+],
+"/cursor/pro/": [
+"f0602d7d2219b59d",
+"2026-11-23"
+],
+"/cursor/ultra/": [
+"f81bda6463654181",
+"2026-11-23"
+],
+"/daily/": [
+"eb9989fd955fd92c",
+"2026-11-23"
+],
+"/daily/2026-11-21/": [
+"39f68047be231a19",
+"2026-11-21"
+],
+"/daily/2026-11-22/": [
+"17596ae20a45bdd0",
+"2026-11-22"
+],
+"/daily/2026-11-23/": [
+"ee3a39d054273065",
+"2026-11-23"
+],
+"/data/": [
+"01d527ddccab7e8f",
+"2026-11-23"
+],
+"/deals/": [
+"b2b6d4f39773fe1a",
+"2026-11-23"
+],
+"/deals/google-ai-black-friday-2026/": [
+"3cff8a4531c4e474",
+"2026-11-23"
+],
+"/gift-cards/": [
+"0793c9f508469c68",
+"2026-11-23"
+],
+"/gift-cards/apple/br/": [
+"ad894f80f67ac145",
+"2026-11-23"
+],
+"/gift-cards/apple/id/": [
+"d9b7839f4f5cb35a",
+"2026-11-23"
+],
+"/gift-cards/apple/in/": [
+"4dc5523a39fd8997",
+"2026-11-23"
+],
+"/gift-cards/apple/jp/": [
+"9ec09fdefb012c20",
+"2026-11-23"
+],
+"/gift-cards/apple/tr/": [
+"5a9cbcc190d7be8b",
+"2026-11-23"
+],
+"/gift-cards/apple/us/": [
+"3addfe66b5eaf65b",
+"2026-11-23"
+],
+"/google-ai/": [
+"9399105876083c27",
+"2026-11-23"
+],
+"/google-ai/pro/": [
+"31b9d3e5dcecdc4d",
+"2026-11-23"
+],
+"/google-ai/ultra/": [
+"bbd77d9d9e359e38",
+"2026-11-23"
+],
+"/grok/": [
+"295a91d48df53bbb",
+"2026-11-23"
+],
+"/grok/supergrok-heavy/": [
+"f133dde5cab1110a",
+"2026-11-23"
+],
+"/grok/supergrok-lite/": [
+"e2ffe7ef093c0d49",
+"2026-11-23"
+],
+"/grok/supergrok-plus/": [
+"45800fed8f73d450",
+"2026-11-23"
+],
+"/grok/supergrok/": [
+"1e57477d5f06d141",
+"2026-11-23"
+],
+"/guides/": [
+"f31575b621f8fb1e",
+"2026-11-23"
+],
+"/guides/apple-id-low-price-region/": [
+"6160101526298830",
+"2026-11-23"
+],
+"/guides/low-price-region-risks/": [
+"3075db6f55dc609f",
+"2026-11-23"
+],
+"/guides/subscribe-with-gift-card/": [
+"6da51bcc2d4bbee4",
+"2026-11-23"
+],
+"/merchant/join/": [
+"362b578b2bd7004a",
+"2026-11-23"
+],
+"/news/2026-11-21/": [
+"c30541334a4911f2",
+"2026-11-23"
+],
+"/news/2026-11-22/": [
+"f5639d06b72b303d",
+"2026-11-23"
+],
+"/news/2026-11-23/": [
+"937ead9941d43e3b",
+"2026-11-23"
+],
+"/perplexity/": [
+"6490ed533f5b53dd",
+"2026-11-23"
+],
+"/perplexity/max/": [
+"3f1bf18998878278",
+"2026-11-23"
+],
+"/perplexity/pro/": [
+"0d4e078ab2d3a7d0",
+"2026-11-23"
+],
+"/x/": [
+"d0575713776a3bdf",
+"2026-11-23"
+],
+"/x/premium-basic/": [
+"5dfee67c8ff4a881",
+"2026-11-23"
+],
+"/x/premium-plus/": [
+"8852adf28529baf8",
+"2026-11-23"
+],
+"/x/premium/": [
+"37fcbae2cb6e1c2c",
+"2026-11-23"
+]
+}
