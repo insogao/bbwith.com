@@ -1991,7 +1991,8 @@ def real_lastmod(today):
         return f"<url><loc>{url}</loc><lastmod>{date}</lastmod></url>"
     sm = re.sub(r"<url><loc>([^<]+)</loc><lastmod>([^<]*)</lastmod></url>", fix, sm)
     open(sm_path, "w", encoding="utf8").write(sm)
-    json.dump(seen, open(f, "w"), ensure_ascii=False, indent=0, sort_keys=True)
+    if os.environ.get("BBWITH_SAVE_LASTMOD"):  # only the daily job saves it; other jobs just build
+        json.dump(seen, open(f, "w"), ensure_ascii=False, indent=0, sort_keys=True)
 
 
 def write_redirects():
