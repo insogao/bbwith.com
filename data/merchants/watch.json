@@ -1,17 +1,247 @@
 {
  "_comment": "本站人工挑选、持续监控的公开店铺商品（未入驻）。只填 16688 商品号；挑选标准：标题写明充到自己账号、写明质保、有库存或人工发货、店铺有销量。参考过 PriceAI 公开页面，但价格、库存和店铺数据都由 scraper/shopwatch.py 直接读 16688 公开接口核实。店主要求下架就删掉对应行。",
  "items": [
-  {"goods_no": "G49307465", "plan": "chatgpt/plus", "type": "topup", "added": "2026-11-23"},
-  {"goods_no": "G76222918", "plan": "chatgpt/plus", "type": "topup", "added": "2026-11-23"},
-  {"goods_no": "G42288503", "plan": "chatgpt/plus", "type": "topup", "added": "2026-11-23"},
-  {"goods_no": "G92285725", "plan": "chatgpt/plus", "type": "topup", "added": "2026-11-23"},
-  {"goods_no": "G99064927", "plan": "chatgpt/pro-100", "type": "topup", "added": "2026-11-23"},
-  {"goods_no": "G75173659", "plan": "chatgpt/pro-100", "type": "topup", "added": "2026-11-23"},
-  {"goods_no": "G58733320", "plan": "claude/pro", "type": "topup", "added": "2026-11-23"},
-  {"goods_no": "G31983591", "plan": "claude/pro", "type": "topup", "added": "2026-11-23"},
-  {"goods_no": "G52145908", "plan": "claude/pro", "type": "topup", "added": "2026-11-23"},
-  {"goods_no": "G33385423", "plan": "claude/max-5x", "type": "topup", "added": "2026-11-23"},
-  {"goods_no": "G41662442", "plan": "claude/max-5x", "type": "topup", "added": "2026-11-23"},
-  {"goods_no": "G53770261", "plan": "claude/max-5x", "type": "topup", "added": "2026-11-23"}
+  {
+   "goods_no": "G49307465",
+   "plan": "chatgpt/plus",
+   "type": "topup",
+   "added": "2026-11-23"
+  },
+  {
+   "goods_no": "G76222918",
+   "plan": "chatgpt/plus",
+   "type": "topup",
+   "added": "2026-11-23"
+  },
+  {
+   "goods_no": "G42288503",
+   "plan": "chatgpt/plus",
+   "type": "topup",
+   "added": "2026-11-23"
+  },
+  {
+   "goods_no": "G92285725",
+   "plan": "chatgpt/plus",
+   "type": "topup",
+   "added": "2026-11-23"
+  },
+  {
+   "goods_no": "G99064927",
+   "plan": "chatgpt/pro-100",
+   "type": "topup",
+   "added": "2026-11-23"
+  },
+  {
+   "goods_no": "G75173659",
+   "plan": "chatgpt/pro-100",
+   "type": "topup",
+   "added": "2026-11-23"
+  },
+  {
+   "goods_no": "G31983591",
+   "plan": "claude/pro",
+   "type": "topup",
+   "added": "2026-11-23"
+  },
+  {
+   "goods_no": "G52145908",
+   "plan": "claude/pro",
+   "type": "topup",
+   "added": "2026-11-23"
+  },
+  {
+   "goods_no": "G33385423",
+   "plan": "claude/max-5x",
+   "type": "topup",
+   "added": "2026-11-23"
+  },
+  {
+   "goods_no": "G41662442",
+   "plan": "claude/max-5x",
+   "type": "topup",
+   "added": "2026-11-23"
+  },
+  {
+   "goods_no": "G53770261",
+   "plan": "claude/max-5x",
+   "type": "topup",
+   "added": "2026-11-23"
+  },
+  {
+   "goods_no": "G25034038",
+   "plan": "chatgpt/plus",
+   "type": "topup",
+   "added": "2026-11-23",
+   "by": "ai",
+   "reason": "108.87元且有1000元保证金，30天质保、未用卡密可退，仅需等会员到期后充，条款和售后路径清楚。"
+  },
+  {
+   "goods_no": "G48143491",
+   "plan": "chatgpt/pro-200",
+   "type": "topup",
+   "added": "2026-11-23",
+   "by": "ai",
+   "reason": "价格最低，Pro 20x 月付直充，质保30天且掉订阅按天退差价，封号不保已明示，店铺有保证金。"
+  },
+  {
+   "goods_no": "G39683201",
+   "plan": "chatgpt/pro-200",
+   "type": "topup",
+   "added": "2026-11-23",
+   "by": "ai",
+   "reason": "价格次低，Pro 20x 月付直充，未列封号不赔等硬限制，支持开票且售后同步官方。"
+  },
+  {
+   "goods_no": "G95368608",
+   "plan": "chatgpt/pro-200",
+   "type": "topup",
+   "added": "2026-11-23",
+   "by": "ai",
+   "reason": "价格贴近最低，Pro 20x 月付直充，质保30天且封号不保/充值异常处理说明清楚，店铺付款人数较多。"
+  },
+  {
+   "goods_no": "G84062363",
+   "plan": "chatgpt/pro-200",
+   "type": "topup",
+   "added": "2026-11-23",
+   "by": "ai",
+   "reason": "月付 Pro 20x 直充，仅限免费号/到期后充的条款写得清楚，未用卡密不过期且不符条件可全额退款，保证金较高。"
+  },
+  {
+   "goods_no": "G14666280",
+   "plan": "chatgpt/pro-200",
+   "type": "topup",
+   "added": "2026-11-23",
+   "by": "ai",
+   "reason": "月付 Pro 20x 直充，质保30天且封号不保已明示，店铺销量高、保证金较高，价格仍在最低价15%内。"
+  },
+  {
+   "goods_no": "G49196764",
+   "plan": "chatgpt/pro-100",
+   "type": "topup",
+   "added": "2026-11-23",
+   "by": "ai",
+   "reason": "最低价585.96，月卡直充，30天掉订阅按天退差价，条款清楚。"
+  },
+  {
+   "goods_no": "G13829858",
+   "plan": "chatgpt/pro-100",
+   "type": "topup",
+   "added": "2026-11-23",
+   "by": "ai",
+   "reason": "606.52，30天订阅质保、失败可全额退款，保证金和销量较稳。"
+  },
+  {
+   "goods_no": "G70554833",
+   "plan": "chatgpt/pro-100",
+   "type": "topup",
+   "added": "2026-11-23",
+   "by": "ai",
+   "reason": "611.56，销量高、30天订阅质保，充值失败或掉订阅有客服处理路径。"
+  },
+  {
+   "goods_no": "G46449601",
+   "plan": "chatgpt/go",
+   "type": "topup",
+   "added": "2026-11-23",
+   "by": "ai",
+   "reason": "最低价档，30天质保，保证金1500且销量/付款人数高，条款说明较完整。"
+  },
+  {
+   "goods_no": "G55178911",
+   "plan": "chatgpt/go",
+   "type": "topup",
+   "added": "2026-11-23",
+   "by": "ai",
+   "reason": "价格仅高0.01元，30天质保、掉订阅按剩余天数退差价，仅需等会员到期后充值。"
+  },
+  {
+   "goods_no": "G62963966",
+   "plan": "chatgpt/go",
+   "type": "topup",
+   "added": "2026-11-23",
+   "by": "ai",
+   "reason": "30天质保和按剩余天数退款写明，店铺有一定销量，价格仍接近最低档。"
+  },
+  {
+   "goods_no": "G84346912",
+   "plan": "chatgpt/go",
+   "type": "topup",
+   "added": "2026-11-23",
+   "by": "ai",
+   "reason": "同最低价附近，30天质保及剩余天数退款路径写明；但需注意KYC且封号不赔。"
+  },
+  {
+   "goods_no": "G90234346",
+   "plan": "chatgpt/go",
+   "type": "topup",
+   "added": "2026-11-23",
+   "by": "ai",
+   "reason": "价格较低，30天质保及掉订阅按剩余天数退款写明；但需注意KYC且封号不赔。"
+  },
+  {
+   "goods_no": "G19014535",
+   "plan": "google-ai/pro",
+   "type": "topup",
+   "added": "2026-11-23",
+   "by": "ai",
+   "reason": "30天质保、1万保证金和8721人付款，虽比最低价高约16.7%，但条款与店铺信号明显更好，综合更稳。"
+  },
+  {
+   "goods_no": "G96586931",
+   "plan": "claude/pro",
+   "type": "topup",
+   "added": "2026-11-23",
+   "by": "ai",
+   "reason": "Claude Pro 月卡官方直充，163.45 元与现有同价，明确质保 30 天且掉订阅按使用天数退款，条款比同店首次登录质保款清楚。"
+  },
+  {
+   "goods_no": "G96072538",
+   "plan": "grok/supergrok",
+   "type": "topup",
+   "added": "2026-11-23",
+   "by": "ai",
+   "reason": "Grok Super 30刀月卡，属SuperGrok档；30天订阅质保、掉线按剩余天数退款，价格显著低于其他Super候选。"
+  },
+  {
+   "goods_no": "G87336868",
+   "plan": "claude/max-5x",
+   "type": "topup",
+   "added": "2026-11-23",
+   "by": "ai",
+   "reason": "30天订阅质保，封号可按官方退款后扣20%手续费、余80%按天退，退款路径明确；店铺有2000元保证金且818人付款。"
+  },
+  {
+   "goods_no": "G53931744",
+   "plan": "claude/max-5x",
+   "type": "topup",
+   "added": "2026-11-23",
+   "by": "ai",
+   "reason": "实付821.37接近最低价，说明明确仅订阅到期后可充、掉订阅按使用天数退款，条款较清楚且有1000元保证金。"
+  },
+  {
+   "goods_no": "G71286073",
+   "plan": "claude/max-20x",
+   "type": "topup",
+   "added": "2026-11-23",
+   "by": "ai",
+   "reason": "价格较低且质保30天，封号退款和手续费规则写得清楚，但仅限有卡付账单记录的Max老号续费。"
+  },
+  {
+   "goods_no": "G92514094",
+   "plan": "claude/max-20x",
+   "type": "topup",
+   "added": "2026-11-23",
+   "by": "ai",
+   "reason": "店铺保证金高、付款人数多，封号可按官方退款比例退且退款路径相对明确，需提前预定。"
+  },
+  {
+   "goods_no": "G48247275",
+   "plan": "claude/max-20x",
+   "type": "topup",
+   "added": "2026-11-23",
+   "by": "ai",
+   "reason": "有保证金和付款记录，掉订阅按天退款及各类不到账免责情形写得较清楚，价格也在最低价15%以内。"
+  }
  ]
 }
