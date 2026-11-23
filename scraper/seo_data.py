@@ -44,7 +44,8 @@ def section(name):
 
 
 def sitemap_urls():
-    xml = urllib.request.urlopen(SITE + "sitemap.xml", timeout=30).read().decode()
+    req = urllib.request.Request(SITE + "sitemap.xml", headers={"User-Agent": "Mozilla/5.0 (compatible; bbwith-seo-bot/1.0; +https://bbwith.com/about/)"})
+    xml = urllib.request.urlopen(req, timeout=30).read().decode()
     return re.findall(r"<loc>([^<]+)</loc>", xml)
 
 
@@ -82,14 +83,19 @@ if os.environ.get("GTOKEN"):
         part("sitemaps", lambda: call(f"https://www.googleapis.com/webmasters/v3/sites/{GS}/sitemaps", G).get("sitemap", []))
         # index status of every sitemap URL (URL Inspection API: 2,000/day quota)
         insp = {}
-        for u in sitemap_urls()[:300]:
+        try:
+            urls = sitemap_urls()[:300]
+        except Exception as ex:
+            out["errors"]["sitemap_fetch"] = str(ex)[:200]
+            urls = []
+        for u in urls:
             try:
                 r = call("https://searchconsole.googleapis.com/v1/urlInspection/index:inspect", G,
                          {"inspectionUrl": u, "siteUrl": GSC_SITE})["inspectionResult"]["indexStatusResult"]
                 insp[u] = {k: r.get(k) for k in ("verdict", "coverageState", "lastCrawlTime", "googleCanonical", "userCanonical", "robotsTxtState", "pageFetchState")}
             except Exception as ex:
                 insp[u] = {"error": str(ex)[:120]}
-        out["inspection"] = insp
+        out["inspection"] = insp  # noqa
         out["indexed"] = sum(1 for v in insp.values() if v.get("verdict") == "PASS")
         return out
 
