@@ -359,3 +359,4 @@ tr.sameus details[open]{display:block;margin:6px 0 0}
 @media (max-width:640px){table.prices tr.sameus td:first-child{display:none}table.prices tr.sameus td::before{content:none !important}}
 @media (max-width:640px){table.prices tr.sameus td{display:block !important;text-align:left;background:transparent}table.prices tr.sameus{padding:10px 12px}}
 .brief .rel{margin:4px 0 0;font-size:13px}.brief .rel a{margin-right:14px}
+table.shopw td small{color:var(--muted)} table.shopw td:nth-child(2){max-width:260px}

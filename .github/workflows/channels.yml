@@ -42,6 +42,10 @@ jobs:
           S16688_VISITOR_KEY: ${{ secrets.S16688_VISITOR_KEY }}
         run: python scraper/channels.py
 
+      - name: Watch public shop products
+        continue-on-error: true
+        run: python scraper/shopwatch.py
+
       - name: Verify merchant listings
         continue-on-error: true
         run: python scraper/merchants.py

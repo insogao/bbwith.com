@@ -1,0 +1,17 @@
+{
+ "_comment": "本站人工挑选、持续监控的公开店铺商品（未入驻）。只填 16688 商品号；挑选标准：标题写明充到自己账号、写明质保、有库存或人工发货、店铺有销量。参考过 PriceAI 公开页面，但价格、库存和店铺数据都由 scraper/shopwatch.py 直接读 16688 公开接口核实。店主要求下架就删掉对应行。",
+ "items": [
+  {"goods_no": "G49307465", "plan": "chatgpt/plus", "type": "topup", "added": "2026-11-23"},
+  {"goods_no": "G76222918", "plan": "chatgpt/plus", "type": "topup", "added": "2026-11-23"},
+  {"goods_no": "G42288503", "plan": "chatgpt/plus", "type": "topup", "added": "2026-11-23"},
+  {"goods_no": "G92285725", "plan": "chatgpt/plus", "type": "topup", "added": "2026-11-23"},
+  {"goods_no": "G99064927", "plan": "chatgpt/pro-100", "type": "topup", "added": "2026-11-23"},
+  {"goods_no": "G75173659", "plan": "chatgpt/pro-100", "type": "topup", "added": "2026-11-23"},
+  {"goods_no": "G58733320", "plan": "claude/pro", "type": "topup", "added": "2026-11-23"},
+  {"goods_no": "G31983591", "plan": "claude/pro", "type": "topup", "added": "2026-11-23"},
+  {"goods_no": "G52145908", "plan": "claude/pro", "type": "topup", "added": "2026-11-23"},
+  {"goods_no": "G33385423", "plan": "claude/max-5x", "type": "topup", "added": "2026-11-23"},
+  {"goods_no": "G41662442", "plan": "claude/max-5x", "type": "topup", "added": "2026-11-23"},
+  {"goods_no": "G53770261", "plan": "claude/max-5x", "type": "topup", "added": "2026-11-23"}
+ ]
+}

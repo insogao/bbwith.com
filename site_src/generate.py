@@ -406,6 +406,7 @@ def channel_block(product, plan, rows):
 {route_html}
 {channel_note()}
 {merchant_block(key)}
+{shops_block(key)}
 """
 
 
@@ -1371,6 +1372,52 @@ def merchant_block(key):
             f'售后由商家负责，有问题可以<a href="/about/#merchants">投诉</a>；<a href="/about/#score">信用分怎么算</a> · <a href="/merchant/join/">商家入驻</a></p>')
 
 
+SHOPW = {}  # data/merchants/shops.json + shops_history.json (scraper/shopwatch.py)
+PAY_SHORT = {"alipay": "支付宝", "wxpay": "微信"}
+
+
+def shop_short(name):
+    return re.split(r"[｜|（(]", name)[0].strip()[:16] or name[:16]
+
+
+def shops_block(key):
+    """Hand-picked public shop products this site watches every 4 hours (not merchants who joined)."""
+    items = [r for r in (SHOPW.get("shops") or {}).get("items", []) if r.get("plan") == key]
+    if not items:
+        return ""
+    hist = SHOPW.get("shops_history") or {}
+    live = sorted([r for r in items if r.get("ok") and r.get("in_stock")], key=lambda r: r["total"])
+    gone = [r for r in items if not (r.get("ok") and r.get("in_stock"))]
+    rows = ""
+    for r in live:
+        h = hist.get(r["goods_no"], [])
+        days = 0
+        if h:
+            days = (dt.datetime.fromisoformat(h[-1][0]) - dt.datetime.fromisoformat(h[0][0])).days
+        up = sum(x[2] for x in h) / len(h) if h else 1
+        mon = f'有货率 {up * 100:.0f}% · 已监控 {days} 天' if days >= 1 else "今天开始监控"
+        shop_meta = " · ".join(x for x in [f'入驻 {r["months"]} 个月' if r.get("months") else "",
+                                            f'保证金 ¥{r["deposit"]:g}' if r.get("deposit") else "无保证金",
+                                            r.get("shop_sales") or ""] if x)
+        key_ = f"s-{r['goods_no']}"
+        GO[key_] = r["url"]
+        rows += (f'<tr><td><b>{e(shop_short(r["shop"]))}</b><br><small>{e(shop_meta)}</small></td>'
+                 f'<td><small>{e(r["title"][:70])}</small></td>'
+                 f'<td data-v="{r["total"]:.2f}"><b>¥{r["total"]:,.2f}</b><br><small>{"人工发货" if r.get("manual") else "库存 " + str(r["stock"])}</small></td>'
+                 f'<td>{e(r["warranty"])}<br><small>{"、".join(PAY_SHORT.get(p, p) for p in r.get("pays", []))}</small></td>'
+                 f'<td><small>{mon}</small></td><td>{out_link(f"/go/{key_}", "去店铺")}</td></tr>')
+    t = (SHOPW.get("shops") or {}).get("time", "")
+    note_gone = f'另有 {len(gone)} 个监控中的商品暂时缺货或下架，未列出。' if gone else ""
+    return (f'<h2 id="shops">公开店铺报价（本站监控）</h2>'
+            f'<p class="hint">本站从 16688 卡网挑出的几家写明「充到自己账号」和质保的店铺，每 4 小时读取一次公开价格和库存。'
+            f'<b>这些店铺没有入驻本站</b>，本站不参与交易，售后由店铺和 16688 平台负责。</p>'
+            f'<div class="tablewrap"><table class="prices sortable shopw"><thead><tr><th>店铺</th><th>商品</th><th data-sort=num>实付（含手续费）</th>'
+            f'<th>质保 · 付款</th><th>监控记录</th><th></th></tr></thead><tbody>{rows}</tbody></table></div>'
+            f'<p class="note">{note_gone}价格是下单时支付宝通道的实付金额，最近读取于 {e(t[:16].replace("T", " "))}（UTC）。'
+            f'质保天数取自商品标题，以店铺页面为准；代充需要你的账号满足店铺写的条件（如没有正在生效的订阅）。'
+            f'店主如需更正或下架，请通过<a href="/merchant/join/">商家入驻</a>页联系我们。</p>')
+
+
 def build_shops():
     if not MERCH.get("listings"):
         return []
@@ -1930,6 +1977,9 @@ def main():
     add_manual_gift(day["usd_cny"])
     BRIEFS.extend(load_briefs())
     MERCH.update(load_merch())
+    for n in ("shops", "shops_history"):
+        f = os.path.join(ROOT, "data", "merchants", n + ".json")
+        SHOPW[n] = json.load(open(f, encoding="utf8")) if os.path.exists(f) else {}
     PRICING.update(load_pricing())
     OFFICIAL.update(load_official())
     GUIDES.extend(load_guides())
