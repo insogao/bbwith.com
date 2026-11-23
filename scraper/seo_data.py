@@ -64,17 +64,22 @@ def gsc_query(days, dims, limit=50):
 if os.environ.get("GTOKEN"):
     @section("google")
     def _g():
-        out = {}
+        out = {"errors": {}}
+
+        def part(name, fn):
+            try:
+                out[name] = fn()
+            except Exception as ex:
+                out["errors"][name] = str(ex)[:200] + " " + (getattr(ex, "read", lambda: b"")() or b"")[:200].decode("utf8", "ignore")
         for d in (7, 28):
-            tot = gsc_query(d, [], 1)
-            out[f"total_{d}d"] = tot[0] if tot else {"clicks": 0, "impressions": 0}
-        out["queries_28d"] = gsc_query(28, ["query"], 100)
-        out["pages_28d"] = gsc_query(28, ["page"], 100)
-        out["page_query_28d"] = gsc_query(28, ["page", "query"], 250)
+            part(f"total_{d}d", lambda d=d: (gsc_query(d, [], 1) or [{"clicks": 0, "impressions": 0}])[0])
+        part("queries_28d", lambda: gsc_query(28, ["query"], 100))
+        part("pages_28d", lambda: gsc_query(28, ["page"], 100))
+        part("page_query_28d", lambda: gsc_query(28, ["page", "query"], 250))
         # resubmit the sitemap so Google re-reads it this week, then record its status
         sm = urllib.parse.quote(SITE + "sitemap.xml", safe="")
-        call(f"https://www.googleapis.com/webmasters/v3/sites/{GS}/sitemaps/{sm}", G, method="PUT")
-        out["sitemaps"] = call(f"https://www.googleapis.com/webmasters/v3/sites/{GS}/sitemaps", G).get("sitemap", [])
+        part("sitemap_submit", lambda: call(f"https://www.googleapis.com/webmasters/v3/sites/{GS}/sitemaps/{sm}", G, method="PUT") or "ok")
+        part("sitemaps", lambda: call(f"https://www.googleapis.com/webmasters/v3/sites/{GS}/sitemaps", G).get("sitemap", []))
         # index status of every sitemap URL (URL Inspection API: 2,000/day quota)
         insp = {}
         for u in sitemap_urls()[:300]:
@@ -123,13 +128,14 @@ if CF:
         out["daily"] = [{"date": x["dimensions"]["date"], "requests": x["sum"]["requests"], "pageViews": x["sum"]["pageViews"],
                          "uniques": x["uniq"]["uniques"],
                          "status": {str(s["edgeResponseStatus"]): s["requests"] for s in x["sum"]["responseStatusMap"]}} for x in daily]
+        # Cloudflare's own "nginx-ssl early hints" prefetches show up as 504s; they are not visitors, so they are filtered out.
         # last 24h by path for errors and by user agent for crawlers (adaptive datasets keep ~1 day on free plans)
         since = (dt.datetime.now(dt.timezone.utc) - dt.timedelta(hours=23)).strftime("%Y-%m-%dT%H:%M:%SZ")
         try:
             g = gql("""query($z:String!,$t:Time!){viewer{zones(filter:{zoneTag:$z}){
-                errs: httpRequestsAdaptiveGroups(limit:50, filter:{datetime_geq:$t, edgeResponseStatus_geq:500}, orderBy:[count_DESC]){count dimensions{clientRequestPath edgeResponseStatus}}
-                errwho: httpRequestsAdaptiveGroups(limit:20, filter:{datetime_geq:$t, edgeResponseStatus_geq:500}, orderBy:[count_DESC]){count dimensions{userAgent clientCountryName datetimeHour originResponseStatus cacheStatus}}
-                total: httpRequestsAdaptiveGroups(limit:20, filter:{datetime_geq:$t}, orderBy:[count_DESC]){count dimensions{edgeResponseStatus}}
+                errs: httpRequestsAdaptiveGroups(limit:50, filter:{datetime_geq:$t, edgeResponseStatus_geq:500, userAgent_neq:"nginx-ssl early hints"}, orderBy:[count_DESC]){count dimensions{clientRequestPath edgeResponseStatus}}
+                errwho: httpRequestsAdaptiveGroups(limit:20, filter:{datetime_geq:$t, edgeResponseStatus_geq:500, userAgent_neq:"nginx-ssl early hints"}, orderBy:[count_DESC]){count dimensions{userAgent clientCountryName datetimeHour originResponseStatus cacheStatus}}
+                total: httpRequestsAdaptiveGroups(limit:20, filter:{datetime_geq:$t, userAgent_neq:"nginx-ssl early hints"}, orderBy:[count_DESC]){count dimensions{edgeResponseStatus}}
                 bots: httpRequestsAdaptiveGroups(limit:40, filter:{datetime_geq:$t}, orderBy:[count_DESC]){count dimensions{userAgent}}}}}""",
                     {"z": zid, "t": since})
             out["errors_who_24h"] = [dict(x["dimensions"], n=x["count"]) for x in g["errwho"]]
