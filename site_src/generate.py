@@ -1405,6 +1405,7 @@ def shops_block(key):
                  f'<td><small>{e(r["title"][:70])}</small></td>'
                  f'<td data-v="{r["total"]:.2f}"><b>¥{r["total"]:,.2f}</b><br><small>{"人工发货" if r.get("manual") else "库存 " + str(r["stock"])}</small></td>'
                  f'<td>{e(r["warranty"])}<br><small>{"、".join(PAY_SHORT.get(p, p) for p in r.get("pays", []))}</small></td>'
+                 f'<td>{"".join(f"<span class=rk>{e(x)}</span>" for x in r.get("risks", [])) or "<small>说明里没写额外限制</small>"}</td>'
                  f'<td><small>{mon}</small></td><td>{out_link(f"/go/{key_}", "去店铺")}</td></tr>')
     t = (SHOPW.get("shops") or {}).get("time", "")
     note_gone = f'另有 {len(gone)} 个监控中的商品暂时缺货或下架，未列出。' if gone else ""
@@ -1412,9 +1413,9 @@ def shops_block(key):
             f'<p class="hint">本站从 16688 卡网挑出的几家写明「充到自己账号」和质保的店铺，每 4 小时读取一次公开价格和库存。'
             f'<b>这些店铺没有入驻本站</b>，本站不参与交易，售后由店铺和 16688 平台负责。</p>'
             f'<div class="tablewrap"><table class="prices sortable shopw"><thead><tr><th>店铺</th><th>商品</th><th data-sort=num>实付（含手续费）</th>'
-            f'<th>质保 · 付款</th><th>监控记录</th><th></th></tr></thead><tbody>{rows}</tbody></table></div>'
+            f'<th>标题写的质保 · 付款</th><th>商品说明里的限制</th><th>监控记录</th><th></th></tr></thead><tbody>{rows}</tbody></table></div>'
             f'<p class="note">{note_gone}价格是下单时支付宝通道的实付金额，最近读取于 {e(t[:16].replace("T", " "))}（UTC）。'
-            f'质保天数取自商品标题，以店铺页面为准；代充需要你的账号满足店铺写的条件（如没有正在生效的订阅）。'
+            f'质保天数取自商品标题；「商品说明里的限制」是本站每次检查时从详情页说明里找出的条款，标题写了质保、说明里却写不到账不负责的情况很常见，下单前请看完店铺说明。'
             f'店主如需更正或下架，请通过<a href="/merchant/join/">商家入驻</a>页联系我们。</p>')
 
 

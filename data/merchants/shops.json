@@ -1,5 +1,5 @@
 {
- "time": "2026-11-23T04:33+00:00",
+ "time": "2026-11-23T06:17+00:00",
  "source": "16688 公开商品页接口",
  "items": [
   {
@@ -7,7 +7,7 @@
    "plan": "chatgpt/plus",
    "type": "topup",
    "ok": false,
-   "why": "读取失败：商品不存在"
+   "why": "商品已下架"
   },
   {
    "goods_no": "G76222918",
@@ -20,11 +20,11 @@
    "title": "【菲区卡充】G-T-P Plus20刀 官方直充 月卡 【质保订阅30天】",
    "price": 106,
    "total": 108.97,
-   "stock": 89,
+   "stock": 75,
    "manual": false,
    "in_stock": true,
-   "sales": "6546人付款",
-   "shop_sales": "5900人付款",
+   "sales": "6560人付款",
+   "shop_sales": "5914人付款",
    "months": 1,
    "deposit": 0,
    "region": "中国湖南",
@@ -33,6 +33,10 @@
     "wxpay"
    ],
    "warranty": "质保 30 天",
+   "risks": [
+    "可能要过 KYC 身份验证",
+    "封号不赔"
+   ],
    "url": "https://www.16688.com.cn/goods/G76222918"
   },
   {
@@ -46,11 +50,11 @@
    "title": "【官方正价充值】菲区plus/质保订阅30天/售后稳定/充值自己号码",
    "price": 106,
    "total": 108.97,
-   "stock": 152,
+   "stock": 132,
    "manual": false,
    "in_stock": true,
-   "sales": "2948人付款",
-   "shop_sales": "2559人付款",
+   "sales": "2968人付款",
+   "shop_sales": "2574人付款",
    "months": 1,
    "deposit": 200,
    "region": "中国陕西",
@@ -59,6 +63,9 @@
     "wxpay"
    ],
    "warranty": "质保 30 天",
+   "risks": [
+    "会员到期后才能充"
+   ],
    "url": "https://www.16688.com.cn/goods/G42288503"
   },
   {
@@ -72,11 +79,11 @@
    "title": "💥💥💥【官网直充】GT-P Plus 1个月会员充自己号（1号1卡1付）同步官方售后 24小时全自动充值",
    "price": 105.9,
    "total": 108.87,
-   "stock": 21,
+   "stock": 64,
    "manual": false,
    "in_stock": true,
-   "sales": "8012人付款",
-   "shop_sales": "7501人付款",
+   "sales": "8173人付款",
+   "shop_sales": "7642人付款",
    "months": 1,
    "deposit": 0,
    "region": "中国湖南",
@@ -85,6 +92,7 @@
     "wxpay"
    ],
    "warranty": "售后同步官方",
+   "risks": [],
    "url": "https://www.16688.com.cn/goods/G92285725"
   },
   {
@@ -102,7 +110,7 @@
    "manual": true,
    "in_stock": true,
    "sales": "1人付款",
-   "shop_sales": "2882人付款",
+   "shop_sales": "2883人付款",
    "months": 1,
    "deposit": 1,
    "region": "中国新疆",
@@ -111,6 +119,7 @@
     "wxpay"
    ],
    "warranty": "质保 30 天",
+   "risks": [],
    "url": "https://www.16688.com.cn/goods/G99064927"
   },
   {
@@ -137,33 +146,17 @@
     "wxpay"
    ],
    "warranty": "质保 30 天",
+   "risks": [
+    "封号不赔"
+   ],
    "url": "https://www.16688.com.cn/goods/G75173659"
   },
   {
    "goods_no": "G58733320",
-   "ok": true,
    "plan": "claude/pro",
    "type": "topup",
-   "added": "2026-11-23",
-   "shop_no": "S373093",
-   "shop": "龙卷卡网",
-   "title": "【质保30天订阅】ClaudePRO  IOS官方充值  下单记得看说明！！！",
-   "price": 139.85,
-   "total": 143.77,
-   "stock": null,
-   "manual": true,
-   "in_stock": true,
-   "sales": "3人付款",
-   "shop_sales": "506人付款",
-   "months": 1,
-   "deposit": 0,
-   "region": "中国湖北",
-   "pays": [
-    "alipay",
-    "wxpay"
-   ],
-   "warranty": "质保 30 天",
-   "url": "https://www.16688.com.cn/goods/G58733320"
+   "ok": false,
+   "why": "商品已下架"
   },
   {
    "goods_no": "G31983591",
@@ -189,6 +182,9 @@
     "wxpay"
    ],
    "warranty": "质保订阅（天数未写明）",
+   "risks": [
+    "可能要过 KYC 身份验证"
+   ],
    "url": "https://www.16688.com.cn/goods/G31983591"
   },
   {
@@ -215,6 +211,10 @@
     "wxpay"
    ],
    "warranty": "质保订阅（天数未写明）",
+   "risks": [
+    "可能要过 KYC 身份验证",
+    "封号不赔"
+   ],
    "url": "https://www.16688.com.cn/goods/G52145908"
   },
   {
@@ -232,7 +232,7 @@
    "manual": true,
    "in_stock": true,
    "sales": "",
-   "shop_sales": "506人付款",
+   "shop_sales": "510人付款",
    "months": 1,
    "deposit": 0,
    "region": "中国湖北",
@@ -241,6 +241,14 @@
     "wxpay"
    ],
    "warranty": "质保 30 天",
+   "risks": [
+    "可能不到账",
+    "不到账要自己找苹果退款",
+    "可能要过 KYC 身份验证",
+    "封号不赔",
+    "新注册账号不建议充",
+    "会员到期后才能充"
+   ],
    "url": "https://www.16688.com.cn/goods/G33385423"
   },
   {
@@ -267,6 +275,13 @@
     "wxpay"
    ],
    "warranty": "质保订阅（天数未写明）",
+   "risks": [
+    "可能不到账",
+    "可能要过 KYC 身份验证",
+    "封号不赔",
+    "新注册账号不建议充",
+    "掉订阅不负责"
+   ],
    "url": "https://www.16688.com.cn/goods/G41662442"
   },
   {
@@ -293,6 +308,11 @@
     "wxpay"
    ],
    "warranty": "质保订阅（天数未写明）",
+   "risks": [
+    "可能要过 KYC 身份验证",
+    "封号不赔",
+    "新注册账号不建议充"
+   ],
    "url": "https://www.16688.com.cn/goods/G53770261"
   }
  ]
