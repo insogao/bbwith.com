@@ -290,5 +290,140 @@
   "kind": "promo",
   "title": "Seedance 2.5 Flash 限时升级优惠",
   "detail": "升级会员限时5折，另赠最多20次免费生成"
+ },
+ {
+  "t": "2026-11-24 06:43",
+  "id": "gemini",
+  "kind": "price",
+  "plan": "Google AI Ultra",
+  "period": "month",
+  "from": "199.99 USD",
+  "to": "99.99 USD"
+ },
+ {
+  "t": "2026-11-24 06:43",
+  "id": "gemini",
+  "kind": "promo",
+  "title": "黑五会员抢先优惠最高 5 折",
+  "detail": "指定 Google AI 方案最高省 50%，条款适用。"
+ },
+ {
+  "t": "2026-11-24 06:43",
+  "id": "perplexity",
+  "kind": "promo",
+  "title": "限时赠送 $40 Computer credits",
+  "detail": "Pro 方案限时赠送 $40 Computer credits"
+ },
+ {
+  "t": "2026-11-24 06:43",
+  "id": "perplexity",
+  "kind": "promo",
+  "title": "限时赠送 $450 Computer credits",
+  "detail": "Max 方案限时赠送 $450 Computer credits"
+ },
+ {
+  "t": "2026-11-24 06:43",
+  "id": "copilot",
+  "kind": "promo",
+  "title": "Copilot Fusion 使用 30% off",
+  "detail": "Copilot Fusion usage 30% off until Nov 30th."
+ },
+ {
+  "t": "2026-11-24 06:43",
+  "id": "suno",
+  "kind": "price",
+  "plan": "Pro",
+  "period": "year",
+  "from": "96 USD",
+  "to": "67.2 USD"
+ },
+ {
+  "t": "2026-11-24 06:43",
+  "id": "suno",
+  "kind": "price",
+  "plan": "Premier",
+  "period": "year",
+  "from": "288 USD",
+  "to": "201.6 USD"
+ },
+ {
+  "t": "2026-11-24 06:43",
+  "id": "suno",
+  "kind": "price",
+  "plan": "Platinum",
+  "period": "year",
+  "from": "1200 USD",
+  "to": "840 USD"
+ },
+ {
+  "t": "2026-11-24 06:43",
+  "id": "suno",
+  "kind": "promo",
+  "title": "Black Friday Sale",
+  "detail": "年付方案额外 30% off；首年价 Pro $67.20、Premier $201.60、Platinum $840"
+ },
+ {
+  "t": "2026-11-24 06:43",
+  "id": "elevenlabs",
+  "kind": "promo",
+  "title": "Black Friday 最高 55% off",
+  "detail": "Creator 首年 $8.25/mo、Pro 首年 $37.13/mo；之后 Creator $22/mo、Pro $99/mo（年付折合 $18.33/mo、$82.50/mo）"
+ },
+ {
+  "t": "2026-11-24 06:43",
+  "id": "lovart",
+  "kind": "price",
+  "plan": "Pro",
+  "period": "year",
+  "from": "540 USD",
+  "to": "468 USD"
+ },
+ {
+  "t": "2026-11-24 06:43",
+  "id": "lovart",
+  "kind": "price",
+  "plan": "Ultimate",
+  "period": "year",
+  "from": "1308 USD",
+  "to": "948 USD"
+ },
+ {
+  "t": "2026-11-24 06:43",
+  "id": "lovart",
+  "kind": "promo",
+  "title": "Black Friday Early Access",
+  "detail": "会员方案最高 61% off"
+ },
+ {
+  "t": "2026-11-24 06:43",
+  "id": "kling",
+  "kind": "promo",
+  "title": "首 3 个月 35% Off",
+  "detail": "Standard $6.5/月、Pro $24/月、Premier $135/月、Ultra+ $402/月；之后分别 $8.8/$32.56/$181.99/$544.99 每月；一次性优惠，可随时取消。"
+ },
+ {
+  "t": "2026-11-24 06:43",
+  "id": "manus",
+  "kind": "price",
+  "plan": "Pro",
+  "period": "month",
+  "from": "19 USD",
+  "to": "100 USD"
+ },
+ {
+  "t": "2026-11-24 06:43",
+  "id": "manus",
+  "kind": "price",
+  "plan": "Max",
+  "period": "month",
+  "from": "199 USD",
+  "to": "200 USD"
+ },
+ {
+  "t": "2026-11-24 06:43",
+  "id": "manus",
+  "kind": "promo",
+  "title": "黑五最高 33% 折扣",
+  "detail": "Pro 25% OFF（首年 $900，次年 $1,000/年）；Max 33% OFF（首年 $1,600，次年 $2,000/年）"
  }
 ]
