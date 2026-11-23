@@ -17,6 +17,18 @@ export const SCHEMA = [
   `CREATE TABLE IF NOT EXISTS pv (day TEXT NOT NULL, path TEXT NOT NULL, n INTEGER NOT NULL DEFAULT 0, PRIMARY KEY (day, path))`,
   `CREATE TABLE IF NOT EXISTS ratelimit (ip_hash TEXT NOT NULL, action TEXT NOT NULL, day TEXT NOT NULL, n INTEGER NOT NULL DEFAULT 0,
      PRIMARY KEY (ip_hash, action, day))`,
+  // on-site behaviour, aggregated per day (no cookies; vid is a random id the browser keeps, hashed here)
+  `CREATE TABLE IF NOT EXISTS visitors (vid TEXT PRIMARY KEY, first_day TEXT NOT NULL)`,
+  `CREATE TABLE IF NOT EXISTS visits (day TEXT NOT NULL, vid TEXT NOT NULL, views INTEGER NOT NULL DEFAULT 0, PRIMARY KEY (day, vid))`,
+  `CREATE TABLE IF NOT EXISTS ev_click (day TEXT NOT NULL, path TEXT NOT NULL, sec TEXT NOT NULL, label TEXT NOT NULL, n INTEGER NOT NULL DEFAULT 0,
+     PRIMARY KEY (day, path, sec, label))`,
+  `CREATE TABLE IF NOT EXISTS ev_engage (day TEXT NOT NULL, path TEXT NOT NULL, n INTEGER NOT NULL DEFAULT 0, ms INTEGER NOT NULL DEFAULT 0,
+     t10 INTEGER NOT NULL DEFAULT 0, t30 INTEGER NOT NULL DEFAULT 0, t120 INTEGER NOT NULL DEFAULT 0, tmore INTEGER NOT NULL DEFAULT 0,
+     s25 INTEGER NOT NULL DEFAULT 0, s50 INTEGER NOT NULL DEFAULT 0, s75 INTEGER NOT NULL DEFAULT 0, s100 INTEGER NOT NULL DEFAULT 0,
+     PRIMARY KEY (day, path))`,
+  `CREATE TABLE IF NOT EXISTS ev_search (day TEXT NOT NULL, q TEXT NOT NULL, n INTEGER NOT NULL DEFAULT 0, zero INTEGER NOT NULL DEFAULT 0,
+     PRIMARY KEY (day, q))`,
+  `CREATE TABLE IF NOT EXISTS ev_ref (day TEXT NOT NULL, host TEXT NOT NULL, n INTEGER NOT NULL DEFAULT 0, PRIMARY KEY (day, host))`,
   `CREATE INDEX IF NOT EXISTS listings_status ON listings (status)`,
   `CREATE INDEX IF NOT EXISTS complaints_listing ON complaints (listing_id, status)`,
 ];
@@ -45,7 +57,7 @@ export const now = () => new Date().toISOString().slice(0, 19) + "Z";
 // Beijing date, so daily stats line up with the rest of the site
 export const today = () => new Date(Date.now() + 8 * 3600e3).toISOString().slice(0, 10);
 
-async function sha256(s) {
+export async function sha256(s) {
   const b = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(s));
   return [...new Uint8Array(b)].map((x) => x.toString(16).padStart(2, "0")).join("");
 }

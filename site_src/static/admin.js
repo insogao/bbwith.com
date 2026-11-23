@@ -36,8 +36,34 @@
         "<h2>外链点击（按链接）</h2>" + table(j.clicks, [["链接", function (c) { return "/go/" + esc(c.key); }], ["点击", function (c) { return c.n; }]]) +
         "<h2>外链点击（按来源页面）</h2>" + table(j.click_src, [["来源", function (c) { return esc(c.src); }], ["点击", function (c) { return c.n; }]]) +
         "<h2>页面浏览</h2>" + table(j.pv, [["页面", function (p) { return esc(p.path); }], ["浏览", function (p) { return p.n; }]]) +
+        '<div id="behaviour"><h2>用户行为（近 30 天）</h2><p class="hint">加载中…</p></div>' +
         '<p><a class="btn small ghost" href="/cdn-cgi/access/logout">退出登录</a></p>';
+      behaviour();
     }).catch(function (e) { if (/管理员/.test(e.message)) login(); else root.innerHTML = "<p>加载失败：" + esc(e.message) + "</p>"; });
+  }
+  function pct(a, b) { return b ? Math.round(a / b * 100) + "%" : "—"; }
+  function secs(ms) { var s = Math.round(ms / 1000); return s < 60 ? s + " 秒" : Math.floor(s / 60) + " 分 " + (s % 60) + " 秒"; }
+  function behaviour() {
+    api("admin/behaviour", { admin: true }).then(function (j) {
+      var tot = j.visitors.reduce(function (a, d) { a.v += d.visitors; a.n += d.new; a.r += d.returning; a.p += d.views; return a; }, { v: 0, n: 0, r: 0, p: 0 });
+      document.getElementById("behaviour").innerHTML =
+        "<h2>用户行为（近 " + j.days + " 天）</h2>" +
+        '<p class="hint">统计从上线这个功能起才有数据。访客按浏览器区分（不用 Cookie）；同一人换浏览器或清缓存会算成新访客。' +
+        "合计：访客·天 " + tot.v + "，其中回访 " + tot.r + "（" + pct(tot.r, tot.v) + "），人均浏览 " + (tot.v ? (tot.p / tot.v).toFixed(1) : "—") + " 页。</p>" +
+        "<h3>每日访客</h3>" + table(j.visitors, [["日期", function (d) { return d.day; }], ["访客", function (d) { return d.visitors; }],
+          ["新访客", function (d) { return d.new; }], ["回访", function (d) { return d.returning; }], ["浏览", function (d) { return d.views; }],
+          ["人均浏览", function (d) { return d.visitors ? (d.views / d.visitors).toFixed(1) : "—"; }]]) +
+        "<h3>页面停留和滚动</h3>" + table(j.engage, [["页面", function (e) { return esc(e.path); }], ["次数", function (e) { return e.n; }],
+          ["平均停留", function (e) { return secs(e.avg_ms); }],
+          ["停留分布 <10s / 10–30s / 30s–2m / >2m", function (e) { return [e.t10, e.t30, e.t120, e.tmore].map(function (x) { return pct(x, e.n); }).join(" / "); }],
+          ["滚到 25% / 50% / 75% / 底部", function (e) { return [e.s25, e.s50, e.s75, e.s100].map(function (x) { return pct(x, e.n); }).join(" / "); }]]) +
+        "<h3>各板块点击</h3>" + table(j.sections, [["板块", function (c) { return esc(c.sec); }], ["点击", function (c) { return c.n; }]]) +
+        "<h3>点击明细（前 100）</h3>" + table(j.clicks, [["页面", function (c) { return esc(c.path); }], ["板块", function (c) { return esc(c.sec); }],
+          ["点了什么", function (c) { return esc(c.label); }], ["次数", function (c) { return c.n; }]]) +
+        "<h3>站内搜索</h3>" + table(j.searches, [["搜索词", function (c) { return esc(c.q); }], ["次数", function (c) { return c.n; }],
+          ["没搜到", function (c) { return c.zero ? "<b>" + c.zero + "</b>" : "0"; }]]) +
+        "<h3>来源网站</h3>" + table(j.refs, [["来源", function (c) { return esc(c.host); }], ["次数", function (c) { return c.n; }]]);
+    }).catch(function (e) { document.getElementById("behaviour").innerHTML = "<p>用户行为加载失败：" + esc(e.message) + "</p>"; });
   }
   root.addEventListener("click", function (e) {
     var b = e.target.closest("button[data-kind]");

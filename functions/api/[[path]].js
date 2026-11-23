@@ -1,4 +1,4 @@
-import { db, json, HttpError, now, today, hashToken, ipHash, newToken, rateLimit, body, str, isAdmin } from "../_lib.js";
+import { db, json, HttpError, now, today, hashToken, ipHash, newToken, rateLimit, body, str, isAdmin, sha256 } from "../_lib.js";
 
 const TYPES = ["topup", "account-long", "account-short", "seat", "shared", "promo"];
 const PROBLEMS = ["未发货", "掉订阅", "封号", "与描述不符", "售后不处理", "其他"];
@@ -74,6 +74,71 @@ const routes = {
     if (!path.startsWith("/")) return json({});
     await DB.prepare(`INSERT INTO pv (day, path, n) VALUES (?, ?, 1) ON CONFLICT (day, path) DO UPDATE SET n = n + 1`).bind(today(), path).run();
     return json({});
+  },
+
+  // batched behaviour events from assets/app.js; everything is stored as daily counts
+  "POST ev": async ({ DB, request, env }) => {
+    let b;
+    try { b = JSON.parse(await request.text()); } catch { return json({}); }
+    const list = (Array.isArray(b.e) ? b.e : []).slice(0, 30);
+    if (!list.length) return json({});
+    const ip = await ipHash(request, env);
+    try { await rateLimit(DB, ip, "ev", 800); } catch { return json({}); }
+    const day = today();
+    const clean = (v, n) => String(v ?? "").replace(/[\u0000-\u001f]/g, "").trim().slice(0, n);
+    const vid = /^[a-f0-9]{16,32}$/.test(b.v || "") ? (await sha256("vid:" + b.v)).slice(0, 24) : null;
+    const st = [];
+    for (const e of list) {
+      const path = clean(e.p, 120).split("?")[0];
+      if (!path.startsWith("/") || /^\/(admin|merchant\/manage)/.test(path)) continue;
+      if (e.t === "view") {
+        st.push(DB.prepare(`INSERT INTO pv (day, path, n) VALUES (?, ?, 1) ON CONFLICT (day, path) DO UPDATE SET n = n + 1`).bind(day, path));
+        if (vid) {
+          st.push(DB.prepare(`INSERT INTO visitors (vid, first_day) VALUES (?, ?) ON CONFLICT (vid) DO NOTHING`).bind(vid, day));
+          st.push(DB.prepare(`INSERT INTO visits (day, vid, views) VALUES (?, ?, 1) ON CONFLICT (day, vid) DO UPDATE SET views = views + 1`).bind(day, vid));
+        }
+        const host = clean(e.r, 60).toLowerCase();
+        if (host) st.push(DB.prepare(`INSERT INTO ev_ref (day, host, n) VALUES (?, ?, 1) ON CONFLICT (day, host) DO UPDATE SET n = n + 1`).bind(day, host));
+      } else if (e.t === "click") {
+        const sec = clean(e.s, 30) || "page", label = clean(e.l, 40) || "-";
+        st.push(DB.prepare(`INSERT INTO ev_click (day, path, sec, label, n) VALUES (?, ?, ?, ?, 1)
+            ON CONFLICT (day, path, sec, label) DO UPDATE SET n = n + 1`).bind(day, path, sec, label));
+      } else if (e.t === "engage") {
+        const ms = Math.max(0, Math.min(parseInt(e.ms, 10) || 0, 3600e3)), sc = Math.max(0, Math.min(parseInt(e.sc, 10) || 0, 100));
+        const sec = ms / 1000;
+        st.push(DB.prepare(`INSERT INTO ev_engage (day, path, n, ms, t10, t30, t120, tmore, s25, s50, s75, s100)
+            VALUES (?, ?, 1, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ON CONFLICT (day, path) DO UPDATE SET n = n + 1, ms = ms + excluded.ms, t10 = t10 + excluded.t10, t30 = t30 + excluded.t30,
+              t120 = t120 + excluded.t120, tmore = tmore + excluded.tmore, s25 = s25 + excluded.s25, s50 = s50 + excluded.s50,
+              s75 = s75 + excluded.s75, s100 = s100 + excluded.s100`)
+          .bind(day, path, ms, +(sec < 10), +(sec >= 10 && sec < 30), +(sec >= 30 && sec < 120), +(sec >= 120),
+                +(sc >= 25), +(sc >= 50), +(sc >= 75), +(sc >= 95)));
+      } else if (e.t === "search") {
+        const q = clean(e.q, 40).toLowerCase();
+        if (q) st.push(DB.prepare(`INSERT INTO ev_search (day, q, n, zero) VALUES (?, ?, 1, ?)
+            ON CONFLICT (day, q) DO UPDATE SET n = n + 1, zero = zero + excluded.zero`).bind(day, q, +(parseInt(e.n, 10) === 0)));
+      }
+    }
+    if (st.length) await DB.batch(st);
+    return json({});
+  },
+
+  "GET admin/behaviour": async ({ DB, url }) => {
+    const q = (s, ...a) => DB.prepare(s).bind(...a).all().then((r) => r.results);
+    const days = Math.min(parseInt(url.searchParams.get("days"), 10) || 30, 90);
+    const since = new Date(Date.now() + 8 * 3600e3 - (days - 1) * 86400e3).toISOString().slice(0, 10);
+    return json({
+      days,
+      visitors: await q(`SELECT v.day, COUNT(*) AS visitors, SUM(f.first_day = v.day) AS new, SUM(f.first_day < v.day) AS returning,
+          SUM(v.views) AS views FROM visits v JOIN visitors f ON f.vid = v.vid WHERE v.day >= ? GROUP BY v.day ORDER BY v.day`, since),
+      engage: await q(`SELECT path, SUM(n) AS n, SUM(ms) / MAX(SUM(n), 1) AS avg_ms, SUM(t10) AS t10, SUM(t30) AS t30, SUM(t120) AS t120,
+          SUM(tmore) AS tmore, SUM(s25) AS s25, SUM(s50) AS s50, SUM(s75) AS s75, SUM(s100) AS s100
+          FROM ev_engage WHERE day >= ? GROUP BY path ORDER BY n DESC LIMIT 60`, since),
+      sections: await q(`SELECT sec, SUM(n) AS n FROM ev_click WHERE day >= ? GROUP BY sec ORDER BY n DESC LIMIT 40`, since),
+      clicks: await q(`SELECT path, sec, label, SUM(n) AS n FROM ev_click WHERE day >= ? GROUP BY path, sec, label ORDER BY n DESC LIMIT 100`, since),
+      searches: await q(`SELECT q, SUM(n) AS n, SUM(zero) AS zero FROM ev_search WHERE day >= ? GROUP BY q ORDER BY n DESC LIMIT 60`, since),
+      refs: await q(`SELECT host, SUM(n) AS n FROM ev_ref WHERE day >= ? GROUP BY host ORDER BY n DESC LIMIT 40`, since),
+    });
   },
 
   "POST complaint": async ({ DB, request, env }) => {

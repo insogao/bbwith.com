@@ -216,14 +216,14 @@ def page(title, description, path, body, ld=(), date=None, noindex=False, extra_
 <body class="{'home' if path == '/' else ''}">
 <header class="top"><div class="wrap">
 <a class="brand" href="/"><span class="logo">比</span>比比价</a>
-<nav class="main">{nav_main(path)}</nav>
-<div class="search"><input type="search" class="qbox" placeholder="搜会员、地区、礼品卡…" autocomplete="off" aria-label="搜索"><div class="qres" hidden></div></div>
+<nav class="main" data-sec="顶栏导航">{nav_main(path)}</nav>
+<div class="search" data-sec="顶栏搜索"><input type="search" class="qbox" placeholder="搜会员、地区、礼品卡…" autocomplete="off" aria-label="搜索"><div class="qres" hidden></div></div>
 {cur_select_header()}
-</div>{f'<div class="subbar"><div class="wrap">{prod_filter()}</div></div>' if any(path == x if x == "/" else path.startswith(x) for x in FILTER_PATHS) else ""}</header>
+</div>{f'<div class="subbar" data-sec="产品筛选"><div class="wrap">{prod_filter()}</div></div>' if any(path == x if x == "/" else path.startswith(x) for x in FILTER_PATHS) else ""}</header>
 <main class="wrap">
 {body}
 </main>
-<footer class="foot"><div class="wrap">
+<footer class="foot" data-sec="页脚"><div class="wrap">
 <p>比比价（bbwith.com）整理各地区 App Store 公开标价，仅供参考。本站与 OpenAI、Anthropic、Google、SpaceX/xAI、X、Perplexity、Cursor 均无关联。实际价格、可订阅档位和税费以结账页为准；跨地区订阅需遵守 Apple 和各服务商的条款。</p>
 <p><a href="/news/">AI 早报</a> · <a href="/deals/">优惠</a> · <a href="/guides/">教程</a> · <a href="/daily/">价格日报</a> · <a href="/ai-pricing/">各家官网价格</a> · <a href="/merchant/join/">商家入驻</a> · <a href="/about/">关于本站</a></p>
 </div></footer>
@@ -847,7 +847,7 @@ def overview_table(day, cur):
                     f'{f"<small>{sub}</small>" if sub else ""}</a></td>')
         trs += (f'<tr data-prod="{p}"><td><a href="{url_plan(p, pl)}"><b>{e(full_name(p, pl))}</b></a></td>'
                 + td("off", "官网") + td("app", "App Store 低价区 Top3") + td("topup", "代充（中位）") + td("acct", "成品号（中位）") + "</tr>")
-    return (f'<div class="tablewrap"><table class="prices overview sortable"><thead><tr><th>会员</th><th data-sort=num>官网</th>'
+    return (f'<div class="tablewrap" data-sec="首页比价表"><table class="prices overview sortable"><thead><tr><th>会员</th><th data-sort=num>官网</th>'
             f'<th data-sort=num>App Store 低价区 Top3<small class="th-sub">实付 = 标价 × 礼品卡成本</small></th><th data-sort=num>代充（中位）</th><th data-sort=num>成品号（中位）</th></tr></thead>'
             f'<tbody>{trs}</tbody></table></div>'
             '<p class="hint"><b>App Store</b>：实际要花的钱 = 当地标价 × 买当地礼品卡的成本（按最便宜的平台算，例如 103% 表示买卡多花 3%），'
@@ -892,7 +892,7 @@ def build_home(day, cur, chg, prev):
     body = f"""<section class="hero">
 <h1>AI 会员，比比再买</h1>
 <p class="lead">ChatGPT、Claude、Gemini、Grok 等 AI 会员在哪里买最便宜：各地区 App Store、官网、礼品卡、代充，一站比较。最新数据 {zh_date(date)}。{chg_line}</p>
-<div class="search big"><input type="search" class="qbox" placeholder="试试「ChatGPT Plus」「土耳其礼品卡」「Claude Max」" autocomplete="off" aria-label="搜索"><div class="qres" hidden></div></div>
+<div class="search big" data-sec="首页搜索"><input type="search" class="qbox" placeholder="试试「ChatGPT Plus」「土耳其礼品卡」「Claude Max」" autocomplete="off" aria-label="搜索"><div class="qres" hidden></div></div>
 </section>
 {home_panels()}
 <h2>每个会员，各种买法的到手价</h2>
@@ -928,6 +928,7 @@ def build_about(day):
 <li>稳定性（15）：近 14 天自动核价的通过比例；核价不足 3 次按一半计。</li>
 <li>投诉（25）：近 90 天每条已公开、未解决的投诉扣 10 分，已解决的扣 3 分。</li></ul>
 <p>页面上的 👍👎 按 IP 统计，只供参考，不计入信用分。</p>
+<h2>访问统计</h2><p>为了知道哪些内容有用，本站统计页面浏览、页面停留时间、滚动深度、点击了哪个板块和站内搜索词，只按天汇总计数。不使用 Cookie，不用第三方统计（没有 Google Analytics），不记录 IP 和个人信息；浏览器里会存一个随机编号（localStorage 里的 bbwith-vid），只用来区分新访客和回访，在服务器端再做哈希，清除浏览器数据即可删除。</p>
 <h2>使用须知</h2><p>本站只做价格参考，不出售任何订阅，也不提供绕过地区限制的方法。跨地区订阅可能违反 Apple 或服务商的条款，请自行判断。</p>
 <h2>引用与数据</h2><p>欢迎引用，请注明来源「比比价 bbwith.com」并附上链接。完整数据见 <a href="/data/">数据下载</a>，采用 CC BY 4.0 许可。</p>
 </div>"""
@@ -1084,7 +1085,7 @@ def build_deals(day):
 <p class="lead">各家 AI 会员正在进行的折扣、首月优惠和限时活动，每天自动更新。</p>
 <div class="fl">
 {f'<h2>编辑核实</h2><ul class="list">{rows(verified)}</ul>' if verified else ''}
-{f'<h2>官网正在进行</h2><div class="dealcards">{cards}</div>' if cards else '<p>今天没有在各家官网价格页上发现限时优惠。</p>'}
+{f'<h2>官网正在进行</h2><div class="dealcards" data-sec="优惠卡片">{cards}</div>' if cards else '<p>今天没有在各家官网价格页上发现限时优惠。</p>'}
 {empty}
 </div>
 <p class="hint">「官网正在进行」由 AI 每天读取 {len(PRICING.get("products", {}))} 家官网价格页识别，可能有误，以官网结账页为准；活动撤下后自动消失。更新于 {e(PRICING.get("time", ""))}（北京时间）。<a href="/ai-pricing/">各家 AI 官方价格 →</a></p>
@@ -1640,7 +1641,7 @@ def freshness(day):
         f'<div class="fr" data-t="{t}" data-period="{per}" title="{e(n)}：{e(sub)}，数据每{"天" if per == 86400 else " 4 小时"}更新">{ring}'
         f'<b class="fr-n">{e(n)}</b><span class="ago" hidden>—</span><span class="fr-next">下次 <b class="cd">--:--:--</b></span></div>'
         for n, sub, t, per in items if t)
-    return f'<div class="fresh">{cells}</div>'
+    return f'<div class="fresh" data-sec="更新状态">{cells}</div>'
 
 
 def home_panels():
@@ -1655,7 +1656,7 @@ def home_panels():
         b = BRIEFS[-1]
         bh = (f'<p class="hl"><a href="/news/{b["date"]}/">{e(b["headline"])}</a></p>'
               + "<ul>" + "".join(f"<li>{e(x['title'])}</li>" for x in b["items"][:3]) + "</ul>")
-    card = lambda icon, title, href, more, inner: (f'<section class="hp{" brief" if icon == "📰" else ""}"><h2><span>{icon}</span>{title}<a href="{href}">{more} →</a></h2>{inner}</section>')
+    card = lambda icon, title, href, more, inner: (f'<section class="hp{" brief" if icon == "📰" else ""}" data-sec="首页-{ {"🔥": "优惠", "📘": "教程", "📰": "早报"}[icon] }"><h2><span>{icon}</span>{title}<a href="{href}">{more} →</a></h2>{inner}</section>')
     return ('<div class="hpanels">'
             + card("🔥", "正在进行的优惠", "/deals/", f"全部 {n_deals} 条", f'<ul>{dl}</ul>' if dl else "<p>暂无</p>")
             + card("📘", "新手教程", "/guides/", "全部教程", f"<ul>{gl}</ul>")

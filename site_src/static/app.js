@@ -1,4 +1,4 @@
-// bbwith: page views, up/down votes, merchant / complaint / admin forms. No framework, no cookies.
+// bbwith: behaviour stats, up/down votes, merchant / complaint / admin forms. No framework, no cookies.
 (function () {
   "use strict";
   var $ = function (s, r) { return (r || document).querySelector(s); };
@@ -13,11 +13,68 @@
   }
   window.bbApi = api; window.bbEsc = esc;
 
-  // page views (one small request; no cookies, no IDs)
-  try {
-    if (!/^\/(admin|merchant\/manage)/.test(location.pathname) && navigator.sendBeacon)
-      navigator.sendBeacon("/api/pv", location.pathname);
-  } catch (e) {}
+  // ---- behaviour stats: page view, time on page, scroll depth, clicks by section, searches ----
+  // No cookies. A random id kept in this browser (localStorage) tells new from returning visitors; it is hashed on the server.
+  var EV = (function () {
+    var off = /^\/(admin|merchant\/manage)/.test(location.pathname) || !navigator.sendBeacon;
+    var q = [], vid = "";
+    try {
+      vid = localStorage.getItem("bbwith-vid") || "";
+      if (!/^[a-f0-9]{16,32}$/.test(vid)) {
+        var a = new Uint8Array(12); crypto.getRandomValues(a);
+        vid = Array.prototype.map.call(a, function (b) { return (b < 16 ? "0" : "") + b.toString(16); }).join("");
+        localStorage.setItem("bbwith-vid", vid);
+      }
+    } catch (e) { vid = ""; }
+    function flush() {
+      if (off || !q.length) return;
+      try { navigator.sendBeacon("/api/ev", JSON.stringify({ v: vid, e: q.splice(0, 30) })); } catch (e) {}
+    }
+    function push(ev) { if (off) return; ev.p = location.pathname; q.push(ev); if (q.length >= 10) flush(); }
+    setInterval(flush, 8000);
+    // visible time and how far down the page the reader got
+    var shown = document.visibilityState === "visible" ? Date.now() : 0, ms = 0, maxSc = 0, sent = false;
+    function scroll() {
+      var h = document.documentElement.scrollHeight - innerHeight;
+      var sc = h <= 0 ? 100 : Math.round(scrollY / h * 100);
+      if (sc > maxSc) maxSc = sc;
+    }
+    addEventListener("scroll", scroll, { passive: true });
+    function hide() {
+      if (shown) { ms += Date.now() - shown; shown = 0; }
+      if (!sent && ms > 300) { push({ t: "engage", ms: ms, sc: maxSc }); sent = true; }
+      flush();
+    }
+    document.addEventListener("visibilitychange", function () {
+      if (document.visibilityState === "hidden") hide(); else shown = Date.now();
+    });
+    addEventListener("pagehide", hide);
+    // which block a click came from: the nearest [data-sec], else the nearest id, else the page
+    document.addEventListener("click", function (ev) {
+      var el = ev.target.closest && ev.target.closest("a,button,summary,select,[data-pf]");
+      if (!el) return;
+      var box = el.closest("[data-sec]");
+      var sec = box ? box.getAttribute("data-sec") : heading(el);
+      var label = el.getAttribute("data-ev") || (el.textContent || "").replace(/\s+/g, " ").trim().slice(0, 40) || el.getAttribute("href") || el.tagName;
+      push({ t: "click", s: sec, l: label });
+    }, true);
+    // no explicit block: name it after the nearest heading above the click, e.g. "公开店铺报价"
+    function heading(el) {
+      for (var n = el; n && n !== document.body; n = n.parentElement) {
+        if (/^H[12]$/.test(n.tagName)) return n.textContent.split(/[（(：:]/)[0].trim().slice(0, 30);
+        for (var p = n.previousElementSibling; p; p = p.previousElementSibling) {
+          if (/^H[12]$/.test(p.tagName)) return p.textContent.split(/[（(：:]/)[0].trim().slice(0, 30);
+        }
+      }
+      return "页面其他";
+    }
+    var ref = "";
+    try { var r = document.referrer ? new URL(document.referrer).hostname : ""; if (r && r !== location.hostname) ref = r.replace(/^www\./, ""); } catch (e) {}
+    push({ t: "view", r: ref });
+    scroll();
+    return { push: push };
+  })();
+  window.bbEv = EV;
 
   // votes: <span class="vote" data-target="listing:12"></span>
   var boxes = $$(".vote[data-target]");
@@ -178,7 +235,12 @@ document.addEventListener("click", function (ev) {
       res.hidden = false;
     }
     box.addEventListener("focus", load);
-    box.addEventListener("input", function () { load().then(function () { cur = find(box.value); sel = -1; render(); }); });
+    var sTimer = 0;
+    box.addEventListener("input", function () {
+      load().then(function () { cur = find(box.value); sel = -1; render(); });
+      clearTimeout(sTimer);
+      sTimer = setTimeout(function () { var v = box.value.trim(); if (v.length >= 2 && window.bbEv) window.bbEv.push({ t: "search", q: v, n: cur.length }); }, 1500);
+    });
     box.addEventListener("keydown", function (ev) {
       if (ev.key === "ArrowDown") { sel = Math.min(sel + 1, cur.length - 1); render(); ev.preventDefault(); }
       else if (ev.key === "ArrowUp") { sel = Math.max(sel - 1, 0); render(); ev.preventDefault(); }
