@@ -1,0 +1,44 @@
+name: Weekly SEO data
+
+# Pulls Search Console, Bing Webmaster and Cloudflare numbers through their APIs into data/seo/,
+# and re-submits the sitemap to Google. The weekly SEO operator (a Claude scheduled task) reads them.
+on:
+  schedule:
+    - cron: "13 0 * * 1"   # Monday 08:13 Beijing
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  id-token: write   # keyless Google login
+
+jobs:
+  pull:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Google login (keyless)
+        id: gauth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: projects/166218651139/locations/global/workloadIdentityPools/github/providers/bbwith-repo
+          service_account: bbwith-seo-bot@bbwith-seo.iam.gserviceaccount.com
+          token_format: access_token
+          access_token_scopes: https://www.googleapis.com/auth/webmasters
+
+      - name: Pull SEO data
+        env:
+          GTOKEN: ${{ steps.gauth.outputs.access_token }}
+          BING_API_KEY: ${{ secrets.BING_API_KEY }}
+          CF_TOKEN: ${{ secrets.CLOUDFLARE_ANALYTICS_TOKEN }}
+        run: python scraper/seo_data.py
+
+      - name: Commit
+        run: |
+          git config user.name "bbwith-bot"
+          git config user.email "bot@bbwith.com"
+          git add data/seo
+          git diff --cached --quiet && exit 0
+          git commit -m "data: weekly SEO $(date +%F) [skip ci]"
+          git pull --rebase
+          git push
