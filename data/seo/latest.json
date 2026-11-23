@@ -53,16 +53,16 @@
    },
    {
     "date": "2026-11-23",
-    "requests": 919,
-    "pageViews": 385,
-    "uniques": 364,
+    "requests": 924,
+    "pageViews": 387,
+    "uniques": 366,
     "status": {
-     "200": 618,
+     "200": 621,
      "301": 130,
      "302": 95,
      "304": 1,
      "308": 12,
-     "403": 2,
+     "403": 4,
      "404": 60,
      "405": 1
     }
@@ -87,430 +87,51 @@
   "errors_who_24h": [
    {
     "cacheStatus": "miss",
-    "clientCountryName": "US",
-    "datetimeHour": "2026-11-23T01:00:00Z",
-    "originResponseStatus": 0,
-    "userAgent": "nginx-ssl early hints",
-    "n": 86
-   },
-   {
-    "cacheStatus": "miss",
-    "clientCountryName": "GB",
-    "datetimeHour": "2026-11-23T00:00:00Z",
-    "originResponseStatus": 0,
-    "userAgent": "nginx-ssl early hints",
-    "n": 42
-   },
-   {
-    "cacheStatus": "miss",
-    "clientCountryName": "US",
-    "datetimeHour": "2026-11-23T06:00:00Z",
-    "originResponseStatus": 0,
-    "userAgent": "nginx-ssl early hints",
-    "n": 18
-   },
-   {
-    "cacheStatus": "miss",
-    "clientCountryName": "US",
-    "datetimeHour": "2026-11-23T00:00:00Z",
-    "originResponseStatus": 0,
-    "userAgent": "nginx-ssl early hints",
-    "n": 18
-   },
-   {
-    "cacheStatus": "miss",
-    "clientCountryName": "VN",
-    "datetimeHour": "2026-11-23T07:00:00Z",
-    "originResponseStatus": 0,
-    "userAgent": "nginx-ssl early hints",
-    "n": 15
-   },
-   {
-    "cacheStatus": "miss",
-    "clientCountryName": "US",
-    "datetimeHour": "2026-11-23T04:00:00Z",
-    "originResponseStatus": 0,
-    "userAgent": "nginx-ssl early hints",
-    "n": 14
-   },
-   {
-    "cacheStatus": "miss",
-    "clientCountryName": "US",
-    "datetimeHour": "2026-11-23T07:00:00Z",
-    "originResponseStatus": 0,
-    "userAgent": "nginx-ssl early hints",
-    "n": 13
-   },
-   {
-    "cacheStatus": "miss",
-    "clientCountryName": "US",
-    "datetimeHour": "2026-11-23T08:00:00Z",
-    "originResponseStatus": 0,
-    "userAgent": "nginx-ssl early hints",
-    "n": 11
-   },
-   {
-    "cacheStatus": "miss",
-    "clientCountryName": "US",
-    "datetimeHour": "2026-11-23T05:00:00Z",
-    "originResponseStatus": 0,
-    "userAgent": "nginx-ssl early hints",
-    "n": 11
-   },
-   {
-    "cacheStatus": "miss",
-    "clientCountryName": "US",
-    "datetimeHour": "2026-11-22T11:00:00Z",
-    "originResponseStatus": 0,
-    "userAgent": "nginx-ssl early hints",
-    "n": 10
-   },
-   {
-    "cacheStatus": "miss",
-    "clientCountryName": "VN",
-    "datetimeHour": "2026-11-23T04:00:00Z",
-    "originResponseStatus": 0,
-    "userAgent": "nginx-ssl early hints",
-    "n": 9
-   },
-   {
-    "cacheStatus": "miss",
-    "clientCountryName": "US",
-    "datetimeHour": "2026-11-22T12:00:00Z",
-    "originResponseStatus": 0,
-    "userAgent": "nginx-ssl early hints",
-    "n": 7
-   },
-   {
-    "cacheStatus": "miss",
-    "clientCountryName": "VN",
-    "datetimeHour": "2026-11-23T08:00:00Z",
-    "originResponseStatus": 0,
-    "userAgent": "nginx-ssl early hints",
-    "n": 5
-   },
-   {
-    "cacheStatus": "miss",
-    "clientCountryName": "US",
-    "datetimeHour": "2026-11-22T10:00:00Z",
-    "originResponseStatus": 0,
-    "userAgent": "nginx-ssl early hints",
-    "n": 5
-   },
-   {
-    "cacheStatus": "miss",
-    "clientCountryName": "VN",
-    "datetimeHour": "2026-11-23T05:00:00Z",
-    "originResponseStatus": 0,
-    "userAgent": "nginx-ssl early hints",
-    "n": 5
-   },
-   {
-    "cacheStatus": "miss",
-    "clientCountryName": "US",
-    "datetimeHour": "2026-11-22T14:00:00Z",
-    "originResponseStatus": 0,
-    "userAgent": "nginx-ssl early hints",
-    "n": 5
-   },
-   {
-    "cacheStatus": "miss",
-    "clientCountryName": "US",
-    "datetimeHour": "2026-11-23T02:00:00Z",
-    "originResponseStatus": 0,
-    "userAgent": "nginx-ssl early hints",
-    "n": 5
-   },
-   {
-    "cacheStatus": "miss",
     "clientCountryName": "CN",
     "datetimeHour": "2026-11-23T06:00:00Z",
     "originResponseStatus": 0,
-    "userAgent": "nginx-ssl early hints",
-    "n": 4
+    "userAgent": "fl2 early hints",
+    "n": 2
    },
    {
     "cacheStatus": "miss",
-    "clientCountryName": "FR",
-    "datetimeHour": "2026-11-23T05:00:00Z",
+    "clientCountryName": "CA",
+    "datetimeHour": "2026-11-23T04:00:00Z",
     "originResponseStatus": 0,
-    "userAgent": "nginx-ssl early hints",
-    "n": 4
-   },
-   {
-    "cacheStatus": "miss",
-    "clientCountryName": "US",
-    "datetimeHour": "2026-11-22T21:00:00Z",
-    "originResponseStatus": 0,
-    "userAgent": "nginx-ssl early hints",
-    "n": 4
+    "userAgent": "fl2 early hints",
+    "n": 1
    }
   ],
   "status_24h": {
-   "200": 967,
+   "200": 969,
    "404": 823,
    "301": 515,
-   "504": 489,
-   "302": 100,
-   "403": 20,
+   "302": 101,
+   "403": 21,
    "308": 12,
    "405": 5,
+   "504": 3,
    "304": 1
   },
   "errors_24h": [
    {
-    "path": "/deals/google-ai-black-friday-2026/",
+    "path": "/x/premium-basic/",
     "status": 504,
-    "n": 85
-   },
-   {
-    "path": "/",
-    "status": 504,
-    "n": 36
-   },
-   {
-    "path": "/go/youworld-us",
-    "status": 504,
-    "n": 25
-   },
-   {
-    "path": "/deals/",
-    "status": 504,
-    "n": 15
-   },
-   {
-    "path": "/news/2026-11-22/",
-    "status": 504,
-    "n": 13
-   },
-   {
-    "path": "/gift-cards/",
-    "status": 504,
-    "n": 13
-   },
-   {
-    "path": "/go/seagm-us",
-    "status": 504,
-    "n": 9
-   },
-   {
-    "path": "/go/seagm-tr",
-    "status": 504,
-    "n": 9
-   },
-   {
-    "path": "/channels/",
-    "status": 504,
-    "n": 9
-   },
-   {
-    "path": "/claude/max/",
-    "status": 504,
-    "n": 8
-   },
-   {
-    "path": "/guides/",
-    "status": 504,
-    "n": 8
-   },
-   {
-    "path": "/go/bitrefill-us",
-    "status": 504,
-    "n": 8
-   },
-   {
-    "path": "/news/",
-    "status": 504,
-    "n": 8
-   },
-   {
-    "path": "/merchant/join/",
-    "status": 504,
-    "n": 8
-   },
-   {
-    "path": "/chatgpt/plus/",
-    "status": 504,
-    "n": 8
-   },
-   {
-    "path": "/go/eneba-tr-400",
-    "status": 504,
-    "n": 7
-   },
-   {
-    "path": "/daily/2026-11-22/",
-    "status": 504,
-    "n": 7
-   },
-   {
-    "path": "/go/eneba-tr-250",
-    "status": 504,
-    "n": 7
-   },
-   {
-    "path": "/go/eneba-tr-100",
-    "status": 504,
-    "n": 7
-   },
-   {
-    "path": "/go/bitrefill-tr",
-    "status": 504,
-    "n": 6
-   },
-   {
-    "path": "/data/",
-    "status": 504,
-    "n": 6
-   },
-   {
-    "path": "/daily/",
-    "status": 504,
-    "n": 6
-   },
-   {
-    "path": "/ai-pricing/",
-    "status": 504,
-    "n": 6
-   },
-   {
-    "path": "/ai-pricing/kimi/",
-    "status": 504,
-    "n": 6
-   },
-   {
-    "path": "/go/eneba-tr-500",
-    "status": 504,
-    "n": 5
-   },
-   {
-    "path": "/gift-cards/apple/us/",
-    "status": 504,
-    "n": 5
-   },
-   {
-    "path": "/ai-pricing/manus/",
-    "status": 504,
-    "n": 5
-   },
-   {
-    "path": "/grok/supergrok/",
-    "status": 504,
-    "n": 5
+    "n": 1
    },
    {
     "path": "/x/premium/",
     "status": 504,
-    "n": 5
+    "n": 1
    },
    {
-    "path": "/x/premium-basic/",
+    "path": "/deals/google-ai-black-friday-2026/",
     "status": 504,
-    "n": 5
-   },
-   {
-    "path": "/claude/pro/",
-    "status": 504,
-    "n": 5
-   },
-   {
-    "path": "/go/eneba-tr-200",
-    "status": 504,
-    "n": 5
-   },
-   {
-    "path": "/claude/ultra/",
-    "status": 504,
-    "n": 5
-   },
-   {
-    "path": "/ai-pricing/kling/",
-    "status": 504,
-    "n": 5
-   },
-   {
-    "path": "/chatgpt/go/",
-    "status": 504,
-    "n": 5
-   },
-   {
-    "path": "/chatgpt/pro-200/",
-    "status": 504,
-    "n": 5
-   },
-   {
-    "path": "/go/eneba-tr-600",
-    "status": 504,
-    "n": 5
-   },
-   {
-    "path": "/google-ai/",
-    "status": 504,
-    "n": 4
-   },
-   {
-    "path": "/ai-pricing/gemini/",
-    "status": 504,
-    "n": 4
-   },
-   {
-    "path": "/chatgpt/pro-100/",
-    "status": 504,
-    "n": 4
-   },
-   {
-    "path": "/google-ai/pro/",
-    "status": 504,
-    "n": 4
-   },
-   {
-    "path": "/guides/subscribe-with-gift-card/",
-    "status": 504,
-    "n": 3
-   },
-   {
-    "path": "/daily/2026-11-21/",
-    "status": 504,
-    "n": 3
-   },
-   {
-    "path": "/news/2026-11-23/",
-    "status": 504,
-    "n": 3
-   },
-   {
-    "path": "/chatgpt/pro-500/",
-    "status": 504,
-    "n": 3
-   },
-   {
-    "path": "/google-ai/ultra/",
-    "status": 504,
-    "n": 3
-   },
-   {
-    "path": "/ai-pricing/midjourney/",
-    "status": 504,
-    "n": 3
-   },
-   {
-    "path": "/perplexity/pro/",
-    "status": 504,
-    "n": 3
-   },
-   {
-    "path": "/perplexity/max/",
-    "status": 504,
-    "n": 3
-   },
-   {
-    "path": "/guides/apple-id-low-price-region/",
-    "status": 504,
-    "n": 3
+    "n": 1
    }
   ],
   "crawlers_24h": {
-   "Googlebot": 68,
+   "Googlebot": 69,
    "bingbot": 43,
    "YandexBot": 19,
    "DuckDuckBot": 18,
