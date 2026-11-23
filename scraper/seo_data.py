@@ -158,6 +158,12 @@ if CF:
             out["adaptive_error"] = str(ex)[:200]
         return out
 
+@section("site_search_gaps")
+def _s():
+    req = urllib.request.Request(SITE + "api/search-gaps", headers={"User-Agent": "Mozilla/5.0 (compatible; bbwith-seo-bot/1.0)"})
+    return json.load(urllib.request.urlopen(req, timeout=30))
+
+
 os.makedirs(OUT, exist_ok=True)
 for name in (f"{TODAY.isoformat()}.json", "latest.json"):
     json.dump(data, open(os.path.join(OUT, name), "w"), ensure_ascii=False, indent=1)

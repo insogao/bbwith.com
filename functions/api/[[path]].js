@@ -123,6 +123,14 @@ const routes = {
     return json({});
   },
 
+  // public, aggregated only: searches that found nothing, asked at least twice in 28 days (read by scraper/seo_data.py)
+  "GET search-gaps": async ({ DB }) => {
+    const since = new Date(Date.now() + 8 * 3600e3 - 27 * 86400e3).toISOString().slice(0, 10);
+    const r = await DB.prepare(`SELECT q, SUM(n) AS n, SUM(zero) AS zero FROM ev_search WHERE day >= ? GROUP BY q
+        HAVING SUM(zero) >= 2 AND LENGTH(q) <= 20 ORDER BY zero DESC LIMIT 50`).bind(since).all();
+    return json({ since, gaps: r.results }, 200, { "cache-control": "public, max-age=3600" });
+  },
+
   "GET admin/behaviour": async ({ DB, url }) => {
     const q = (s, ...a) => DB.prepare(s).bind(...a).all().then((r) => r.results);
     const days = Math.min(parseInt(url.searchParams.get("days"), 10) || 30, 90);
