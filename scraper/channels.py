@@ -41,6 +41,9 @@ SKIP = re.compile(r"资格|教程|自助退款|退款服务|pro退款|换绑邮�
                   r"youtube|netflix|spotify|kiro|windsurf|suno|perplexity|推特|蓝v|盲盒", re.I)
 ANNUAL = re.compile(r"年卡|一年|1年|12个月|十二个月|360天|365天|年费", re.I)
 SHORT_TERM = re.compile(r"周卡|周抛|(?<!\d)7天|七天|日抛|天卡|日卡", re.I)
+# Seller says in the title that delivery or after-sales is not covered. Such listings undercut honest ones,
+# so they are counted but left out of the price summary (see aggregate()).
+NO_GUARANTEE = re.compile(r"不包到账|不保到账|不保证到账|可能不到账|有概率不到账|秒封不保|封号不保|不包售后|无售后|不售后|概不售后|拍下不退|不退不换.{0,4}不售后", re.I)
 UPGRADE_NOTE = re.compile(r"(可|支持|自助)?(补差价?)?(升级|补差)[^，,｜|【】（）()\[\]]*")
 
 PRODUCT_RX = [
@@ -273,7 +276,7 @@ def fetch_all():
 
 def aggregate(items):
     """plans[product/plan][type] = {count, min, p25, median, sales[, routes]}; low outliers trimmed."""
-    groups = {}
+    groups, risky = {}, {}
     for g in items:
         if g.get("status", 1) != 1:
             continue
@@ -282,6 +285,10 @@ def aggregate(items):
         if not c or price <= 0:
             continue
         key = f'{c["product"]}/{c["plan"]}'
+        if NO_GUARANTEE.search(g.get("name", "")):
+            risky.setdefault(key, {}).setdefault(c["type"], 0)
+            risky[key][c["type"]] += 1
+            continue
         groups.setdefault(key, {}).setdefault(c["type"], []).append((price, c["route"], int(g.get("sales_count") or 0)))
 
     def summ(rows):
@@ -302,6 +309,7 @@ def aggregate(items):
                 for r in rows:
                     routes.setdefault(r[1], []).append(r)
                 d["routes"] = {k: summ(v) for k, v in routes.items()}
+            d["no_guarantee"] = risky.get(key, {}).get(typ, 0)
             out[key][typ] = d
     return out
 
