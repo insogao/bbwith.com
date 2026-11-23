@@ -1,0 +1,54 @@
+name: SEO API check
+
+# Manual check that the SEO credentials work. Prints counts only, never keys.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write   # lets GitHub mint the OIDC token Google trusts (no stored key)
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Google login (keyless)
+        id: gauth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: projects/166218651139/locations/global/workloadIdentityPools/github/providers/bbwith-repo
+          service_account: bbwith-seo-bot@bbwith-seo.iam.gserviceaccount.com
+          token_format: access_token
+          access_token_scopes: https://www.googleapis.com/auth/webmasters
+
+      - name: Search Console
+        env:
+          GTOKEN: ${{ steps.gauth.outputs.access_token }}
+        run: |
+          python3 - <<'EOF'
+          import json, os, urllib.request
+          h = {"Authorization": "Bearer " + os.environ["GTOKEN"]}
+          r = urllib.request.urlopen(urllib.request.Request("https://www.googleapis.com/webmasters/v3/sites", headers=h), timeout=30)
+          sites = json.load(r).get("siteEntry", [])
+          print("Search Console sites:", [(s["siteUrl"], s["permissionLevel"]) for s in sites])
+          site = urllib.request.quote("sc-domain:bbwith.com", safe="")
+          r = urllib.request.urlopen(urllib.request.Request(f"https://www.googleapis.com/webmasters/v3/sites/{site}/sitemaps", headers=h), timeout=30)
+          for s in json.load(r).get("sitemap", []):
+              print("sitemap:", s["path"], "last read", s.get("lastDownloaded"), "submitted", [c.get("submitted") for c in s.get("contents", [])])
+          EOF
+
+      - name: Bing Webmaster
+        env:
+          BING_API_KEY: ${{ secrets.BING_API_KEY }}
+        run: |
+          python3 - <<'EOF'
+          import json, os, urllib.request
+          k = os.environ.get("BING_API_KEY", "")
+          if not k:
+              raise SystemExit("BING_API_KEY is not set")
+          r = urllib.request.urlopen(f"https://ssl.bing.com/webmaster/api.svc/json/GetUserSites?apikey={k}", timeout=30)
+          sites = json.load(r).get("d", [])
+          print("Bing sites:", [(s.get("Url"), s.get("IsVerified")) for s in sites])
+          EOF
