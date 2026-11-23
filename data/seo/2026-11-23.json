@@ -1,0 +1,347 @@
+{
+ "date": "2026-11-23",
+ "errors": {
+  "google": "HTTP Error 403: Forbidden"
+ },
+ "bing": {
+  "GetRankAndTrafficStats": [
+   {
+    "__type": "RankAndTrafficStats:#Microsoft.Bing.Webmaster.Api",
+    "Clicks": 0,
+    "Date": "/Date(1795219200000)/",
+    "Impressions": 0
+   }
+  ],
+  "GetQueryStats": [],
+  "GetPageStats": [],
+  "GetCrawlIssues": [],
+  "GetCrawlStats": [],
+  "GetUrlSubmissionQuota": {
+   "__type": "UrlSubmissionQuota:#Microsoft.Bing.Webmaster.Api",
+   "DailyQuota": 100,
+   "MonthlyQuota": 800
+  }
+ },
+ "cloudflare": {
+  "daily": [
+   {
+    "date": "2026-11-17",
+    "requests": 3,
+    "pageViews": 0,
+    "uniques": 1,
+    "status": {
+     "403": 3
+    }
+   },
+   {
+    "date": "2026-11-21",
+    "requests": 2238,
+    "pageViews": 843,
+    "uniques": 355,
+    "status": {
+     "200": 1166,
+     "301": 465,
+     "302": 21,
+     "304": 5,
+     "308": 6,
+     "401": 1,
+     "403": 13,
+     "404": 514,
+     "405": 27,
+     "522": 20
+    }
+   },
+   {
+    "date": "2026-11-23",
+    "requests": 916,
+    "pageViews": 384,
+    "uniques": 363,
+    "status": {
+     "200": 616,
+     "301": 130,
+     "302": 94,
+     "304": 1,
+     "308": 12,
+     "403": 2,
+     "404": 60,
+     "405": 1
+    }
+   },
+   {
+    "date": "2026-11-22",
+    "requests": 2384,
+    "pageViews": 563,
+    "uniques": 445,
+    "status": {
+     "200": 870,
+     "301": 524,
+     "302": 26,
+     "304": 4,
+     "308": 9,
+     "403": 75,
+     "404": 867,
+     "405": 9
+    }
+   }
+  ],
+  "errors_24h": [
+   {
+    "path": "/deals/google-ai-black-friday-2026/",
+    "status": 504,
+    "n": 86
+   },
+   {
+    "path": "/",
+    "status": 504,
+    "n": 35
+   },
+   {
+    "path": "/go/youworld-us",
+    "status": 504,
+    "n": 25
+   },
+   {
+    "path": "/deals/",
+    "status": 504,
+    "n": 15
+   },
+   {
+    "path": "/gift-cards/",
+    "status": 504,
+    "n": 13
+   },
+   {
+    "path": "/news/2026-11-22/",
+    "status": 504,
+    "n": 12
+   },
+   {
+    "path": "/go/seagm-tr",
+    "status": 504,
+    "n": 9
+   },
+   {
+    "path": "/go/seagm-us",
+    "status": 504,
+    "n": 9
+   },
+   {
+    "path": "/channels/",
+    "status": 504,
+    "n": 9
+   },
+   {
+    "path": "/claude/max/",
+    "status": 504,
+    "n": 8
+   },
+   {
+    "path": "/merchant/join/",
+    "status": 504,
+    "n": 8
+   },
+   {
+    "path": "/go/bitrefill-us",
+    "status": 504,
+    "n": 8
+   },
+   {
+    "path": "/news/",
+    "status": 504,
+    "n": 8
+   },
+   {
+    "path": "/chatgpt/plus/",
+    "status": 504,
+    "n": 8
+   },
+   {
+    "path": "/go/eneba-tr-100",
+    "status": 504,
+    "n": 7
+   },
+   {
+    "path": "/go/eneba-tr-250",
+    "status": 504,
+    "n": 7
+   },
+   {
+    "path": "/guides/",
+    "status": 504,
+    "n": 7
+   },
+   {
+    "path": "/daily/2026-11-22/",
+    "status": 504,
+    "n": 7
+   },
+   {
+    "path": "/go/eneba-tr-400",
+    "status": 504,
+    "n": 7
+   },
+   {
+    "path": "/daily/",
+    "status": 504,
+    "n": 6
+   },
+   {
+    "path": "/go/bitrefill-tr",
+    "status": 504,
+    "n": 6
+   },
+   {
+    "path": "/ai-pricing/",
+    "status": 504,
+    "n": 6
+   },
+   {
+    "path": "/data/",
+    "status": 504,
+    "n": 6
+   },
+   {
+    "path": "/ai-pricing/kimi/",
+    "status": 504,
+    "n": 6
+   },
+   {
+    "path": "/claude/ultra/",
+    "status": 504,
+    "n": 5
+   },
+   {
+    "path": "/chatgpt/pro-200/",
+    "status": 504,
+    "n": 5
+   },
+   {
+    "path": "/x/premium-basic/",
+    "status": 504,
+    "n": 5
+   },
+   {
+    "path": "/x/premium/",
+    "status": 504,
+    "n": 5
+   },
+   {
+    "path": "/grok/supergrok/",
+    "status": 504,
+    "n": 5
+   },
+   {
+    "path": "/ai-pricing/manus/",
+    "status": 504,
+    "n": 5
+   },
+   {
+    "path": "/gift-cards/apple/us/",
+    "status": 504,
+    "n": 5
+   },
+   {
+    "path": "/go/eneba-tr-500",
+    "status": 504,
+    "n": 5
+   },
+   {
+    "path": "/go/eneba-tr-200",
+    "status": 504,
+    "n": 5
+   },
+   {
+    "path": "/go/eneba-tr-600",
+    "status": 504,
+    "n": 5
+   },
+   {
+    "path": "/chatgpt/go/",
+    "status": 504,
+    "n": 5
+   },
+   {
+    "path": "/ai-pricing/kling/",
+    "status": 504,
+    "n": 5
+   },
+   {
+    "path": "/claude/pro/",
+    "status": 504,
+    "n": 5
+   },
+   {
+    "path": "/google-ai/",
+    "status": 504,
+    "n": 4
+   },
+   {
+    "path": "/google-ai/pro/",
+    "status": 504,
+    "n": 4
+   },
+   {
+    "path": "/ai-pricing/gemini/",
+    "status": 504,
+    "n": 4
+   },
+   {
+    "path": "/chatgpt/pro-100/",
+    "status": 504,
+    "n": 4
+   },
+   {
+    "path": "/guides/subscribe-with-gift-card/",
+    "status": 504,
+    "n": 3
+   },
+   {
+    "path": "/perplexity/max/",
+    "status": 504,
+    "n": 3
+   },
+   {
+    "path": "/perplexity/pro/",
+    "status": 504,
+    "n": 3
+   },
+   {
+    "path": "/guides/apple-id-low-price-region/",
+    "status": 504,
+    "n": 3
+   },
+   {
+    "path": "/daily/2026-11-21/",
+    "status": 504,
+    "n": 3
+   },
+   {
+    "path": "/ai-pricing/midjourney/",
+    "status": 504,
+    "n": 3
+   },
+   {
+    "path": "/x/premium-plus/",
+    "status": 504,
+    "n": 3
+   },
+   {
+    "path": "/google-ai/ultra/",
+    "status": 504,
+    "n": 3
+   },
+   {
+    "path": "/ai-pricing/lovart/",
+    "status": 504,
+    "n": 3
+   }
+  ],
+  "crawlers_24h": {
+   "Googlebot": 65,
+   "bingbot": 43,
+   "YandexBot": 19,
+   "DuckDuckBot": 18,
+   "Claude-User": 17
+  }
+ }
+}
