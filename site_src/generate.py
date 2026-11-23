@@ -215,7 +215,7 @@ def page(title, description, path, body, ld=(), date=None, noindex=False, extra_
 </head>
 <body class="{'home' if path == '/' else ''}">
 <header class="top"><div class="wrap">
-<a class="brand" href="/"><span class="logo">比</span>比比价</a>
+<a class="brand" href="/"><span class="logo" aria-hidden="true">比</span>比比价</a>
 <nav class="main" data-sec="顶栏导航">{nav_main(path)}</nav>
 <div class="search" data-sec="顶栏搜索"><input type="search" class="qbox" placeholder="搜会员、地区、礼品卡…" autocomplete="off" aria-label="搜索"><div class="qres" hidden></div></div>
 {cur_select_header()}
@@ -414,6 +414,10 @@ def channel_block(product, plan, rows):
         rr = sorted(top["routes"].items(), key=lambda kv: kv[1]["median"])
         rrows = "".join(f'<tr><td>{e(ROUTE_LABELS.get(k, k))}</td><td>{v["count"]}</td><td data-v="{v["min"] / rate:.2f}">{money(v["min"] / rate)}</td>'
                         f'<td data-v="{v["median"] / rate:.2f}"><b>{money(v["median"] / rate)}</b></td></tr>' for k, v in rr if v["count"] >= 2)
+        singles = [v for k, v in rr if v["count"] < 2]
+        if rrows and singles:
+            lo_ = min(v["min"] for v in singles) / rate
+            rrows += (f'<tr><td>其他（各只有 1 条）</td><td>{len(singles)}</td><td data-v="{lo_:.2f}">{money(lo_)}</td><td>—</td></tr>')
         if rrows:
             route_html = (f'<h3>代充按充值渠道</h3><div class="tablewrap"><table class="prices sortable"><thead><tr><th>卖家注明的渠道</th><th>报价数</th>'
                           f'<th data-sort=num>最低</th><th data-sort=num>中位数</th></tr></thead><tbody>{rrows}</tbody></table></div>')
@@ -463,7 +467,7 @@ def build_channels_hub(cur):
 <div class="tablewrap"><table class="prices sortable"><thead><tr><th>会员档位</th>{''.join(f'<th data-sort=num>{e(n)}</th>' for _, n in cols)}{"<th>入驻商家</th>" if merch else ""}</tr></thead><tbody>{trs}</tbody></table></div>
 {channel_note()}
 <h2>怎么选</h2><ul class="list">
-<li><b>代充</b>：充到你自己的账号，账号安全性最高，价格通常比美区 App Store 便宜。</li>
+<li><b>代充</b>：充到你自己的账号，账号安全性最高。价格不一定更便宜：ChatGPT 多数档位比美区 App Store 低，Claude 的代充往往比官网网页订阅还贵，以上表为准。</li>
 <li><b>成品号</b>：卖家给你一个已开通会员的账号，最省事，但账号不在你名下，注意质保天数。</li>
 <li><b>拼车 / 共享</b>：多人共用一个账号或镜像站，最便宜，但隐私和稳定性最差。</li>
 </ul>
@@ -619,6 +623,24 @@ def official_of(product, plan):
     return OFFICIAL.get(f"{product}/{plan}")
 
 
+def paid_row(rows, off):
+    """Cheapest region where a gift card can actually be bought: list price x card cost."""
+    best = None
+    for r in rows:
+        rr = gift_shop_rates(r["cc"], FX_ALL)
+        if rr:
+            v = r["local"] * min(rr)
+            if best is None or v < best[0]:
+                best = (v, r)
+    if not best:
+        return ""
+    v, r = best
+    d = v / off["usd"] - 1
+    cls = "down" if d < -0.005 else ("up" if d > 0.005 else "")
+    return (f'<tr><td>用礼品卡实付最低：{flag(r["cc"])} {e(cname(r["cc"]))}<br><small>标价 {money(r["usd"])} × 买卡成本 {v / r["usd"] * 100:.0f}%</small></td>'
+            f'<td><b>{money(v)}</b></td><td class="{cls}">{pct(d)}</td></tr>')
+
+
 def channel_compare(product, plan, rows):
     """Official site vs US App Store vs cheapest App Store region, so the 'vs US' numbers are not misread."""
     off = official_of(product, plan)
@@ -632,7 +654,8 @@ def channel_compare(product, plan, rows):
     return f"""<div class="tablewrap"><table class="prices"><thead><tr><th>渠道</th><th>月付价格</th><th>比官网</th></tr></thead><tbody>
 <tr><td>官网订阅（网页，美国价，不含税）</td><td><b>{money(off['usd'])}</b></td><td>—</td></tr>
 <tr><td>美区 App Store（iOS 内购）</td><td><b>{money(us['usd'])}</b></td><td class="{cls(gap)}">{pct(gap)}</td></tr>
-<tr><td>App Store 最便宜地区：{flag(lo['cc'])} {e(cname(lo['cc']))}</td><td><b>{money(lo['usd'])}</b></td><td class="{cls(lo_vs_off)}">{pct(lo_vs_off)}</td></tr>
+<tr><td>App Store 标价最低：{flag(lo['cc'])} {e(cname(lo['cc']))}{"" if gift_shop_rates(lo["cc"], FX_ALL) else '<br><small>这个地区暂无能充 App Store 的礼品卡</small>'}</td><td><b>{money(lo['usd'])}</b></td><td class="{cls(lo_vs_off)}">{pct(lo_vs_off)}</td></tr>
+{paid_row(rows, off)}
 </tbody></table></div>
 <p class="hint" id="official"><b>官网价要加税吗？</b>要看账单地址。官网标价是美国价、不含税：美国按州加销售税，欧盟、英国、日本等地加增值税或消费税，金额在结账页显示。用国内发行的 Visa / 万事达付美元，银行通常还收约 1%–1.5% 的货币转换费（各行规定不同），而且国内卡在官网经常被拒付。App Store 价格在多数地区已含增值税，美区 App Store 标价同样不含州销售税。</p>
 <p class="hint">本页其他地方的「比美区」都是和美区 App Store 价比较。{f"美区 App Store 比官网贵 {pct(gap)[1:]}，这是苹果渠道的加价。" if gap > 0.005 else ""}官网价 {zh_date(off['checked'])} 核实（<a href="{e(off['source'])}" rel="nofollow noopener" target="_blank">来源</a>）。</p>"""
@@ -642,6 +665,12 @@ def channel_compare(product, plan, rows):
 PLAN_NOTES = {
     ("chatgpt", "pro-200"): ("OpenAI 自 2026 年 9 月 10 日起暂停新订阅和升级到 Pro $200（20x），已订阅的用户不受影响；Pro $100（5x）照常开放。",
                              "https://help.openai.com/en/articles/9793128", "2026-11-22"),
+    ("cursor", "pro"): ("Cursor 官网自 2026 年 10 月起改由 X Subscription 销售，档位和 Grok 相同（Plus $8、Premium $30、Super $100、Ultra $200）。App Store 里的 Pro / Pro+ / Ultra 是原来的档位，两边名字和用量不能直接对应。",
+                        "https://cursor.com/pricing", "2026-11-23"),
+    ("cursor", "pro-plus"): ("Cursor 官网自 2026 年 10 月起改由 X Subscription 销售，档位和 Grok 相同；App Store 里的 Pro+ 是原来的档位。",
+                             "https://cursor.com/pricing", "2026-11-23"),
+    ("cursor", "ultra"): ("Cursor 官网自 2026 年 10 月起改由 X Subscription 销售，档位和 Grok 相同；App Store 里的 Ultra 是原来的档位。",
+                          "https://cursor.com/pricing", "2026-11-23"),
     ("chatgpt", "pro-100"): ("Pro $100 的用量是 Plus 的 5 倍，Pro $200 是 20 倍，两档功能相同。",
                              "https://help.openai.com/en/articles/9793128", "2026-11-22"),
 }
@@ -651,7 +680,8 @@ def plan_note(product, plan):
     n = PLAN_NOTES.get((product, plan))
     if not n:
         return ""
-    return f'<p class="note">{e(n[0])}（<a href="{e(n[1])}" rel="nofollow noopener" target="_blank">OpenAI 帮助中心</a>，{zh_date(n[2])}核实）</p>'
+    src = {"help.openai.com": "OpenAI 帮助中心", "cursor.com": "Cursor 官网价格页"}.get(urllib.parse.urlparse(n[1]).netloc, "来源")
+    return f'<p class="note">{e(n[0])}（<a href="{e(n[1])}" rel="nofollow noopener" target="_blank">{src}</a>，{zh_date(n[2])}核实）</p>'
 
 
 def changes(cur, prev):
@@ -848,7 +878,8 @@ def overview_table(day, cur):
                 return f'<td data-label="{label}" data-v="{v:.2f}" class="{"best" if k == best else ""} t3"><a href="{href}"{ext}>{more}</a></td>'
             return (f'<td data-label="{label}" data-v="{v:.2f}" class="{"best" if k == best else ""}"><a href="{href}"{ext}><b>{m}</b>'
                     f'{f"<small>{sub}</small>" if sub else ""}</a></td>')
-        trs += (f'<tr data-prod="{p}"><td><a href="{url_plan(p, pl)}"><b>{e(full_name(p, pl))}</b></a></td>'
+        paused = '<br><span class="rk" title="OpenAI 自 2026-09-10 起暂停新订阅">暂停新订阅</span>' if (p, pl) == ("chatgpt", "pro-200") else ""
+        trs += (f'<tr data-prod="{p}"><td><a href="{url_plan(p, pl)}"><b>{e(full_name(p, pl))}</b></a>{paused}</td>'
                 + td("off", "官网") + td("app", "App Store 低价区 Top3") + td("topup", "代充（中位）") + td("acct", "成品号（中位）") + "</tr>")
     return (f'<div class="tablewrap" data-sec="首页比价表"><table class="prices overview sortable"><thead><tr><th>会员</th><th data-sort=num>官网</th>'
             f'<th data-sort=num>App Store 低价区 Top3<small class="th-sub">实付 = 标价 × 礼品卡成本</small></th><th data-sort=num>代充（中位）</th><th data-sort=num>成品号（中位）</th></tr></thead>'
@@ -1263,6 +1294,11 @@ def auto_promos():
             # keep only offers with something concrete in them (a number, 免费, 折, off); drops teasers like "Black Friday is almost here"
             if not re.search(r"\d|免费|折|半价|off|free", (x.get("title") or "") + (x.get("detail") or ""), re.I):
                 continue
+            # the same sale already written up as a checked deal: list it once
+            bf = re.compile(r"black\s*friday|黑五|黑色星期五|cyber\s*monday", re.I)
+            if bf.search(x.get("title") or "") and any(d["active"] and d["product"] == PRICING_PROD.get(p["id"]) and bf.search(d["title"] + d.get("summary", ""))
+                                                      for d in DEALS):
+                continue
             out.append((p, x))
     return out
 
@@ -1298,6 +1334,11 @@ def build_pricing(day):
     rows = ""
     for pid, p in sorted(PRICING["products"].items(), key=lambda kv: kv[1]["name"]):
         plans = p.get("plans") or []
+        fallback = False
+        if not plans and pid in PRODUCTS:
+            plans = [{"name": plan_label(pid, k.split("/")[1]), "period": "month", "price": v["usd"], "currency": "USD",
+                      "note": f"本站 {v['checked']} 人工核实"} for k, v in OFFICIAL.items() if k.startswith(pid + "/")]
+            fallback = bool(plans)
         monthly = {(x.get("name"), x.get("currency")): x["price"] for x in plans if x.get("period") == "month"}
         # a "yearly" price equal to the monthly one is a misread monthly-equivalent; drop it
         plans = [x for x in plans if not (x.get("period") == "year" and monthly.get((x.get("name"), x.get("currency"))) == x["price"])]
@@ -1310,7 +1351,8 @@ def build_pricing(day):
         promos = "".join(f'<li><b>{e(x["title"])}</b>{("：" + e(x["detail"])) if x.get("detail") else ""}'
                          f'<br><small>{e(x.get("audience") or "")}{" · 截止 " + e(x["ends"]) if x.get("ends") else ""}</small></li>'
                          for x in p.get("promos") or [])
-        status = "" if p.get("status") == "ok" else f'<p class="note">最近一次（{e(p.get("checked", ""))}）未能读取：{e(p.get("status", ""))}。下面是之前读到的价格。</p>'
+        status = "" if p.get("status") == "ok" else (f'<p class="note">官网价格页最近一次（{e(p.get("checked", ""))}）没能自动读取，下面是本站人工核实过的价格。</p>' if fallback
+                  else f'<p class="note">最近一次（{e(p.get("checked", ""))}）未能读取：{e(p.get("status", ""))}。下面是之前读到的价格。</p>')
         cheapest = min((plan_price(x)[1] for x in plans if x.get("period") == "month" and (plan_price(x)[1] or 0) > 0), default=None)
         lead = (f"{p['name']} 官网目前列出 {len(plans)} 个付费方案"
                 + (f"，月付最低约 {usd(cheapest)}" if cheapest else "") + "。"
@@ -1326,8 +1368,9 @@ def build_pricing(day):
 <p class="note">价格由 AI 从官网页面文字中识别，可能有误或因地区、登录状态而不同，请以官网结账页为准。官网价格多为美国或默认地区价格，不含税。</p>
 <p class="src"><a href="/ai-pricing/">全部 AI 官方价格</a> · <a href="/deals/">AI 会员优惠</a></p>"""
         write(path, page(f"{p['name']} 会员多少钱？官网价格和优惠（{zh_date(day['date'])}）· 比比价",
-                         lead[:150], path, body, [cr_ld], day["date"]))
-        urls.append(path)
+                         lead[:150], path, body, [cr_ld], day["date"], noindex=not plans))
+        if plans:  # a page with no prices at all stays out of the sitemap
+            urls.append(path)
         rows += (f'<tr><td><a href="{path}">{e(p["name"])}</a></td><td data-v="{cheapest or 0:.2f}">{money(cheapest) if cheapest else "—"}</td>'
                  f'<td>{len(plans)}</td><td>{"🔥 " + e(p["promos"][0]["title"]) if p.get("promos") else ""}</td></tr>')
     cr_html, cr_ld = crumbs([("首页", "/"), ("AI 官方价格", "/ai-pricing/")])
@@ -1795,7 +1838,7 @@ def pay_table(shops):
 
 
 CN_CARD_TIPS = """<h2>用国内信用卡买礼品卡，要注意什么</h2><ul class="list">
-<li><b>能用支付宝就用支付宝</b>：国内发行的 Visa / 万事达卡在海外礼品卡网站上经常被风控拒付，有时同一张卡第一次成功、第二次就失败。SEAGM 和由我付可以直接用支付宝付人民币，最省心。</li>
+<li><b>能用支付宝就用支付宝</b>：国内发行的 Visa / 万事达卡在海外礼品卡网站上经常被风控拒付，有时同一张卡第一次成功、第二次就失败。SEAGM 可以直接用支付宝付人民币，最省心；由我付也能用支付宝，但只卖美区卡。</li>
 <li><b>3D 验证容易失败</b>：付款时银行会发短信验证码（3D Secure）。网友经验不一：有人关掉代理才通过，有人要换到卡片所在地区的网络。失败时先换个网络环境再试，不要短时间内反复刷同一张卡。</li>
 <li><b>账单地址照实填</b>：账单地址和发卡行登记的不一致，是外币卡被拒的常见原因之一。</li>
 <li><b>银联单标卡基本用不了</b>，需要 Visa 或万事达的双币卡或单标卡；各家银行的风控规则不同，被拒时换一家银行的卡可能就行。</li>
@@ -2031,6 +2074,7 @@ def main():
     OFFICIAL.update(load_official())
     GUIDES.extend(load_guides())
     DEALS.extend(load_deals(dt.datetime.now(dt.timezone(dt.timedelta(hours=8))).date().isoformat()))
+    FX_ALL.update(day["fx"])  # local units per USD, the same rates the home table uses for gift card costs
     for p, pl, _, _ in PLANS:
         if (p, pl) in cur:
             build_plan_page(p, pl, cur[(p, pl)], prev.get((p, pl)) if prev else None, day, cur)
