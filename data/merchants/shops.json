@@ -1,5 +1,5 @@
 {
- "time": "2026-11-23T06:21+00:00",
+ "time": "2026-11-23T10:20+00:00",
  "source": "16688 公开商品页接口",
  "items": [
   {
@@ -7,9 +7,7 @@
    "plan": "chatgpt/plus",
    "type": "topup",
    "ok": false,
-   "missing": 1,
-   "why": "商品暂时读不到，等下一轮确认",
-   "gone_since": "2026-11-23T06:21+00:00",
+   "why": "连续读取失败：商品已售罄",
    "shop": "",
    "title": ""
   },
@@ -44,7 +42,9 @@
    "url": "https://www.16688.com.cn/goods/G76222918",
    "checked": "2026-11-23T06:21+00:00",
    "missing": 0,
-   "since": null
+   "since": null,
+   "stale": true,
+   "why": "本轮读取失败，显示 2026-11-23T06:21 的数据"
   },
   {
    "goods_no": "G42288503",
@@ -57,11 +57,11 @@
    "title": "【官方正价充值】菲区plus/质保订阅30天/售后稳定/充值自己号码",
    "price": 106,
    "total": 108.97,
-   "stock": 132,
+   "stock": 66,
    "manual": false,
    "in_stock": true,
-   "sales": "2968人付款",
-   "shop_sales": "2574人付款",
+   "sales": "3034人付款",
+   "shop_sales": "2612人付款",
    "months": 1,
    "deposit": 200,
    "region": "中国陕西",
@@ -74,7 +74,7 @@
     "会员到期后才能充"
    ],
    "url": "https://www.16688.com.cn/goods/G42288503",
-   "checked": "2026-11-23T06:21+00:00",
+   "checked": "2026-11-23T10:20+00:00",
    "missing": 0,
    "since": null
   },
@@ -89,11 +89,11 @@
    "title": "💥💥💥【官网直充】GT-P Plus 1个月会员充自己号（1号1卡1付）同步官方售后 24小时全自动充值",
    "price": 105.9,
    "total": 108.87,
-   "stock": 54,
+   "stock": 139,
    "manual": false,
    "in_stock": true,
-   "sales": "8183人付款",
-   "shop_sales": "7652人付款",
+   "sales": "8508人付款",
+   "shop_sales": "7970人付款",
    "months": 1,
    "deposit": 0,
    "region": "中国湖南",
@@ -104,7 +104,7 @@
    "warranty": "售后同步官方",
    "risks": [],
    "url": "https://www.16688.com.cn/goods/G92285725",
-   "checked": "2026-11-23T06:21+00:00",
+   "checked": "2026-11-23T10:20+00:00",
    "missing": 0,
    "since": null
   },
@@ -122,8 +122,8 @@
    "stock": null,
    "manual": true,
    "in_stock": true,
-   "sales": "1人付款",
-   "shop_sales": "2883人付款",
+   "sales": "2人付款",
+   "shop_sales": "2888人付款",
    "months": 1,
    "deposit": 1,
    "region": "中国新疆",
@@ -134,7 +134,7 @@
    "warranty": "质保 30 天",
    "risks": [],
    "url": "https://www.16688.com.cn/goods/G99064927",
-   "checked": "2026-11-23T06:21+00:00",
+   "checked": "2026-11-23T10:20+00:00",
    "missing": 0,
    "since": null
   },
@@ -153,7 +153,7 @@
    "manual": true,
    "in_stock": true,
    "sales": "",
-   "shop_sales": "107人付款",
+   "shop_sales": "108人付款",
    "months": 1,
    "deposit": 0,
    "region": "印度尼西亚Jakarta",
@@ -166,7 +166,7 @@
     "封号不赔"
    ],
    "url": "https://www.16688.com.cn/goods/G75173659",
-   "checked": "2026-11-23T06:21+00:00",
+   "checked": "2026-11-23T10:20+00:00",
    "missing": 0,
    "since": null
   },
@@ -175,8 +175,8 @@
    "plan": "claude/pro",
    "type": "topup",
    "ok": false,
-   "missing": 1,
-   "why": "商品暂时读不到，等下一轮确认",
+   "missing": 2,
+   "why": "商品已下架",
    "gone_since": "2026-11-23T06:21+00:00",
    "shop": "",
    "title": ""
@@ -211,7 +211,9 @@
    "url": "https://www.16688.com.cn/goods/G31983591",
    "checked": "2026-11-23T06:21+00:00",
    "missing": 0,
-   "since": null
+   "since": null,
+   "stale": true,
+   "why": "本轮读取失败，显示 2026-11-23T06:21 的数据"
   },
   {
    "goods_no": "G52145908",
@@ -242,7 +244,7 @@
     "封号不赔"
    ],
    "url": "https://www.16688.com.cn/goods/G52145908",
-   "checked": "2026-11-23T06:21+00:00",
+   "checked": "2026-11-23T10:20+00:00",
    "missing": 0,
    "since": null
   },
@@ -279,7 +281,7 @@
     "会员到期后才能充"
    ],
    "url": "https://www.16688.com.cn/goods/G33385423",
-   "checked": "2026-11-23T06:21+00:00",
+   "checked": "2026-11-23T10:20+00:00",
    "missing": 0,
    "since": null
   },
@@ -315,7 +317,7 @@
     "掉订阅不负责"
    ],
    "url": "https://www.16688.com.cn/goods/G41662442",
-   "checked": "2026-11-23T06:21+00:00",
+   "checked": "2026-11-23T10:20+00:00",
    "missing": 0,
    "since": null
   },
@@ -349,7 +351,7 @@
     "新注册账号不建议充"
    ],
    "url": "https://www.16688.com.cn/goods/G53770261",
-   "checked": "2026-11-23T06:21+00:00",
+   "checked": "2026-11-23T10:20+00:00",
    "missing": 0,
    "since": null
   }
