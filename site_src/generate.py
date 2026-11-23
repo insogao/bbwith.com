@@ -246,17 +246,38 @@ def prod_of_url(u):
 
 
 def cur_suffix(r):
-    return "" if r["currency"] in r["display"] else f" <small>{r['currency']}</small>"
+    return ""
+
+
+def ldisp(r):
+    """Local list price in one consistent format: '1,999,000 IDR', '99.90 BRL', '124.99 USD'.
+    Apple's own strings ('Rp 1,999juta', '$ 599.900,00') read wrongly to most people."""
+    v = r["local"]
+    txt = f"{v:,.0f}" if (abs(v - round(v)) < 1e-9 or v >= 10000) else f"{v:,.2f}"
+    return f"{txt} {r['currency']}"
 
 
 def price_table(rows, prev=None, limit=None, cls="", fold=None):
-    if prev is not None and not any(p is None or p["currency"] != r["currency"] or abs(p["local"] - r["local"]) > 1e-9
+    if prev is not None and not any(p is not None and p["currency"] == r["currency"] and abs(p["local"] - r["local"]) > 1e-9
                                     for r in rows for p in [prev.get(r["cc"])]):
         prev = None  # nothing changed today: drop the empty column
-    head = "<tr><th>#</th><th>地区</th><th data-sort=num>折合（<span class=mh>CNY</span>）</th><th>本地标价</th><th data-sort=num>比美区</th>" + \
+    head = "<tr><th>#</th><th>地区</th><th data-sort=num>折合（<span class=mh>USD</span>）</th><th>本地标价</th><th data-sort=num>比美区</th>" + \
            ("<th data-sort=num>较前一日</th>" if prev is not None else "") + "</tr>"
     body = []
-    for i, r in enumerate(rows[:limit] if limit else rows, 1):
+    usr = next((r for r in rows if r["cc"] == "us"), None)
+    # many small storefronts bill in USD at exactly the US price; show them as one line, not dozens of identical rows
+    same_us = [r for r in rows if usr and r["cc"] != "us" and r["currency"] == "USD" and abs(r["local"] - usr["local"]) < 1e-9] if fold else []
+    same_cc = {r["cc"] for r in same_us}
+    i = 0
+    for r in (rows[:limit] if limit else rows):
+        if r["cc"] in same_cc:
+            if r is same_us[0]:
+                names = "、".join(cname(x["cc"]) for x in same_us)
+                cols = 6 if prev is not None else 5
+                body.append(f'<tr class="sameus"><td></td><td colspan="{cols - 1}">🌐 另有 <b>{len(same_us)}</b> 个地区用美元标价，与美区同价 {ldisp(usr)}'
+                            f'<details><summary>看是哪些地区</summary><small>{e(names)}</small></details></td></tr>')
+            continue
+        i += 1
         chg = ""
         if prev is not None:
             p = prev.get(r["cc"])
@@ -270,11 +291,11 @@ def price_table(rows, prev=None, limit=None, cls="", fold=None):
         us = ' class="us"' if r["cc"] == "us" else ""
         vs = r["vs_us"]
         body.append(f'<tr{us}><td>{i}</td><td>{flag(r["cc"])} {e(cname(r["cc"]))}</td><td data-v="{r["usd"]:.4f}"><b>{money(r["usd"])}</b></td>'
-                    f'<td>{e(r["display"])}{cur_suffix(r)}</td>'
+                    f'<td>{e(ldisp(r))}</td>'
                     f'<td data-v="{vs if vs is not None else 0:.4f}" class="{"down" if (vs or 0) < -0.005 else ("up" if (vs or 0) > 0.005 else "")}">{pct(vs)}</td>{chg}</tr>')
     if fold and len(body) > fold + 5:
         n_more = len(body) - fold
-        same = sum(1 for r in rows[fold:] if r["vs_us"] is not None and abs(r["vs_us"]) < 0.005)
+        same = 0
         hint = f"展开其余 {n_more} 个地区" + (f"（其中 {same} 个与美区同价）" if same else "")
         cols = 6 if prev is not None else 5
         return (f'<div class="tablewrap"><table class="prices sortable {cls}"><thead>{head}</thead><tbody>{"".join(body[:fold])}</tbody>'
@@ -289,9 +310,9 @@ def summary_sentence(product, plan, rows, day):
     lo, hi = rows[0], rows[-1]
     med = statistics.median(r["usd"] for r in rows)
     s = (f"截至{zh_date(day['date'])}，{name} 在 {len(rows)} 个 App Store 地区可以查到月付标价。"
-         f"最便宜的是{cname(lo['cc'])}（{lo['display']}，约 {usd(lo['usd'])}"
+         f"最便宜的是{cname(lo['cc'])}（{ldisp(lo)}，约 {usd(lo['usd'])}"
          + (f"，比美区{'低' if lo['vs_us'] < 0 else '高'} {abs(lo['vs_us']) * 100:.0f}%" if lo["vs_us"] is not None and abs(lo["vs_us"]) >= 0.005 else "") + "），"
-         f"最贵的是{cname(hi['cc'])}（{hi['display']}，约 {usd(hi['usd'])}）")
+         f"最贵的是{cname(hi['cc'])}（{ldisp(hi)}，约 {usd(hi['usd'])}）")
     if us:
         s += f"；美区标价 {us['display']}"
     s += f"；所有地区的中位数约 {usd(med)}。价格均按当日汇率折算成美元（右上角可切换币种）。"
@@ -459,7 +480,7 @@ def build_plan_page(product, plan, rows, prev_rows, day, all_plans):
     us = next((r for r in rows if r["cc"] == "us"), None)
     lo = rows[0]
     title = f"{name} 哪个地区最便宜？{len(rows)} 个 App Store 地区价格对比（{zh_date(date)}）"
-    desc = (f"{name} 今日最低：{cname(lo['cc'])} {lo['display']}，约 {usd(lo['usd'])}。"
+    desc = (f"{name} 今日最低：{cname(lo['cc'])} {ldisp(lo)}，约 {usd(lo['usd'])}。"
             f"统一折算成美元，对比 {len(rows)} 个 App Store 地区的月付标价，每日更新。")
     cr_html, cr_ld = crumbs([("首页", "/"), (PRODUCTS[product]["name"], f"/{product}/"), (plan_label(product, plan), path)])
     prev_map = {r["cc"]: r for r in prev_rows} if prev_rows is not None else None
@@ -594,7 +615,7 @@ def channel_compare(product, plan, rows):
 <tr><td>美区 App Store（iOS 内购）</td><td><b>{money(us['usd'])}</b></td><td class="{cls(gap)}">{pct(gap)}</td></tr>
 <tr><td>App Store 最便宜地区：{flag(lo['cc'])} {e(cname(lo['cc']))}</td><td><b>{money(lo['usd'])}</b></td><td class="{cls(lo_vs_off)}">{pct(lo_vs_off)}</td></tr>
 </tbody></table></div>
-<p class="hint" id="official"><b>官网价要加税吗？</b>要看账单地址。官网标价是美国价、不含税：美国按州加销售税，欧盟、英国、日本等地加增值税或消费税，金额在结账页显示（OpenAI 帮助中心有专门的税号、VAT 和销售税豁免说明）。用国内发行的 Visa / 万事达付美元，银行通常还收约 1%–1.5% 的货币转换费（各行规定不同），而且国内卡在官网经常被拒付。App Store 价格在多数地区已含增值税，美区 App Store 标价同样不含州销售税。</p>
+<p class="hint" id="official"><b>官网价要加税吗？</b>要看账单地址。官网标价是美国价、不含税：美国按州加销售税，欧盟、英国、日本等地加增值税或消费税，金额在结账页显示。用国内发行的 Visa / 万事达付美元，银行通常还收约 1%–1.5% 的货币转换费（各行规定不同），而且国内卡在官网经常被拒付。App Store 价格在多数地区已含增值税，美区 App Store 标价同样不含州销售税。</p>
 <p class="hint">本页其他地方的「比美区」都是和美区 App Store 价比较。{f"美区 App Store 比官网贵 {pct(gap)[1:]}，这是苹果渠道的加价。" if gap > 0.005 else ""}官网价 {zh_date(off['checked'])} 核实（<a href="{e(off['source'])}" rel="nofollow noopener" target="_blank">来源</a>）。</p>"""
 
 
@@ -710,7 +731,7 @@ def build_daily(day, cur, prev_day, prev):
     elif not chg:
         chg_html = f"<p>与{zh_date(prev_day['date'])}相比，所有地区、所有档位的本地标价都没有变化（折算价会随汇率小幅波动）。</p>"
     else:
-        items = "".join(f"<li>{e(full_name(*k))} · {flag(r['cc'])} {e(cname(r['cc']))}：{e(p['display'])} → {e(r['display'])}"
+        items = "".join(f"<li>{e(full_name(*k))} · {flag(r['cc'])} {e(cname(r['cc']))}：{e(ldisp(p))} → {e(ldisp(r))}"
                         f"（<span class=\"{'down' if d < 0 else 'up'}\">{d * 100:+.1f}%</span>，现约 {usd(r['usd'])}）</li>"
                         for k, r, p, d in chg[:50])
         chg_html = f"<p>与{zh_date(prev_day['date'])}相比，共有 {len(chg)} 处本地标价变动：</p><ul>{items}</ul>"
@@ -816,7 +837,8 @@ def overview_table(day, cur):
             '<p class="hint"><b>App Store</b>：实际要花的钱 = 当地标价 × 买当地礼品卡的成本（按最便宜的平台算，例如 103% 表示买卡多花 3%），'
             '各平台报价和付款方式见<a href="/gift-cards/">礼品卡</a>。'
             '<b>官网</b>：网页用外币信用卡订阅的美国标价，结账时另加税。'
-            '<b>代充 / 成品号</b>：国内渠道报价的中位数，逐条报价见<a href="/channels/">代充 · 成品号</a>；成品号是卖家开好会员的账号，不在你名下。</p>')
+            '<b>代充 / 成品号</b>：国内渠道报价的中位数，逐条报价见<a href="/channels/">代充 · 成品号</a>；成品号是卖家开好会员的账号，不在你名下。'
+            '<b>—</b> 表示这个渠道没有这一档，或本站暂时没有报价。</p>')
 
 
 def build_home(day, cur, chg, prev):
@@ -942,7 +964,7 @@ def build_meta(days, cur, gift_urls=()):
         lo = rows[0]
         us = next((r for r in rows if r["cc"] == "us"), None)
         lines.append(f"- [{full_name(p, pl)}]({SITE}{url_plan(p, pl)})" + (f"（美区 {us['display']}）" if us else "")
-                     + "：" + "；".join(f"{i}. {COUNTRIES.get(r['cc'], {}).get('zh')}（{r['cc'].upper()}）{r['display']} ≈ ${r['usd']:.2f}，{pct(r['vs_us'])}" for i, r in enumerate(rows[:3], 1)))
+                     + "：" + "；".join(f"{i}. {COUNTRIES.get(r['cc'], {}).get('zh')}（{r['cc'].upper()}）{ldisp(r)} ≈ ${r['usd']:.2f}，{pct(r['vs_us'])}" for i, r in enumerate(rows[:3], 1)))
     act = [d for d in DEALS if d["active"]]
     if act:
         lines += ["", "## 进行中的优惠（已核实）", ""] + [f"- [{d['title']}]({SITE}{deal_url(d)})：{d['discount']}，{deal_period(d)}；{d['eligibility']}" for d in act]

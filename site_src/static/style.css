@@ -352,3 +352,9 @@ table.overview ol.top3 li{padding:3px 0}
 .fr.late{--h:30;filter:grayscale(.6)}
 @media (max-width:640px){.fresh{gap:4px 14px;font-size:12px}.fr .ago{display:none}}
 @media (prefers-color-scheme:dark){.ring .trk{stroke:#2e312f}}
+tr.sameus td{background:#f6f4ef;color:var(--muted);font-size:14px}
+tr.sameus details{display:inline-block;margin-left:10px}
+tr.sameus summary{cursor:pointer;color:var(--accent,#0d6b5e);font-size:13px}
+tr.sameus details[open]{display:block;margin:6px 0 0}
+@media (max-width:640px){table.prices tr.sameus td:first-child{display:none}table.prices tr.sameus td::before{content:none !important}}
+@media (max-width:640px){table.prices tr.sameus td{display:block !important;text-align:left;background:transparent}table.prices tr.sameus{padding:10px 12px}}
