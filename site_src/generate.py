@@ -4,6 +4,7 @@ Pure standard library, so it runs in the Cloudflare Pages build image as is:
   python3 site_src/generate.py   ->  dist/
 """
 import re
+import urllib.parse
 import csv
 import datetime as dt
 import glob
@@ -171,8 +172,8 @@ def nav_main(path):
     return "".join(f'<a href="{u}"{" class=on" if on(pre) else ""}>{n}{badge(u)}</a>' for u, n, pre in NAV_MAIN)
 
 
-def page(title, description, path, body, ld=(), date=None, noindex=False, extra_js=""):
-    canonical = SITE + path
+def page(title, description, path, body, ld=(), date=None, noindex=False, extra_js="", canonical_path=None):
+    canonical = SITE + (canonical_path or path)
     lds = "\n".join(jsonld(x) for x in ld)
     return f"""<!doctype html>
 <html lang="zh-CN">
@@ -1492,6 +1493,16 @@ def brief_price_line(product, cur):
             + "、".join(f"{e(cname(r['cc']))} {money(r['usd'])}" for r in rows[:2]))
 
 
+def src_name(l):
+    """Name the publisher, not the aggregator we found it through."""
+    n, u, t = l.get("name", ""), l.get("url", ""), l.get("title", "")
+    if n == "Hacker News":
+        return re.sub(r"^www\.", "", urllib.parse.urlparse(u).netloc) or n
+    if n == "Google News" and " - " in t:
+        return t.rsplit(" - ", 1)[1].strip()[:30]
+    return n
+
+
 def build_news(cur):
     if not BRIEFS:
         write("/news/", page("AI 早报 · 比比价", "每天整理 AI 新模型、社区口碑和会员价格变化。", "/news/",
@@ -1502,12 +1513,13 @@ def build_news(cur):
         path = f"/news/{b['date']}/"
         arts = []
         for n, x in enumerate(b["items"], 1):
-            links = " · ".join(f'<a href="{e(l["url"])}" rel="nofollow noopener" target="_blank">{e(l["name"])}</a>' for l in x["links"][:5])
+            links = " · ".join(f'<a href="{e(l["url"])}" rel="nofollow noopener" target="_blank" title="{e(l.get("title", ""))}">{e(src_name(l))}</a>' for l in x["links"][:5])
+            rel = "".join(f'<a href="/{pk}/">{e(PRODUCTS[pk]["name"])} 各渠道价格 →</a>' for pk in x.get("products", []) if pk in PRODUCTS)
             prices = "".join(f'<li>本站已核实：<a href="{deal_url(d)}">{e(d["title"])}</a></li>' for d in DEALS
                               if d["active"] and d["product"] in x["products"] and x["kind"] == "pricing")
             arts.append(f"""<article class="brief"><p class="kicker" aria-hidden="true">{KIND_LABEL[x['kind']]}</p><h2>{e(x['title'])}</h2>
 <p>{e(x['summary'])}</p>{f'<p class="take"><b>社区怎么看：</b>{e(x["take"])}</p>' if x['take'] else ''}
-{f'<ul class="list small">{prices}</ul>' if prices else ''}<p class="src">来源：{links} <span class="vote" data-target="brief:{b['date']}:{n}"></span></p></article>""")
+{f'<ul class="list small">{prices}</ul>' if prices else ''}<p class="src">来源：{links} <span class="vote" data-target="brief:{b['date']}:{n}"></span></p>{f'<p class="rel">{rel}</p>' if rel else ''}</article>""")
         nav = []
         if i > 0:
             nav.append(f'<a href="/news/{BRIEFS[i - 1]["date"]}/">← {zh_date(BRIEFS[i - 1]["date"])}</a>')
@@ -1539,7 +1551,8 @@ def build_news(cur):
     write("/news/", page(f"AI 早报（每日更新）：{latest['headline']} · 比比价",
                          f"今日 AI 早报：{latest['headline']}。每天整理 AI 新模型发布、社区口碑、会员价格和限额变化，附原文链接。", "/news/",
                          f'{cr_html}<h1>{e(latest["headline"])}</h1>{latest_html}'
-                         f'<h2>往期早报</h2><ul class="list">{rows}</ul>', [cr_ld], latest["date"]))
+                         f'<h2>往期早报</h2><ul class="list">{rows}</ul>', [cr_ld], latest["date"],
+                         canonical_path=f"/news/{latest['date']}/"))  # same text as the dated issue: let that page rank
     return ["/news/"] + urls
 
 
