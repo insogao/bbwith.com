@@ -152,11 +152,15 @@ PROMPT = """你是中文网站「比比价 bbwith.com」的 AI 早报编辑。�
 
 
 def ask_llm(items):
+    return chat(PROMPT + json.dumps(items, ensure_ascii=False), 0.4)
+
+
+def chat(content, temperature):
     base, key, model = (os.environ.get(k, "") for k in ("SUPBI_AI_BASE_URL", "SUPBI_AI_API_KEY", "SUPBI_AI_MODEL"))
     if not (base and key and model):
         sys.exit("SUPBI_AI_* is not set; skipping")
-    body = json.dumps({"model": model, "temperature": 0.4, "messages": [
-        {"role": "user", "content": PROMPT + json.dumps(items, ensure_ascii=False)}]}).encode()
+    body = json.dumps({"model": model, "temperature": temperature, "messages": [
+        {"role": "user", "content": content}]}).encode()
     last = None
     for attempt in range(3):
         try:
@@ -196,6 +200,79 @@ def validate(brief, items):
     return out
 
 
+# ---------- fact check ----------
+# A wrong price or date hurts a price site more than a missing story. Every entry is checked against the
+# text of its own sources: first by the model (keep / fix / drop), then mechanically (every number it states
+# must appear in a source). Entries that fail are dropped.
+
+CHECK_PROMPT = """你是事实核查编辑。下面每条早报都附有它引用的来源原文（标题、摘要、评论）。逐条检查早报里的每个事实（数字、价格、日期、版本号、谁发布了什么、上线范围）能否在它自己的来源里找到依据。
+- 都有依据：verdict 填 "ok"。
+- 有个别说法来源里没有或说错了：verdict 填 "fix"，并给出改正后的 title / summary / take，只删掉或改正没依据的部分，其余保持原样，不要加入来源里没有的新信息。
+- 核心事实来源里没有、或者与来源矛盾：verdict 填 "drop"。
+- take（点评）是编辑观点，可以保留，但其中的事实同样要有依据。
+只输出 JSON：{"checks":[{"i":序号,"verdict":"ok|fix|drop","title":"","summary":"","take":"","note":"一句话说明改了什么或为什么删"}]}
+
+早报和来源：
+"""
+
+# money and percentages: the numbers a price site cannot afford to get wrong
+MONEY = re.compile(r"(?:[$¥￥€£]|US\$|USD\s?|RMB\s?)\s?(\d[\d,]*(?:\.\d+)?)|(\d[\d,]*(?:\.\d+)?)\s?(?:%|％|美元|美金|刀|元|块|dollars?|USD)", re.I)
+
+
+def numbers(text):
+    out = set()
+    for a, b in MONEY.findall(text or ""):
+        v = (a or b).replace(",", "")
+        out.add(v.rstrip("0").rstrip(".") if "." in v else v)
+    return out
+
+
+def src_numbers(text):
+    """Every number in the sources counts as support (a price may appear there without a currency sign)."""
+    return {(v.rstrip("0").rstrip(".") if "." in v else v) for v in (m.replace(",", "") for m in re.findall(r"\d[\d,]*(?:\.\d+)?", text or ""))}
+
+
+def fact_check(entries, items):
+    by_url = {it["url"]: it for it in items}
+    packs = []
+    for i, x in enumerate(entries):
+        srcs = [by_url[l["url"]] for l in x["links"] if l["url"] in by_url]
+        src_text = "\n".join(json.dumps({k: v for k, v in s.items() if k in ("source", "title", "desc", "text", "comments", "points", "price", "context")},
+                                         ensure_ascii=False)[:1800] for s in srcs)
+        x["_src"] = src_text
+        packs.append({"i": i, "title": x["title"], "summary": x["summary"], "take": x["take"], "sources": src_text})
+    try:
+        res, _ = chat(CHECK_PROMPT + json.dumps(packs, ensure_ascii=False), 0)
+        checks = {c.get("i"): c for c in res.get("checks", []) if isinstance(c, dict)}
+    except SystemExit:
+        raise
+    except Exception as ex:  # checker unavailable: fall back to the mechanical check alone
+        print("fact check LLM failed:", repr(ex)[:160])
+        checks = {}
+    kept, log = [], []
+    for i, x in enumerate(entries):
+        c = checks.get(i, {"verdict": "ok"})
+        v = c.get("verdict", "ok")
+        if v == "drop":
+            log.append(f"drop: {x['title']} ({c.get('note', '')})")
+            continue
+        if v == "fix":
+            for k in ("title", "summary", "take"):
+                if c.get(k):
+                    x[k] = strip(c[k], {"title": 40, "summary": 400, "take": 240}[k])
+            log.append(f"fix: {x['title']} ({c.get('note', '')})")
+        src_nums = src_numbers(x["_src"])
+        missing = numbers(x["title"] + " " + x["summary"]) - src_nums
+        if missing:
+            log.append(f"drop (numbers not in sources {sorted(missing)[:5]}): {x['title']}")
+            continue
+        x.pop("_src", None)
+        kept.append(x)
+    for line in log:
+        print("fact-check", line)
+    return kept, log
+
+
 def main():
     items = collect()
     if "--dry" in sys.argv:
@@ -206,13 +283,14 @@ def main():
         sys.exit(f"only {len(items)} items collected; not writing")
     brief, model = ask_llm(items)
     entries = validate(brief, items)
+    entries, checklog = fact_check(entries, items)
     if len(entries) < 3:
         sys.exit(f"only {len(entries)} valid items from the LLM; not writing")
     now = dt.datetime.now(dt.timezone(dt.timedelta(hours=8)))
     os.makedirs(OUT, exist_ok=True)
     path = os.path.join(OUT, f"{now.date().isoformat()}.json")
     json.dump({"date": now.date().isoformat(), "time": now.strftime("%Y-%m-%d %H:%M"), "headline": strip(brief.get("headline", ""), 60),
-               "model": model, "inputs": len(items), "items": entries}, open(path, "w"), ensure_ascii=False, indent=1)
+               "model": model, "inputs": len(items), "fact_check": checklog, "items": entries}, open(path, "w"), ensure_ascii=False, indent=1)
     print(f"wrote {len(entries)} items to {path}")
 
 
