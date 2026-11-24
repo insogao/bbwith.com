@@ -1,0 +1,153 @@
+{
+ "date": "2026-11-25",
+ "time": "2026-11-25 07:59",
+ "headline": "GPT-6.2 Sol 进 ChatGPT，旧模型退役",
+ "model": "workbuddy/deepseek-v4.1-flash",
+ "inputs": 110,
+ "fact_check": [
+  "fix: Claude Ship 能审代码、修问题并批准拉取请求 (来源只说 Claude 可批准团队策略允许的拉取请求，没有说可合并；已删去“合并”说法并改为“批准拉取请求”。)"
+ ],
+ "items": [
+  {
+   "title": "GPT-6.2 Sol 进 ChatGPT 聊天",
+   "summary": "OpenAI 把 GPT-6.2 Sol 带到 ChatGPT 的 Chat 标签页，距离它在 Work 和 Codex 出现不到一周；同时为两款旧模型设定了退役时间。对普通用户来说，新模型可以在日常聊天入口使用，使用旧模型的用户需要留意退役安排。",
+   "take": "",
+   "kind": "model",
+   "products": [
+    "chatgpt"
+   ],
+   "links": [
+    {
+     "name": "9to5mac.com",
+     "title": "ChatGPT expands GPT-6.2 Sol as OpenAI sets retirement date for two models",
+     "url": "https://9to5mac.com/2026/11/23/chatgpt-expands-gpt-6-2-sol-as-openai-sets-retirement-date-for-two-models/"
+    }
+   ]
+  },
+  {
+   "title": "AI Pro 可用 Gemini 4 Carbon",
+   "summary": "Google 将 Gemini 4 Carbon 引入 Antigravity，面向付费的 AI Pro 订阅者。对已订阅 AI Pro 的用户，这是该工具里新增的一个可用模型选择。",
+   "take": "",
+   "kind": "model",
+   "products": [
+    "google-ai"
+   ],
+   "links": [
+    {
+     "name": "9to5google.com",
+     "title": "Gemini 4 Carbon is now available in Google Antigravity for AI Pro",
+     "url": "https://9to5google.com/2026/11/23/antigravity-gemini-4-carbon/"
+    }
+   ]
+  },
+  {
+   "title": "GPT-6.2 Astra 达人类专家 4.9 倍",
+   "summary": "P-Zero Research 称，在 TasteVal 上，GPT-6.2 Astra 用约人类专家五分之一的实验计算量，达到 4.9 倍人类专家的结果；Fable 5.2 为 2.5 倍。该结果来自单一评测方，可作为模型能力参考，不等同于日常使用体验。",
+   "take": "",
+   "kind": "model",
+   "products": [],
+   "links": [
+    {
+     "name": "news.sulat.com",
+     "title": "P-Zero Research puts GPT-6.2 Astra at 4.9x human experts on TasteVal, nearly double Fable 5.2",
+     "url": "https://news.sulat.com/2026/11/24/tasteval-astra/"
+    }
+   ]
+  },
+  {
+   "title": "ChatGPT Sites 明年起按积分收费",
+   "summary": "OpenAI 将从 2027 年 1 月 1 日开始对 ChatGPT Sites 托管收费。Plus 每月获得 125 积分，Pro 每月 375 积分；一个存放 1 GiB 数据库记录的站点约消耗 175 积分。对使用 Sites 搭站的付费用户，建站成本将从免费变为按资源计费。",
+   "take": "",
+   "kind": "pricing",
+   "products": [
+    "chatgpt"
+   ],
+   "links": [
+    {
+     "name": "news.sulat.com",
+     "title": "ChatGPT Sites hosting is metered from 1 January: Plus gets 125 credits, and 1 GiB of records costs 175",
+     "url": "https://news.sulat.com/2026/11/24/chatgpt-sites-hosting/"
+    }
+   ]
+  },
+  {
+   "title": "Gemini Mac 版可操作桌面应用，需付费",
+   "summary": "Google 的 Gemini Mac 应用现在能在后台窗口中点击、输入并操作桌面应用的菜单。使用条件包括 Apple Silicon、macOS 15、付费套餐，以及美国英文环境；Google 帮助页还列出了七项风险。对符合条件的付费用户，这相当于让 Gemini 代为操作本机应用，但需要接受相应权限和风险。",
+   "take": "",
+   "kind": "product",
+   "products": [
+    "google-ai"
+   ],
+   "links": [
+    {
+     "name": "news.sulat.com",
+     "title": "Gemini’s Mac app can now operate your desktop apps, and Google’s help page lists seven risks",
+     "url": "https://news.sulat.com/2026/11/25/gemini-mac-computer-use/"
+    }
+   ]
+  },
+  {
+   "title": "Claude 作品能装成桌面应用",
+   "summary": "Anthropic 上线 Install as app 测试功能，让 Claude 作品在 Mac 和 Windows 上有独立图标和窗口。应用先以浏览器方式启动，需要进一步权限时会询问，并且 Anthropic 不对这些应用做审核。对 Claude 用户来说，把生成内容做成桌面应用更方便，但也要自行判断来源和安全性。",
+   "take": "",
+   "kind": "product",
+   "products": [
+    "claude"
+   ],
+   "links": [
+    {
+     "name": "news.sulat.com",
+     "title": "Claude artifacts can now be installed as Mac and Windows apps, and Anthropic doesn’t review them",
+     "url": "https://news.sulat.com/2026/11/25/claude-install-as-app/"
+    },
+    {
+     "name": "9to5mac.com",
+     "title": "Anthropic just gave Claude users a new way to make Mac apps",
+     "url": "https://9to5mac.com/2026/11/24/anthropic-just-gave-claude-users-a-new-way-to-make-mac-apps/"
+    }
+   ]
+  },
+  {
+   "title": "Gemini 可保留聊天记录，同时关闭模型训练",
+   "summary": "Google 为 Gemini 应用推出新的隐私设置，允许用户保留聊天历史，同时单独控制这些内容是否用于生成式 AI 模型训练。对普通用户来说，不必为了拒绝训练而删掉全部记录，控制更细。",
+   "take": "",
+   "kind": "product",
+   "products": [
+    "google-ai"
+   ],
+   "links": [
+    {
+     "name": "9to5google.com",
+     "title": "New Gemini setting lets you keep chat history, but turn off AI training [U]",
+     "url": "https://9to5google.com/2026/11/24/gemini-history-ai-training/"
+    }
+   ]
+  },
+  {
+   "title": "Claude Ship 能审代码、修问题并批准拉取请求",
+   "summary": "Anthropic 推出 Claude Ship，面向开发团队，让 Claude 审阅拉取请求、修复问题，并批准团队策略允许的拉取请求。对使用 Claude 的开发团队，代码审查和批准流程可以进一步自动化，但最终权限仍由团队策略决定。",
+   "take": "",
+   "kind": "product",
+   "products": [
+    "claude"
+   ],
+   "links": [
+    {
+     "name": "Hacker News",
+     "title": "Claude Ship",
+     "url": "https://claude.com/resources/articles/introducing-claude-ship"
+    },
+    {
+     "name": "Hacker News 讨论",
+     "title": "32 条评论",
+     "url": "https://news.ycombinator.com/item?id=50618513"
+    },
+    {
+     "name": "9to5mac.com",
+     "title": "Anthropic launches new Claude Ship feature for builders",
+     "url": "https://9to5mac.com/2026/11/23/anthropic-launches-new-claude-ship-feature-for-builders/"
+    }
+   ]
+  }
+ ]
+}
