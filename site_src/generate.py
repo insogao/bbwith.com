@@ -1528,6 +1528,20 @@ def type_options():
     return "".join(f'<option value="{t}">{e(l)}</option>' for t, l in TYPE_ORDER)
 
 
+def feed_health():
+    """Operator-only: which data feeds are failing and why (never shown to visitors)."""
+    rows = []
+    stf = os.path.join(ROOT, "data", "channels", "status.json")
+    if os.path.exists(stf):
+        st = json.load(open(stf, encoding="utf8"))
+        if not st.get("ok"):
+            rows.append(f'<li><b>代充 · 成品号</b>：{e(st.get("why", ""))}（从 {e(st.get("since", "")[:16].replace("T", " "))} UTC 起）。'
+                        f'更新方法：16688 商家后台重新登录，把 localStorage 里 merchant-token 的 value 填进 GitHub Secrets 的 S16688_TOKEN。</li>')
+    if not rows:
+        return '<p class="hint">数据源：全部正常。</p>'
+    return '<div class="pre"><b>数据源异常</b><ul>' + "".join(rows) + '</ul></div>'
+
+
 def build_merchant_pages():
     row = f"""<template id="listing-row"><div class="row"><div class="grid">
 <label>商品标题<input name="title" required maxlength="120" placeholder="与店铺商品页标题一致"></label>
@@ -1578,7 +1592,7 @@ def build_merchant_pages():
 <p><button class="btn">提交投诉</button> <span id="complaint-msg" class="hint"></span></p></form>
 <div id="complaint-done" hidden><h2>已收到</h2><p>我们会核实后公开，并通知商家回复。</p></div>"""
     write("/complaint/", page("投诉商家 · 比比价", "投诉比比价入驻商家。", "/complaint/", body, noindex=True))
-    body = '<h1>管理后台</h1><div id="admin"><p>加载中…</p></div>'
+    body = '<h1>管理后台</h1>' + feed_health() + '<div id="admin"><p>加载中…</p></div>'
     write("/admin/", page("管理后台 · 比比价", "admin", "/admin/", body, noindex=True, extra_js="admin.js"))
 
 
@@ -1680,17 +1694,12 @@ def freshness(day):
     items = [("App Store 价格", f"{len(day['storefronts'])} 个地区", _iso(day.get("time") or GIFT.get("time")), 86400),
              ("礼品卡报价", f"{len({i['shop'] for i in GIFT.get('items', [])})} 个平台", _iso(GIFT.get("time")), 86400),
              ("代充 · 成品号", f"{CHANNELS.get('listings_seen', 0):,} 条挂单", _iso(CHANNELS.get("time")), 4 * 3600)]
-    stf = os.path.join(ROOT, "data", "channels", "status.json")
-    ch_err = ""
-    if os.path.exists(stf):
-        st = json.load(open(stf, encoding="utf8"))
-        if not st.get("ok"):
-            ch_err = "数据源暂时读不到"
+
     ring = ('<svg class="ring" viewBox="0 0 64 64" aria-hidden="true"><circle class="trk" cx="32" cy="32" r="25"/>'
             '<circle class="arc" cx="32" cy="32" r="25" pathLength="100" transform="rotate(-90 32 32)"/>'
             '<g class="sec"><circle cx="32" cy="7" r="7"/></g></svg>')
     cells = "".join(
-        f'<div class="fr" data-t="{t}" data-period="{per}"{f" data-err={chr(34)}{ch_err}{chr(34)}" if (ch_err and per == 4 * 3600) else ""} title="{e(n)}：{e(sub)}，数据每{"天" if per == 86400 else " 4 小时"}更新">{ring}'
+        f'<div class="fr" data-t="{t}" data-period="{per}" title="{e(n)}：{e(sub)}，数据每{"天" if per == 86400 else " 4 小时"}更新">{ring}'
         f'<b class="fr-n">{e(n)}</b><span class="ago" hidden>—</span><span class="fr-next">下次 <b class="cd">--:--:--</b></span></div>'
         for n, sub, t, per in items if t)
     return f'<div class="fresh" data-sec="更新状态">{cells}</div>'

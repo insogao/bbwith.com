@@ -354,10 +354,10 @@ document.addEventListener("click", function (ev) {
       c.title = c.querySelector(".fr-n").textContent + "：" + dur(age) + "前更新";
       var cd = c.querySelector(".cd");
       var nx = c.querySelector(".fr-next");
-      if (c.dataset.err || left <= -1800) {
-        // say what the reader gets, not just that something is late
+      if (left <= -1800) {
+        // overdue: just tell the reader how old the prices are; failures are the operator's business (/admin, GitHub email)
         if (nx.firstChild && nx.firstChild.nodeType === 3) nx.firstChild.textContent = "";
-        cd.textContent = (c.dataset.err || "暂停更新") + "，显示 " + dur(age) + "前的数据";
+        cd.textContent = dur(age) + "前更新";
         c.classList.add("late"); c.classList.remove("busy");
       } else if (left > 0) { cd.textContent = clock(left); c.classList.remove("busy", "late"); }
       else { cd.textContent = "正在更新…"; c.classList.add("busy"); }
