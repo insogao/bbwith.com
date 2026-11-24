@@ -1538,9 +1538,21 @@ def feed_health():
             rows.append(f'<li><b>代充 · 成品号</b>：{e(st.get("why", ""))}（从 {e(st.get("since", "")[:16].replace("T", " "))} UTC 起）。'
                         f'{"现在用抽样商品的公开价格顶着（" + str(CHANNELS.get("listings_seen", 0)) + " 条）。" if CHANNELS.get("mode") == "sample" else ""}'
                         f'更新方法：16688 商家后台重新登录，把 localStorage 里 merchant-token 的 value 填进 GitHub Secrets 的 S16688_TOKEN。</li>')
+    if os.path.exists(stf):
+        life = json.load(open(stf, encoding="utf8")).get("token_life", [])
+        if life:
+            def days(a, b):
+                return (dt.datetime.fromisoformat(b) - dt.datetime.fromisoformat(a)).total_seconds() / 86400
+            parts = [f'{x["first_ok"][:10]} 起，' + (f'用了 {days(x["first_ok"], x["failed_at"]):.1f} 天失效' if x.get("failed_at")
+                     else f'已用 {days(x["first_ok"], x["last_ok"]):.1f} 天') for x in life]
+            extra = '<p class="hint">16688 登录寿命：' + "；".join(parts) + '</p>'
+        else:
+            extra = ""
+    else:
+        extra = ""
     if not rows:
-        return '<p class="hint">数据源：全部正常。</p>'
-    return '<div class="pre"><b>数据源异常</b><ul>' + "".join(rows) + '</ul></div>'
+        return '<p class="hint">数据源：全部正常。</p>' + extra
+    return '<div class="pre"><b>数据源异常</b><ul>' + "".join(rows) + '</ul></div>' + extra
 
 
 def build_merchant_pages():

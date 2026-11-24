@@ -385,6 +385,19 @@ def write_status(ok, why=""):
     now = dt.datetime.now(dt.timezone.utc).isoformat(timespec="minutes")
     st = {"ok": ok, "why": why, "checked": now,
           "since": prev.get("since") if (prev.get("ok") == ok and prev.get("since")) else now}
+    # how long a login lasts: a short fingerprint of the token (not the token) with its first and last good run
+    import hashlib
+    fp = hashlib.sha256(os.environ.get("S16688_TOKEN", "").encode()).hexdigest()[:8]
+    life = prev.get("token_life", [])
+    cur = next((x for x in life if x["fp"] == fp), None)
+    if ok:
+        if not cur:
+            cur = {"fp": fp, "first_ok": now}
+            life.append(cur)
+        cur["last_ok"] = now
+    elif cur and not cur.get("failed_at"):
+        cur["failed_at"] = now
+    st["token_life"] = life[-10:]
     json.dump(st, open(p, "w"), ensure_ascii=False)
 
 
