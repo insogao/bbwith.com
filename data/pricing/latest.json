@@ -1,12 +1,12 @@
 {
- "time": "2026-11-24 06:43",
+ "time": "2026-11-25 06:42",
  "products": {
   "chatgpt": {
    "id": "chatgpt",
    "name": "ChatGPT",
    "url": "https://chatgpt.com/pricing",
    "region": "global",
-   "checked": "2026-11-24 06:43",
+   "checked": "2026-11-25 06:42",
    "status": "页面打不开"
   },
   "claude": {
@@ -14,7 +14,7 @@
    "name": "Claude",
    "url": "https://claude.com/pricing",
    "region": "global",
-   "checked": "2026-11-24 06:43",
+   "checked": "2026-11-25 06:42",
    "status": "ok",
    "plans": [
     {
@@ -22,21 +22,21 @@
      "price": 20,
      "currency": "USD",
      "period": "month",
-     "note": "更多用量，含Claude Code"
+     "note": "月付，较Free更多用量"
     },
     {
      "name": "Pro",
      "price": 200,
      "currency": "USD",
      "period": "year",
-     "note": "年付；折合$17/月"
+     "note": "年付总价，较Free更多用量"
     },
     {
      "name": "Max",
      "price": 100,
      "currency": "USD",
      "period": "month",
-     "note": "5倍Pro用量，含$100 API额度"
+     "note": "5倍Pro用量，含API额度"
     },
     {
      "name": "Ultra",
@@ -50,19 +50,19 @@
      "price": 20,
      "currency": "USD",
      "period": "month",
-     "note": "每席位/月，年付，另付API用量"
+     "note": "每席位每月，按年计费另计API"
     }
    ],
    "promos": [],
-   "annual_discount": "Pro 年付 $200（折合 $17/月；月付 $20/月）",
-   "updated": "2026-11-24 06:43"
+   "annual_discount": "Pro 年付折扣：$200 billed up front（折合每月 $17；月付 $20）",
+   "updated": "2026-11-25 06:42"
   },
   "gemini": {
    "id": "gemini",
    "name": "Google AI（Gemini）",
    "url": "https://gemini.google/subscriptions/",
    "region": "global",
-   "checked": "2026-11-24 06:43",
+   "checked": "2026-11-25 06:42",
    "status": "ok",
    "plans": [
     {
@@ -70,48 +70,47 @@
      "price": 4.99,
      "currency": "USD",
      "period": "month",
-     "note": "2 倍 Free 用量，400GB 存储"
+     "note": "2 倍用量，400GB 存储"
     },
     {
      "name": "Google AI Pro",
      "price": 19.99,
      "currency": "USD",
      "period": "month",
-     "note": "4 倍 Free 用量，5TB 存储"
+     "note": "4 倍用量，5TB 存储"
     },
     {
      "name": "Google AI Ultra",
      "price": 99.99,
      "currency": "USD",
      "period": "month",
-     "note": "5 倍 Pro 用量（起价）"
+     "note": "Pro 的 5 倍用量，20TB 存储"
     },
     {
      "name": "Google AI Ultra",
      "price": 199.99,
      "currency": "USD",
      "period": "month",
-     "note": "20 倍 Pro 用量"
+     "note": "Pro 的 20 倍用量，20TB 存储"
     }
    ],
    "promos": [
     {
-     "title": "黑五会员抢先优惠最高 5 折",
+     "title": "黑五会员抢先优惠",
      "detail": "指定 Google AI 方案最高省 50%，条款适用。",
      "audience": "会员",
-     "ends": "",
-     "first_seen": "2026-11-24 06:43"
+     "first_seen": "2026-11-25 06:42"
     }
    ],
    "annual_discount": "",
-   "updated": "2026-11-24 06:43"
+   "updated": "2026-11-25 06:42"
   },
   "grok": {
    "id": "grok",
    "name": "Grok / SuperGrok",
    "url": "https://grok.com/plans",
    "region": "global",
-   "checked": "2026-11-24 06:43",
+   "checked": "2026-11-25 06:42",
    "status": "ok",
    "plans": [
     {
@@ -119,68 +118,69 @@
      "price": 8,
      "currency": "USD",
      "period": "month",
-     "note": "共享AI用量，含Grok Chat等"
+     "note": "共享AI额度，入门方案"
     },
     {
      "name": "Plus",
      "price": 8,
      "currency": "USD",
      "period": "year",
-     "note": "共享AI用量，含Grok Chat等"
+     "note": "共享AI额度，入门方案"
     },
     {
      "name": "Premium",
      "price": 30,
      "currency": "USD",
      "period": "month",
-     "note": "含Plus全部，4倍Plus用量"
-    },
-    {
-     "name": "Premium",
-     "price": 30,
-     "currency": "USD",
-     "period": "year",
-     "note": "含Plus全部，4倍Plus用量"
+     "note": "含Plus权益，4倍用量"
     },
     {
      "name": "Super",
      "price": 100,
      "currency": "USD",
      "period": "month",
-     "note": "含Premium全部，15倍Plus用量"
+     "note": "含Premium，15倍用量"
     },
     {
      "name": "Super",
      "price": 100,
      "currency": "USD",
      "period": "year",
-     "note": "含Premium全部，15倍Plus用量"
+     "note": "含Premium，15倍用量"
     },
     {
      "name": "Ultra",
      "price": 200,
      "currency": "USD",
      "period": "month",
-     "note": "含Super全部，50倍Plus用量"
+     "note": "含Super，50倍用量"
     },
     {
      "name": "Ultra",
      "price": 200,
      "currency": "USD",
      "period": "year",
-     "note": "含Super全部，50倍Plus用量"
+     "note": "含Super，50倍用量"
     }
    ],
-   "promos": [],
+   "promos": [
+    {
+     "title": "Black Friday: Pay for 1 month, get 1 free",
+     "detail": "Premium：$30 用 2 个月（折合 $15/月），之后 $30/月",
+     "audience": null,
+     "ends": null,
+     "first_seen": "2026-11-25 06:42"
+    }
+   ],
    "annual_discount": "",
-   "updated": "2026-11-24 06:43"
+   "updated": "2026-11-25 06:42"
   },
   "perplexity": {
    "id": "perplexity",
    "name": "Perplexity",
    "url": "https://www.perplexity.ai/pro",
    "region": "global",
-   "checked": "2026-11-24 06:43",
+   "checked": "2026-11-25 06:42",
    "status": "ok",
    "plans": [
     {
@@ -188,41 +188,39 @@
      "price": 17,
      "currency": "USD",
      "period": "year_monthly",
-     "note": "高级答案、顶级模型、4000赠额"
+     "note": "年付，4,000奖励积分"
     },
     {
      "name": "Max",
      "price": 167,
      "currency": "USD",
      "period": "year_monthly",
-     "note": "无限用量、35000赠额、顶级模型"
+     "note": "年付，3.5万奖励+1万月积分"
     }
    ],
    "promos": [
     {
-     "title": "限时赠送 $40 Computer credits",
-     "detail": "Pro 方案限时赠送 $40 Computer credits",
-     "audience": "Pro 用户",
-     "ends": null,
-     "first_seen": "2026-11-24 06:43"
+     "title": "+$40 free Computer credits",
+     "detail": "限时赠送 $40 Computer credits",
+     "audience": "Pro 方案",
+     "first_seen": "2026-11-25 06:42"
     },
     {
-     "title": "限时赠送 $450 Computer credits",
-     "detail": "Max 方案限时赠送 $450 Computer credits",
-     "audience": "Max 用户",
-     "ends": null,
-     "first_seen": "2026-11-24 06:43"
+     "title": "+$450 free Computer credits",
+     "detail": "限时赠送 $450 Computer credits",
+     "audience": "Max 方案",
+     "first_seen": "2026-11-25 06:42"
     }
    ],
    "annual_discount": "",
-   "updated": "2026-11-24 06:43"
+   "updated": "2026-11-25 06:42"
   },
   "cursor": {
    "id": "cursor",
    "name": "Cursor",
    "url": "https://cursor.com/pricing",
    "region": "global",
-   "checked": "2026-11-24 06:43",
+   "checked": "2026-11-25 06:42",
    "status": "ok",
    "plans": [
     {
@@ -230,47 +228,47 @@
      "price": 8,
      "currency": "USD",
      "period": "month",
-     "note": "入门方案，共享AI额度"
+     "note": "入门方案，共享 AI 用量"
     },
     {
      "name": "Premium",
      "price": 30,
      "currency": "USD",
      "period": "month",
-     "note": "4倍Plus用量，含云代理"
+     "note": "Plus 4 倍用量，含云代理"
     },
     {
      "name": "Super",
      "price": 100,
      "currency": "USD",
      "period": "month",
-     "note": "15倍Plus用量，高峰优先"
+     "note": "Plus 15 倍用量，优先模型"
     },
     {
      "name": "Ultra",
      "price": 200,
      "currency": "USD",
      "period": "month",
-     "note": "50倍Plus用量，最早访问"
+     "note": "Plus 50 倍用量，最早访问"
     },
     {
      "name": "Teams",
      "price": 30,
      "currency": "USD",
      "period": "month",
-     "note": "每用户每月，团队管理"
+     "note": "每用户起，团队管理与计费"
     }
    ],
    "promos": [],
    "annual_discount": "",
-   "updated": "2026-11-24 06:43"
+   "updated": "2026-11-25 06:42"
   },
   "windsurf": {
    "id": "windsurf",
    "name": "Windsurf",
    "url": "https://windsurf.com/pricing",
    "region": "global",
-   "checked": "2026-11-24 06:43",
+   "checked": "2026-11-25 06:42",
    "status": "ok",
    "plans": [
     {
@@ -278,33 +276,33 @@
      "price": 20,
      "currency": "USD",
      "period": "month",
-     "note": "更高额度，含前沿模型"
+     "note": "含云代理，可用前沿模型"
     },
     {
      "name": "Max",
      "price": 200,
      "currency": "USD",
      "period": "month",
-     "note": "额度显著更高，含 Devin Bots"
+     "note": "更高额度，含 Devin Bots"
     },
     {
      "name": "Teams",
      "price": 80,
      "currency": "USD",
      "period": "month",
-     "note": "最多100用户，协作与SSO"
+     "note": "最多100用户，团队协作"
     }
    ],
    "promos": [],
    "annual_discount": "",
-   "updated": "2026-11-24 06:43"
+   "updated": "2026-11-25 06:42"
   },
   "copilot": {
    "id": "copilot",
    "name": "GitHub Copilot",
    "url": "https://github.com/features/copilot/plans",
    "region": "global",
-   "checked": "2026-11-24 06:43",
+   "checked": "2026-11-25 06:42",
    "status": "ok",
    "plans": [
     {
@@ -312,41 +310,40 @@
      "price": 10,
      "currency": "USD",
      "period": "month",
-     "note": "每月$15额度，无限补全"
+     "note": "无限代码补全，含$15 AI额度"
     },
     {
      "name": "Pro+",
      "price": 39,
      "currency": "USD",
      "period": "month",
-     "note": "每月$70额度，含高级模型"
+     "note": "高级模型，含$70 AI额度"
     },
     {
      "name": "Max",
      "price": 100,
      "currency": "USD",
      "period": "month",
-     "note": "每月$200额度，优先访问"
+     "note": "高用量，含$200 AI额度"
     }
    ],
    "promos": [
     {
-     "title": "Copilot Fusion 使用 30% off",
-     "detail": "Copilot Fusion usage 30% off until Nov 30th.",
-     "audience": "未说明",
-     "ends": "2026-11-30",
-     "first_seen": "2026-11-24 06:43"
+     "title": "Copilot Fusion 用量 30% off",
+     "detail": "Copilot Fusion 用量 30% off，截止 Dec 31",
+     "ends": "2026-12-31",
+     "first_seen": "2026-11-25 06:42"
     }
    ],
    "annual_discount": "",
-   "updated": "2026-11-24 06:43"
+   "updated": "2026-11-25 06:42"
   },
   "midjourney": {
    "id": "midjourney",
    "name": "Midjourney",
    "url": "https://docs.midjourney.com/hc/en-us/articles/27870484040333-Comparing-Midjourney-Plans",
    "region": "global",
-   "checked": "2026-11-24 06:43",
+   "checked": "2026-11-25 06:42",
    "status": "页面打不开"
   },
   "suno": {
@@ -354,7 +351,7 @@
    "name": "Suno",
    "url": "https://suno.com/pricing",
    "region": "global",
-   "checked": "2026-11-24 06:43",
+   "checked": "2026-11-25 06:42",
    "status": "ok",
    "plans": [
     {
@@ -362,61 +359,62 @@
      "price": 10,
      "currency": "USD",
      "period": "month",
-     "note": "每月2,500歌曲点数，含商用权"
+     "note": "2500积分/月；可商用"
     },
     {
      "name": "Pro",
      "price": 67.2,
      "currency": "USD",
      "period": "year",
-     "note": "首年；续费96/年，2,500点数/月"
+     "note": "续费$96/年；2500积分"
     },
     {
      "name": "Premier",
      "price": 30,
      "currency": "USD",
      "period": "month",
-     "note": "每月10k点数，含Studio"
+     "note": "10000积分/月；Suno Studio"
     },
     {
      "name": "Premier",
      "price": 201.6,
      "currency": "USD",
      "period": "year",
-     "note": "首年；续费288/年，10k点数/月"
+     "note": "续费$288/年；10000积分"
     },
     {
      "name": "Platinum",
      "price": 120,
      "currency": "USD",
      "period": "month",
-     "note": "每月15k歌曲+20k视觉点数"
+     "note": "15000积分/月+视觉积分"
     },
     {
      "name": "Platinum",
      "price": 840,
      "currency": "USD",
      "period": "year",
-     "note": "首年；续费1,200/年，15k歌曲点数/月"
+     "note": "续费$1200/年；15000积分"
     }
    ],
    "promos": [
     {
-     "title": "Black Friday Sale",
-     "detail": "年付方案额外 30% off；首年价 Pro $67.20、Premier $201.60、Platinum $840",
-     "audience": "年付方案用户",
-     "first_seen": "2026-11-24 06:43"
+     "title": "Black Friday Sale：年付额外30% off",
+     "detail": "年付方案额外30%折扣；首年 Pro $67.20、Premier $201.60、Platinum $840",
+     "audience": "所有人（年付）",
+     "ends": "2026-12-01",
+     "first_seen": "2026-11-25 06:42"
     }
    ],
-   "annual_discount": "Pro/Premier 年付省 20%；Platinum 年付省 17%",
-   "updated": "2026-11-24 06:43"
+   "annual_discount": "Pro/Premier 年付省20%；Platinum 年付省17%",
+   "updated": "2026-11-25 06:42"
   },
   "elevenlabs": {
    "id": "elevenlabs",
    "name": "ElevenLabs",
    "url": "https://elevenlabs.io/pricing",
    "region": "global",
-   "checked": "2026-11-24 06:43",
+   "checked": "2026-11-25 06:42",
    "status": "ok",
    "plans": [
     {
@@ -424,166 +422,152 @@
      "price": 6,
      "currency": "USD",
      "period": "month",
-     "note": "30k额度/月，商用许可"
+     "note": "30k积分/月，商用许可"
     },
     {
      "name": "Starter",
      "price": 60,
      "currency": "USD",
      "period": "year",
-     "note": "年付$5/月，30k额度/月"
+     "note": "30k积分/月，商用许可"
     },
     {
      "name": "Creator",
      "price": 22,
      "currency": "USD",
      "period": "month",
-     "note": "121k额度/月，专业克隆"
+     "note": "121k积分/月，专业音色克隆"
     },
     {
      "name": "Creator",
-     "price": 219.96,
+     "price": 220,
      "currency": "USD",
      "period": "year",
-     "note": "年付$18.33/月，121k额度/月"
+     "note": "121k积分/月，专业音色克隆"
     },
     {
      "name": "Pro",
      "price": 99,
      "currency": "USD",
      "period": "month",
-     "note": "600k额度/月，44.1kHz音频"
+     "note": "600k积分/月，192kbps音频"
     },
     {
      "name": "Pro",
      "price": 990,
      "currency": "USD",
      "period": "year",
-     "note": "年付$82.50/月，600k额度/月"
+     "note": "600k积分/月，192kbps音频"
     },
     {
      "name": "Scale",
      "price": 299,
      "currency": "USD",
      "period": "month",
-     "note": "1.8M额度/月，3席位"
+     "note": "1.8M积分/月，3席"
     },
     {
      "name": "Scale",
-     "price": 2990.04,
+     "price": 2990,
      "currency": "USD",
      "period": "year",
-     "note": "年付$249.17/月，1.8M额度/月"
+     "note": "1.8M积分/月，3席"
     },
     {
      "name": "Business",
      "price": 990,
      "currency": "USD",
      "period": "month",
-     "note": "6M额度/月，10席位"
+     "note": "6M积分/月，10席"
     },
     {
      "name": "Business",
      "price": 9900,
      "currency": "USD",
      "period": "year",
-     "note": "年付$825/月，6M额度/月"
+     "note": "6M积分/月，10席"
     }
    ],
    "promos": [
     {
-     "title": "Black Friday 最高 55% off",
-     "detail": "Creator 首年 $8.25/mo、Pro 首年 $37.13/mo；之后 Creator $22/mo、Pro $99/mo（年付折合 $18.33/mo、$82.50/mo）",
-     "audience": "Creator/Pro 方案",
+     "title": "Black Friday",
+     "detail": "Up to 55% off",
+     "audience": "所有人",
      "ends": "2026-12-01",
-     "first_seen": "2026-11-24 06:43"
+     "first_seen": "2026-11-25 06:42"
+    },
+    {
+     "title": "Creator Black Friday",
+     "detail": "首年$99/年，之后$220/年",
+     "audience": "Creator 年付用户",
+     "ends": "2026-12-01",
+     "first_seen": "2026-11-25 06:42"
+    },
+    {
+     "title": "Pro Black Friday",
+     "detail": "首年$445.50/年，之后$990/年",
+     "audience": "Pro 年付用户",
+     "ends": "2026-12-01",
+     "first_seen": "2026-11-25 06:42"
     }
    ],
-   "annual_discount": "年付约省 17%（2 months free）",
-   "updated": "2026-11-24 06:43"
+   "annual_discount": "2 months free",
+   "updated": "2026-11-25 06:42"
   },
   "lovart": {
    "id": "lovart",
    "name": "Lovart",
    "url": "https://www.lovart.ai/pricing",
    "region": "global",
-   "checked": "2026-11-24 06:43",
+   "checked": "2026-11-25 06:42",
    "status": "ok",
    "plans": [
     {
      "name": "Starter",
-     "price": 19,
+     "price": 16,
      "currency": "USD",
-     "period": "month",
-     "note": "2,000积分/月，商业授权"
-    },
-    {
-     "name": "Starter",
-     "price": 192,
-     "currency": "USD",
-     "period": "year",
+     "period": "year_monthly",
      "note": "2,000积分/月，商业授权"
     },
     {
      "name": "Basic",
-     "price": 32,
+     "price": 27,
      "currency": "USD",
-     "period": "month",
-     "note": "3,500积分/月，商业授权"
-    },
-    {
-     "name": "Basic",
-     "price": 324,
-     "currency": "USD",
-     "period": "year",
+     "period": "year_monthly",
      "note": "3,500积分/月，商业授权"
     },
     {
      "name": "Pro",
-     "price": 90,
+     "price": 45,
      "currency": "USD",
-     "period": "month",
-     "note": "11,000积分/月，商业授权"
-    },
-    {
-     "name": "Pro",
-     "price": 468,
-     "currency": "USD",
-     "period": "year",
-     "note": "11,000积分/月，次年$74/月"
+     "period": "year_monthly",
+     "note": "11,000积分/月，续费$74/月"
     },
     {
      "name": "Ultimate",
-     "price": 199,
+     "price": 109,
      "currency": "USD",
-     "period": "month",
-     "note": "27,000积分/月，商业授权"
-    },
-    {
-     "name": "Ultimate",
-     "price": 948,
-     "currency": "USD",
-     "period": "year",
-     "note": "27,000积分/月，次年$166/月"
+     "period": "year_monthly",
+     "note": "27,000积分/月，续费$166/月"
     }
    ],
    "promos": [
     {
-     "title": "Black Friday Early Access",
-     "detail": "会员方案最高 61% off",
-     "audience": "所有会员方案购买者",
-     "first_seen": "2026-11-24 06:43"
+     "title": "黑五提前访问",
+     "detail": "会员方案最高 61% 折扣",
+     "audience": "未说明",
+     "first_seen": "2026-11-25 06:42"
     }
    ],
-   "annual_discount": "年付最高省 60%（Starter/Basic 16%，Pro 57%，Ultimate 60%）",
-   "updated": "2026-11-24 06:43"
+   "annual_discount": "年付最高省 50%",
+   "updated": "2026-11-25 06:42"
   },
   "kling": {
    "id": "kling",
    "name": "可灵 Kling",
    "url": "https://app.klingai.com/global/membership/membership-plan",
    "region": "global",
-   "checked": "2026-11-24 06:43",
+   "checked": "2026-11-25 06:42",
    "status": "ok",
    "plans": [
     {
@@ -591,59 +575,57 @@
      "price": 8.8,
      "currency": "USD",
      "period": "month",
-     "note": "660 credits/月"
+     "note": "660额度/月，可商用"
     },
     {
      "name": "Pro",
      "price": 32.56,
      "currency": "USD",
      "period": "month",
-     "note": "3000 credits/月"
+     "note": "3000额度/月，可商用"
     },
     {
      "name": "Premier",
      "price": 181.99,
      "currency": "USD",
      "period": "month",
-     "note": "18000 credits/月"
+     "note": "18000额度/月，可商用"
     },
     {
      "name": "Ultra+",
      "price": 544.99,
      "currency": "USD",
      "period": "month",
-     "note": "57000 credits/月"
+     "note": "57000额度/月，可商用"
     }
    ],
    "promos": [
     {
-     "title": "首 3 个月 35% Off",
-     "detail": "Standard $6.5/月、Pro $24/月、Premier $135/月、Ultra+ $402/月；之后分别 $8.8/$32.56/$181.99/$544.99 每月；一次性优惠，可随时取消。",
-     "audience": "Standard/Pro/Premier/Ultra+ 订阅者",
-     "first_seen": "2026-11-24 06:43"
+     "title": "Monthly Limited-Time 35% Off",
+     "detail": "前3个月：Standard $6.5/月、Pro $24/月、Premier $135/月、Ultra+ $402/月；之后分别为 $8.8/$32.56/$181.99/$544.99 每月。一次性优惠，可随时取消。",
+     "audience": "Standard/Pro/Premier/Ultra+ 月付订阅",
+     "first_seen": "2026-11-25 06:42"
     },
     {
-     "title": "推荐码升级 +10%",
-     "detail": "输入推荐码升级 +10%。",
-     "audience": "未说明",
-     "first_seen": "2026-11-21 14:42"
+     "title": "Referral code +10%",
+     "detail": "输入推荐码升级 +10%",
+     "first_seen": "2026-11-25 06:42"
     },
     {
-     "title": "限时免费积分",
-     "detail": "登录领取限时免费 credit，并享订阅者专属权益。",
-     "audience": "登录用户/订阅者",
-     "first_seen": "2026-11-22 06:43"
+     "title": "限时免费额度",
+     "detail": "领取限时免费 credits，并享订阅者专属权益",
+     "first_seen": "2026-11-25 06:42"
     }
    ],
-   "annual_discount": "年付限时 5 折（省 50%）",
-   "updated": "2026-11-24 06:43"
+   "annual_discount": "Yearly Limited-Time 50% Off",
+   "updated": "2026-11-25 06:42"
   },
   "manus": {
    "id": "manus",
    "name": "Manus",
    "url": "https://manus.im/pricing",
    "region": "global",
-   "checked": "2026-11-24 06:43",
+   "checked": "2026-11-25 06:42",
    "status": "ok",
    "plans": [
     {
@@ -651,48 +633,48 @@
      "price": 100,
      "currency": "USD",
      "period": "month",
-     "note": "20,000积分/月，20任务并发"
+     "note": "每月20,000积分，20并发"
     },
     {
      "name": "Pro",
      "price": 900,
      "currency": "USD",
      "period": "year",
-     "note": "首年价，20,000积分/月"
+     "note": "首年价，续费$1,000/年"
     },
     {
      "name": "Max",
      "price": 200,
      "currency": "USD",
      "period": "month",
-     "note": "40,000积分/月，含Pro权益"
+     "note": "每月40,000积分，优先支持"
     },
     {
      "name": "Max",
      "price": 1600,
      "currency": "USD",
      "period": "year",
-     "note": "首年价，40,000积分/月"
+     "note": "首年价，续费$2,000/年"
     }
    ],
    "promos": [
     {
-     "title": "黑五最高 33% 折扣",
-     "detail": "Pro 25% OFF（首年 $900，次年 $1,000/年）；Max 33% OFF（首年 $1,600，次年 $2,000/年）",
-     "audience": "未说明",
+     "title": "黑五最高 33% off",
+     "detail": "Pro 25% OFF，Max 33% OFF；年付首年优惠",
+     "audience": "所有人",
      "ends": "2026-12-01",
-     "first_seen": "2026-11-24 06:43"
+     "first_seen": "2026-11-25 06:42"
     }
    ],
-   "annual_discount": "年付省最高 33%",
-   "updated": "2026-11-24 06:43"
+   "annual_discount": "年付最高省 33%",
+   "updated": "2026-11-25 06:42"
   },
   "runninghub": {
    "id": "runninghub",
    "name": "RunningHub",
    "url": "https://www.runninghub.cn/vip-rights",
    "region": "cn",
-   "checked": "2026-11-24 06:43",
+   "checked": "2026-11-25 06:42",
    "status": "页面打不开"
   },
   "liblib": {
@@ -700,7 +682,7 @@
    "name": "LiblibAI 哩布哩布",
    "url": "https://www.liblib.art/pricing",
    "region": "cn",
-   "checked": "2026-11-24 06:43",
+   "checked": "2026-11-25 06:42",
    "status": "页面打不开"
   },
   "jimeng": {
@@ -708,7 +690,7 @@
    "name": "即梦 / Dreamina",
    "url": "https://dreamina.capcut.com/ai-tool/subscription",
    "region": "global",
-   "checked": "2026-11-24 06:43",
+   "checked": "2026-11-25 06:42",
    "status": "没有识别到价格（可能是登录页或验证页）"
   },
   "kimi": {
@@ -716,7 +698,7 @@
    "name": "Kimi",
    "url": "https://www.kimi.com/membership/pricing",
    "region": "cn",
-   "checked": "2026-11-24 06:43",
+   "checked": "2026-11-25 06:42",
    "status": "ok",
    "plans": [
     {
@@ -724,95 +706,95 @@
      "price": 19,
      "currency": "USD",
      "period": "month",
-     "note": "更多额度，支持深度研究"
+     "note": "更多额度；深度研究"
     },
     {
      "name": "Plus",
      "price": 180,
      "currency": "USD",
      "period": "year",
-     "note": "年付总价，折合每月15美元"
+     "note": "年付，更多额度；深度研究"
     },
     {
      "name": "Pro",
      "price": 39,
      "currency": "USD",
      "period": "month",
-     "note": "2倍额度，K3.1 Pro高速"
+     "note": "2 倍额度；K3.1 高速"
     },
     {
      "name": "Pro",
      "price": 372,
      "currency": "USD",
      "period": "year",
-     "note": "年付总价，折合每月31美元"
+     "note": "年付；2 倍额度；K3.1 高速"
     },
     {
      "name": "Max",
      "price": 99,
      "currency": "USD",
      "period": "month",
-     "note": "5倍额度，1M上下文"
+     "note": "5 倍额度；100 万上下文"
     },
     {
      "name": "Max",
      "price": 948,
      "currency": "USD",
      "period": "year",
-     "note": "年付总价，折合每月79美元"
+     "note": "年付；5 倍额度；100 万上下文"
     },
     {
      "name": "Ultra",
      "price": 199,
      "currency": "USD",
      "period": "month",
-     "note": "10倍额度，1M上下文"
+     "note": "10 倍额度；100 万上下文"
     },
     {
      "name": "Ultra",
      "price": 1908,
      "currency": "USD",
      "period": "year",
-     "note": "年付总价，折合每月159美元"
+     "note": "年付；10 倍额度；100 万上下文"
     }
    ],
    "promos": [],
-   "annual_discount": "年付最多省 $480",
-   "updated": "2026-11-24 06:43"
+   "annual_discount": "年付最高省 $480",
+   "updated": "2026-11-25 06:42"
   },
   "notion": {
    "id": "notion",
    "name": "Notion AI",
    "url": "https://www.notion.com/pricing",
    "region": "global",
-   "checked": "2026-11-24 06:43",
+   "checked": "2026-11-25 06:42",
    "status": "ok",
    "plans": [
     {
      "name": "Plus",
      "price": 10,
      "currency": "USD",
-     "period": "year_monthly",
-     "note": "小团队协作；含 AI 试用"
+     "period": "month",
+     "note": "小团队协作，含AI试用"
     },
     {
      "name": "Business",
      "price": 20,
      "currency": "USD",
-     "period": "year_monthly",
-     "note": "成长型团队；含 AI 代理"
+     "period": "month",
+     "note": "成长企业协作，含AI功能"
     },
     {
      "name": "Notion credits",
      "price": 10,
      "currency": "USD",
      "period": "credits",
-     "note": "每千月度积分；可免费试用"
+     "note": "每1000个月度AI积分"
     }
    ],
    "promos": [],
    "annual_discount": "年付最多省 20%",
-   "updated": "2026-11-24 06:43"
+   "updated": "2026-11-25 06:42"
   },
   "poe": {
    "id": "poe",
