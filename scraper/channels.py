@@ -226,10 +226,14 @@ def selftest():
 
 # ---------- fetch ----------
 
+class LoginExpired(Exception):
+    pass
+
+
 def fetch_all():
     tok, dev, vis = (os.environ.get(k, "") for k in ("S16688_TOKEN", "S16688_DEVICE_KEY", "S16688_VISITOR_KEY"))
     if not tok:
-        sys.exit("S16688_TOKEN is not set; skipping")
+        raise LoginExpired("S16688_TOKEN is not set")
     headers = {"Accept": "application/json, text/plain, */*", "Content-Type": "application/json",
                "Merchant-Token": tok, "device-key": dev, "visitor-key": vis, "visitor_key": vis,
                "Origin": "https://www.16688.com.cn", "Referer": "https://www.16688.com.cn/merchant/source",
@@ -262,7 +266,7 @@ def fetch_all():
             if j.get("code") != 1:
                 msg = j.get("msg") or ""
                 write_status(False, "16688 登录已过期，需要更新 S16688_TOKEN" if "登录" in msg else f"16688 接口出错：{msg}"[:80])
-                sys.exit(f"16688 API error for {kw!r}: {msg}")
+                raise LoginExpired(f"16688 API error for {kw!r}: {msg}")
             for g in j["data"]["list"]:
                 items[g["id"]] = g
             if len(j["data"]["list"]) < page_size:
@@ -320,6 +324,60 @@ PICK_PLANS = ("chatgpt/go", "chatgpt/plus", "chatgpt/pro-100", "chatgpt/pro-200"
               "google-ai/pro", "grok/supergrok")
 
 
+# ---------- fallback when the merchant login has expired ----------
+# A full crawl also keeps a price-spread sample of product numbers per plan and type (data/channels/sample.json).
+# Without a login, those products are re-read one by one from 16688's public product API (no captcha there),
+# so the price summary keeps updating, on fewer listings, until the login is renewed.
+SAMPLE_PER_GROUP, SAMPLE_MAX = 25, 900
+PUBLIC = "https://www.16688.com.cn/shopApi/goods/detail"
+
+
+def write_sample(items):
+    groups = {}
+    for g in items:
+        c = classify(g.get("name", ""))
+        if not c or g.get("status", 1) != 1 or not g.get("goods_no") or float(g.get("price") or 0) <= 0:
+            continue
+        groups.setdefault(f'{c["product"]}/{c["plan"]}', {}).setdefault(c["type"], []).append(g)
+    out, total = {}, 0
+    for key, types in groups.items():
+        for typ, rows in types.items():
+            rows.sort(key=lambda r: float(r["price"]))
+            n = min(SAMPLE_PER_GROUP, len(rows))
+            pick = [rows[round(i * (len(rows) - 1) / max(n - 1, 1))]["goods_no"] for i in range(n)]  # evenly across the price range
+            out.setdefault(key, {})[typ] = sorted(set(pick))
+            total += len(set(pick))
+    # biggest groups first if over the cap
+    if total > SAMPLE_MAX:
+        scale = SAMPLE_MAX / total
+        for key in out:
+            for typ in out[key]:
+                out[key][typ] = out[key][typ][:max(3, int(len(out[key][typ]) * scale))]
+    json.dump({"time": dt.datetime.now(dt.timezone.utc).isoformat(timespec="minutes"), "plans": out},
+              open(os.path.join(ROOT, "data", "channels", "sample.json"), "w"), ensure_ascii=False)
+
+
+def fetch_sample():
+    sp = os.path.join(ROOT, "data", "channels", "sample.json")
+    if not os.path.exists(sp):
+        return []
+    ids = sorted({g for types in json.load(open(sp))["plans"].values() for lst in types.values() for g in lst})
+    head = {"Content-Type": "application/json", "User-Agent": "Mozilla/5.0 (compatible; bbwith.com price monitor; +https://bbwith.com/about/)"}
+    items = []
+    for g in ids:
+        try:
+            req = urllib.request.Request(PUBLIC, data=json.dumps({"goods_no": g}).encode(), headers=head)
+            d = json.loads(urllib.request.urlopen(req, timeout=20).read()).get("data")
+        except Exception:
+            d = None
+        if d:
+            qty = d.get("stock_available_quantity")
+            on = qty == -1 or (qty or 0) > 0
+            items.append({"id": g, "goods_no": g, "name": d.get("name", ""), "price": d.get("price"), "status": 1 if on else 0, "sales_count": 0})
+        time.sleep(0.25)
+    return items
+
+
 def write_status(ok, why=""):
     """data/channels/status.json tells the site whether this feed is healthy (shown next to its update clock)."""
     p = os.path.join(ROOT, "data", "channels", "status.json")
@@ -360,20 +418,31 @@ def main():
         sys.exit(0 if selftest() else 1)
     if not selftest():
         sys.exit("classifier self-test failed")
-    items = fetch_all()
+    mode = "full"
+    try:
+        items = fetch_all()
+    except LoginExpired as ex:
+        print(ex, "-> re-reading the saved sample from public product pages")
+        items, mode = fetch_sample(), "sample"
+        if len(items) < 50:
+            sys.exit(f"login expired and only {len(items)} sample products readable; not writing data")
     plans = aggregate(items)
     now = dt.datetime.now(dt.timezone(dt.timedelta(hours=8)))
     fx = json.load(urllib.request.urlopen("https://open.er-api.com/v6/latest/USD", timeout=20))
     out = {"date": now.date().isoformat(), "time": now.isoformat(timespec="minutes"), "source": "16688",
-           "currency": "CNY", "usd_cny": fx["rates"]["CNY"], "listings_seen": len(items), "plans": plans}
+           "currency": "CNY", "usd_cny": fx["rates"]["CNY"], "listings_seen": len(items), "mode": mode, "plans": plans}
     os.makedirs(os.path.join(ROOT, "data", "channels"), exist_ok=True)
-    write_candidates(items, out["time"])
-    write_status(True)
+    if mode == "full":
+        write_candidates(items, out["time"])
+        write_sample(items)
+        write_status(True)
     path = os.path.join(ROOT, "data", "channels", f"{out['date']}.json")
     json.dump(out, open(path, "w", encoding="utf8"), ensure_ascii=False, indent=1)
     print(len(items), "listings")
     for k, types in sorted(plans.items()):
         print(" ", k, ", ".join(f"{t}: {v['count']}@¥{v['min']}/¥{v['median']}" for t, v in sorted(types.items())))
+    if mode == "sample":
+        sys.exit("wrote prices from the public sample; the 16688 login still needs renewing")  # non-zero: GitHub emails the owner
 
 
 if __name__ == "__main__":

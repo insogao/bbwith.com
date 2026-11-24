@@ -1536,6 +1536,7 @@ def feed_health():
         st = json.load(open(stf, encoding="utf8"))
         if not st.get("ok"):
             rows.append(f'<li><b>代充 · 成品号</b>：{e(st.get("why", ""))}（从 {e(st.get("since", "")[:16].replace("T", " "))} UTC 起）。'
+                        f'{"现在用抽样商品的公开价格顶着（" + str(CHANNELS.get("listings_seen", 0)) + " 条）。" if CHANNELS.get("mode") == "sample" else ""}'
                         f'更新方法：16688 商家后台重新登录，把 localStorage 里 merchant-token 的 value 填进 GitHub Secrets 的 S16688_TOKEN。</li>')
     if not rows:
         return '<p class="hint">数据源：全部正常。</p>'
