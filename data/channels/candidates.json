@@ -1,5 +1,5 @@
 {
-"time": "2026-11-24T20:45+08:00",
+"time": "2026-11-25T00:31+08:00",
 "plans": {
 "chatgpt/plus": [
 {
@@ -48,7 +48,19 @@
 "price": 105.9,
 "cost_price": 104,
 "agent_price": 105.9,
-"sales_count": 30
+"sales_count": 32
+},
+{
+"id": 104326,
+"goods_no": "G92290373",
+"parent_goods_id": 0,
+"goods_category_id": 10658,
+"source_category_id": 1,
+"name": "🔥🔥【官网正价直充】Plus会员【官方直充】✅【质保订阅30天】✅【售后同步官方】【带官方账单】【正规卡充值】🟢【可开票】支持未用卡密退款Codex",
+"price": 105.9,
+"cost_price": 103,
+"agent_price": 105.9,
+"sales_count": 294
 },
 {
 "id": 84580,
@@ -60,7 +72,7 @@
 "price": 105.9,
 "cost_price": 103,
 "agent_price": 105.9,
-"sales_count": 1499
+"sales_count": 1518
 },
 {
 "id": 14273,
@@ -84,7 +96,7 @@
 "price": 106,
 "cost_price": 0,
 "agent_price": 105.99,
-"sales_count": 3244
+"sales_count": 3291
 },
 {
 "id": 19407,
@@ -96,7 +108,7 @@
 "price": 106,
 "cost_price": 104,
 "agent_price": 106,
-"sales_count": 7171
+"sales_count": 7238
 },
 {
 "id": 58401,
@@ -108,7 +120,7 @@
 "price": 106,
 "cost_price": 0,
 "agent_price": 106,
-"sales_count": 4480
+"sales_count": 4525
 },
 {
 "id": 30728,
@@ -144,7 +156,7 @@
 "price": 106.5,
 "cost_price": 106,
 "agent_price": 106.5,
-"sales_count": 1113
+"sales_count": 1124
 },
 {
 "id": 2412,
@@ -156,7 +168,7 @@
 "price": 106.99,
 "cost_price": 106,
 "agent_price": 106.99,
-"sales_count": 7117
+"sales_count": 7131
 },
 {
 "id": 111165,
@@ -192,7 +204,7 @@
 "price": 107,
 "cost_price": 104.82,
 "agent_price": 107,
-"sales_count": 4268
+"sales_count": 4289
 },
 {
 "id": 117405,
@@ -240,7 +252,7 @@
 "price": 108,
 "cost_price": 106,
 "agent_price": 107.9,
-"sales_count": 699
+"sales_count": 700
 },
 {
 "id": 10085,
@@ -252,7 +264,7 @@
 "price": 108,
 "cost_price": 105,
 "agent_price": 108,
-"sales_count": 1653
+"sales_count": 1657
 },
 {
 "id": 36478,
@@ -276,7 +288,7 @@
 "price": 108,
 "cost_price": 0,
 "agent_price": 108,
-"sales_count": 405
+"sales_count": 406
 },
 {
 "id": 13149,
@@ -289,18 +301,6 @@
 "cost_price": 0,
 "agent_price": 107,
 "sales_count": 54
-},
-{
-"id": 84534,
-"goods_no": "G98063480",
-"parent_goods_id": 0,
-"goods_category_id": 0,
-"source_category_id": 1,
-"name": "GP,T Plus 会员直充｜1个月｜个人账号升级（g，pt）（卡充）",
-"price": 108,
-"cost_price": 105,
-"agent_price": 107,
-"sales_count": 42
 }
 ],
 "chatgpt/pro-200": [
@@ -314,7 +314,7 @@
 "price": 959.99,
 "cost_price": 0,
 "agent_price": 959.99,
-"sales_count": 770
+"sales_count": 776
 },
 {
 "id": 4802,
@@ -326,7 +326,7 @@
 "price": 960,
 "cost_price": 0,
 "agent_price": 960,
-"sales_count": 710
+"sales_count": 711
 },
 {
 "id": 13614,
@@ -341,27 +341,15 @@
 "sales_count": 68
 },
 {
-"id": 128,
-"goods_no": "G75387439",
-"parent_goods_id": 0,
-"goods_category_id": 151,
-"source_category_id": 1,
-"name": "【🔥已售25000+，可续费，开票快】官方正价直充 GP,T Pro200(20x)30天会员直充自己号 质保30天 可开发票 带官方发票账单（1号1卡1付）24小时全自动充值",
-"price": 966.97,
-"cost_price": 960,
-"agent_price": 970,
-"sales_count": 1019
-},
-{
 "id": 104366,
 "goods_no": "G84062363",
 "parent_goods_id": 0,
 "goods_category_id": 10658,
 "source_category_id": 1,
 "name": "🔥🔥【官网正价直充】Pro200 Pro20x 200刀【官方直充】✅【质保订阅30天】✅【售后同步官方】【带官方账单】【正规卡充值】🟢【可开票支持续费】Codex支持未用卡密退款plus",
-"price": 968,
+"price": 966.5,
 "cost_price": 945,
-"agent_price": 968,
+"agent_price": 966.5,
 "sales_count": 0
 },
 {
@@ -371,10 +359,22 @@
 "goods_category_id": 7537,
 "source_category_id": 1,
 "name": "🔥【官网正价直充】Pro200 Pro20x 200刀【官方直充】✅【质保订阅30天】✅【售后同步官方】【带官方账单】【正规卡充值】🟢【可开票支持续费】Codex支持未用卡密退款plus",
-"price": 968,
+"price": 966.5,
 "cost_price": 945,
-"agent_price": 968,
+"agent_price": 966.5,
 "sales_count": 44
+},
+{
+"id": 128,
+"goods_no": "G75387439",
+"parent_goods_id": 0,
+"goods_category_id": 151,
+"source_category_id": 1,
+"name": "【🔥已售25000+，可续费，开票快】官方正价直充 GP,T Pro200(20x)30天会员直充自己号 质保30天 可开发票 带官方发票账单（1号1卡1付）24小时全自动充值",
+"price": 966.97,
+"cost_price": 960,
+"agent_price": 970,
+"sales_count": 1022
 },
 {
 "id": 19414,
@@ -413,6 +413,18 @@
 "sales_count": 0
 },
 {
+"id": 22390,
+"goods_no": "G67632728",
+"parent_goods_id": 0,
+"goods_category_id": 3148,
+"source_category_id": 1,
+"name": "OpenAI Pro200 20X 菲区正价CDK秒冲🔥24小时自助充值🔥【质保订阅30天带账单可开票】",
+"price": 976.9,
+"cost_price": 939,
+"agent_price": 976.9,
+"sales_count": 61
+},
+{
 "id": 307,
 "goods_no": "G14666280",
 "parent_goods_id": 0,
@@ -422,7 +434,7 @@
 "price": 977.65,
 "cost_price": 0,
 "agent_price": 978.1,
-"sales_count": 577
+"sales_count": 578
 },
 {
 "id": 75307,
@@ -449,18 +461,6 @@
 "sales_count": 12
 },
 {
-"id": 22390,
-"goods_no": "G67632728",
-"parent_goods_id": 0,
-"goods_category_id": 3148,
-"source_category_id": 1,
-"name": "OpenAI Pro200 20X 菲区正价CDK秒冲🔥24小时自助充值🔥【质保订阅30天带账单可开票】",
-"price": 980,
-"cost_price": 939,
-"agent_price": 980,
-"sales_count": 61
-},
-{
 "id": 10089,
 "goods_no": "G12935936",
 "parent_goods_id": 0,
@@ -470,7 +470,7 @@
 "price": 980,
 "cost_price": 960,
 "agent_price": 980,
-"sales_count": 59
+"sales_count": 60
 },
 {
 "id": 47965,
@@ -494,7 +494,7 @@
 "price": 986.8,
 "cost_price": 0,
 "agent_price": 986.8,
-"sales_count": 13
+"sales_count": 15
 },
 {
 "id": 33157,
@@ -643,16 +643,28 @@
 "sales_count": 0
 },
 {
+"id": 1518,
+"goods_no": "G23611756",
+"parent_goods_id": 0,
+"goods_category_id": 438,
+"source_category_id": 1,
+"name": "【可开票】Pro 100刀 / ios官网正价 / 直冲自己账号 / 可覆盖订阅 / 质保订阅30天",
+"price": 589.99,
+"cost_price": 582,
+"agent_price": 585,
+"sales_count": 892
+},
+{
 "id": 466,
 "goods_no": "G43756178",
 "parent_goods_id": 0,
 "goods_category_id": 249,
 "source_category_id": 1,
 "name": "【美区IOS】质保订阅30天 GT..P Pro 5X 官充 秒到账 【Pro5x100刀月卡】支持开票或提供苹果账单 欢迎企业采购或代理对接！！！@@001",
-"price": 590,
+"price": 593,
 "cost_price": 0,
-"agent_price": 590,
-"sales_count": 1049
+"agent_price": 593,
+"sales_count": 1096
 },
 {
 "id": 552,
@@ -661,34 +673,10 @@
 "goods_category_id": 263,
 "source_category_id": 1,
 "name": "【美区IOS】JPT Codex Pro 5X 100美元月卡 官方充值 【质保30天】可开票@【pro5x】",
-"price": 590,
+"price": 593,
 "cost_price": 0,
-"agent_price": 590,
-"sales_count": 1138
-},
-{
-"id": 2407,
-"goods_no": "G76988386",
-"parent_goods_id": 0,
-"goods_category_id": 639,
-"source_category_id": 1,
-"name": "【美区ios】Pro100 5X 月卡|官方直充|保订阅|IOS渠道 可覆盖",
-"price": 590,
-"cost_price": 565,
-"agent_price": 590,
-"sales_count": 139
-},
-{
-"id": 138,
-"goods_no": "G70554833",
-"parent_goods_id": 0,
-"goods_category_id": 0,
-"source_category_id": 1,
-"name": "【美区IOS】自动发货现货GP（T） Pro 5X，100美金 官方IOS充值现货全自动发货（可覆盖） 质保30天 可以开发票（直充自己的号）🔥🔥🔥",
-"price": 590,
-"cost_price": 582,
-"agent_price": 600,
-"sales_count": 2526
+"agent_price": 593,
+"sales_count": 1141
 },
 {
 "id": 4939,
@@ -700,19 +688,31 @@
 "price": 593,
 "cost_price": 0,
 "agent_price": 593.1,
-"sales_count": 835
+"sales_count": 840
 },
 {
-"id": 1518,
-"goods_no": "G23611756",
+"id": 138,
+"goods_no": "G70554833",
 "parent_goods_id": 0,
-"goods_category_id": 438,
+"goods_category_id": 0,
 "source_category_id": 1,
-"name": "【可开票】Pro 100刀 / ios官网正价 / 直冲自己账号 / 可覆盖订阅 / 质保订阅30天",
+"name": "【美区IOS】自动发货现货GP（T） Pro 5X，100美金 官方IOS充值现货全自动发货（可覆盖） 质保30天 可以开发票（直充自己的号）🔥🔥🔥",
 "price": 593,
-"cost_price": 584,
-"agent_price": 590,
-"sales_count": 887
+"cost_price": 582,
+"agent_price": 600,
+"sales_count": 2531
+},
+{
+"id": 36815,
+"goods_no": "G39999293",
+"parent_goods_id": 0,
+"goods_category_id": 3148,
+"source_category_id": 1,
+"name": "OpenAI Pro100 5X 🇨🇱智利正价CDK秒冲🔥24小时自助充值🔥【质保订阅30天带账单】",
+"price": 593.99,
+"cost_price": 576,
+"agent_price": 593.99,
+"sales_count": 19
 },
 {
 "id": 103,
@@ -722,9 +722,9 @@
 "source_category_id": 1,
 "name": "【IOS美】G Pro 5x 100刀会员 官充 月卡【质保订阅30天】",
 "price": 594.9,
-"cost_price": 590,
+"cost_price": 585,
 "agent_price": 594.9,
-"sales_count": 1245
+"sales_count": 1246
 },
 {
 "id": 36959,
@@ -832,7 +832,7 @@
 "price": 595,
 "cost_price": 570,
 "agent_price": 595,
-"sales_count": 102
+"sales_count": 103
 },
 {
 "id": 30730,
@@ -918,7 +918,7 @@
 "price": 27.69,
 "cost_price": 0,
 "agent_price": 28,
-"sales_count": 595
+"sales_count": 600
 },
 {
 "id": 73440,
@@ -930,7 +930,7 @@
 "price": 27.69,
 "cost_price": 24,
 "agent_price": 27.81,
-"sales_count": 299
+"sales_count": 307
 },
 {
 "id": 65240,
@@ -942,7 +942,7 @@
 "price": 27.7,
 "cost_price": 25,
 "agent_price": 27.7,
-"sales_count": 21
+"sales_count": 23
 },
 {
 "id": 104382,
@@ -954,7 +954,7 @@
 "price": 27.7,
 "cost_price": 25,
 "agent_price": 27.7,
-"sales_count": 21
+"sales_count": 22
 },
 {
 "id": 58395,
@@ -966,7 +966,7 @@
 "price": 27.89,
 "cost_price": 0,
 "agent_price": 27.89,
-"sales_count": 76
+"sales_count": 77
 },
 {
 "id": 75799,
@@ -1232,7 +1232,7 @@
 "price": 140,
 "cost_price": 110,
 "agent_price": 140,
-"sales_count": 199
+"sales_count": 203
 }
 ],
 "claude/pro": [
@@ -1404,7 +1404,7 @@
 "price": 200,
 "cost_price": 0,
 "agent_price": 200,
-"sales_count": 205
+"sales_count": 206
 },
 {
 "id": 31553,
@@ -1488,7 +1488,7 @@
 "price": 750,
 "cost_price": 680,
 "agent_price": 750,
-"sales_count": 17
+"sales_count": 18
 }
 ],
 "claude/max-5x": [
