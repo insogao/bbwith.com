@@ -1680,11 +1680,17 @@ def freshness(day):
     items = [("App Store 价格", f"{len(day['storefronts'])} 个地区", _iso(day.get("time") or GIFT.get("time")), 86400),
              ("礼品卡报价", f"{len({i['shop'] for i in GIFT.get('items', [])})} 个平台", _iso(GIFT.get("time")), 86400),
              ("代充 · 成品号", f"{CHANNELS.get('listings_seen', 0):,} 条挂单", _iso(CHANNELS.get("time")), 4 * 3600)]
+    stf = os.path.join(ROOT, "data", "channels", "status.json")
+    ch_err = ""
+    if os.path.exists(stf):
+        st = json.load(open(stf, encoding="utf8"))
+        if not st.get("ok"):
+            ch_err = "数据源暂时读不到"
     ring = ('<svg class="ring" viewBox="0 0 64 64" aria-hidden="true"><circle class="trk" cx="32" cy="32" r="25"/>'
             '<circle class="arc" cx="32" cy="32" r="25" pathLength="100" transform="rotate(-90 32 32)"/>'
             '<g class="sec"><circle cx="32" cy="7" r="7"/></g></svg>')
     cells = "".join(
-        f'<div class="fr" data-t="{t}" data-period="{per}" title="{e(n)}：{e(sub)}，数据每{"天" if per == 86400 else " 4 小时"}更新">{ring}'
+        f'<div class="fr" data-t="{t}" data-period="{per}"{f" data-err={chr(34)}{ch_err}{chr(34)}" if (ch_err and per == 4 * 3600) else ""} title="{e(n)}：{e(sub)}，数据每{"天" if per == 86400 else " 4 小时"}更新">{ring}'
         f'<b class="fr-n">{e(n)}</b><span class="ago" hidden>—</span><span class="fr-next">下次 <b class="cd">--:--:--</b></span></div>'
         for n, sub, t, per in items if t)
     return f'<div class="fresh" data-sec="更新状态">{cells}</div>'

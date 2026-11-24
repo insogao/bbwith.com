@@ -353,9 +353,14 @@ document.addEventListener("click", function (ev) {
       c.querySelector(".ago").textContent = dur(age) + "前更新";
       c.title = c.querySelector(".fr-n").textContent + "：" + dur(age) + "前更新";
       var cd = c.querySelector(".cd");
-      if (left > 0) { cd.textContent = clock(left); c.classList.remove("busy", "late"); }
-      else if (left > -1800) { cd.textContent = "正在更新…"; c.classList.add("busy"); }
-      else { cd.textContent = "延迟中"; c.classList.add("late"); }
+      var nx = c.querySelector(".fr-next");
+      if (c.dataset.err || left <= -1800) {
+        // say what the reader gets, not just that something is late
+        if (nx.firstChild && nx.firstChild.nodeType === 3) nx.firstChild.textContent = "";
+        cd.textContent = (c.dataset.err || "暂停更新") + "，显示 " + dur(age) + "前的数据";
+        c.classList.add("late"); c.classList.remove("busy");
+      } else if (left > 0) { cd.textContent = clock(left); c.classList.remove("busy", "late"); }
+      else { cd.textContent = "正在更新…"; c.classList.add("busy"); }
     });
     requestAnimationFrame(function () {});
   }

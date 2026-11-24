@@ -260,7 +260,9 @@ def fetch_all():
                 failed.append(kw)
                 break
             if j.get("code") != 1:
-                sys.exit(f"16688 API error for {kw!r}: {j.get('msg')}")
+                msg = j.get("msg") or ""
+                write_status(False, "16688 登录已过期，需要更新 S16688_TOKEN" if "登录" in msg else f"16688 接口出错：{msg}"[:80])
+                sys.exit(f"16688 API error for {kw!r}: {msg}")
             for g in j["data"]["list"]:
                 items[g["id"]] = g
             if len(j["data"]["list"]) < page_size:
@@ -318,6 +320,16 @@ PICK_PLANS = ("chatgpt/go", "chatgpt/plus", "chatgpt/pro-100", "chatgpt/pro-200"
               "google-ai/pro", "grok/supergrok")
 
 
+def write_status(ok, why=""):
+    """data/channels/status.json tells the site whether this feed is healthy (shown next to its update clock)."""
+    p = os.path.join(ROOT, "data", "channels", "status.json")
+    prev = json.load(open(p)) if os.path.exists(p) else {}
+    now = dt.datetime.now(dt.timezone.utc).isoformat(timespec="minutes")
+    st = {"ok": ok, "why": why, "checked": now,
+          "since": prev.get("since") if (prev.get("ok") == ok and prev.get("since")) else now}
+    json.dump(st, open(p, "w"), ensure_ascii=False)
+
+
 def write_candidates(items, when):
     """Cheapest trustworthy-looking 代充 listings per plan, for scraper/shoppick.py to choose from.
     Only fields needed to look a product up on its public page are kept."""
@@ -356,6 +368,7 @@ def main():
            "currency": "CNY", "usd_cny": fx["rates"]["CNY"], "listings_seen": len(items), "plans": plans}
     os.makedirs(os.path.join(ROOT, "data", "channels"), exist_ok=True)
     write_candidates(items, out["time"])
+    write_status(True)
     path = os.path.join(ROOT, "data", "channels", f"{out['date']}.json")
     json.dump(out, open(path, "w", encoding="utf8"), ensure_ascii=False, indent=1)
     print(len(items), "listings")

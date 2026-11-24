@@ -35,6 +35,8 @@ jobs:
           fi
 
       - name: Collect 16688 top-up prices
+        id: collect
+        continue-on-error: true   # an expired login must not stop the shop watch below; status.json records it
         if: steps.check.outputs.skip != 'true'
         env:
           S16688_TOKEN: ${{ secrets.S16688_TOKEN }}
@@ -62,3 +64,9 @@ jobs:
           git commit -m "data: domestic prices and merchant checks $(TZ=Asia/Shanghai date '+%F %H:%M')"
           git pull --rebase
           git push
+
+      - name: Fail the run if 16688 could not be read (so GitHub sends the usual failure email)
+        if: steps.collect.outcome == 'failure'
+        run: |
+          cat data/channels/status.json || true
+          exit 1
