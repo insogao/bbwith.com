@@ -1,19 +1,7 @@
 {
-"time": "2026-11-25T00:31+08:00",
+"time": "2026-11-25T04:28+08:00",
 "plans": {
 "chatgpt/plus": [
-{
-"id": 113856,
-"goods_no": "G84368994",
-"parent_goods_id": 0,
-"goods_category_id": 11434,
-"source_category_id": 1,
-"name": "AI 源头  plus官方充值月卡（质保30天）----直冲个人账号----付款后联系客服QQ：935657发送session文件---充值时间5-10分钟",
-"price": 99,
-"cost_price": 0,
-"agent_price": 95,
-"sales_count": 0
-},
 {
 "id": 62417,
 "goods_no": "G70941231",
@@ -27,12 +15,24 @@
 "sales_count": 281
 },
 {
+"id": 113856,
+"goods_no": "G84368994",
+"parent_goods_id": 0,
+"goods_category_id": 11434,
+"source_category_id": 1,
+"name": "【官方正价充值】菲区plus/质保订阅30天/售后稳定/充值自己号码",
+"price": 105,
+"cost_price": 0,
+"agent_price": 95,
+"sales_count": 1
+},
+{
 "id": 118049,
 "goods_no": "G27276107",
 "parent_goods_id": 0,
 "goods_category_id": 10658,
 "source_category_id": 1,
-"name": "t官方直充】 Plus月卡会员｜官方渠道充值｜30天订阅质保｜官方账单｜正规充值｜售后保障",
+"name": "t官方直充】🔥🔥🔥 Plus月卡会员｜官方渠道充值｜30天订阅质保｜官方账单｜正规充值｜售后保障",
 "price": 105.9,
 "cost_price": 104,
 "agent_price": 105.9,
@@ -72,7 +72,7 @@
 "price": 105.9,
 "cost_price": 103,
 "agent_price": 105.9,
-"sales_count": 1518
+"sales_count": 1522
 },
 {
 "id": 14273,
@@ -96,7 +96,7 @@
 "price": 106,
 "cost_price": 0,
 "agent_price": 105.99,
-"sales_count": 3291
+"sales_count": 3296
 },
 {
 "id": 19407,
@@ -108,7 +108,7 @@
 "price": 106,
 "cost_price": 104,
 "agent_price": 106,
-"sales_count": 7238
+"sales_count": 7245
 },
 {
 "id": 58401,
@@ -120,7 +120,7 @@
 "price": 106,
 "cost_price": 0,
 "agent_price": 106,
-"sales_count": 4525
+"sales_count": 4531
 },
 {
 "id": 30728,
@@ -156,7 +156,7 @@
 "price": 106.5,
 "cost_price": 106,
 "agent_price": 106.5,
-"sales_count": 1124
+"sales_count": 1126
 },
 {
 "id": 2412,
@@ -204,7 +204,7 @@
 "price": 107,
 "cost_price": 104.82,
 "agent_price": 107,
-"sales_count": 4289
+"sales_count": 4293
 },
 {
 "id": 117405,
@@ -314,7 +314,7 @@
 "price": 959.99,
 "cost_price": 0,
 "agent_price": 959.99,
-"sales_count": 776
+"sales_count": 778
 },
 {
 "id": 4802,
@@ -326,7 +326,7 @@
 "price": 960,
 "cost_price": 0,
 "agent_price": 960,
-"sales_count": 711
+"sales_count": 712
 },
 {
 "id": 13614,
@@ -652,7 +652,7 @@
 "price": 589.99,
 "cost_price": 582,
 "agent_price": 585,
-"sales_count": 892
+"sales_count": 894
 },
 {
 "id": 466,
@@ -664,7 +664,7 @@
 "price": 593,
 "cost_price": 0,
 "agent_price": 593,
-"sales_count": 1096
+"sales_count": 1196
 },
 {
 "id": 552,
@@ -676,7 +676,7 @@
 "price": 593,
 "cost_price": 0,
 "agent_price": 593,
-"sales_count": 1141
+"sales_count": 1266
 },
 {
 "id": 4939,
@@ -688,7 +688,7 @@
 "price": 593,
 "cost_price": 0,
 "agent_price": 593.1,
-"sales_count": 840
+"sales_count": 842
 },
 {
 "id": 138,
@@ -700,7 +700,7 @@
 "price": 593,
 "cost_price": 582,
 "agent_price": 600,
-"sales_count": 2531
+"sales_count": 2533
 },
 {
 "id": 36815,
@@ -918,7 +918,7 @@
 "price": 27.69,
 "cost_price": 0,
 "agent_price": 28,
-"sales_count": 600
+"sales_count": 602
 },
 {
 "id": 73440,
@@ -930,7 +930,7 @@
 "price": 27.69,
 "cost_price": 24,
 "agent_price": 27.81,
-"sales_count": 307
+"sales_count": 308
 },
 {
 "id": 65240,
@@ -1232,7 +1232,7 @@
 "price": 140,
 "cost_price": 110,
 "agent_price": 140,
-"sales_count": 203
+"sales_count": 204
 }
 ],
 "claude/pro": [
