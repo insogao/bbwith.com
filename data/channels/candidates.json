@@ -1,5 +1,5 @@
 {
-"time": "2026-11-26T00:33+08:00",
+"time": "2026-11-26T04:28+08:00",
 "plans": {
 "chatgpt/plus": [
 {
@@ -72,7 +72,7 @@
 "price": 105.9,
 "cost_price": 103,
 "agent_price": 105.9,
-"sales_count": 366
+"sales_count": 367
 },
 {
 "id": 84580,
@@ -84,7 +84,7 @@
 "price": 105.9,
 "cost_price": 103,
 "agent_price": 105.9,
-"sales_count": 1630
+"sales_count": 1633
 },
 {
 "id": 14273,
@@ -108,7 +108,7 @@
 "price": 106,
 "cost_price": 0,
 "agent_price": 105.99,
-"sales_count": 3432
+"sales_count": 3434
 },
 {
 "id": 19407,
@@ -120,7 +120,7 @@
 "price": 106,
 "cost_price": 104,
 "agent_price": 106,
-"sales_count": 7457
+"sales_count": 7464
 },
 {
 "id": 58401,
@@ -132,7 +132,7 @@
 "price": 106,
 "cost_price": 0,
 "agent_price": 106,
-"sales_count": 4753
+"sales_count": 4754
 },
 {
 "id": 30728,
@@ -168,7 +168,7 @@
 "price": 106.5,
 "cost_price": 106,
 "agent_price": 106.5,
-"sales_count": 1204
+"sales_count": 1205
 },
 {
 "id": 46615,
@@ -192,7 +192,7 @@
 "price": 106.99,
 "cost_price": 106,
 "agent_price": 106.99,
-"sales_count": 7240
+"sales_count": 7243
 },
 {
 "id": 50941,
@@ -228,7 +228,7 @@
 "price": 107,
 "cost_price": 104.82,
 "agent_price": 107,
-"sales_count": 4480
+"sales_count": 4483
 },
 {
 "id": 117405,
@@ -326,7 +326,7 @@
 "price": 960,
 "cost_price": 0,
 "agent_price": 960,
-"sales_count": 717
+"sales_count": 718
 },
 {
 "id": 13614,
@@ -374,7 +374,7 @@
 "price": 966.97,
 "cost_price": 960,
 "agent_price": 970,
-"sales_count": 1039
+"sales_count": 1040
 },
 {
 "id": 19414,
@@ -398,7 +398,7 @@
 "price": 970,
 "cost_price": 960,
 "agent_price": 970,
-"sales_count": 75
+"sales_count": 77
 },
 {
 "id": 75891,
@@ -518,7 +518,7 @@
 "price": 988,
 "cost_price": 950,
 "agent_price": 988,
-"sales_count": 7
+"sales_count": 8
 },
 {
 "id": 91472,
@@ -688,7 +688,7 @@
 "price": 593,
 "cost_price": 582,
 "agent_price": 600,
-"sales_count": 2591
+"sales_count": 2595
 },
 {
 "id": 1518,
@@ -712,7 +712,7 @@
 "price": 593.99,
 "cost_price": 576,
 "agent_price": 593.99,
-"sales_count": 20
+"sales_count": 21
 },
 {
 "id": 103,
@@ -918,7 +918,7 @@
 "price": 27.69,
 "cost_price": 0,
 "agent_price": 28,
-"sales_count": 629
+"sales_count": 630
 },
 {
 "id": 73440,
@@ -930,7 +930,7 @@
 "price": 27.69,
 "cost_price": 24,
 "agent_price": 27.81,
-"sales_count": 336
+"sales_count": 338
 },
 {
 "id": 65240,
@@ -1232,7 +1232,7 @@
 "price": 139,
 "cost_price": 130,
 "agent_price": 140,
-"sales_count": 1483
+"sales_count": 1486
 },
 {
 "id": 58950,
@@ -1244,7 +1244,7 @@
 "price": 140,
 "cost_price": 110,
 "agent_price": 140,
-"sales_count": 244
+"sales_count": 245
 },
 {
 "id": 123751,
