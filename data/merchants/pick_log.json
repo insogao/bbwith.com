@@ -262,5 +262,18 @@
    }
   ],
   "dropped": []
+ },
+ {
+  "date": "2026-11-25",
+  "removed_gone": [
+   "G33385423"
+  ]
+ },
+ {
+  "date": "2026-11-25",
+  "plan": "grok/supergrok",
+  "full": true,
+  "picked": [],
+  "dropped": []
  }
 ]
