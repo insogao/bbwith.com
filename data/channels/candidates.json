@@ -1,5 +1,5 @@
 {
-"time": "2026-11-25T04:28+08:00",
+"time": "2026-11-25T08:50+08:00",
 "plans": {
 "chatgpt/plus": [
 {
@@ -36,7 +36,7 @@
 "price": 105.9,
 "cost_price": 104,
 "agent_price": 105.9,
-"sales_count": 0
+"sales_count": 1
 },
 {
 "id": 117660,
@@ -72,7 +72,7 @@
 "price": 105.9,
 "cost_price": 103,
 "agent_price": 105.9,
-"sales_count": 1522
+"sales_count": 1525
 },
 {
 "id": 14273,
@@ -96,7 +96,7 @@
 "price": 106,
 "cost_price": 0,
 "agent_price": 105.99,
-"sales_count": 3296
+"sales_count": 3303
 },
 {
 "id": 19407,
@@ -108,7 +108,7 @@
 "price": 106,
 "cost_price": 104,
 "agent_price": 106,
-"sales_count": 7245
+"sales_count": 7248
 },
 {
 "id": 58401,
@@ -120,7 +120,7 @@
 "price": 106,
 "cost_price": 0,
 "agent_price": 106,
-"sales_count": 4531
+"sales_count": 4537
 },
 {
 "id": 30728,
@@ -168,7 +168,7 @@
 "price": 106.99,
 "cost_price": 106,
 "agent_price": 106.99,
-"sales_count": 7131
+"sales_count": 7133
 },
 {
 "id": 111165,
@@ -204,7 +204,7 @@
 "price": 107,
 "cost_price": 104.82,
 "agent_price": 107,
-"sales_count": 4293
+"sales_count": 4294
 },
 {
 "id": 117405,
@@ -276,7 +276,7 @@
 "price": 108,
 "cost_price": 103,
 "agent_price": 109,
-"sales_count": 791
+"sales_count": 792
 },
 {
 "id": 20019,
@@ -314,7 +314,7 @@
 "price": 959.99,
 "cost_price": 0,
 "agent_price": 959.99,
-"sales_count": 778
+"sales_count": 779
 },
 {
 "id": 4802,
@@ -326,7 +326,7 @@
 "price": 960,
 "cost_price": 0,
 "agent_price": 960,
-"sales_count": 712
+"sales_count": 713
 },
 {
 "id": 13614,
@@ -652,7 +652,7 @@
 "price": 589.99,
 "cost_price": 582,
 "agent_price": 585,
-"sales_count": 894
+"sales_count": 895
 },
 {
 "id": 466,
@@ -676,7 +676,7 @@
 "price": 593,
 "cost_price": 0,
 "agent_price": 593,
-"sales_count": 1266
+"sales_count": 1267
 },
 {
 "id": 4939,
@@ -688,7 +688,7 @@
 "price": 593,
 "cost_price": 0,
 "agent_price": 593.1,
-"sales_count": 842
+"sales_count": 843
 },
 {
 "id": 138,
@@ -918,7 +918,7 @@
 "price": 27.69,
 "cost_price": 0,
 "agent_price": 28,
-"sales_count": 602
+"sales_count": 603
 },
 {
 "id": 73440,
@@ -930,7 +930,7 @@
 "price": 27.69,
 "cost_price": 24,
 "agent_price": 27.81,
-"sales_count": 308
+"sales_count": 309
 },
 {
 "id": 65240,
@@ -1232,7 +1232,7 @@
 "price": 140,
 "cost_price": 110,
 "agent_price": 140,
-"sales_count": 204
+"sales_count": 207
 }
 ],
 "claude/pro": [

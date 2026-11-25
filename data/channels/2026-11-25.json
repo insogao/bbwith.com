@@ -1,10 +1,10 @@
 {
  "date": "2026-11-25",
- "time": "2026-11-25T04:28+08:00",
+ "time": "2026-11-25T08:50+08:00",
  "source": "16688",
  "currency": "CNY",
- "usd_cny": 6.679299,
- "listings_seen": 1960,
+ "usd_cny": 6.678179,
+ "listings_seen": 1956,
  "mode": "full",
  "plans": {
   "chatgpt/plus": {
@@ -22,7 +22,7 @@
     "min": 104.55,
     "p25": 110.0,
     "median": 120.0,
-    "sales": 82972,
+    "sales": 83020,
     "trimmed": 0,
     "routes": {
      "us-ios": {
@@ -30,7 +30,7 @@
       "min": 108.0,
       "p25": 121.99,
       "median": 125.0,
-      "sales": 4187,
+      "sales": 4189,
       "trimmed": 0
      },
      "ph": {
@@ -38,7 +38,7 @@
       "min": 105.0,
       "p25": 110.0,
       "median": 115.0,
-      "sales": 45664,
+      "sales": 45702,
       "trimmed": 0
      },
      "other": {
@@ -46,7 +46,7 @@
       "min": 104.55,
       "p25": 108.99,
       "median": 120.0,
-      "sales": 33102,
+      "sales": 33110,
       "trimmed": 0
      },
      "jp": {
@@ -65,7 +65,7 @@
     "min": 45.0,
     "p25": 69.0,
     "median": 107.5,
-    "sales": 37459,
+    "sales": 37465,
     "trimmed": 0,
     "no_guarantee": 0
    },
@@ -74,7 +74,7 @@
     "min": 9.9,
     "p25": 20.0,
     "median": 34.25,
-    "sales": 26931,
+    "sales": 26949,
     "trimmed": 4,
     "no_guarantee": 0
    },
@@ -83,7 +83,7 @@
     "min": 39.99,
     "p25": 58.0,
     "median": 70.0,
-    "sales": 10873,
+    "sales": 10883,
     "trimmed": 0,
     "no_guarantee": 0
    }
@@ -141,7 +141,7 @@
     "min": 2980.0,
     "p25": 3060.0,
     "median": 3140.0,
-    "sales": 453,
+    "sales": 454,
     "trimmed": 0,
     "routes": {
      "other": {
@@ -149,7 +149,7 @@
       "min": 3000.0,
       "p25": 3030.88,
       "median": 3100.0,
-      "sales": 316,
+      "sales": 317,
       "trimmed": 0
      },
      "us-ios": {
@@ -197,11 +197,11 @@
     "no_guarantee": 0
    },
    "account-short": {
-    "count": 4,
-    "min": 1100.0,
+    "count": 3,
+    "min": 1950.0,
     "p25": 1950.0,
-    "median": 2325.0,
-    "sales": 14,
+    "median": 2700.0,
+    "sales": 4,
     "trimmed": 2,
     "no_guarantee": 0
    },
@@ -230,7 +230,7 @@
     "min": 959.99,
     "p25": 1000.0,
     "median": 1060.0,
-    "sales": 5413,
+    "sales": 5415,
     "trimmed": 0,
     "routes": {
      "other": {
@@ -238,7 +238,7 @@
       "min": 959.99,
       "p25": 1000.0,
       "median": 1050.0,
-      "sales": 3730,
+      "sales": 3732,
       "trimmed": 0
      },
      "ph": {
@@ -311,7 +311,7 @@
     "min": 570.0,
     "p25": 610.0,
     "median": 640.0,
-    "sales": 10902,
+    "sales": 10907,
     "trimmed": 0,
     "routes": {
      "other": {
@@ -319,7 +319,7 @@
       "min": 595.0,
       "p25": 625.0,
       "median": 640.0,
-      "sales": 1616,
+      "sales": 1617,
       "trimmed": 0
      },
      "eg": {
@@ -335,7 +335,7 @@
       "min": 570.0,
       "p25": 595.0,
       "median": 630.0,
-      "sales": 8802,
+      "sales": 8805,
       "trimmed": 0
      },
      "ph": {
@@ -351,7 +351,7 @@
       "min": 593.99,
       "p25": 600.0,
       "median": 615.0,
-      "sales": 200,
+      "sales": 201,
       "trimmed": 0
      }
     },
@@ -391,7 +391,7 @@
     "min": 12.0,
     "p25": 35.0,
     "median": 55.0,
-    "sales": 6362,
+    "sales": 6363,
     "trimmed": 21,
     "no_guarantee": 1
    }
@@ -402,7 +402,7 @@
     "min": 27.69,
     "p25": 31.79,
     "median": 35.0,
-    "sales": 1979,
+    "sales": 1981,
     "trimmed": 0,
     "routes": {
      "other": {
@@ -410,7 +410,7 @@
       "min": 27.69,
       "p25": 28.96,
       "median": 35.0,
-      "sales": 1469,
+      "sales": 1471,
       "trimmed": 0
      },
      "eg": {
@@ -456,7 +456,7 @@
     "min": 4.9,
     "p25": 5.2,
     "median": 7.5,
-    "sales": 3637,
+    "sales": 3686,
     "trimmed": 0,
     "no_guarantee": 0
    },
@@ -494,17 +494,17 @@
     "count": 29,
     "min": 8.0,
     "p25": 13.99,
-    "median": 25.0,
-    "sales": 9410,
+    "median": 23.99,
+    "sales": 9431,
     "trimmed": 6,
-    "no_guarantee": 2
+    "no_guarantee": 1
    },
    "topup": {
     "count": 2,
     "min": 120.0,
     "p25": 120.0,
     "median": 130.0,
-    "sales": 204,
+    "sales": 207,
     "trimmed": 0,
     "routes": {
      "us-ios": {
@@ -512,7 +512,7 @@
       "min": 120.0,
       "p25": 120.0,
       "median": 130.0,
-      "sales": 204,
+      "sales": 207,
       "trimmed": 0
      }
     },
@@ -523,7 +523,7 @@
     "min": 17.6,
     "p25": 20.0,
     "median": 30.0,
-    "sales": 944,
+    "sales": 972,
     "trimmed": 0,
     "no_guarantee": 1
    },
