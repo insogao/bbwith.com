@@ -127,6 +127,9 @@ PAGE_HASH = {}  # path -> hash of the page text without clocks, build stamps and
 def _content_hash(html):
     t = re.sub(r"\?v=[0-9a-f]+", "", html)
     t = re.sub(r'data-t="[^"]*"', "", t)
+    # the daily FX map sits in every page's head for the currency switch; it moves every day and is
+    # not content, so leaving it in made every lastmod in the sitemap jump to today each morning
+    t = re.sub(r"<script>window\.FX=.*?</script>", "", t, flags=re.S)
     t = re.sub(r"\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}(:\d{2})?([+-]\d{2}:\d{2}|Z)?", "", t)
     t = re.sub(r'"date(Modified|Published)":\s*"[^"]*"', "", t)
     return hashlib.sha1(t.encode()).hexdigest()[:16]
@@ -496,6 +499,28 @@ def product_channels(product):
 {channel_note()}"""
 
 
+def official_page_pid(product):
+    """The /ai-pricing/<pid>/ page for an App Store product, when that page will have prices (so it is indexable)."""
+    pid = next((k for k, v in PRICING_PROD.items() if v == product), None)
+    p = PRICING.get("products", {}).get(pid) if pid else None
+    if not p:
+        return None
+    if p.get("plans"):
+        return pid
+    # same fallback as build_pricing(): manual official prices when the page could not be read
+    return pid if pid in PRODUCTS and any(k.startswith(pid + "/") for k in OFFICIAL) else None
+
+
+def official_link(product, plan):
+    """Plan pages and the official-price page answer the same question; they used to link only via the hub."""
+    pid = official_page_pid(product)
+    if not pid:
+        return ""
+    name = PRICING["products"][pid]["name"]
+    return (f'<p class="hint">官网各档位的标价、按年付折扣和正在进行的优惠，见'
+            f'<a href="/ai-pricing/{pid}/">{e(name)} 官网价格</a>。</p>')
+
+
 def build_plan_page(product, plan, rows, prev_rows, day, all_plans):
     name = full_name(product, plan)
     path = url_plan(product, plan)
@@ -535,6 +560,7 @@ def build_plan_page(product, plan, rows, prev_rows, day, all_plans):
 {plan_note(product, plan)}
 {deal_banner(product, plan)}
 {f'<h2>官网和 App Store 哪个便宜</h2>{channel_compare(product, plan, rows)}' if channel_compare(product, plan, rows) else ''}
+{official_link(product, plan)}
 <h2>各地区 App Store 价格（共 {len(rows)} 个地区）</h2>
 {price_table(rows, prev=prev_map, fold=15)}
 {channel_block(product, plan, rows)}
@@ -1326,7 +1352,7 @@ def plan_price(x):
 FX_ALL = {}
 
 
-def build_pricing(day):
+def build_pricing(day, cur):
     if not PRICING.get("products"):
         return []
     FX_ALL.update(day["fx"])
@@ -1359,12 +1385,25 @@ def build_pricing(day):
                 + (f"正在进行的优惠：{'；'.join(x['title'] for x in p.get('promos') or [])}。" if p.get("promos") else "")
                 + (f"{p['annual_discount']}。" if p.get("annual_discount") else ""))
         cr_html, cr_ld = crumbs([("首页", "/"), ("AI 官方价格", "/ai-pricing/"), (p["name"], path)])
+        prod = PRICING_PROD.get(pid)
+        same = [(a, b) for (a, b) in cur if a == prod] if prod else []
+        regional = ""
+        if same:
+            items = "".join(
+                f'<li><a href="{url_plan(a, b)}">{e(full_name(a, b))} 各地区价格</a>'
+                f'<small> 今日最低 {flag(cur[(a, b)][0]["cc"])} {e(cname(cur[(a, b)][0]["cc"]))} {usd(cur[(a, b)][0]["usd"])}</small></li>'
+                for a, b in same)
+            regional = (f'<h2>同一产品的 App Store 各地区价格</h2>'
+                        f'<p class="hint">官网订阅和 App Store 内购是两条路，价格不一样。'
+                        f'<a href="/{prod}/">{e(PRODUCTS[prod]["name"].split("（")[0])} 各档位最便宜的地区</a>按 App Store 月付标价对比：</p>'
+                        f'<ul class="list">{items}</ul>')
         body = f"""{cr_html}<h1>{e(p['name'])} 会员价格（官网）</h1>
 <p class="meta">读取自 <a href="{e(p['url'])}" rel="nofollow noopener" target="_blank">官网价格页</a> · 更新于 {e(p.get('updated') or p.get('checked', ''))}（北京时间）· 每天自动检查</p>
 <p class="lead">{e(lead)}</p>{status}
 {f'<h2>正在进行的优惠</h2><ul class="list">{promos}</ul>' if promos else ''}
 <div class="bar"><h2>付费方案</h2>{cur_select()}</div>
 <div class="tablewrap"><table class="prices sortable"><thead><tr><th>方案</th><th>计费</th><th>官网标价</th><th data-sort=num>折合</th><th>说明</th></tr></thead><tbody>{trs}</tbody></table></div>
+{regional}
 <p class="note">价格由 AI 从官网页面文字中识别，可能有误或因地区、登录状态而不同，请以官网结账页为准。官网价格多为美国或默认地区价格，不含税。</p>
 <p class="src"><a href="/ai-pricing/">全部 AI 官方价格</a> · <a href="/deals/">AI 会员优惠</a></p>"""
         write(path, page(f"{p['name']} 会员多少钱？官网价格和优惠（{zh_date(day['date'])}）· 比比价",
@@ -1380,7 +1419,8 @@ def build_pricing(day):
 <div class="tablewrap"><table class="prices sortable"><thead><tr><th>产品</th><th data-sort=num>月付最低</th><th>方案数</th><th>正在进行的优惠</th></tr></thead><tbody>{rows}</tbody></table></div>
 <p class="note">价格由 AI 从官网页面识别，以官网结账页为准。更新于 {e(PRICING.get('time', ''))}（北京时间）。</p>"""
     write("/ai-pricing/", page("AI 会员官方价格一览：ChatGPT、Claude、Midjourney、可灵、Lovart、LiblibAI · 比比价",
-                               "每天自动更新的 AI 会员官网价格和限时优惠。", "/ai-pricing/", body, [cr_ld], day["date"]))
+                               "ChatGPT、Claude、Gemini、Grok、Cursor、Perplexity 等 AI 会员的官网标价、按年付折扣和正在进行的优惠，"
+                               "每天自动读取各家官网价格页；同一产品在 App Store 各地区的价格也有对比。", "/ai-pricing/", body, [cr_ld], day["date"]))
     return ["/ai-pricing/"] + urls
 
 
@@ -2120,7 +2160,7 @@ def main():
     build_daily_index(days)
     build_home(day, cur, chg, prev)
     build_about(day)
-    pricing_urls = build_pricing(day)
+    pricing_urls = build_pricing(day, cur)
     build_deals(day)
     gift_urls = build_gift(day, cur) + build_news(cur) + build_shops() + pricing_urls + build_guides(day, cur) + build_channels_hub(cur)
     build_merchant_pages()
