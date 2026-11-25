@@ -1,10 +1,10 @@
 {
  "date": "2026-11-25",
- "time": "2026-11-25T12:32+08:00",
+ "time": "2026-11-25T16:38+08:00",
  "source": "16688",
  "currency": "CNY",
  "usd_cny": 6.678179,
- "listings_seen": 1950,
+ "listings_seen": 1962,
  "mode": "full",
  "plans": {
   "chatgpt/plus": {
@@ -18,35 +18,35 @@
     "no_guarantee": 0
    },
    "topup": {
-    "count": 208,
+    "count": 212,
     "min": 104.55,
     "p25": 110.0,
     "median": 120.0,
-    "sales": 79550,
+    "sales": 84299,
     "trimmed": 0,
     "routes": {
      "us-ios": {
-      "count": 38,
+      "count": 39,
       "min": 108.0,
       "p25": 121.99,
       "median": 125.0,
-      "sales": 4209,
+      "sales": 4456,
       "trimmed": 0
      },
      "ph": {
-      "count": 102,
+      "count": 104,
       "min": 105.0,
       "p25": 110.0,
-      "median": 115.0,
-      "sales": 42524,
+      "median": 114.5,
+      "sales": 46222,
       "trimmed": 0
      },
      "other": {
-      "count": 67,
+      "count": 68,
       "min": 104.55,
-      "p25": 108.97,
-      "median": 119.99,
-      "sales": 32798,
+      "p25": 108.99,
+      "median": 119.495,
+      "sales": 33602,
       "trimmed": 0
      },
      "jp": {
@@ -61,21 +61,21 @@
     "no_guarantee": 0
    },
    "promo": {
-    "count": 51,
+    "count": 49,
     "min": 45.0,
-    "p25": 69.0,
-    "median": 107.5,
-    "sales": 37688,
+    "p25": 70.0,
+    "median": 107.77,
+    "sales": 37834,
     "trimmed": 0,
     "no_guarantee": 0
    },
    "account-short": {
-    "count": 151,
-    "min": 9.9,
-    "p25": 20.0,
-    "median": 34.5,
-    "sales": 27205,
-    "trimmed": 4,
+    "count": 147,
+    "min": 10.5,
+    "p25": 22.0,
+    "median": 35.0,
+    "sales": 25619,
+    "trimmed": 7,
     "no_guarantee": 0
    },
    "account-long": {
@@ -83,7 +83,7 @@
     "min": 39.99,
     "p25": 60.0,
     "median": 70.0,
-    "sales": 10952,
+    "sales": 11044,
     "trimmed": 0,
     "no_guarantee": 0
    }
@@ -94,7 +94,7 @@
     "min": 51.0,
     "p25": 62.0,
     "median": 64.0,
-    "sales": 580,
+    "sales": 582,
     "trimmed": 0,
     "routes": {
      "other": {
@@ -110,7 +110,7 @@
       "min": 51.0,
       "p25": 52.0,
       "median": 62.0,
-      "sales": 365,
+      "sales": 367,
       "trimmed": 0
      }
     },
@@ -137,19 +137,19 @@
   },
   "chatgpt/pro-500": {
    "topup": {
-    "count": 75,
-    "min": 2980.0,
-    "p25": 3099.0,
-    "median": 3150.0,
-    "sales": 450,
+    "count": 78,
+    "min": 2900.0,
+    "p25": 3050.0,
+    "median": 3139.5,
+    "sales": 457,
     "trimmed": 0,
     "routes": {
      "other": {
-      "count": 33,
+      "count": 35,
       "min": 3000.0,
-      "p25": 3050.0,
+      "p25": 3030.88,
       "median": 3100.0,
-      "sales": 313,
+      "sales": 319,
       "trimmed": 0
      },
      "us-ios": {
@@ -169,11 +169,11 @@
       "trimmed": 0
      },
      "cl": {
-      "count": 12,
-      "min": 2980.0,
-      "p25": 3100.0,
-      "median": 3145.0,
-      "sales": 0,
+      "count": 13,
+      "min": 2900.0,
+      "p25": 3060.0,
+      "median": 3140.0,
+      "sales": 1,
       "trimmed": 0
      },
      "eg": {
@@ -226,11 +226,11 @@
   },
   "chatgpt/pro-200": {
    "topup": {
-    "count": 120,
+    "count": 121,
     "min": 959.99,
     "p25": 1000.0,
     "median": 1060.0,
-    "sales": 4718,
+    "sales": 4767,
     "trimmed": 0,
     "routes": {
      "other": {
@@ -238,23 +238,23 @@
       "min": 959.99,
       "p25": 1000.0,
       "median": 1050.0,
-      "sales": 3036,
+      "sales": 3055,
       "trimmed": 0
      },
      "ph": {
-      "count": 48,
+      "count": 50,
       "min": 965.0,
       "p25": 990.0,
-      "median": 1025.0,
-      "sales": 1260,
+      "median": 1020.0,
+      "sales": 1297,
       "trimmed": 0
      },
      "us-ios": {
-      "count": 23,
+      "count": 22,
       "min": 1010.0,
       "p25": 1195.0,
       "median": 1260.0,
-      "sales": 421,
+      "sales": 414,
       "trimmed": 0
      },
      "jp": {
@@ -291,7 +291,7 @@
     "min": 966.96,
     "p25": 970.0,
     "median": 975.0,
-    "sales": 902,
+    "sales": 905,
     "trimmed": 0,
     "no_guarantee": 0
    },
@@ -307,19 +307,19 @@
   },
   "chatgpt/pro-100": {
    "topup": {
-    "count": 179,
+    "count": 182,
     "min": 570.0,
-    "p25": 612.97,
+    "p25": 610.0,
     "median": 640.0,
-    "sales": 10705,
+    "sales": 10900,
     "trimmed": 0,
     "routes": {
      "other": {
-      "count": 59,
+      "count": 60,
       "min": 598.88,
       "p25": 625.0,
-      "median": 640.0,
-      "sales": 1371,
+      "median": 644.5,
+      "sales": 1422,
       "trimmed": 0
      },
      "eg": {
@@ -335,23 +335,23 @@
       "min": 570.0,
       "p25": 595.0,
       "median": 630.0,
-      "sales": 8849,
+      "sales": 8991,
       "trimmed": 0
      },
      "ph": {
-      "count": 29,
+      "count": 30,
       "min": 625.0,
       "p25": 645.0,
-      "median": 660.0,
-      "sales": 188,
+      "median": 655.0,
+      "sales": 189,
       "trimmed": 0
      },
      "cl": {
-      "count": 25,
+      "count": 26,
       "min": 593.99,
       "p25": 600.0,
-      "median": 615.0,
-      "sales": 201,
+      "median": 613.985,
+      "sales": 202,
       "trimmed": 0
      }
     },
@@ -362,7 +362,7 @@
     "min": 594.0,
     "p25": 600.0,
     "median": 614.0,
-    "sales": 1463,
+    "sales": 1473,
     "trimmed": 2,
     "no_guarantee": 0
    },
@@ -387,11 +387,11 @@
   },
   "chatgpt/team": {
    "seat": {
-    "count": 58,
+    "count": 56,
     "min": 12.0,
     "p25": 35.0,
-    "median": 52.5,
-    "sales": 6064,
+    "median": 47.5,
+    "sales": 5644,
     "trimmed": 21,
     "no_guarantee": 1
    }
@@ -402,7 +402,7 @@
     "min": 27.69,
     "p25": 31.79,
     "median": 35.0,
-    "sales": 1994,
+    "sales": 2018,
     "trimmed": 0,
     "routes": {
      "other": {
@@ -410,7 +410,7 @@
       "min": 27.69,
       "p25": 28.96,
       "median": 35.0,
-      "sales": 1484,
+      "sales": 1505,
       "trimmed": 0
      },
      "eg": {
@@ -426,7 +426,7 @@
       "min": 31.79,
       "p25": 33.0,
       "median": 34.0,
-      "sales": 202,
+      "sales": 205,
       "trimmed": 0
      },
      "us-ios": {
@@ -445,18 +445,18 @@
     "min": 31.79,
     "p25": 31.79,
     "median": 35.0,
-    "sales": 88,
+    "sales": 89,
     "trimmed": 0,
     "no_guarantee": 0
    }
   },
   "google-ai/plus": {
    "promo": {
-    "count": 10,
+    "count": 11,
     "min": 4.9,
     "p25": 5.0,
-    "median": 9.0,
-    "sales": 1634,
+    "median": 8.0,
+    "sales": 1680,
     "trimmed": 0,
     "no_guarantee": 0
    },
@@ -490,42 +490,50 @@
     "trimmed": 0,
     "no_guarantee": 0
    },
-   "promo": {
-    "count": 27,
-    "min": 8.0,
-    "p25": 13.88,
-    "median": 23.8,
-    "sales": 9449,
-    "trimmed": 5,
-    "no_guarantee": 0
-   },
    "topup": {
-    "count": 2,
+    "count": 4,
     "min": 120.0,
-    "p25": 120.0,
-    "median": 140.0,
-    "sales": 1,
+    "p25": 140.0,
+    "median": 145.0,
+    "sales": 234,
     "trimmed": 0,
     "routes": {
      "us-ios": {
-      "count": 2,
+      "count": 3,
       "min": 120.0,
       "p25": 120.0,
       "median": 140.0,
-      "sales": 1,
+      "sales": 234,
+      "trimmed": 0
+     },
+     "other": {
+      "count": 1,
+      "min": 150.0,
+      "p25": 150.0,
+      "median": 150.0,
+      "sales": 0,
       "trimmed": 0
      }
     },
     "no_guarantee": 0
    },
+   "promo": {
+    "count": 25,
+    "min": 10.0,
+    "p25": 13.99,
+    "median": 28.0,
+    "sales": 4352,
+    "trimmed": 5,
+    "no_guarantee": 0
+   },
    "account-short": {
-    "count": 9,
+    "count": 11,
     "min": 15.0,
-    "p25": 20.0,
-    "median": 25.5,
-    "sales": 1368,
+    "p25": 15.22,
+    "median": 17.6,
+    "sales": 1258,
     "trimmed": 0,
-    "no_guarantee": 1
+    "no_guarantee": 0
    },
    "seat": {
     "count": 1,
@@ -539,11 +547,11 @@
   },
   "claude/pro": {
    "topup": {
-    "count": 14,
+    "count": 13,
     "min": 100.0,
     "p25": 139.85,
-    "median": 148.5,
-    "sales": 1793,
+    "median": 148.0,
+    "sales": 1789,
     "trimmed": 0,
     "routes": {
      "us-ios": {
@@ -555,11 +563,11 @@
       "trimmed": 0
      },
      "other": {
-      "count": 5,
+      "count": 4,
       "min": 100.0,
       "p25": 149.0,
-      "median": 159.0,
-      "sales": 6,
+      "median": 154.0,
+      "sales": 2,
       "trimmed": 0
      }
     },
@@ -568,14 +576,14 @@
    "account-long": {
     "count": 5,
     "min": 269.81,
-    "p25": 285.0,
+    "p25": 318.0,
     "median": 340.0,
-    "sales": 852,
+    "sales": 854,
     "trimmed": 0,
     "no_guarantee": 0
    },
    "account-short": {
-    "count": 38,
+    "count": 37,
     "min": 160.0,
     "p25": 280.0,
     "median": 300.0,
@@ -595,66 +603,57 @@
   },
   "google-ai/ultra": {
    "seat": {
-    "count": 7,
-    "min": 140.0,
-    "p25": 146.0,
+    "count": 5,
+    "min": 146.0,
+    "p25": 176.0,
     "median": 179.0,
-    "sales": 179,
+    "sales": 189,
     "trimmed": 0,
     "no_guarantee": 1
    },
    "account-short": {
-    "count": 3,
+    "count": 4,
     "min": 600.0,
-    "p25": 600.0,
-    "median": 900.0,
-    "sales": 74,
+    "p25": 900.0,
+    "median": 925.0,
+    "sales": 78,
     "trimmed": 0,
     "no_guarantee": 0
    },
    "account-long": {
-    "count": 4,
-    "min": 485.0,
-    "p25": 490.0,
-    "median": 695.0,
-    "sales": 385,
+    "count": 6,
+    "min": 450.0,
+    "p25": 485.0,
+    "median": 510.0,
+    "sales": 410,
     "trimmed": 0,
     "no_guarantee": 0
    },
    "topup": {
-    "count": 23,
+    "count": 24,
     "min": 450.0,
     "p25": 500.0,
-    "median": 666.66,
-    "sales": 638,
+    "median": 673.3299999999999,
+    "sales": 643,
     "trimmed": 0,
     "routes": {
      "other": {
       "count": 8,
       "min": 480.0,
-      "p25": 549.9,
+      "p25": 500.0,
       "median": 670.0,
-      "sales": 591,
+      "sales": 593,
       "trimmed": 0
      },
      "us-ios": {
-      "count": 15,
+      "count": 16,
       "min": 450.0,
       "p25": 500.0,
-      "median": 666.66,
-      "sales": 47,
+      "median": 673.3299999999999,
+      "sales": 50,
       "trimmed": 0
      }
     },
-    "no_guarantee": 0
-   },
-   "shared": {
-    "count": 2,
-    "min": 160.0,
-    "p25": 160.0,
-    "median": 180.0,
-    "sales": 41,
-    "trimmed": 0,
     "no_guarantee": 0
    },
    "promo": {
@@ -695,16 +694,16 @@
     "min": 21.99,
     "p25": 35.0,
     "median": 45.0,
-    "sales": 571,
+    "sales": 579,
     "trimmed": 0,
     "no_guarantee": 0
    },
    "topup": {
-    "count": 8,
+    "count": 9,
     "min": 200.0,
     "p25": 212.0,
-    "median": 222.5,
-    "sales": 433,
+    "median": 230.0,
+    "sales": 439,
     "trimmed": 0,
     "routes": {
      "us-ios": {
@@ -712,14 +711,14 @@
       "min": 200.0,
       "p25": 212.0,
       "median": 215.0,
-      "sales": 219,
+      "sales": 225,
       "trimmed": 0
      },
      "other": {
-      "count": 3,
+      "count": 4,
       "min": 209.0,
-      "p25": 209.0,
-      "median": 230.0,
+      "p25": 230.0,
+      "median": 490.0,
       "sales": 214,
       "trimmed": 0
      }
@@ -747,11 +746,11 @@
   },
   "claude/max-5x": {
    "account-short": {
-    "count": 17,
+    "count": 15,
     "min": 1199.0,
-    "p25": 1230.0,
+    "p25": 1210.0,
     "median": 1399.0,
-    "sales": 132,
+    "sales": 131,
     "trimmed": 1,
     "no_guarantee": 0
    },
@@ -760,7 +759,7 @@
     "min": 768.0,
     "p25": 799.0,
     "median": 825.0,
-    "sales": 48,
+    "sales": 51,
     "trimmed": 1,
     "routes": {
      "us-ios": {
@@ -768,7 +767,7 @@
       "min": 768.0,
       "p25": 799.0,
       "median": 820.0,
-      "sales": 41,
+      "sales": 42,
       "trimmed": 0
      },
      "other": {
@@ -776,7 +775,7 @@
       "min": 799.0,
       "p25": 819.0,
       "median": 1199.0,
-      "sales": 7,
+      "sales": 9,
       "trimmed": 1
      }
     },
