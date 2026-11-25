@@ -1,5 +1,5 @@
 {
-"time": "2026-11-25T20:38+08:00",
+"time": "2026-11-26T00:33+08:00",
 "plans": {
 "chatgpt/plus": [
 {
@@ -44,11 +44,11 @@
 "parent_goods_id": 0,
 "goods_category_id": 10658,
 "source_category_id": 1,
-"name": "t【官方直充】🔥🔥🔥 Plus月卡会员｜官方渠道充值｜30天订阅质保｜官方账单✅｜✅正规充值｜售后保障｜Plus20刀",
+"name": "t【官方直充】🔥🔥 Plus月卡会员｜官方渠道充值｜30天订阅质保｜官方账单✅｜✅正规充值｜售后保障｜Plus20刀",
 "price": 105.9,
 "cost_price": 104,
 "agent_price": 105.9,
-"sales_count": 12
+"sales_count": 14
 },
 {
 "id": 117660,
@@ -60,7 +60,7 @@
 "price": 105.9,
 "cost_price": 104,
 "agent_price": 105.9,
-"sales_count": 46
+"sales_count": 48
 },
 {
 "id": 104326,
@@ -72,7 +72,7 @@
 "price": 105.9,
 "cost_price": 103,
 "agent_price": 105.9,
-"sales_count": 365
+"sales_count": 366
 },
 {
 "id": 84580,
@@ -84,7 +84,7 @@
 "price": 105.9,
 "cost_price": 103,
 "agent_price": 105.9,
-"sales_count": 1611
+"sales_count": 1630
 },
 {
 "id": 14273,
@@ -96,7 +96,19 @@
 "price": 106,
 "cost_price": 106,
 "agent_price": 109,
-"sales_count": 4622
+"sales_count": 4656
+},
+{
+"id": 47904,
+"goods_no": "G42288503",
+"parent_goods_id": 0,
+"goods_category_id": 5867,
+"source_category_id": 1,
+"name": "【官方正价充值】菲区plus/质保订阅30天/售后稳定/充值自己号码",
+"price": 106,
+"cost_price": 0,
+"agent_price": 105.99,
+"sales_count": 3432
 },
 {
 "id": 19407,
@@ -108,7 +120,7 @@
 "price": 106,
 "cost_price": 104,
 "agent_price": 106,
-"sales_count": 7443
+"sales_count": 7457
 },
 {
 "id": 58401,
@@ -120,7 +132,7 @@
 "price": 106,
 "cost_price": 0,
 "agent_price": 106,
-"sales_count": 4726
+"sales_count": 4753
 },
 {
 "id": 30728,
@@ -156,7 +168,7 @@
 "price": 106.5,
 "cost_price": 106,
 "agent_price": 106.5,
-"sales_count": 1187
+"sales_count": 1204
 },
 {
 "id": 46615,
@@ -180,7 +192,7 @@
 "price": 106.99,
 "cost_price": 106,
 "agent_price": 106.99,
-"sales_count": 7212
+"sales_count": 7240
 },
 {
 "id": 50941,
@@ -204,7 +216,7 @@
 "price": 107,
 "cost_price": 0,
 "agent_price": 107,
-"sales_count": 1
+"sales_count": 2
 },
 {
 "id": 22392,
@@ -216,7 +228,7 @@
 "price": 107,
 "cost_price": 104.82,
 "agent_price": 107,
-"sales_count": 4459
+"sales_count": 4480
 },
 {
 "id": 117405,
@@ -229,6 +241,18 @@
 "cost_price": 0,
 "agent_price": 107,
 "sales_count": 0
+},
+{
+"id": 14954,
+"goods_no": "G89467607",
+"parent_goods_id": 0,
+"goods_category_id": 2374,
+"source_category_id": 1,
+"name": "【直充】G Plus 菲区充值 【质保一个月】",
+"price": 107.9,
+"cost_price": 0,
+"agent_price": 107.9,
+"sales_count": 1
 },
 {
 "id": 98087,
@@ -252,7 +276,7 @@
 "price": 108,
 "cost_price": 106,
 "agent_price": 107.9,
-"sales_count": 706
+"sales_count": 709
 },
 {
 "id": 10085,
@@ -264,7 +288,7 @@
 "price": 108,
 "cost_price": 105,
 "agent_price": 108,
-"sales_count": 1696
+"sales_count": 1698
 },
 {
 "id": 36478,
@@ -276,31 +300,7 @@
 "price": 108,
 "cost_price": 103,
 "agent_price": 109,
-"sales_count": 804
-},
-{
-"id": 20019,
-"goods_no": "G49323738",
-"parent_goods_id": 0,
-"goods_category_id": 0,
-"source_category_id": 1,
-"name": "CodeX Plus 月卡｜正价代充 · 自动发卡",
-"price": 108,
-"cost_price": 0,
-"agent_price": 108,
-"sales_count": 409
-},
-{
-"id": 13149,
-"goods_no": "G38384556",
-"parent_goods_id": 0,
-"goods_category_id": 2228,
-"source_category_id": 1,
-"name": "【官方充值】Codex Plus [菲区] CDK 质保订阅30天",
-"price": 108,
-"cost_price": 0,
-"agent_price": 107,
-"sales_count": 57
+"sales_count": 805
 }
 ],
 "chatgpt/pro-200": [
@@ -314,7 +314,7 @@
 "price": 959.99,
 "cost_price": 0,
 "agent_price": 959.99,
-"sales_count": 802
+"sales_count": 807
 },
 {
 "id": 4802,
@@ -326,7 +326,7 @@
 "price": 960,
 "cost_price": 0,
 "agent_price": 960,
-"sales_count": 715
+"sales_count": 717
 },
 {
 "id": 13614,
@@ -374,7 +374,7 @@
 "price": 966.97,
 "cost_price": 960,
 "agent_price": 970,
-"sales_count": 1038
+"sales_count": 1039
 },
 {
 "id": 19414,
@@ -470,7 +470,19 @@
 "price": 980,
 "cost_price": 960,
 "agent_price": 980,
-"sales_count": 61
+"sales_count": 62
+},
+{
+"id": 47965,
+"goods_no": "G92133730",
+"parent_goods_id": 0,
+"goods_category_id": 5867,
+"source_category_id": 1,
+"name": "Pro 200 稳定正规渠道直充1(菲区质保订阅30天，封号不质保，可开票。支持卡充菲区提前续费苹果不支持)",
+"price": 985,
+"cost_price": 0,
+"agent_price": 984.99,
+"sales_count": 10
 },
 {
 "id": 58406,
@@ -591,18 +603,6 @@
 "cost_price": 940,
 "agent_price": 980,
 "sales_count": 0
-},
-{
-"id": 14461,
-"goods_no": "G34508556",
-"parent_goods_id": 0,
-"goods_category_id": 2299,
-"source_category_id": 1,
-"name": "桃子出品 Codex Pro 20x 直充月卡",
-"price": 991.9,
-"cost_price": 960,
-"agent_price": 990,
-"sales_count": 33
 }
 ],
 "chatgpt/pro-100": [
@@ -652,7 +652,7 @@
 "price": 593,
 "cost_price": 0,
 "agent_price": 593,
-"sales_count": 1262
+"sales_count": 1266
 },
 {
 "id": 552,
@@ -664,7 +664,7 @@
 "price": 593,
 "cost_price": 0,
 "agent_price": 593,
-"sales_count": 1333
+"sales_count": 1338
 },
 {
 "id": 4939,
@@ -676,7 +676,7 @@
 "price": 593,
 "cost_price": 0,
 "agent_price": 593.1,
-"sales_count": 864
+"sales_count": 875
 },
 {
 "id": 138,
@@ -688,7 +688,19 @@
 "price": 593,
 "cost_price": 582,
 "agent_price": 600,
-"sales_count": 2582
+"sales_count": 2591
+},
+{
+"id": 1518,
+"goods_no": "G23611756",
+"parent_goods_id": 0,
+"goods_category_id": 438,
+"source_category_id": 1,
+"name": "【可开票】Pro 100刀 / ios官网正价 / 直冲自己账号 / 可覆盖订阅 / 质保订阅30天",
+"price": 593,
+"cost_price": 583,
+"agent_price": 588,
+"sales_count": 912
 },
 {
 "id": 36815,
@@ -712,7 +724,7 @@
 "price": 594.9,
 "cost_price": 585,
 "agent_price": 594.9,
-"sales_count": 1250
+"sales_count": 1255
 },
 {
 "id": 36959,
@@ -832,7 +844,7 @@
 "price": 598.88,
 "cost_price": 578,
 "agent_price": 598.88,
-"sales_count": 17
+"sales_count": 18
 },
 {
 "id": 120228,
@@ -893,18 +905,6 @@
 "cost_price": 575,
 "agent_price": 600,
 "sales_count": 10
-},
-{
-"id": 58289,
-"goods_no": "G61272993",
-"parent_goods_id": 0,
-"goods_category_id": 5846,
-"source_category_id": 1,
-"name": "🔥【秒充】G|P|T Pro100 智利区自助充值卡密 质保30天订阅（不可覆盖）",
-"price": 600,
-"cost_price": 582,
-"agent_price": 600,
-"sales_count": 49
 }
 ],
 "chatgpt/go": [
@@ -918,7 +918,7 @@
 "price": 27.69,
 "cost_price": 0,
 "agent_price": 28,
-"sales_count": 624
+"sales_count": 629
 },
 {
 "id": 73440,
@@ -930,7 +930,7 @@
 "price": 27.69,
 "cost_price": 24,
 "agent_price": 27.81,
-"sales_count": 327
+"sales_count": 336
 },
 {
 "id": 65240,
@@ -942,7 +942,7 @@
 "price": 27.7,
 "cost_price": 25,
 "agent_price": 27.7,
-"sales_count": 26
+"sales_count": 27
 },
 {
 "id": 104382,
@@ -966,7 +966,7 @@
 "price": 27.89,
 "cost_price": 0,
 "agent_price": 27.89,
-"sales_count": 77
+"sales_count": 79
 },
 {
 "id": 75799,
@@ -1062,7 +1062,7 @@
 "price": 31.79,
 "cost_price": 28,
 "agent_price": 105.5,
-"sales_count": 27
+"sales_count": 29
 },
 {
 "id": 36565,
@@ -1110,7 +1110,7 @@
 "price": 33,
 "cost_price": 30,
 "agent_price": 33,
-"sales_count": 130
+"sales_count": 131
 },
 {
 "id": 5358,
@@ -1122,7 +1122,7 @@
 "price": 33,
 "cost_price": 0,
 "agent_price": 33,
-"sales_count": 346
+"sales_count": 348
 },
 {
 "id": 72327,
@@ -1149,6 +1149,18 @@
 "sales_count": 7
 },
 {
+"id": 18260,
+"goods_no": "G30854536",
+"parent_goods_id": 0,
+"goods_category_id": 2374,
+"source_category_id": 1,
+"name": "【直充】G GO 埃及区一个月【质保一个月】",
+"price": 33.9,
+"cost_price": 0,
+"agent_price": 45.37,
+"sales_count": 1
+},
+{
 "id": 13148,
 "goods_no": "G62601546",
 "parent_goods_id": 0,
@@ -1171,18 +1183,6 @@
 "cost_price": 0,
 "agent_price": 34,
 "sales_count": 0
-},
-{
-"id": 18260,
-"goods_no": "G30854536",
-"parent_goods_id": 0,
-"goods_category_id": 2374,
-"source_category_id": 1,
-"name": "【直充】G GO 埃及区一个月【质保一个月】",
-"price": 34.9,
-"cost_price": 0,
-"agent_price": 45.37,
-"sales_count": 1
 },
 {
 "id": 96081,
@@ -1223,18 +1223,6 @@
 "sales_count": 0
 },
 {
-"id": 125675,
-"goods_no": "G47521895",
-"parent_goods_id": 0,
-"goods_category_id": 417,
-"source_category_id": 1,
-"name": "【正规实付】独享Gemini Pro月卡代充 质保订阅30天 Google one 反重力Antigravity",
-"price": 139,
-"cost_price": 130,
-"agent_price": 135,
-"sales_count": 0
-},
-{
 "id": 6696,
 "goods_no": "G98350308",
 "parent_goods_id": 0,
@@ -1244,7 +1232,7 @@
 "price": 139,
 "cost_price": 130,
 "agent_price": 140,
-"sales_count": 1466
+"sales_count": 1483
 },
 {
 "id": 58950,
@@ -1256,7 +1244,7 @@
 "price": 140,
 "cost_price": 110,
 "agent_price": 140,
-"sales_count": 241
+"sales_count": 244
 },
 {
 "id": 123751,
@@ -1405,6 +1393,18 @@
 "sales_count": 0
 },
 {
+"id": 126957,
+"goods_no": "G70779861",
+"parent_goods_id": 0,
+"goods_category_id": 9185,
+"source_category_id": 1,
+"name": "高成功率claude PRO强刷充值 iOS美区",
+"price": 160,
+"cost_price": 140,
+"agent_price": 160,
+"sales_count": 0
+},
+{
 "id": 12516,
 "goods_no": "G45286054",
 "parent_goods_id": 0,
@@ -1512,7 +1512,7 @@
 "price": 230,
 "cost_price": 210,
 "agent_price": 230,
-"sales_count": 193
+"sales_count": 194
 },
 {
 "id": 83620,
@@ -1670,18 +1670,6 @@
 "price": 819,
 "cost_price": 0,
 "agent_price": 809,
-"sales_count": 0
-},
-{
-"id": 110874,
-"goods_no": "G86270441",
-"parent_goods_id": 0,
-"goods_category_id": 10783,
-"source_category_id": 1,
-"name": "【质保30天订阅】Claude5x IOS官方充值 下单前看说明！",
-"price": 820,
-"cost_price": 0,
-"agent_price": 820,
 "sales_count": 0
 },
 {
