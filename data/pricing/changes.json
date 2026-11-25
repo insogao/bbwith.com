@@ -550,5 +550,95 @@
   "kind": "promo",
   "title": "黑五最高 33% off",
   "detail": "Pro 25% OFF，Max 33% OFF；年付首年优惠"
+ },
+ {
+  "t": "2026-11-26 06:42",
+  "id": "gemini",
+  "kind": "promo",
+  "title": "College students free Pro for one year",
+  "detail": "College students get a free Pro plan for one year."
+ },
+ {
+  "t": "2026-11-26 06:42",
+  "id": "grok",
+  "kind": "promo",
+  "title": "黑五：付1个月送1个月",
+  "detail": "Premium：30美元/2个月，之后30美元/月"
+ },
+ {
+  "t": "2026-11-26 06:42",
+  "id": "copilot",
+  "kind": "promo",
+  "title": "Copilot Fusion 用量 30% 折扣",
+  "detail": "Copilot Fusion 用量享 30% 折扣，截止 Dec 31"
+ },
+ {
+  "t": "2026-11-26 06:42",
+  "id": "suno",
+  "kind": "price",
+  "plan": "Pro",
+  "period": "year",
+  "from": "67.2 USD",
+  "to": "96 USD"
+ },
+ {
+  "t": "2026-11-26 06:42",
+  "id": "suno",
+  "kind": "price",
+  "plan": "Premier",
+  "period": "year",
+  "from": "201.6 USD",
+  "to": "288 USD"
+ },
+ {
+  "t": "2026-11-26 06:42",
+  "id": "suno",
+  "kind": "price",
+  "plan": "Platinum",
+  "period": "year",
+  "from": "840 USD",
+  "to": "1200 USD"
+ },
+ {
+  "t": "2026-11-26 06:42",
+  "id": "elevenlabs",
+  "kind": "promo",
+  "title": "Black Friday 最高 55% off",
+  "detail": "Creator 年付首年 $99（之后 $220/年）；Pro 年付首年 $445.50（之后 $990/年）"
+ },
+ {
+  "t": "2026-11-26 06:42",
+  "id": "lovart",
+  "kind": "promo",
+  "title": "Black Friday Early Access",
+  "detail": "会员方案最高 61% 折扣（页面倒计时 04:01:14:35）"
+ },
+ {
+  "t": "2026-11-26 06:42",
+  "id": "kling",
+  "kind": "promo",
+  "title": "Monthly 限时 35% Off",
+  "detail": "首3个月35% Off：Standard $6.5/月、Pro $24/月、Premier $135/月、Ultra+ $402/月；之后按续费价。"
+ },
+ {
+  "t": "2026-11-26 06:42",
+  "id": "kling",
+  "kind": "promo",
+  "title": "Yearly 限时 50% Off",
+  "detail": "Yearly 方案限时 50% Off（页面未列具体年付价格）。"
+ },
+ {
+  "t": "2026-11-26 06:42",
+  "id": "kling",
+  "kind": "promo",
+  "title": "限时免费 Credits",
+  "detail": "Claim limited-time free credits；需登录领取，含订阅者专属权益。"
+ },
+ {
+  "t": "2026-11-26 06:42",
+  "id": "manus",
+  "kind": "promo",
+  "title": "黑五最高 33% 折扣",
+  "detail": "Pro 25% OFF，首年$900；Max 33% OFF，首年$1,600；续费$1,000/年、$2,000/年"
  }
 ]
