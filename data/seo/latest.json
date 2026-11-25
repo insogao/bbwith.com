@@ -1,23 +1,140 @@
 {
- "date": "2026-11-23",
+ "date": "2026-11-25",
  "errors": {},
  "google": {
   "errors": {},
   "total_7d": {
    "keys": [],
-   "clicks": 0,
-   "impressions": 32,
-   "ctr": 0,
-   "position": 7
+   "clicks": 10,
+   "impressions": 772,
+   "ctr": 0.013,
+   "position": 6.1
   },
   "total_28d": {
    "keys": [],
-   "clicks": 0,
-   "impressions": 32,
-   "ctr": 0,
-   "position": 7
+   "clicks": 10,
+   "impressions": 772,
+   "ctr": 0.013,
+   "position": 6.1
   },
   "queries_28d": [
+   {
+    "keys": [
+     "谷歌ai会员"
+    ],
+    "clicks": 1,
+    "impressions": 2,
+    "ctr": 0.5,
+    "position": 31.5
+   },
+   {
+    "keys": [
+     "claude 会员 价格"
+    ],
+    "clicks": 0,
+    "impressions": 1,
+    "ctr": 0,
+    "position": 18
+   },
+   {
+    "keys": [
+     "gemini 费用"
+    ],
+    "clicks": 0,
+    "impressions": 1,
+    "ctr": 0,
+    "position": 8
+   },
+   {
+    "keys": [
+     "gemini 黑色星期五"
+    ],
+    "clicks": 0,
+    "impressions": 1,
+    "ctr": 0,
+    "position": 50
+   },
+   {
+    "keys": [
+     "gemini会员"
+    ],
+    "clicks": 0,
+    "impressions": 2,
+    "ctr": 0,
+    "position": 35.5
+   },
+   {
+    "keys": [
+     "gemini订阅"
+    ],
+    "clicks": 0,
+    "impressions": 1,
+    "ctr": 0,
+    "position": 41
+   },
+   {
+    "keys": [
+     "gemini費用"
+    ],
+    "clicks": 0,
+    "impressions": 1,
+    "ctr": 0,
+    "position": 79
+   },
+   {
+    "keys": [
+     "google ai black friday"
+    ],
+    "clicks": 0,
+    "impressions": 1,
+    "ctr": 0,
+    "position": 26
+   },
+   {
+    "keys": [
+     "google ai plus black friday"
+    ],
+    "clicks": 0,
+    "impressions": 1,
+    "ctr": 0,
+    "position": 6
+   },
+   {
+    "keys": [
+     "google ai plus discount"
+    ],
+    "clicks": 0,
+    "impressions": 1,
+    "ctr": 0,
+    "position": 4
+   },
+   {
+    "keys": [
+     "google ai pro black friday hong kong"
+    ],
+    "clicks": 0,
+    "impressions": 1,
+    "ctr": 0,
+    "position": 20
+   },
+   {
+    "keys": [
+     "google ai 黑五"
+    ],
+    "clicks": 0,
+    "impressions": 1,
+    "ctr": 0,
+    "position": 51
+   },
+   {
+    "keys": [
+     "google gemini cost"
+    ],
+    "clicks": 0,
+    "impressions": 2,
+    "ctr": 0,
+    "position": 1.5
+   },
    {
     "keys": [
      "google gemini 黑色星期五"
@@ -26,66 +143,10 @@
     "impressions": 1,
     "ctr": 0,
     "position": 18
-   }
-  ],
-  "pages_28d": [
-   {
-    "keys": [
-     "https://bbwith.com/ai-pricing/gemini/"
-    ],
-    "clicks": 0,
-    "impressions": 1,
-    "ctr": 0,
-    "position": 7
    },
    {
     "keys": [
-     "https://bbwith.com/ai-pricing/kling/"
-    ],
-    "clicks": 0,
-    "impressions": 3,
-    "ctr": 0,
-    "position": 2.7
-   },
-   {
-    "keys": [
-     "https://bbwith.com/ai-pricing/suno/"
-    ],
-    "clicks": 0,
-    "impressions": 1,
-    "ctr": 0,
-    "position": 1
-   },
-   {
-    "keys": [
-     "https://bbwith.com/claude/pro/"
-    ],
-    "clicks": 0,
-    "impressions": 1,
-    "ctr": 0,
-    "position": 9
-   },
-   {
-    "keys": [
-     "https://bbwith.com/deals/"
-    ],
-    "clicks": 0,
-    "impressions": 11,
-    "ctr": 0,
-    "position": 2.9
-   },
-   {
-    "keys": [
-     "https://bbwith.com/deals/google-ai-black-friday-2026/"
-    ],
-    "clicks": 0,
-    "impressions": 10,
-    "ctr": 0,
-    "position": 11.6
-   },
-   {
-    "keys": [
-     "https://bbwith.com/gift-cards/apple/tr/"
+     "kimi 会员 价格 权益 2026"
     ],
     "clicks": 0,
     "impressions": 1,
@@ -94,7 +155,441 @@
    },
    {
     "keys": [
+     "suno ai 料金"
+    ],
+    "clicks": 0,
+    "impressions": 1,
+    "ctr": 0,
+    "position": 34
+   },
+   {
+    "keys": [
+     "x premium 优惠"
+    ],
+    "clicks": 0,
+    "impressions": 1,
+    "ctr": 0,
+    "position": 5
+   },
+   {
+    "keys": [
+     "x premium 低 价 区"
+    ],
+    "clicks": 0,
+    "impressions": 2,
+    "ctr": 0,
+    "position": 6
+   },
+   {
+    "keys": [
+     "сколько стоит подписка kimi"
+    ],
+    "clicks": 0,
+    "impressions": 1,
+    "ctr": 0,
+    "position": 8
+   },
+   {
+    "keys": [
+     "可灵会员"
+    ],
+    "clicks": 0,
+    "impressions": 1,
+    "ctr": 0,
+    "position": 10
+   },
+   {
+    "keys": [
+     "美区apple礼品卡购买"
+    ],
+    "clicks": 0,
+    "impressions": 1,
+    "ctr": 0,
+    "position": 29
+   },
+   {
+    "keys": [
+     "美區禮品卡"
+    ],
+    "clicks": 0,
+    "impressions": 1,
+    "ctr": 0,
+    "position": 1
+   },
+   {
+    "keys": [
+     "谷歌黑色星期五"
+    ],
+    "clicks": 0,
+    "impressions": 1,
+    "ctr": 0,
+    "position": 23
+   },
+   {
+    "keys": [
+     "黑五 google ai pro"
+    ],
+    "clicks": 0,
+    "impressions": 1,
+    "ctr": 0,
+    "position": 4
+   },
+   {
+    "keys": [
+     "黑色星期五 google ai pro"
+    ],
+    "clicks": 0,
+    "impressions": 1,
+    "ctr": 0,
+    "position": 53
+   },
+   {
+    "keys": [
+     "黑色星期五优惠"
+    ],
+    "clicks": 0,
+    "impressions": 1,
+    "ctr": 0,
+    "position": 87
+   }
+  ],
+  "pages_28d": [
+   {
+    "keys": [
+     "https://bbwith.com/ai-pricing/gemini/"
+    ],
+    "clicks": 2,
+    "impressions": 35,
+    "ctr": 0.0571,
+    "position": 21.0
+   },
+   {
+    "keys": [
+     "https://bbwith.com/deals/google-ai-black-friday-2026/"
+    ],
+    "clicks": 2,
+    "impressions": 262,
+    "ctr": 0.0076,
+    "position": 7.1
+   },
+   {
+    "keys": [
+     "https://bbwith.com/guides/subscribe-with-gift-card/"
+    ],
+    "clicks": 2,
+    "impressions": 37,
+    "ctr": 0.0541,
+    "position": 4.9
+   },
+   {
+    "keys": [
+     "https://bbwith.com/x/premium-basic/"
+    ],
+    "clicks": 2,
+    "impressions": 6,
+    "ctr": 0.3333,
+    "position": 7
+   },
+   {
+    "keys": [
+     "https://bbwith.com/chatgpt/pro-100/"
+    ],
+    "clicks": 1,
+    "impressions": 4,
+    "ctr": 0.25,
+    "position": 9
+   },
+   {
+    "keys": [
+     "https://bbwith.com/claude/max/"
+    ],
+    "clicks": 1,
+    "impressions": 3,
+    "ctr": 0.3333,
+    "position": 26.7
+   },
+   {
+    "keys": [
+     "https://bbwith.com/about/"
+    ],
+    "clicks": 0,
+    "impressions": 1,
+    "ctr": 0,
+    "position": 1
+   },
+   {
+    "keys": [
+     "https://bbwith.com/ai-pricing/elevenlabs/"
+    ],
+    "clicks": 0,
+    "impressions": 1,
+    "ctr": 0,
+    "position": 3
+   },
+   {
+    "keys": [
+     "https://bbwith.com/ai-pricing/kimi/"
+    ],
+    "clicks": 0,
+    "impressions": 70,
+    "ctr": 0,
+    "position": 4.5
+   },
+   {
+    "keys": [
+     "https://bbwith.com/ai-pricing/kling/"
+    ],
+    "clicks": 0,
+    "impressions": 71,
+    "ctr": 0,
+    "position": 4.2
+   },
+   {
+    "keys": [
+     "https://bbwith.com/ai-pricing/lovart/"
+    ],
+    "clicks": 0,
+    "impressions": 4,
+    "ctr": 0,
+    "position": 1.5
+   },
+   {
+    "keys": [
+     "https://bbwith.com/ai-pricing/manus/"
+    ],
+    "clicks": 0,
+    "impressions": 1,
+    "ctr": 0,
+    "position": 3
+   },
+   {
+    "keys": [
+     "https://bbwith.com/ai-pricing/midjourney/"
+    ],
+    "clicks": 0,
+    "impressions": 3,
+    "ctr": 0,
+    "position": 2.3
+   },
+   {
+    "keys": [
+     "https://bbwith.com/ai-pricing/notion/"
+    ],
+    "clicks": 0,
+    "impressions": 2,
+    "ctr": 0,
+    "position": 2
+   },
+   {
+    "keys": [
+     "https://bbwith.com/ai-pricing/suno/"
+    ],
+    "clicks": 0,
+    "impressions": 6,
+    "ctr": 0,
+    "position": 9
+   },
+   {
+    "keys": [
+     "https://bbwith.com/chatgpt/go/"
+    ],
+    "clicks": 0,
+    "impressions": 1,
+    "ctr": 0,
+    "position": 6
+   },
+   {
+    "keys": [
+     "https://bbwith.com/chatgpt/plus/"
+    ],
+    "clicks": 0,
+    "impressions": 5,
+    "ctr": 0,
+    "position": 4.8
+   },
+   {
+    "keys": [
+     "https://bbwith.com/chatgpt/pro-200/"
+    ],
+    "clicks": 0,
+    "impressions": 3,
+    "ctr": 0,
+    "position": 17.3
+   },
+   {
+    "keys": [
+     "https://bbwith.com/claude/"
+    ],
+    "clicks": 0,
+    "impressions": 3,
+    "ctr": 0,
+    "position": 14.3
+   },
+   {
+    "keys": [
+     "https://bbwith.com/claude/pro/"
+    ],
+    "clicks": 0,
+    "impressions": 2,
+    "ctr": 0,
+    "position": 8
+   },
+   {
+    "keys": [
+     "https://bbwith.com/claude/ultra/"
+    ],
+    "clicks": 0,
+    "impressions": 2,
+    "ctr": 0,
+    "position": 4.5
+   },
+   {
+    "keys": [
+     "https://bbwith.com/cursor/pro-plus/"
+    ],
+    "clicks": 0,
+    "impressions": 1,
+    "ctr": 0,
+    "position": 12
+   },
+   {
+    "keys": [
+     "https://bbwith.com/daily/2026-11-21/"
+    ],
+    "clicks": 0,
+    "impressions": 1,
+    "ctr": 0,
+    "position": 3
+   },
+   {
+    "keys": [
+     "https://bbwith.com/deals/"
+    ],
+    "clicks": 0,
+    "impressions": 104,
+    "ctr": 0,
+    "position": 4.3
+   },
+   {
+    "keys": [
+     "https://bbwith.com/gift-cards/"
+    ],
+    "clicks": 0,
+    "impressions": 10,
+    "ctr": 0,
+    "position": 2.8
+   },
+   {
+    "keys": [
+     "https://bbwith.com/gift-cards/apple/br/"
+    ],
+    "clicks": 0,
+    "impressions": 1,
+    "ctr": 0,
+    "position": 12
+   },
+   {
+    "keys": [
+     "https://bbwith.com/gift-cards/apple/jp/"
+    ],
+    "clicks": 0,
+    "impressions": 9,
+    "ctr": 0,
+    "position": 2
+   },
+   {
+    "keys": [
+     "https://bbwith.com/gift-cards/apple/tr/"
+    ],
+    "clicks": 0,
+    "impressions": 16,
+    "ctr": 0,
+    "position": 1.4
+   },
+   {
+    "keys": [
      "https://bbwith.com/gift-cards/apple/us/"
+    ],
+    "clicks": 0,
+    "impressions": 33,
+    "ctr": 0,
+    "position": 3.8
+   },
+   {
+    "keys": [
+     "https://bbwith.com/google-ai/"
+    ],
+    "clicks": 0,
+    "impressions": 11,
+    "ctr": 0,
+    "position": 3.9
+   },
+   {
+    "keys": [
+     "https://bbwith.com/google-ai/pro/"
+    ],
+    "clicks": 0,
+    "impressions": 5,
+    "ctr": 0,
+    "position": 6
+   },
+   {
+    "keys": [
+     "https://bbwith.com/google-ai/ultra/"
+    ],
+    "clicks": 0,
+    "impressions": 7,
+    "ctr": 0,
+    "position": 14.4
+   },
+   {
+    "keys": [
+     "https://bbwith.com/grok/supergrok-lite/"
+    ],
+    "clicks": 0,
+    "impressions": 1,
+    "ctr": 0,
+    "position": 6
+   },
+   {
+    "keys": [
+     "https://bbwith.com/grok/supergrok-plus/"
+    ],
+    "clicks": 0,
+    "impressions": 1,
+    "ctr": 0,
+    "position": 8
+   },
+   {
+    "keys": [
+     "https://bbwith.com/grok/supergrok/"
+    ],
+    "clicks": 0,
+    "impressions": 4,
+    "ctr": 0,
+    "position": 7.8
+   },
+   {
+    "keys": [
+     "https://bbwith.com/guides/"
+    ],
+    "clicks": 0,
+    "impressions": 20,
+    "ctr": 0,
+    "position": 3.5
+   },
+   {
+    "keys": [
+     "https://bbwith.com/guides/apple-id-low-price-region/"
+    ],
+    "clicks": 0,
+    "impressions": 6,
+    "ctr": 0,
+    "position": 2.7
+   },
+   {
+    "keys": [
+     "https://bbwith.com/guides/low-price-region-risks/"
     ],
     "clicks": 0,
     "impressions": 1,
@@ -103,24 +598,221 @@
    },
    {
     "keys": [
-     "https://bbwith.com/google-ai/ultra/"
+     "https://bbwith.com/news/"
+    ],
+    "clicks": 0,
+    "impressions": 29,
+    "ctr": 0,
+    "position": 3.7
+   },
+   {
+    "keys": [
+     "https://bbwith.com/news/2026-11-21/"
+    ],
+    "clicks": 0,
+    "impressions": 22,
+    "ctr": 0,
+    "position": 3.1
+   },
+   {
+    "keys": [
+     "https://bbwith.com/perplexity/pro/"
+    ],
+    "clicks": 0,
+    "impressions": 1,
+    "ctr": 0,
+    "position": 8
+   },
+   {
+    "keys": [
+     "https://bbwith.com/x/premium-plus/"
+    ],
+    "clicks": 0,
+    "impressions": 1,
+    "ctr": 0,
+    "position": 8
+   },
+   {
+    "keys": [
+     "https://bbwith.com/x/premium/"
+    ],
+    "clicks": 0,
+    "impressions": 6,
+    "ctr": 0,
+    "position": 5.5
+   }
+  ],
+  "page_query_28d": [
+   {
+    "keys": [
+     "https://bbwith.com/ai-pricing/gemini/",
+     "谷歌ai会员"
+    ],
+    "clicks": 1,
+    "impressions": 2,
+    "ctr": 0.5,
+    "position": 31.5
+   },
+   {
+    "keys": [
+     "https://bbwith.com/ai-pricing/gemini/",
+     "gemini 费用"
+    ],
+    "clicks": 0,
+    "impressions": 1,
+    "ctr": 0,
+    "position": 8
+   },
+   {
+    "keys": [
+     "https://bbwith.com/ai-pricing/gemini/",
+     "gemini会员"
     ],
     "clicks": 0,
     "impressions": 2,
     "ctr": 0,
-    "position": 18
+    "position": 35.5
    },
    {
     "keys": [
-     "https://bbwith.com/grok/supergrok/"
+     "https://bbwith.com/ai-pricing/gemini/",
+     "gemini订阅"
+    ],
+    "clicks": 0,
+    "impressions": 1,
+    "ctr": 0,
+    "position": 41
+   },
+   {
+    "keys": [
+     "https://bbwith.com/ai-pricing/gemini/",
+     "gemini費用"
+    ],
+    "clicks": 0,
+    "impressions": 1,
+    "ctr": 0,
+    "position": 79
+   },
+   {
+    "keys": [
+     "https://bbwith.com/ai-pricing/gemini/",
+     "google gemini cost"
+    ],
+    "clicks": 0,
+    "impressions": 2,
+    "ctr": 0,
+    "position": 1.5
+   },
+   {
+    "keys": [
+     "https://bbwith.com/ai-pricing/kimi/",
+     "kimi 会员 价格 权益 2026"
+    ],
+    "clicks": 0,
+    "impressions": 1,
+    "ctr": 0,
+    "position": 3
+   },
+   {
+    "keys": [
+     "https://bbwith.com/ai-pricing/kimi/",
+     "сколько стоит подписка kimi"
+    ],
+    "clicks": 0,
+    "impressions": 1,
+    "ctr": 0,
+    "position": 8
+   },
+   {
+    "keys": [
+     "https://bbwith.com/ai-pricing/kling/",
+     "可灵会员"
     ],
     "clicks": 0,
     "impressions": 1,
     "ctr": 0,
     "position": 10
-   }
-  ],
-  "page_query_28d": [
+   },
+   {
+    "keys": [
+     "https://bbwith.com/ai-pricing/suno/",
+     "suno ai 料金"
+    ],
+    "clicks": 0,
+    "impressions": 1,
+    "ctr": 0,
+    "position": 34
+   },
+   {
+    "keys": [
+     "https://bbwith.com/claude/",
+     "claude 会员 价格"
+    ],
+    "clicks": 0,
+    "impressions": 1,
+    "ctr": 0,
+    "position": 18
+   },
+   {
+    "keys": [
+     "https://bbwith.com/deals/",
+     "google ai plus discount"
+    ],
+    "clicks": 0,
+    "impressions": 1,
+    "ctr": 0,
+    "position": 4
+   },
+   {
+    "keys": [
+     "https://bbwith.com/deals/google-ai-black-friday-2026/",
+     "gemini 黑色星期五"
+    ],
+    "clicks": 0,
+    "impressions": 1,
+    "ctr": 0,
+    "position": 50
+   },
+   {
+    "keys": [
+     "https://bbwith.com/deals/google-ai-black-friday-2026/",
+     "google ai black friday"
+    ],
+    "clicks": 0,
+    "impressions": 1,
+    "ctr": 0,
+    "position": 26
+   },
+   {
+    "keys": [
+     "https://bbwith.com/deals/google-ai-black-friday-2026/",
+     "google ai plus black friday"
+    ],
+    "clicks": 0,
+    "impressions": 1,
+    "ctr": 0,
+    "position": 6
+   },
+   {
+    "keys": [
+     "https://bbwith.com/deals/google-ai-black-friday-2026/",
+     "google ai pro black friday hong kong"
+    ],
+    "clicks": 0,
+    "impressions": 1,
+    "ctr": 0,
+    "position": 20
+   },
+   {
+    "keys": [
+     "https://bbwith.com/deals/google-ai-black-friday-2026/",
+     "google ai 黑五"
+    ],
+    "clicks": 0,
+    "impressions": 1,
+    "ctr": 0,
+    "position": 51
+   },
    {
     "keys": [
      "https://bbwith.com/deals/google-ai-black-friday-2026/",
@@ -130,17 +822,116 @@
     "impressions": 1,
     "ctr": 0,
     "position": 18
+   },
+   {
+    "keys": [
+     "https://bbwith.com/deals/google-ai-black-friday-2026/",
+     "谷歌黑色星期五"
+    ],
+    "clicks": 0,
+    "impressions": 1,
+    "ctr": 0,
+    "position": 23
+   },
+   {
+    "keys": [
+     "https://bbwith.com/deals/google-ai-black-friday-2026/",
+     "黑五 google ai pro"
+    ],
+    "clicks": 0,
+    "impressions": 1,
+    "ctr": 0,
+    "position": 4
+   },
+   {
+    "keys": [
+     "https://bbwith.com/deals/google-ai-black-friday-2026/",
+     "黑色星期五 google ai pro"
+    ],
+    "clicks": 0,
+    "impressions": 1,
+    "ctr": 0,
+    "position": 53
+   },
+   {
+    "keys": [
+     "https://bbwith.com/deals/google-ai-black-friday-2026/",
+     "黑色星期五优惠"
+    ],
+    "clicks": 0,
+    "impressions": 1,
+    "ctr": 0,
+    "position": 87
+   },
+   {
+    "keys": [
+     "https://bbwith.com/gift-cards/apple/us/",
+     "美区apple礼品卡购买"
+    ],
+    "clicks": 0,
+    "impressions": 1,
+    "ctr": 0,
+    "position": 29
+   },
+   {
+    "keys": [
+     "https://bbwith.com/gift-cards/apple/us/",
+     "美區禮品卡"
+    ],
+    "clicks": 0,
+    "impressions": 1,
+    "ctr": 0,
+    "position": 1
+   },
+   {
+    "keys": [
+     "https://bbwith.com/x/premium-basic/",
+     "x premium 优惠"
+    ],
+    "clicks": 0,
+    "impressions": 1,
+    "ctr": 0,
+    "position": 11
+   },
+   {
+    "keys": [
+     "https://bbwith.com/x/premium-basic/",
+     "x premium 低 价 区"
+    ],
+    "clicks": 0,
+    "impressions": 1,
+    "ctr": 0,
+    "position": 10
+   },
+   {
+    "keys": [
+     "https://bbwith.com/x/premium/",
+     "x premium 优惠"
+    ],
+    "clicks": 0,
+    "impressions": 1,
+    "ctr": 0,
+    "position": 5
+   },
+   {
+    "keys": [
+     "https://bbwith.com/x/premium/",
+     "x premium 低 价 区"
+    ],
+    "clicks": 0,
+    "impressions": 2,
+    "ctr": 0,
+    "position": 6
    }
   ],
-  "sitemap_submit": "ok",
   "sitemaps": [
    {
     "path": "https://bbwith.com/sitemap.xml",
     "lastSubmitted": "2026-11-23T09:24:58.093Z",
-    "isPending": true,
+    "isPending": false,
     "isSitemapsIndex": false,
     "type": "sitemap",
-    "lastDownloaded": "2026-11-23T09:22:53.429Z",
+    "lastDownloaded": "2026-11-23T09:24:59.491Z",
     "warnings": "0",
     "errors": "0",
     "contents": [
@@ -217,13 +1008,13 @@
     "pageFetchState": "SUCCESSFUL"
    },
    "https://bbwith.com/grok/": {
-    "verdict": "NEUTRAL",
-    "coverageState": "Discovered - currently not indexed",
-    "lastCrawlTime": null,
-    "googleCanonical": null,
-    "userCanonical": null,
-    "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
-    "pageFetchState": "PAGE_FETCH_STATE_UNSPECIFIED"
+    "verdict": "PASS",
+    "coverageState": "Submitted and indexed",
+    "lastCrawlTime": "2026-11-24T02:13:52Z",
+    "googleCanonical": "https://bbwith.com/grok/",
+    "userCanonical": "https://bbwith.com/grok/",
+    "robotsTxtState": "ALLOWED",
+    "pageFetchState": "SUCCESSFUL"
    },
    "https://bbwith.com/x/": {
     "verdict": "NEUTRAL",
@@ -255,7 +1046,7 @@
    "https://bbwith.com/chatgpt/go/": {
     "verdict": "PASS",
     "coverageState": "Submitted and indexed",
-    "lastCrawlTime": "2026-11-22T04:22:34Z",
+    "lastCrawlTime": "2026-11-25T01:02:48Z",
     "googleCanonical": "https://bbwith.com/chatgpt/go/",
     "userCanonical": "https://bbwith.com/chatgpt/go/",
     "robotsTxtState": "ALLOWED",
@@ -264,7 +1055,7 @@
    "https://bbwith.com/chatgpt/plus/": {
     "verdict": "PASS",
     "coverageState": "Submitted and indexed",
-    "lastCrawlTime": "2026-11-21T19:23:33Z",
+    "lastCrawlTime": "2026-11-24T13:17:44Z",
     "googleCanonical": "https://bbwith.com/chatgpt/plus/",
     "userCanonical": "https://bbwith.com/chatgpt/plus/",
     "robotsTxtState": "ALLOWED",
@@ -273,7 +1064,7 @@
    "https://bbwith.com/chatgpt/pro-100/": {
     "verdict": "PASS",
     "coverageState": "Submitted and indexed",
-    "lastCrawlTime": "2026-11-23T01:53:32Z",
+    "lastCrawlTime": "2026-11-25T05:06:02Z",
     "googleCanonical": "https://bbwith.com/chatgpt/pro-100/",
     "userCanonical": "https://bbwith.com/chatgpt/pro-100/",
     "robotsTxtState": "ALLOWED",
@@ -282,7 +1073,7 @@
    "https://bbwith.com/chatgpt/pro-200/": {
     "verdict": "PASS",
     "coverageState": "Submitted and indexed",
-    "lastCrawlTime": "2026-11-23T02:07:44Z",
+    "lastCrawlTime": "2026-11-25T05:07:52Z",
     "googleCanonical": "https://bbwith.com/chatgpt/pro-200/",
     "userCanonical": "https://bbwith.com/chatgpt/pro-200/",
     "robotsTxtState": "ALLOWED",
@@ -291,7 +1082,7 @@
    "https://bbwith.com/chatgpt/pro-500/": {
     "verdict": "PASS",
     "coverageState": "Submitted and indexed",
-    "lastCrawlTime": "2026-11-23T01:53:37Z",
+    "lastCrawlTime": "2026-11-25T05:05:54Z",
     "googleCanonical": "https://bbwith.com/chatgpt/pro-500/",
     "userCanonical": "https://bbwith.com/chatgpt/pro-500/",
     "robotsTxtState": "ALLOWED",
@@ -309,7 +1100,7 @@
    "https://bbwith.com/claude/max/": {
     "verdict": "PASS",
     "coverageState": "Submitted and indexed",
-    "lastCrawlTime": "2026-11-23T01:53:29Z",
+    "lastCrawlTime": "2026-11-25T06:30:40Z",
     "googleCanonical": "https://bbwith.com/claude/max/",
     "userCanonical": "https://bbwith.com/claude/max/",
     "robotsTxtState": "ALLOWED",
@@ -318,7 +1109,7 @@
    "https://bbwith.com/claude/ultra/": {
     "verdict": "PASS",
     "coverageState": "Submitted and indexed",
-    "lastCrawlTime": "2026-11-21T23:57:28Z",
+    "lastCrawlTime": "2026-11-25T04:59:16Z",
     "googleCanonical": "https://bbwith.com/claude/ultra/",
     "userCanonical": "https://bbwith.com/claude/ultra/",
     "robotsTxtState": "ALLOWED",
@@ -327,7 +1118,7 @@
    "https://bbwith.com/google-ai/pro/": {
     "verdict": "PASS",
     "coverageState": "Submitted and indexed",
-    "lastCrawlTime": "2026-11-21T09:55:46Z",
+    "lastCrawlTime": "2026-11-25T05:07:55Z",
     "googleCanonical": "https://bbwith.com/google-ai/pro/",
     "userCanonical": "https://bbwith.com/google-ai/pro/",
     "robotsTxtState": "ALLOWED",
@@ -336,7 +1127,7 @@
    "https://bbwith.com/google-ai/ultra/": {
     "verdict": "PASS",
     "coverageState": "Submitted and indexed",
-    "lastCrawlTime": "2026-11-21T11:13:54Z",
+    "lastCrawlTime": "2026-11-25T05:05:24Z",
     "googleCanonical": "https://bbwith.com/google-ai/ultra/",
     "userCanonical": "https://bbwith.com/google-ai/ultra/",
     "robotsTxtState": "ALLOWED",
@@ -345,7 +1136,7 @@
    "https://bbwith.com/grok/supergrok-lite/": {
     "verdict": "PASS",
     "coverageState": "Submitted and indexed",
-    "lastCrawlTime": "2026-11-21T21:42:26Z",
+    "lastCrawlTime": "2026-11-25T05:06:32Z",
     "googleCanonical": "https://bbwith.com/grok/supergrok-lite/",
     "userCanonical": "https://bbwith.com/grok/supergrok-lite/",
     "robotsTxtState": "ALLOWED",
@@ -354,7 +1145,7 @@
    "https://bbwith.com/grok/supergrok/": {
     "verdict": "PASS",
     "coverageState": "Submitted and indexed",
-    "lastCrawlTime": "2026-11-21T21:18:32Z",
+    "lastCrawlTime": "2026-11-25T05:07:02Z",
     "googleCanonical": "https://bbwith.com/grok/supergrok/",
     "userCanonical": "https://bbwith.com/grok/supergrok/",
     "robotsTxtState": "ALLOWED",
@@ -363,7 +1154,7 @@
    "https://bbwith.com/grok/supergrok-plus/": {
     "verdict": "PASS",
     "coverageState": "Submitted and indexed",
-    "lastCrawlTime": "2026-11-21T19:31:31Z",
+    "lastCrawlTime": "2026-11-25T04:58:45Z",
     "googleCanonical": "https://bbwith.com/grok/supergrok-plus/",
     "userCanonical": "https://bbwith.com/grok/supergrok-plus/",
     "robotsTxtState": "ALLOWED",
@@ -372,7 +1163,7 @@
    "https://bbwith.com/grok/supergrok-heavy/": {
     "verdict": "PASS",
     "coverageState": "Submitted and indexed",
-    "lastCrawlTime": "2026-11-23T07:02:16Z",
+    "lastCrawlTime": "2026-11-24T12:50:30Z",
     "googleCanonical": "https://bbwith.com/grok/supergrok-heavy/",
     "userCanonical": "https://bbwith.com/grok/supergrok-heavy/",
     "robotsTxtState": "ALLOWED",
@@ -381,7 +1172,7 @@
    "https://bbwith.com/x/premium-basic/": {
     "verdict": "PASS",
     "coverageState": "Submitted and indexed",
-    "lastCrawlTime": "2026-11-22T04:30:17Z",
+    "lastCrawlTime": "2026-11-25T00:53:58Z",
     "googleCanonical": "https://bbwith.com/x/premium-basic/",
     "userCanonical": "https://bbwith.com/x/premium-basic/",
     "robotsTxtState": "ALLOWED",
@@ -390,7 +1181,7 @@
    "https://bbwith.com/x/premium/": {
     "verdict": "PASS",
     "coverageState": "Submitted and indexed",
-    "lastCrawlTime": "2026-11-22T00:01:57Z",
+    "lastCrawlTime": "2026-11-25T05:09:31Z",
     "googleCanonical": "https://bbwith.com/x/premium/",
     "userCanonical": "https://bbwith.com/x/premium/",
     "robotsTxtState": "ALLOWED",
@@ -399,7 +1190,7 @@
    "https://bbwith.com/x/premium-plus/": {
     "verdict": "PASS",
     "coverageState": "Submitted and indexed",
-    "lastCrawlTime": "2026-11-21T09:51:55Z",
+    "lastCrawlTime": "2026-11-25T01:03:55Z",
     "googleCanonical": "https://bbwith.com/x/premium-plus/",
     "userCanonical": "https://bbwith.com/x/premium-plus/",
     "robotsTxtState": "ALLOWED",
@@ -408,7 +1199,7 @@
    "https://bbwith.com/perplexity/pro/": {
     "verdict": "PASS",
     "coverageState": "Submitted and indexed",
-    "lastCrawlTime": "2026-11-21T09:14:22Z",
+    "lastCrawlTime": "2026-11-24T07:50:13Z",
     "googleCanonical": "https://bbwith.com/perplexity/pro/",
     "userCanonical": "https://bbwith.com/perplexity/pro/",
     "robotsTxtState": "ALLOWED",
@@ -417,7 +1208,7 @@
    "https://bbwith.com/perplexity/max/": {
     "verdict": "PASS",
     "coverageState": "Submitted and indexed",
-    "lastCrawlTime": "2026-11-23T01:53:39Z",
+    "lastCrawlTime": "2026-11-25T05:08:08Z",
     "googleCanonical": "https://bbwith.com/perplexity/max/",
     "userCanonical": "https://bbwith.com/perplexity/max/",
     "robotsTxtState": "ALLOWED",
@@ -426,7 +1217,7 @@
    "https://bbwith.com/cursor/pro/": {
     "verdict": "PASS",
     "coverageState": "Submitted and indexed",
-    "lastCrawlTime": "2026-11-21T09:54:45Z",
+    "lastCrawlTime": "2026-11-25T05:10:57Z",
     "googleCanonical": "https://bbwith.com/cursor/pro/",
     "userCanonical": "https://bbwith.com/cursor/pro/",
     "robotsTxtState": "ALLOWED",
@@ -444,7 +1235,7 @@
    "https://bbwith.com/cursor/ultra/": {
     "verdict": "PASS",
     "coverageState": "Submitted and indexed",
-    "lastCrawlTime": "2026-11-23T02:07:47Z",
+    "lastCrawlTime": "2026-11-25T05:04:23Z",
     "googleCanonical": "https://bbwith.com/cursor/ultra/",
     "userCanonical": "https://bbwith.com/cursor/ultra/",
     "robotsTxtState": "ALLOWED",
@@ -460,17 +1251,35 @@
     "pageFetchState": "SUCCESSFUL"
    },
    "https://bbwith.com/daily/2026-11-22/": {
+    "verdict": "PASS",
+    "coverageState": "Submitted and indexed",
+    "lastCrawlTime": "2026-11-24T06:33:04Z",
+    "googleCanonical": "https://bbwith.com/daily/2026-11-22/",
+    "userCanonical": "https://bbwith.com/daily/2026-11-22/",
+    "robotsTxtState": "ALLOWED",
+    "pageFetchState": "SUCCESSFUL"
+   },
+   "https://bbwith.com/daily/2026-11-23/": {
+    "verdict": "PASS",
+    "coverageState": "Submitted and indexed",
+    "lastCrawlTime": "2026-11-24T10:43:44Z",
+    "googleCanonical": "https://bbwith.com/daily/2026-11-23/",
+    "userCanonical": "https://bbwith.com/daily/2026-11-23/",
+    "robotsTxtState": "ALLOWED",
+    "pageFetchState": "SUCCESSFUL"
+   },
+   "https://bbwith.com/daily/2026-11-24/": {
     "verdict": "NEUTRAL",
-    "coverageState": "Discovered - currently not indexed",
+    "coverageState": "URL is unknown to Google",
     "lastCrawlTime": null,
     "googleCanonical": null,
     "userCanonical": null,
     "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
     "pageFetchState": "PAGE_FETCH_STATE_UNSPECIFIED"
    },
-   "https://bbwith.com/daily/2026-11-23/": {
+   "https://bbwith.com/daily/2026-11-25/": {
     "verdict": "NEUTRAL",
-    "coverageState": "Discovered - currently not indexed",
+    "coverageState": "URL is unknown to Google",
     "lastCrawlTime": null,
     "googleCanonical": null,
     "userCanonical": null,
@@ -524,7 +1333,7 @@
    },
    "https://bbwith.com/gift-cards/apple/id/": {
     "verdict": "NEUTRAL",
-    "coverageState": "Discovered - currently not indexed",
+    "coverageState": "URL is unknown to Google",
     "lastCrawlTime": null,
     "googleCanonical": null,
     "userCanonical": null,
@@ -542,7 +1351,7 @@
    },
    "https://bbwith.com/gift-cards/apple/in/": {
     "verdict": "NEUTRAL",
-    "coverageState": "URL is unknown to Google",
+    "coverageState": "Discovered - currently not indexed",
     "lastCrawlTime": null,
     "googleCanonical": null,
     "userCanonical": null,
@@ -577,13 +1386,13 @@
     "pageFetchState": "SUCCESSFUL"
    },
    "https://bbwith.com/news/2026-11-22/": {
-    "verdict": "NEUTRAL",
-    "coverageState": "Discovered - currently not indexed",
-    "lastCrawlTime": null,
-    "googleCanonical": null,
-    "userCanonical": null,
-    "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
-    "pageFetchState": "PAGE_FETCH_STATE_UNSPECIFIED"
+    "verdict": "PASS",
+    "coverageState": "Submitted and indexed",
+    "lastCrawlTime": "2026-11-24T05:16:19Z",
+    "googleCanonical": "https://bbwith.com/news/2026-11-22/",
+    "userCanonical": "https://bbwith.com/news/2026-11-22/",
+    "robotsTxtState": "ALLOWED",
+    "pageFetchState": "SUCCESSFUL"
    },
    "https://bbwith.com/news/2026-11-23/": {
     "verdict": "NEUTRAL",
@@ -594,9 +1403,27 @@
     "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
     "pageFetchState": "PAGE_FETCH_STATE_UNSPECIFIED"
    },
+   "https://bbwith.com/news/2026-11-24/": {
+    "verdict": "NEUTRAL",
+    "coverageState": "URL is unknown to Google",
+    "lastCrawlTime": null,
+    "googleCanonical": null,
+    "userCanonical": null,
+    "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+    "pageFetchState": "PAGE_FETCH_STATE_UNSPECIFIED"
+   },
+   "https://bbwith.com/news/2026-11-25/": {
+    "verdict": "NEUTRAL",
+    "coverageState": "URL is unknown to Google",
+    "lastCrawlTime": null,
+    "googleCanonical": null,
+    "userCanonical": null,
+    "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+    "pageFetchState": "PAGE_FETCH_STATE_UNSPECIFIED"
+   },
    "https://bbwith.com/ai-pricing/": {
     "verdict": "NEUTRAL",
-    "coverageState": "Discovered - currently not indexed",
+    "coverageState": "URL is unknown to Google",
     "lastCrawlTime": null,
     "googleCanonical": null,
     "userCanonical": null,
@@ -641,7 +1468,7 @@
    },
    "https://bbwith.com/ai-pricing/copilot/": {
     "verdict": "NEUTRAL",
-    "coverageState": "URL is unknown to Google",
+    "coverageState": "Discovered - currently not indexed",
     "lastCrawlTime": null,
     "googleCanonical": null,
     "userCanonical": null,
@@ -675,15 +1502,6 @@
     "robotsTxtState": "ALLOWED",
     "pageFetchState": "SUCCESSFUL"
    },
-   "https://bbwith.com/ai-pricing/liblib/": {
-    "verdict": "NEUTRAL",
-    "coverageState": "Discovered - currently not indexed",
-    "lastCrawlTime": null,
-    "googleCanonical": null,
-    "userCanonical": null,
-    "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
-    "pageFetchState": "PAGE_FETCH_STATE_UNSPECIFIED"
-   },
    "https://bbwith.com/ai-pricing/lovart/": {
     "verdict": "PASS",
     "coverageState": "Submitted and indexed",
@@ -702,15 +1520,6 @@
     "robotsTxtState": "ALLOWED",
     "pageFetchState": "SUCCESSFUL"
    },
-   "https://bbwith.com/ai-pricing/midjourney/": {
-    "verdict": "PASS",
-    "coverageState": "Submitted and indexed",
-    "lastCrawlTime": "2026-11-21T10:47:29Z",
-    "googleCanonical": "https://bbwith.com/ai-pricing/midjourney/",
-    "userCanonical": "https://bbwith.com/ai-pricing/midjourney/",
-    "robotsTxtState": "ALLOWED",
-    "pageFetchState": "SUCCESSFUL"
-   },
    "https://bbwith.com/ai-pricing/notion/": {
     "verdict": "PASS",
     "coverageState": "Submitted and indexed",
@@ -721,29 +1530,11 @@
     "pageFetchState": "SUCCESSFUL"
    },
    "https://bbwith.com/ai-pricing/perplexity/": {
-    "verdict": "NEUTRAL",
-    "coverageState": "Crawled - currently not indexed",
-    "lastCrawlTime": "2026-11-23T09:17:00Z",
-    "googleCanonical": null,
-    "userCanonical": null,
-    "robotsTxtState": "ALLOWED",
-    "pageFetchState": "SUCCESSFUL"
-   },
-   "https://bbwith.com/ai-pricing/poe/": {
-    "verdict": "NEUTRAL",
-    "coverageState": "URL is unknown to Google",
-    "lastCrawlTime": null,
-    "googleCanonical": null,
-    "userCanonical": null,
-    "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
-    "pageFetchState": "PAGE_FETCH_STATE_UNSPECIFIED"
-   },
-   "https://bbwith.com/ai-pricing/runninghub/": {
     "verdict": "PASS",
     "coverageState": "Submitted and indexed",
-    "lastCrawlTime": "2026-11-22T12:13:48Z",
-    "googleCanonical": "https://bbwith.com/ai-pricing/runninghub/",
-    "userCanonical": "https://bbwith.com/ai-pricing/runninghub/",
+    "lastCrawlTime": "2026-11-25T00:24:11Z",
+    "googleCanonical": "https://bbwith.com/ai-pricing/perplexity/",
+    "userCanonical": "https://bbwith.com/ai-pricing/perplexity/",
     "robotsTxtState": "ALLOWED",
     "pageFetchState": "SUCCESSFUL"
    },
@@ -765,19 +1556,10 @@
     "robotsTxtState": "ALLOWED",
     "pageFetchState": "SUCCESSFUL"
    },
-   "https://bbwith.com/ai-pricing/jimeng/": {
-    "verdict": "PASS",
-    "coverageState": "Submitted and indexed",
-    "lastCrawlTime": "2026-11-21T10:47:45Z",
-    "googleCanonical": "https://bbwith.com/ai-pricing/jimeng/",
-    "userCanonical": "https://bbwith.com/ai-pricing/jimeng/",
-    "robotsTxtState": "ALLOWED",
-    "pageFetchState": "SUCCESSFUL"
-   },
    "https://bbwith.com/ai-pricing/kling/": {
     "verdict": "PASS",
     "coverageState": "Submitted and indexed",
-    "lastCrawlTime": "2026-11-23T00:40:09Z",
+    "lastCrawlTime": "2026-11-25T05:09:41Z",
     "googleCanonical": "https://bbwith.com/ai-pricing/kling/",
     "userCanonical": "https://bbwith.com/ai-pricing/kling/",
     "robotsTxtState": "ALLOWED",
@@ -821,7 +1603,7 @@
    },
    "https://bbwith.com/channels/": {
     "verdict": "NEUTRAL",
-    "coverageState": "Discovered - currently not indexed",
+    "coverageState": "URL is unknown to Google",
     "lastCrawlTime": null,
     "googleCanonical": null,
     "userCanonical": null,
@@ -829,7 +1611,7 @@
     "pageFetchState": "PAGE_FETCH_STATE_UNSPECIFIED"
    }
   },
-  "indexed": 57
+  "indexed": 59
  },
  "bing": {
   "GetRankAndTrafficStats": [
@@ -838,29 +1620,69 @@
     "Clicks": 0,
     "Date": "/Date(1795219200000)/",
     "Impressions": 0
+   },
+   {
+    "__type": "RankAndTrafficStats:#Microsoft.Bing.Webmaster.Api",
+    "Clicks": 12,
+    "Date": "/Date(1795305600000)/",
+    "Impressions": 257
+   },
+   {
+    "__type": "RankAndTrafficStats:#Microsoft.Bing.Webmaster.Api",
+    "Clicks": 11,
+    "Date": "/Date(1795392000000)/",
+    "Impressions": 219
    }
   ],
   "GetQueryStats": [],
   "GetPageStats": [],
   "GetCrawlIssues": [],
-  "GetCrawlStats": [],
+  "GetCrawlStats": [
+   {
+    "__type": "CrawlStats:#Microsoft.Bing.Webmaster.Api",
+    "AllOtherCodes": 2,
+    "BlockedByRobotsTxt": 0,
+    "Code2xx": 1,
+    "Code301": 0,
+    "Code302": 0,
+    "Code4xx": 0,
+    "Code5xx": 0,
+    "ConnectionTimeout": 0,
+    "ContainsMalware": 0,
+    "CrawledPages": 6,
+    "CrawlErrors": 0,
+    "Date": "/Date(1795392000000)/",
+    "DnsFailures": 0,
+    "InIndex": 1,
+    "InLinks": 0
+   },
+   {
+    "__type": "CrawlStats:#Microsoft.Bing.Webmaster.Api",
+    "AllOtherCodes": 2,
+    "BlockedByRobotsTxt": 0,
+    "Code2xx": 1,
+    "Code301": 0,
+    "Code302": 0,
+    "Code4xx": 0,
+    "Code5xx": 0,
+    "ConnectionTimeout": 0,
+    "ContainsMalware": 0,
+    "CrawledPages": 38,
+    "CrawlErrors": 0,
+    "Date": "/Date(1795478400000)/",
+    "DnsFailures": 0,
+    "InIndex": 1,
+    "InLinks": 0
+   }
+  ],
   "GetUrlSubmissionQuota": {
    "__type": "UrlSubmissionQuota:#Microsoft.Bing.Webmaster.Api",
    "DailyQuota": 100,
-   "MonthlyQuota": 800
+   "MonthlyQuota": 600
   }
  },
  "cloudflare": {
   "daily": [
-   {
-    "date": "2026-11-17",
-    "requests": 3,
-    "pageViews": 0,
-    "uniques": 1,
-    "status": {
-     "403": 3
-    }
-   },
    {
     "date": "2026-11-21",
     "requests": 2238,
@@ -881,18 +1703,19 @@
    },
    {
     "date": "2026-11-23",
-    "requests": 943,
-    "pageViews": 397,
-    "uniques": 377,
+    "requests": 2427,
+    "pageViews": 841,
+    "uniques": 1019,
     "status": {
-     "200": 635,
-     "301": 131,
-     "302": 97,
+     "200": 1244,
+     "301": 467,
+     "302": 323,
      "304": 1,
-     "308": 12,
-     "403": 6,
-     "404": 60,
-     "405": 1
+     "308": 21,
+     "403": 15,
+     "404": 349,
+     "405": 4,
+     "499": 3
     }
    },
    {
@@ -910,60 +1733,90 @@
      "404": 867,
      "405": 9
     }
+   },
+   {
+    "date": "2026-11-25",
+    "requests": 810,
+    "pageViews": 359,
+    "uniques": 495,
+    "status": {
+     "200": 513,
+     "301": 23,
+     "302": 159,
+     "304": 1,
+     "308": 11,
+     "403": 2,
+     "404": 97,
+     "405": 3,
+     "499": 1
+    }
+   },
+   {
+    "date": "2026-11-24",
+    "requests": 2679,
+    "pageViews": 1269,
+    "uniques": 1355,
+    "status": {
+     "200": 1652,
+     "301": 155,
+     "302": 540,
+     "304": 2,
+     "308": 46,
+     "403": 3,
+     "404": 275,
+     "405": 4,
+     "499": 2
+    }
    }
   ],
   "errors_who_24h": [
    {
     "cacheStatus": "miss",
-    "clientCountryName": "CN",
-    "datetimeHour": "2026-11-23T06:00:00Z",
+    "clientCountryName": "TW",
+    "datetimeHour": "2026-11-24T18:00:00Z",
     "originResponseStatus": 0,
     "userAgent": "fl2 early hints",
-    "n": 2
-   },
-   {
-    "cacheStatus": "miss",
-    "clientCountryName": "CA",
-    "datetimeHour": "2026-11-23T04:00:00Z",
-    "originResponseStatus": 0,
-    "userAgent": "fl2 early hints",
-    "n": 1
+    "n": 4
    }
   ],
   "status_24h": {
-   "200": 976,
-   "404": 823,
-   "301": 514,
-   "302": 102,
-   "403": 21,
-   "308": 12,
+   "200": 1647,
+   "302": 554,
+   "404": 237,
+   "301": 152,
+   "308": 51,
    "405": 5,
-   "504": 3,
-   "304": 1
+   "504": 4,
+   "304": 3,
+   "403": 2,
+   "499": 1
   },
   "errors_24h": [
    {
-    "path": "/x/premium-basic/",
+    "path": "/google-ai/ultra/",
+    "status": 504,
+    "n": 2
+   },
+   {
+    "path": "/google-ai/pro/",
     "status": 504,
     "n": 1
    },
    {
-    "path": "/x/premium/",
-    "status": 504,
-    "n": 1
-   },
-   {
-    "path": "/deals/google-ai-black-friday-2026/",
+    "path": "/",
     "status": 504,
     "n": 1
    }
   ],
   "crawlers_24h": {
-   "Googlebot": 71,
-   "bingbot": 46,
-   "YandexBot": 19,
-   "DuckDuckBot": 18,
-   "Claude-User": 17
+   "Googlebot": 88,
+   "bingbot": 24,
+   "ChatGPT-User": 22,
+   "YandexBot": 19
   }
+ },
+ "site_search_gaps": {
+  "since": "2026-10-29",
+  "gaps": []
  }
 }
