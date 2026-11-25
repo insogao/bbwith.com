@@ -79,7 +79,8 @@ if os.environ.get("GTOKEN"):
         part("page_query_28d", lambda: gsc_query(28, ["page", "query"], 250))
         # resubmit the sitemap so Google re-reads it this week, then record its status
         sm = urllib.parse.quote(SITE + "sitemap.xml", safe="")
-        part("sitemap_submit", lambda: call(f"https://www.googleapis.com/webmasters/v3/sites/{GS}/sitemaps/{sm}", G, method="PUT") or "ok")
+        if TODAY.weekday() == 0:  # weekly is plenty for a sitemap Google already knows
+            part("sitemap_submit", lambda: call(f"https://www.googleapis.com/webmasters/v3/sites/{GS}/sitemaps/{sm}", G, method="PUT") or "ok")
         part("sitemaps", lambda: call(f"https://www.googleapis.com/webmasters/v3/sites/{GS}/sitemaps", G).get("sitemap", []))
         # index status of every sitemap URL (URL Inspection API: 2,000/day quota)
         insp = {}
@@ -165,6 +166,7 @@ def _s():
 
 
 os.makedirs(OUT, exist_ok=True)
-for name in (f"{TODAY.isoformat()}.json", "latest.json"):
+# latest.json every day (read it any time for a status report); a dated snapshot on Mondays for week-over-week comparison
+for name in ([f"{TODAY.isoformat()}.json"] if TODAY.weekday() == 0 or "--snapshot" in __import__("sys").argv else []) + ["latest.json"]:
     json.dump(data, open(os.path.join(OUT, name), "w"), ensure_ascii=False, indent=1)
 print("sections:", [k for k in data if k not in ("date", "errors")], "errors:", data["errors"])

@@ -1,10 +1,10 @@
 name: Weekly SEO data
 
-# Pulls Search Console, Bing Webmaster and Cloudflare numbers through their APIs into data/seo/,
+# Daily: pulls Search Console, Bing Webmaster and Cloudflare numbers through their APIs into data/seo/,
 # and re-submits the sitemap to Google. The weekly SEO operator (a Claude scheduled task) reads them.
 on:
   schedule:
-    - cron: "13 0 * * 1"   # Monday 08:13 Beijing
+    - cron: "13 0 * * *"   # every day 08:13 Beijing: latest.json; Mondays also keep a dated snapshot
   workflow_dispatch:
 
 permissions:
