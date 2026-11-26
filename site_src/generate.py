@@ -882,12 +882,12 @@ def overview_table(day, cur):
                           f'<span class="pr">{money(v_)}<small class="fx" title="当地标价 × 买礼品卡的成本（最便宜平台）">{money(r["usd"])} × {k_ * 100:.0f}%</small></span></li>'
                           for i, (v_, k_, r) in enumerate(paid[:3]))
             cheaper = [r for r in rows if r["usd"] < paid[0][0] and r["cc"] not in {x[2]["cc"] for x in paid}][:2]
-            foot = (f'<li class="nogift">标价更低，但<a href="/gift-cards/#no-card">当地买不到礼品卡</a>：' + "、".join(f'{flag(r["cc"])} {e(cname(r["cc"]))} {money(r["usd"])}' for r in cheaper) + "</li>") if cheaper else ""
+            foot = (f'<li class="nogift">标价更低但买不到礼品卡：' + "、".join(f'{flag(r["cc"])} {e(cname(r["cc"]))} {money(r["usd"])}' for r in cheaper) + "</li>") if cheaper else ""
             cells["app"] = (paid[0][0], "", url_plan(p, pl), "", f'<ol class="top3">{top}{foot}</ol>')
         else:
             top = "".join(f'<li class="r{i + 1}">{sig(i)}<span class="rg">{flag(r["cc"])} {e(cname(r["cc"]))}</span><span class="pr">{money(r["usd"])}</span></li>'
                           for i, r in enumerate(rows[:3]))
-            cells["app"] = (lo["usd"], "", url_plan(p, pl), "", f'<ol class="top3">{top}<li class="nogift">按标价算，这几个地区<a href="/gift-cards/#no-card">买不到礼品卡</a></li></ol>')
+            cells["app"] = (lo["usd"], "", url_plan(p, pl), "", f'<ol class="top3">{top}<li class="nogift">按标价算，这几个地区买不到礼品卡</li></ol>')
         ck = channel_key_for(p, pl)
         ch = CHANNELS.get("plans", {}).get(ck, {}) if ck else {}
         if rate and ch.get("topup", {}).get("count", 0) >= 3:

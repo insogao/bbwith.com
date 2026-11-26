@@ -84,6 +84,39 @@ def render_all(targets):
     return out
 
 
+TRANSLATE = """把下面 JSON 里每一项的 title、detail、audience 翻译成简体中文，写给中国用户看。
+产品名、方案名（如 Pro、Plus、Premium、Creator）、价格和数字保持原样；title 15 字以内；不要加原文没有的内容。
+只输出 JSON：{{"items": [{{"title": "...", "detail": "...", "audience": "..."}}]}}，顺序和条数与输入一致。
+{items}"""
+
+
+def englishy(t):
+    """Mostly Latin text that a Chinese reader would want translated (product names alone are fine)."""
+    t = t or ""
+    cjk = len(re.findall(r"[\u4e00-\u9fff]", t))
+    words = re.findall(r"[A-Za-z]{3,}", t)
+    return (len(words) >= 3 and len("".join(words)) > 2 * cjk) or (cjk == 0 and len(words) >= 2)
+
+
+def to_chinese(promos):
+    """The extraction prompt asks for Chinese, but the model often copies English pages verbatim: translate what slipped through."""
+    todo = [x for x in promos if any(englishy(x.get(k)) for k in ("title", "detail", "audience"))]
+    if not todo:
+        return promos
+    src = [{k: x.get(k) or "" for k in ("title", "detail", "audience")} for x in todo]
+    r = llm(TRANSLATE.format(items=json.dumps(src, ensure_ascii=False)))
+    out = (r or {}).get("items") or []
+    if len(out) != len(todo):
+        print("  translate: skipped (bad answer)")
+        return promos
+    for x, y in zip(todo, out):
+        for k in ("title", "detail", "audience"):
+            if isinstance(y.get(k), str) and (y[k] or not x.get(k)):
+                x[k] = y[k].strip()
+    print(f"  translated {len(todo)} promos")
+    return promos
+
+
 def key_of(plan):
     return f"{plan.get('name', '').strip().lower()}|{plan.get('period', '')}"
 
@@ -116,7 +149,7 @@ def main():
             print(f"  {t['id']}: no pricing recognised")
             continue
         plans = [p for p in r.get("plans", []) if isinstance(p.get("price"), (int, float))]
-        promos = [p for p in r.get("promos", []) if p.get("title")]
+        promos = to_chinese([p for p in r.get("promos", []) if p.get("title")])
         entry.update({"status": "ok", "plans": plans, "promos": promos, "annual_discount": r.get("annual_discount") or "",
                       "updated": stamp})
         # changes vs the previous successful read
