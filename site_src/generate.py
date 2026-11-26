@@ -1137,6 +1137,7 @@ def cheapest_routes(p, pl, rows, fx):
 def build_deal_hubs(day, cur):
     urls = []
     today = day["date"]
+    rate_ = CHANNELS.get("usd_cny")
     for product in HUB_PRODUCTS:
         info = PRODUCTS.get(product)
         plans = [(k, cur[k]) for k in [x[:2] for x in PLANS] if k[0] == product and cur.get(k)]
@@ -1144,51 +1145,70 @@ def build_deal_hubs(day, cur):
             continue
         name0 = info["name"].split("（")[0]
         path = hub_url(product)
-        # current offers: checked deals + what the daily official-page read found
         live = [d for d in DEALS if d["active"] and d["product"] == product]
         auto = [(pp, x) for pp, x in auto_promos() if PRICING_PROD.get(pp["id"]) == product]
         ended = [d for d in DEALS if not d["active"] and d["product"] == product]
-        offers = "".join(f'<li><a href="{deal_url(d)}"><b>{e(d["title"])}</b></a><small>{e(d["discount"])} · {e(deal_period(d))}</small></li>' for d in live)
-        offers += "".join(f'<li><b>{e(x["title"])}</b>{("：" + e(x["detail"])) if x.get("detail") else ""}'
-                          f'<small>官网价格页每日识别{(" · 截止 " + e(x["ends"])) if x.get("ends") else ""} · <a href="{e(pp["url"])}" rel="nofollow noopener" target="_blank">去官网核对</a></small></li>'
-                          for pp, x in auto)
         has_offer = bool(live or auto)
-        # cheapest own-account route per plan
+
+        def offer_card(title, detail, meta, href, badge, ext=False):
+            tgt = ' rel="nofollow noopener" target="_blank"' if ext else ""
+            return (f'<a class="offer" href="{href}"{tgt}><span class="ob">{badge}</span><b>{e(title)}</b>'
+                    f'{f"<p>{e(detail)}</p>" if detail else ""}<small>{meta}</small></a>')
+        cards = "".join(offer_card(d["title"], d["discount"], e(deal_period(d)), deal_url(d), "已核实") for d in live)
+        for pp, x in auto:
+            det = x.get("detail") or ""
+            if det.lower().startswith((x["title"] or "").lower()[:12]):  # model repeated the title
+                det = ""
+            cards += offer_card(x["title"], det, "官网价格页每日识别" + (f" · 截止 {e(x['ends'])}" if x.get("ends") else "") + " · 去官网核对 →",
+                                pp["url"], "官网", ext=True)
+
         main = next(((k, r) for k, r in plans if k[1] == HUB_MAIN.get(product)), plans[0])
         (main_p, main_pl), main_rows = main
         main_routes = cheapest_routes(main_p, main_pl, main_rows, day["fx"])
         main_name = full_name(main_p, main_pl)
-        blocks = ""
+        lo = main_routes[0] if main_routes else None
+
+        rows_html = ""
         for (p_, pl_), rows in plans:
             rts = cheapest_routes(p_, pl_, rows, day["fx"])
             if not rts:
                 continue
-            lis = "".join(f'<li class="{"best" if i == 0 else ""}"><span class="rn">{i + 1}</span><a href="{h}"><b>{e(lbl)}</b></a>'
-                          f'<span class="rp">{money(v)}</span><small>{e(det)}</small></li>' for i, (v, lbl, det, h) in enumerate(rts))
-            blocks += (f'<div class="hubplan"><h3><a href="{url_plan(p_, pl_)}">{e(plan_label(p_, pl_))}</a></h3>'
-                       f'{plan_note(p_, pl_)}<ol class="routes">{lis}</ol></div>')
-        lo = main_routes[0] if main_routes else None
-        rate_ = CHANNELS.get("usd_cny")
-        head = f"{main_name} 最低 {usd_txt(lo[0])}" + (f"（约 ¥{lo[0] * rate_:.0f}）" if rate_ else "") if lo else f"{name0}会员价格"
+            tiles = "".join(f'<a class="rt{" best" if i == 0 else ""}" href="{h}"><span class="rl">{"最便宜" if i == 0 else f"第 {i + 1}"}</span>'
+                            f'<b class="rv">{money(v)}</b><span class="rn">{e(lbl)}</span><small>{e(det)}</small></a>'
+                            for i, (v, lbl, det, h) in enumerate(rts))
+            if len(rts) < 3:  # keep the grid even and say why the rest are missing
+                tiles += f'<span class="rt none" style="grid-column:span {3 - len(rts)}">其他买法本站暂时没有这一档的报价</span>'
+            rows_html += (f'<div class="hubrow"><div class="hp-name"><a href="{url_plan(p_, pl_)}"><b>{e(plan_label(p_, pl_))}</b></a>'
+                          f'{plan_note(p_, pl_)}</div><div class="hp-routes">{tiles}</div></div>')
+
+        head = f"{main_name} 最低 {usd_txt(lo[0])}" + (f"（约 ¥{lo[0] * rate_:.0f}）" if (lo and rate_) else "") if lo else f"{name0}会员价格"
         title = f"{name0} 优惠和最低价（{zh_date(today)[5:]}更新）：{head} · 比比价"
-        desc = (f"{name0} 会员现在有没有优惠、怎么买最便宜：" + ("当前有官方优惠；" if has_offer else "目前官方没有优惠活动；")
-                + (f"{main_name}最便宜的买法是{lo[1]}，约 {usd_txt(lo[0])}/月。" if lo else "") + "每天按官网、App Store、礼品卡和国内代充的实际价格更新。")
+        desc = (f"{name0} 会员现在有没有优惠、怎么买最便宜。" + ("当前有官方优惠。" if has_offer else "目前官方没有优惠活动。")
+                + (f"{main_name}最便宜约 {usd_txt(lo[0])}/月（{lo[1]}）。" if lo else "") + "每天按官网、App Store 礼品卡和国内代充的实际价格更新。")
+        answer = ""
+        if lo:
+            others = "；".join(f"{lbl} {money(v)}" for v, lbl, _, _ in main_routes[1:3])
+            answer = (f'<div class="answer"><div class="a-k">{e(main_name)} 现在最低</div>'
+                      f'<div class="a-v">{money(lo[0])}<span>/月</span>{f"<em>约 ¥{lo[0] * rate_:.0f}</em>" if rate_ else ""}</div>'
+                      f'<div class="a-how">{e(lo[1])} · {e(lo[2])}</div>'
+                      f'{f"<div class=a-more>其他买法：{others}</div>" if others else ""}'
+                      f'<div class="a-off">{"🔥 现在有官方优惠，见下方" if has_offer else "目前没有官方优惠活动"}</div></div>')
         faq = [(f"{name0} 现在有优惠吗？",
                 ("有。" + "；".join([d["title"] for d in live] + [x["title"] for _, x in auto]) + "。详情和截止时间见本页「正在进行的优惠」。") if has_offer
                 else f"截至 {zh_date(today)}，本站每天检查的 {name0} 官网价格页上没有限时优惠，也没有核实过的活动。有新活动时本页会第一时间更新。"),
                (f"{main_name}怎么买最便宜？",
                 ("按今天的价格，充到自己账号最便宜的是" + "，其次是".join(f"{lbl}（约 {usd_txt(v)}）" for v, lbl, _, _ in main_routes[:3]) + "。各方式的条件不同，见上面的列表。") if main_routes else "暂无数据。"),
-               (f"成品号为什么不算在里面？", "成品号是卖家开好会员的账号，不在你名下，可能随时失效，所以本页只比较充到你自己账号的方式。成品号的报价在「代充 · 成品号」页。")]
+               ("成品号为什么不算在里面？", "成品号是卖家开好会员的账号，不在你名下，可能随时失效，所以本页只比较充到你自己账号的方式。成品号的报价在「代充 · 成品号」页。")]
         faq_html = "".join(f"<details><summary>{e(q)}</summary><p>{e(a)}</p></details>" for q, a in faq)
         cr_html, cr_ld = crumbs([("首页", "/"), (info["name"], f"/{product}/"), ("优惠和最低价", path)])
         past = "".join(f'<li><a href="{deal_url(d)}">{e(d["title"])}</a> <small>{e(deal_period(d))}</small></li>' for d in ended)
         body = f"""{cr_html}<h1>{e(name0)} 优惠和最低价</h1>
-<p class="lead">{e(desc)}</p>
+<p class="sub">{zh_date(today)} 更新 · 只比较充到你自己账号的买法</p>
+{answer}
 <h2>正在进行的优惠</h2>
-{f'<ul class="list hubdeals">{offers}</ul>' if has_offer else f'<p>目前没有。本站每天检查 {e(name0)} 官网价格页，出现限时优惠会列在这里。</p>'}
+{f'<div class="offers">{cards}</div>' if has_offer else f'<p class="hint">目前没有。本站每天检查 {e(name0)} 官网价格页，出现限时优惠会列在这里。</p>'}
 <h2>各档位怎么买最便宜</h2>
-<p class="hint">只比较充到你自己账号的方式，按今天的价格从低到高排。点每一项看详情。</p>
-<div class="hubplans">{blocks}</div>
+<div class="hubrows">{rows_html}</div>
 {f'<h2>往期优惠</h2><ul class="list">{past}</ul>' if past else ''}
 <h2>常见问题</h2><div class="faq">{faq_html}</div>
 <p class="src">更多：<a href="/{product}/">{e(name0)} 各地区 App Store 价格</a> · <a href="/gift-cards/">礼品卡</a> · <a href="/channels/">代充 · 成品号</a> · <a href="/deals/">全部优惠</a></p>"""
