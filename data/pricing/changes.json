@@ -937,5 +937,100 @@
   "kind": "promo",
   "title": "黑五最高33%折扣",
   "detail": "Max年付首年$1,600，之后$2,000/年"
+ },
+ {
+  "t": "2026-11-27 06:43",
+  "id": "gemini",
+  "kind": "price",
+  "plan": "Google AI Ultra",
+  "period": "month",
+  "from": "199.99 USD",
+  "to": "99.99 USD"
+ },
+ {
+  "t": "2026-11-27 06:43",
+  "id": "gemini",
+  "kind": "promo",
+  "title": "大学生免费 Pro 一年",
+  "detail": "免费期 12 个月"
+ },
+ {
+  "t": "2026-11-27 06:43",
+  "id": "perplexity",
+  "kind": "promo",
+  "title": "Pro 限时赠点数",
+  "detail": "订阅 Pro 可获 40 美元 Computer credits，限时活动。"
+ },
+ {
+  "t": "2026-11-27 06:43",
+  "id": "perplexity",
+  "kind": "promo",
+  "title": "Max 限时赠点数",
+  "detail": "订阅 Max 可获 350 美元 Computer credits，限时活动。"
+ },
+ {
+  "t": "2026-11-27 06:43",
+  "id": "elevenlabs",
+  "kind": "promo",
+  "title": "黑五首年最高55%折扣",
+  "detail": "Creator 首年 $99/年，之后 $220/年；Pro 首年 $445.50/年，之后 $990/年。"
+ },
+ {
+  "t": "2026-11-27 06:43",
+  "id": "elevenlabs",
+  "kind": "promo",
+  "title": "初创项目12个月免费",
+  "detail": "含3300万字符，可用于构建、发布和测试。"
+ },
+ {
+  "t": "2026-11-27 06:43",
+  "id": "lovart",
+  "kind": "promo",
+  "title": "黑五会员早鸟活动",
+  "detail": "会员方案最高可享61%折扣，提前访问期间有效。"
+ },
+ {
+  "t": "2026-11-27 06:43",
+  "id": "kling",
+  "kind": "promo",
+  "title": "首3个月35%折扣",
+  "detail": "Standard 首3月 $6.5/月，之后 $8.8/月；Pro $24/月，之后 $32.56/月；Premier $135/月，之后 $181.99/月；Ultra+ $402/月，之后 $544.99/月；一次性优惠，可随时取消。"
+ },
+ {
+  "t": "2026-11-27 06:43",
+  "id": "kling",
+  "kind": "promo",
+  "title": "年付限时优惠",
+  "detail": "年付方案享 50% 折扣。"
+ },
+ {
+  "t": "2026-11-27 06:43",
+  "id": "kling",
+  "kind": "promo",
+  "title": "推荐码优惠",
+  "detail": "升级时输入推荐码可加 10%。"
+ },
+ {
+  "t": "2026-11-27 06:43",
+  "id": "kling",
+  "kind": "promo",
+  "title": "限时免费积分",
+  "detail": "可领取奖励灵感积分，仅限 Kling AI 平台，需登录领取。"
+ },
+ {
+  "t": "2026-11-27 06:43",
+  "id": "kling",
+  "kind": "promo",
+  "title": "图像4.0 8K六折",
+  "detail": "Kling Image 4.0 - 8K 享 40% 折扣。"
+ },
+ {
+  "t": "2026-11-27 06:43",
+  "id": "manus",
+  "kind": "price",
+  "plan": "Max",
+  "period": "year",
+  "from": "2000 USD",
+  "to": "1600 USD"
  }
 ]
