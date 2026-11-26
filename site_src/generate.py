@@ -1105,27 +1105,65 @@ def hub_url(product):
     return f"/{product}/deals/"
 
 
+def pay_txt(shop):
+    """How a gift-card shop takes money, in a few words for a buyer in China."""
+    ok = [lbl for k, lbl in PAY_COLS if (PAY.get(shop, {}).get(k) or ("",))[0] == "yes"]
+    return "可用" + "、".join(ok[:3]) + "付款" if ok else ""
+
+
+def alipay_ok(shop):
+    return (PAY.get(shop, {}).get("alipay") or ("",))[0] == "yes"
+
+
+def official_url(product):
+    """The product's own pricing page, where you subscribe on the web."""
+    for p in PRICING.get("products", {}).values():
+        if PRICING_PROD.get(p["id"]) == product and p.get("url"):
+            return p["url"]
+    return ""
+
+
 def cheapest_routes(p, pl, rows, fx):
-    """The ways to pay into your own account, cheapest first: [(usd, label, detail, href)]."""
+    """The ways to pay into your own account, cheapest first:
+    [(usd, label, detail, how_href, buy_href, buy_text)]; buy_href is an outbound /go/ link."""
     out = []
     off = official_of(p, pl)
+    ou = official_url(p)
     if off:
-        out.append((off["usd"], "官网订阅", "美国标价，结账时另加税，需要能付美元的信用卡", url_plan(p, pl) + "#official"))
+        key = f"off-{p}"
+        if ou:
+            GO[key] = ou
+        out.append((off["usd"], "官网订阅", "美国标价，结账时另加税，需要能付美元的信用卡", url_plan(p, pl) + "#official",
+                    f"/go/{key}" if ou else "", "去官网订阅", None))
     best = None
     for r in rows:
-        rr = gift_shop_rates(r["cc"], fx)
-        if rr:
-            v = r["local"] * min(rr)
+        cards = [c for c in gift_rows(r["cc"], fx) if c["fair"] >= 4]
+        if cards:
+            c = min(cards, key=lambda c: c["rate"])
+            v = r["local"] * c["rate"]
             if best is None or v < best[0]:
-                best = (v, r)
+                best = (v, r, c)
     if best:
-        v, r = best
-        out.append((v, f"{cname(r['cc'])} App Store + 礼品卡", f"当地标价 {usd_txt(r['usd'])} × 买卡成本 {v / r['usd'] * 100:.0f}%，需要该地区的 Apple ID",
-                    f"/gift-cards/apple/{r['cc']}/"))
+        v, r, c = best
+        alt = None
+        if not alipay_ok(c["shop"]):  # most buyers here pay with Alipay: offer the cheapest card they can actually pay for
+            ali = [x for x in gift_rows(r["cc"], fx) if x["fair"] >= 4 and alipay_ok(x["shop"])]
+            if ali:
+                a_ = min(ali, key=lambda x: x["rate"])
+                alt = (a_["href"], f"支付宝付：{SHOPS[a_['shop']]['name'].split()[0]} 约 {usd_txt(r['local'] * a_['rate'])}")
+        out.append((v, f"{cname(r['cc'])} App Store + 礼品卡", f"当地标价 {usd_txt(r['usd'])} × 买卡成本 {v / r['usd'] * 100:.0f}%；{pay_txt(c['shop'])}；需要该地区的 Apple ID",
+                    "/guides/subscribe-with-gift-card/", c["href"], f"去 {SHOPS[c['shop']]['name'].split()[0]} 买{cname(r['cc'])}卡", alt))
     ck, rate = channel_key_for(p, pl), CHANNELS.get("usd_cny")
+    shops = sorted([x for x in ((SHOPW.get("shops") or {}).get("items") or [])
+                    if x.get("plan") == f"{p}/{pl}" and x.get("type") == "topup" and x.get("ok") and x.get("in_stock")], key=lambda x: x["total"])
     tp = ((CHANNELS.get("plans") or {}).get(ck) or {}).get("topup") if ck else None
-    if tp and rate:
-        out.append((tp["median"] / rate, "国内代充", "卖家帮你充到自己的账号，售后看店铺条款", "/channels/"))
+    if shops and rate:
+        x = shops[0]
+        GO[f"s-{x['goods_no']}"] = x["url"]
+        out.append((x["total"] / rate, "国内代充", f"{shop_short(x['shop'])} · ¥{x['total']:,.2f} · {'有质保' if x['warranty'] in ('质保订阅（天数未写明）', '有质保，未写天数') else x['warranty']}，卖家充到你自己的账号",
+                    url_plan(p, pl) + "#shops", f"/go/s-{x['goods_no']}", "去店铺下单", None))
+    elif tp and rate:
+        out.append((tp["median"] / rate, "国内代充", "卖家帮你充到自己的账号，售后看店铺条款", "/channels/", "", "", None))
     return sorted(out, key=lambda x: x[0])
 
 
@@ -1168,9 +1206,10 @@ def build_deal_hubs(day, cur):
             rts = cheapest_routes(p_, pl_, rows, day["fx"])
             if not rts:
                 continue
-            tiles = "".join(f'<a class="rt{" best" if i == 0 and len(rts) > 1 else ""}" href="{h}">{(f'<span class="rl">{"最便宜" if i == 0 else f"第 {i + 1} 便宜"}</span>') if len(rts) > 1 else ""}'
-                            f'<b class="rv">{money(v)}</b><span class="rn">{e(lbl)}</span><small>{e(det)}</small></a>'
-                            for i, (v, lbl, det, h) in enumerate(rts))
+            tiles = "".join(f'<div class="rt{" best" if i == 0 and len(rts) > 1 else ""}">{(f'<span class="rl">{"最便宜" if i == 0 else f"第 {i + 1} 便宜"}</span>') if len(rts) > 1 else ""}'
+                            f'<b class="rv">{money(v)}</b><span class="rn">{e(lbl)}</span><small>{e(det)}</small>'
+                            f'<div class="rt-act">{out_link(bh, bt, "btn small" + (" go" if i == 0 else "")) if bh else ""}{out_link(alt[0], alt[1], "rt-alt") if alt else ""}<a class="rt-how" href="{h}">{"怎么买" if bh else "看报价"}</a></div></div>'
+                            for i, (v, lbl, det, h, bh, bt, alt) in enumerate(rts))
             rows_html += (f'<div class="hubrow"><div class="hp-name"><a href="{url_plan(p_, pl_)}"><b>{e(plan_label(p_, pl_))}</b></a>'
                           f'{plan_note(p_, pl_)}</div><div class="hp-routes">{tiles}</div></div>')
 
@@ -1180,17 +1219,19 @@ def build_deal_hubs(day, cur):
                 + (f"{main_name}最便宜约 {usd_txt(lo[0])}/月（{lo[1]}）。" if lo else "") + "每天按官网、App Store 礼品卡和国内代充的实际价格更新。")
         answer = ""
         if lo:
-            others = "；".join(f"{lbl} {money(v)}" for v, lbl, _, _ in main_routes[1:3])
+            a_act = (f'<div class="a-act">{out_link(lo[4], lo[5], "btn go")}{out_link(lo[6][0], lo[6][1], "btn ghost") if lo[6] else ""}<a href="{lo[3]}">怎么买 →</a></div>') if lo[4] else ""
+            others = "；".join(f"{lbl} {money(v)}" for v, lbl, *_ in main_routes[1:3])
             answer = (f'<div class="answer"><div class="a-k">{e(main_name)} 现在最低</div>'
                       f'<div class="a-v">{money(lo[0])}<span>/月</span>{f"<em>约 ¥{lo[0] * rate_:.0f}</em>" if rate_ else ""}</div>'
                       f'<div class="a-how">{e(lo[1])} · {e(lo[2])}</div>'
+                      f'{a_act}'
                       f'{f"<div class=a-more>其他买法：{others}</div>" if others else ""}'
                       f'<div class="a-off">{"🔥 官方正在搞活动，见下方" if has_offer else "官方目前没有优惠活动"}</div></div>')
         faq = [(f"{name0} 现在有优惠吗？",
                 ("有。" + "；".join([d["title"] for d in live] + [x["title"] for _, x in auto]) + "。详情和截止时间见本页「正在进行的优惠」。") if has_offer
                 else f"截至 {zh_date(today)}，{name0} 官方没有限时优惠。上面列的是不靠活动、现在就能买到的最低价。"),
                (f"{main_name}怎么买最便宜？",
-                ("按今天的价格，充到自己账号最便宜的是" + "，其次是".join(f"{lbl}（约 {usd_txt(v)}）" for v, lbl, _, _ in main_routes[:3]) + "。各方式的条件不同，见上面的列表。") if main_routes else ""),
+                ("按今天的价格，充到自己账号最便宜的是" + "，其次是".join(f"{lbl}（约 {usd_txt(v)}）" for v, lbl, *_ in main_routes[:3]) + "。各方式的条件不同，见上面的列表。") if main_routes else ""),
                ("成品号为什么不算在里面？", "成品号是卖家开好会员的账号，不在你名下，可能随时失效，所以本页只比较充到你自己账号的方式。成品号的报价在「代充 · 成品号」页。")]
         faq = [(q, a) for q, a in faq if a]
         faq_html = "".join(f"<details><summary>{e(q)}</summary><p>{e(a)}</p></details>" for q, a in faq)
@@ -1610,7 +1651,7 @@ PAY_SHORT = {"alipay": "支付宝", "wxpay": "微信"}
 
 
 def shop_short(name):
-    return re.split(r"[｜|（(]", name)[0].strip()[:16] or name[:16]
+    return re.split(r"[｜|（(]|-{2,}|—|【", name)[0].strip(" -_·")[:16] or name[:16]
 
 
 def shops_block(key):

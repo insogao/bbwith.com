@@ -44,8 +44,8 @@ def warranty(title):
     if "同步官方售后" in title or "售后同步官方" in title:
         return "售后同步官方"
     if "质保" in title:
-        return "质保订阅（天数未写明）"
-    return "未写明质保"
+        return "有质保，未写天数"
+    return "没写质保"
 
 
 # fine print in the product description that the title leaves out; (flag, patterns)
