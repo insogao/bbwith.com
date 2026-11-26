@@ -17,14 +17,14 @@ SHOTS = os.environ.get("SHOTS_DIR", "/tmp/shots")
 PROMPT = """下面是「{name}」官网价格页（{url}）在 {date} 的可见文字。请只根据这段文字提取：
 1. 付费方案：名称、价格（数字）、货币（ISO 代码，如 USD、CNY、EUR）、计费周期（month / year / once / credits），以及一句话说明（如额度、主要权益，20 字以内）。同一方案有月付和年付就分两条。年付页面上显示的「折合每月」价格请写成 year 周期的总价；如果只给了折合月价，period 写 year_monthly。
 2. 限时优惠：只算页面上明确写出的折扣、限时价、首月特价、节日活动、优惠码、免费试用天数等；写清楚优惠内容、适用对象和截止日期（页面写了才填，格式 YYYY-MM-DD）。「年付省 X%」这种长期存在的年付折扣不算限时优惠，放进 annual_discount。
-promos 的 title、detail、audience 一律用简体中文写给中国用户看（页面是英文也要翻译），title 15 字以内说清楚是什么优惠，detail 不要重复 title。
+promos 的 title、detail、audience 一律用简体中文写给中国用户看（页面是英文也要翻译），title 15 字以内说清楚是什么优惠，detail 不要重复 title，只写优惠本身（价格、折扣、条件），不要写关于网页的说明（如“页面未列出”“倒计时”）；页面没写适用人群时 audience 留空字符串，不要写“未说明”。
 不要猜测，页面没写的不要填。如果这段文字不是价格页（例如登录页、验证页、错误页），ok 填 false。
 
 只输出 JSON：
 {{"ok": true, "currency": "USD",
   "plans": [{{"name": "Pro", "price": 20, "currency": "USD", "period": "month", "note": "..."}}],
   "annual_discount": "年付省 17%（如有）",
-  "promos": [{{"title": "黑五 5 折", "detail": "...", "audience": "新用户 / 所有人 / 学生 ...", "ends": "2026-12-01"}}]}}
+  "promos": [{{"title": "黑五 5 折", "detail": "...", "audience": "新用户 / 学生 / 年付用户（没写就留空）", "ends": "2026-12-01"}}]}}
 
 页面文字：
 {text}"""

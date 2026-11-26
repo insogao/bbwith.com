@@ -409,6 +409,4 @@ a.rt small{color:var(--muted);font-size:12px;margin-top:4px;line-height:1.4}
 .answer .a-v .m{font-size:inherit;font-weight:inherit;color:inherit}
 a.offer small,a.offer p{display:block}
 a.offer b{display:inline}
-a.rt.none,span.rt.none{border-style:dashed;justify-content:center;color:var(--muted);font-size:13px}
-span.rt.none{display:flex;align-items:center;border:1px dashed var(--line);border-radius:10px;padding:10px 12px;color:var(--muted);font-size:13px}
 @media (max-width:760px){span.rt.none{grid-column:auto !important}}

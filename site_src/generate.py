@@ -388,7 +388,7 @@ def types_table(types, rate):
 def channel_note():
     t = CHANNELS.get("time", "")[:16].replace("T", " ")
     return (f'<p class="note">数据来自国内卡网货源平台，价格为货源标价，零售店铺通常会加价；只统计月付，年卡、周卡、资格号、教程等不计入，明显偏离的引流低价已剔除。'
-            f'更新于 {e(t)}（北京时间）。代充、成品号都属于第三方服务，有掉订阅、封号等风险；货源平台上的卖家本站不单独展示，也不做担保。</p>')
+            f'更新于 {e(t)}（北京时间）。代充、成品号都是第三方服务，有掉订阅、封号等风险，下单前看清店铺的售后条款。</p>')
 
 
 def channel_block(product, plan, rows):
@@ -409,9 +409,6 @@ def channel_block(product, plan, rows):
             d = med / us["usd"] - 1
             lead += f"，比美区 App Store 标价{'低' if d < 0 else '高'} {abs(d) * 100:.0f}%"
         lead += "。"
-        ng = sum(v.get("no_guarantee", 0) for v in types.values())
-        if ng:
-            lead += f"另有 {ng} 条标题写明不包到账、封号不保或无售后的挂单，没有算进来。"
     route_html = ""
     if top and top.get("routes"):
         rr = sorted(top["routes"].items(), key=lambda kv: kv[1]["median"])
@@ -465,7 +462,7 @@ def build_channels_hub(cur):
                 + (f'<td>{merch.get(k, 0) or "—"}</td>' if merch else "") + '</tr>')
     cr_html, cr_ld = crumbs([("首页", "/"), ("代充 · 成品号", "/channels/")])
     body = f"""{cr_html}<h1>代充、成品号、拼车价格行情</h1>
-<p class="lead">国内卡网上 ChatGPT、Claude、Gemini、Grok、Cursor 会员的代充、成品号和拼车价格，每 4 小时更新一次，按中位数比较，最低价的引流报价已剔除。想直接下单，看各档位页里的「商家报价」：只展示自动核价通过的最低价前 5 名。</p>
+<p class="lead">国内卡网上 ChatGPT、Claude、Gemini、Grok、Cursor 会员的代充、成品号和拼车价格，每 4 小时更新一次，按常见成交价比较。想直接下单，到各档位页看店铺报价。</p>
 <div class="bar"><h2>各档位行情（中位价）</h2>{cur_select()}</div>
 <div class="tablewrap"><table class="prices sortable"><thead><tr><th>会员档位</th>{''.join(f'<th data-sort=num>{e(n)}</th>' for _, n in cols)}{"<th>入驻商家</th>" if merch else ""}</tr></thead><tbody>{trs}</tbody></table></div>
 {channel_note()}
@@ -544,7 +541,7 @@ def build_plan_page(product, plan, rows, prev_rows, day, all_plans):
          f"按{zh_date(date)}的 App Store 标价和汇率，最便宜的 5 个地区是："
          + "、".join(f"{cname(r['cc'])}（约 {usd(r['usd'])}）" for r in rows[:5]) + "。"),
         (f"{name} 美区多少钱？",
-         f"美区 App Store 标价 {us['display']} / 月。美区标价不含销售税，结账时会按所在州另加。" if us else "本次没有抓到美区标价。"),
+         f"美区 App Store 标价 {us['display']} / 月。美区标价不含销售税，结账时会按所在州另加。" if us else ""),
         ("这些价格含税吗？",
          "大多数地区的 App Store 标价已经包含增值税或消费税；美国、加拿大等地区的标价不含税，结账时另加。"),
         (f"{name} 有多少个地区比美区便宜？",
@@ -565,8 +562,7 @@ def build_plan_page(product, plan, rows, prev_rows, day, all_plans):
 {price_table(rows, prev=prev_map, fold=15)}
 {channel_block(product, plan, rows)}
 {gift_note_for_plan(rows, day)}
-{f'<p class="note">在以下地区 App Store 无法下载这个 App：{"、".join(cname(c) for c in unavailable)}。</p>' if unavailable else ''}
-{f'<p class="note">以下地区能下载 App，但本次没有抓到这一档的标价（App Store 每个 App 只展示约 10 个内购项目）：{"、".join(cname(c) for c in missing[:40])}{" 等" if len(missing) > 40 else ""}。</p>' if missing else ''}
+{f'<p class="note">在这些地区的 App Store 下载不到这个 App：{"、".join(cname(c) for c in unavailable)}。</p>' if unavailable else ''}
 {f'<p class="note">{e(PRODUCTS[product]["note"])}</p>' if PRODUCTS[product]["note"] else ''}
 {f'<p class="linkbtn"><a href="{hub_url(product)}">{e(PRODUCTS[product]["name"].split("（")[0])} 现在有什么优惠、怎么买最便宜 →</a></p>' if product in HUB_PRODUCTS else ''}
 <h2>常见问题</h2>
@@ -682,7 +678,7 @@ def channel_compare(product, plan, rows):
     return f"""<div class="tablewrap"><table class="prices"><thead><tr><th>渠道</th><th>月付价格</th><th>比官网</th></tr></thead><tbody>
 <tr><td>官网订阅（网页，美国价，不含税）</td><td><b>{money(off['usd'])}</b></td><td>—</td></tr>
 <tr><td>美区 App Store（iOS 内购）</td><td><b>{money(us['usd'])}</b></td><td class="{cls(gap)}">{pct(gap)}</td></tr>
-<tr><td>App Store 标价最低：{flag(lo['cc'])} {e(cname(lo['cc']))}{"" if gift_shop_rates(lo["cc"], FX_ALL) else '<br><small>这个地区暂无能充 App Store 的礼品卡</small>'}</td><td><b>{money(lo['usd'])}</b></td><td class="{cls(lo_vs_off)}">{pct(lo_vs_off)}</td></tr>
+<tr><td>App Store 标价最低：{flag(lo['cc'])} {e(cname(lo['cc']))}{"" if gift_shop_rates(lo["cc"], FX_ALL) else '<br><small>当地买不到 App Store 礼品卡</small>'}</td><td><b>{money(lo['usd'])}</b></td><td class="{cls(lo_vs_off)}">{pct(lo_vs_off)}</td></tr>
 {paid_row(rows, off)}
 </tbody></table></div>
 <p class="hint" id="official"><b>官网价要加税吗？</b>要看账单地址。官网标价是美国价、不含税：美国按州加销售税，欧盟、英国、日本等地加增值税或消费税，金额在结账页显示。用国内发行的 Visa / 万事达付美元，银行通常还收约 1%–1.5% 的货币转换费（各行规定不同），而且国内卡在官网经常被拒付。App Store 价格在多数地区已含增值税，美区 App Store 标价同样不含州销售税。</p>
@@ -880,12 +876,12 @@ def overview_table(day, cur):
                           f'<span class="pr">{money(v_)}<small class="fx" title="当地标价 × 买礼品卡的成本（最便宜平台）">{money(r["usd"])} × {k_ * 100:.0f}%</small></span></li>'
                           for i, (v_, k_, r) in enumerate(paid[:3]))
             cheaper = [r for r in rows if r["usd"] < paid[0][0] and r["cc"] not in {x[2]["cc"] for x in paid}][:2]
-            foot = (f'<li class="nogift">标价更低，但<a href="/gift-cards/#no-card">暂无能充 App Store 的礼品卡</a>：' + "、".join(f'{flag(r["cc"])} {e(cname(r["cc"]))} {money(r["usd"])}' for r in cheaper) + "</li>") if cheaper else ""
+            foot = (f'<li class="nogift">标价更低，但<a href="/gift-cards/#no-card">当地买不到礼品卡</a>：' + "、".join(f'{flag(r["cc"])} {e(cname(r["cc"]))} {money(r["usd"])}' for r in cheaper) + "</li>") if cheaper else ""
             cells["app"] = (paid[0][0], "", url_plan(p, pl), "", f'<ol class="top3">{top}{foot}</ol>')
         else:
             top = "".join(f'<li class="r{i + 1}">{sig(i)}<span class="rg">{flag(r["cc"])} {e(cname(r["cc"]))}</span><span class="pr">{money(r["usd"])}</span></li>'
                           for i, r in enumerate(rows[:3]))
-            cells["app"] = (lo["usd"], "", url_plan(p, pl), "", f'<ol class="top3">{top}<li class="nogift">按标价算；这几个地区<a href="/gift-cards/#no-card">暂无能充 App Store 的礼品卡</a></li></ol>')
+            cells["app"] = (lo["usd"], "", url_plan(p, pl), "", f'<ol class="top3">{top}<li class="nogift">按标价算，这几个地区<a href="/gift-cards/#no-card">买不到礼品卡</a></li></ol>')
         ck = channel_key_for(p, pl)
         ch = CHANNELS.get("plans", {}).get(ck, {}) if ck else {}
         if rate and ch.get("topup", {}).get("count", 0) >= 3:
@@ -915,8 +911,7 @@ def overview_table(day, cur):
             '<p class="hint"><b>App Store</b>：实际要花的钱 = 当地标价 × 买当地礼品卡的成本（按最便宜的平台算，例如 103% 表示买卡多花 3%），'
             '各平台报价和付款方式见<a href="/gift-cards/">礼品卡</a>。'
             '<b>官网</b>：网页用外币信用卡订阅的美国标价，结账时另加税。'
-            '<b>代充 / 成品号</b>：国内渠道报价的中位数，逐条报价见<a href="/channels/">代充 · 成品号</a>；成品号是卖家开好会员的账号，不在你名下。'
-            '<b>—</b> 表示这个渠道没有这一档，或本站暂时没有报价。</p>')
+            '<b>代充 / 成品号</b>：国内渠道报价的中位数，逐条报价见<a href="/channels/">代充 · 成品号</a>；成品号是卖家开好会员的账号，不在你名下。</p>')
 
 
 def build_home(day, cur, chg, prev):
@@ -1130,7 +1125,7 @@ def cheapest_routes(p, pl, rows, fx):
     ck, rate = channel_key_for(p, pl), CHANNELS.get("usd_cny")
     tp = ((CHANNELS.get("plans") or {}).get(ck) or {}).get("topup") if ck else None
     if tp and rate:
-        out.append((tp["median"] / rate, "国内代充", f"国内卡网 {tp['count']} 条报价的中位数，充到你自己的账号，售后看店铺条款", "/channels/"))
+        out.append((tp["median"] / rate, "国内代充", "卖家帮你充到自己的账号，售后看店铺条款", "/channels/"))
     return sorted(out, key=lambda x: x[0])
 
 
@@ -1154,13 +1149,13 @@ def build_deal_hubs(day, cur):
             tgt = ' rel="nofollow noopener" target="_blank"' if ext else ""
             return (f'<a class="offer" href="{href}"{tgt}><span class="ob">{badge}</span><b>{e(title)}</b>'
                     f'{f"<p>{e(detail)}</p>" if detail else ""}<small>{meta}</small></a>')
-        cards = "".join(offer_card(d["title"], d["discount"], e(deal_period(d)), deal_url(d), "已核实") for d in live)
+        cards = "".join(offer_card(d["title"], d["discount"], e(deal_period(d)) + " · 看详情 →", deal_url(d), "进行中") for d in live)
         for pp, x in auto:
             det = x.get("detail") or ""
             if det.lower().startswith((x["title"] or "").lower()[:12]):  # model repeated the title
                 det = ""
-            cards += offer_card(x["title"], det, "官网价格页每日识别" + (f" · 截止 {e(x['ends'])}" if x.get("ends") else "") + " · 去官网核对 →",
-                                pp["url"], "官网", ext=True)
+            cards += offer_card(x["title"], det, (f"截止 {e(x['ends'])} · " if x.get("ends") else "") + "去官网看看 →",
+                                pp["url"], e(x.get("audience") or "官网活动"), ext=True)
 
         main = next(((k, r) for k, r in plans if k[1] == HUB_MAIN.get(product)), plans[0])
         (main_p, main_pl), main_rows = main
@@ -1173,11 +1168,9 @@ def build_deal_hubs(day, cur):
             rts = cheapest_routes(p_, pl_, rows, day["fx"])
             if not rts:
                 continue
-            tiles = "".join(f'<a class="rt{" best" if i == 0 else ""}" href="{h}"><span class="rl">{"最便宜" if i == 0 else f"第 {i + 1}"}</span>'
+            tiles = "".join(f'<a class="rt{" best" if i == 0 and len(rts) > 1 else ""}" href="{h}">{(f'<span class="rl">{"最便宜" if i == 0 else f"第 {i + 1} 便宜"}</span>') if len(rts) > 1 else ""}'
                             f'<b class="rv">{money(v)}</b><span class="rn">{e(lbl)}</span><small>{e(det)}</small></a>'
                             for i, (v, lbl, det, h) in enumerate(rts))
-            if len(rts) < 3:  # keep the grid even and say why the rest are missing
-                tiles += f'<span class="rt none" style="grid-column:span {3 - len(rts)}">其他买法本站暂时没有这一档的报价</span>'
             rows_html += (f'<div class="hubrow"><div class="hp-name"><a href="{url_plan(p_, pl_)}"><b>{e(plan_label(p_, pl_))}</b></a>'
                           f'{plan_note(p_, pl_)}</div><div class="hp-routes">{tiles}</div></div>')
 
@@ -1192,21 +1185,21 @@ def build_deal_hubs(day, cur):
                       f'<div class="a-v">{money(lo[0])}<span>/月</span>{f"<em>约 ¥{lo[0] * rate_:.0f}</em>" if rate_ else ""}</div>'
                       f'<div class="a-how">{e(lo[1])} · {e(lo[2])}</div>'
                       f'{f"<div class=a-more>其他买法：{others}</div>" if others else ""}'
-                      f'<div class="a-off">{"🔥 现在有官方优惠，见下方" if has_offer else "目前没有官方优惠活动"}</div></div>')
+                      f'<div class="a-off">{"🔥 官方正在搞活动，见下方" if has_offer else "官方目前没有优惠活动"}</div></div>')
         faq = [(f"{name0} 现在有优惠吗？",
                 ("有。" + "；".join([d["title"] for d in live] + [x["title"] for _, x in auto]) + "。详情和截止时间见本页「正在进行的优惠」。") if has_offer
-                else f"截至 {zh_date(today)}，本站每天检查的 {name0} 官网价格页上没有限时优惠，也没有核实过的活动。有新活动时本页会第一时间更新。"),
+                else f"截至 {zh_date(today)}，{name0} 官方没有限时优惠。上面列的是不靠活动、现在就能买到的最低价。"),
                (f"{main_name}怎么买最便宜？",
-                ("按今天的价格，充到自己账号最便宜的是" + "，其次是".join(f"{lbl}（约 {usd_txt(v)}）" for v, lbl, _, _ in main_routes[:3]) + "。各方式的条件不同，见上面的列表。") if main_routes else "暂无数据。"),
+                ("按今天的价格，充到自己账号最便宜的是" + "，其次是".join(f"{lbl}（约 {usd_txt(v)}）" for v, lbl, _, _ in main_routes[:3]) + "。各方式的条件不同，见上面的列表。") if main_routes else ""),
                ("成品号为什么不算在里面？", "成品号是卖家开好会员的账号，不在你名下，可能随时失效，所以本页只比较充到你自己账号的方式。成品号的报价在「代充 · 成品号」页。")]
+        faq = [(q, a) for q, a in faq if a]
         faq_html = "".join(f"<details><summary>{e(q)}</summary><p>{e(a)}</p></details>" for q, a in faq)
         cr_html, cr_ld = crumbs([("首页", "/"), (info["name"], f"/{product}/"), ("优惠和最低价", path)])
         past = "".join(f'<li><a href="{deal_url(d)}">{e(d["title"])}</a> <small>{e(deal_period(d))}</small></li>' for d in ended)
         body = f"""{cr_html}<h1>{e(name0)} 优惠和最低价</h1>
-<p class="sub">{zh_date(today)} 更新 · 只比较充到你自己账号的买法</p>
+<p class="sub">{zh_date(today)} 更新 · 价格都按充到你自己的账号算</p>
 {answer}
-<h2>正在进行的优惠</h2>
-{f'<div class="offers">{cards}</div>' if has_offer else f'<p class="hint">目前没有。本站每天检查 {e(name0)} 官网价格页，出现限时优惠会列在这里。</p>'}
+{f'<h2>正在进行的优惠</h2><div class="offers">{cards}</div>' if has_offer else ''}
 <h2>各档位怎么买最便宜</h2>
 <div class="hubrows">{rows_html}</div>
 {f'<h2>往期优惠</h2><ul class="list">{past}</ul>' if past else ''}
@@ -1264,20 +1257,20 @@ def build_deals(day):
     verified = [d for d in DEALS if d["active"]]
     ended = [d for d in DEALS if not d["active"]]
     n_all = len(verified) + sum(len(xs) for _, xs in groups.values())
-    empty = (f'<p class="fl-empty" hidden>当前只看 <b class="fl-sel"></b>，暂时没有这些产品的优惠。'
+    empty = (f'<p class="fl-empty" hidden><b class="fl-sel"></b> 目前没有优惠活动。'
              f'<button type="button" class="linkbtn" data-pf-reset>看全部 {n_all} 条优惠</button></p>')
     body = f"""{cr_html}<h1>AI 会员优惠</h1>
-<p class="lead">各家 AI 会员正在进行的折扣、首月优惠和限时活动，每天自动更新。</p>
+<p class="lead">各家 AI 会员正在进行的折扣、首月优惠和限时活动，每天更新。</p>
 <p class="hubnav">按产品看优惠和最低价：{" · ".join(f'<a href="{hub_url(x)}">{e(PRODUCTS[x]["name"].split("（")[0])}</a>' for x in HUB_PRODUCTS if x in PRODUCTS)}</p>
 <div class="fl">
-{f'<h2>编辑核实</h2><ul class="list">{rows(verified)}</ul>' if verified else ''}
-{f'<h2>官网正在进行</h2><div class="dealcards" data-sec="优惠卡片">{cards}</div>' if cards else '<p>今天没有在各家官网价格页上发现限时优惠。</p>'}
+{f'<h2>重点活动</h2><ul class="list">{rows(verified)}</ul>' if verified else ''}
+{f'<h2>各家官网活动</h2><div class="dealcards" data-sec="优惠卡片">{cards}</div>' if cards else '<p>各家官网目前都没有限时活动。</p>'}
 {empty}
 </div>
-<p class="hint">「官网正在进行」由 AI 每天读取 {len(PRICING.get("products", {}))} 家官网价格页识别，可能有误，以官网结账页为准；活动撤下后自动消失。更新于 {e(PRICING.get("time", ""))}（北京时间）。<a href="/ai-pricing/">各家 AI 官方价格 →</a></p>
+<p class="hint">活动内容以官网结账页为准。更新于 {e(PRICING.get("time", ""))}（北京时间）。<a href="/ai-pricing/">各家 AI 官方价格 →</a></p>
 {f'<h2>已结束</h2><ul class="list">{rows(ended)}</ul>' if ended else ''}"""
     write("/deals/", page("AI 会员优惠：ChatGPT、Claude、Gemini、Midjourney、可灵等限时折扣 · 比比价",
-                          "AI 会员限时优惠、降价和新方案：编辑核实的快讯，加上每天自动识别的各家官网优惠。", "/deals/", body, [cr_ld], day["date"]))
+                          "ChatGPT、Claude、Gemini 等 AI 会员正在进行的折扣、首月优惠和限时活动，每天更新。", "/deals/", body, [cr_ld], day["date"]))
 
 
 # ---------- guides ----------
@@ -1329,7 +1322,7 @@ def guide_inline(t, cur, day):
     def top3(m):
         k = tuple(m.group(1).split("/"))
         rows = cur.get(k)
-        return f'<a href="{url_plan(*k)}">{e(rank_text(rows))}</a>' if rows else "（暂无数据）"
+        return f'<a href="{url_plan(*k)}">{e(rank_text(rows))}</a>' if rows else "—"
     t = re.sub(r"\[\[top3 (\S+?)\]\]", top3, t)
     return t
 
@@ -1399,7 +1392,7 @@ def build_guides(day, cur):
         faq_html = "".join(f"<details><summary>{e(x['q'])}</summary><p>{e(x['a'])}</p></details>" for x in g["faq"])
         cr_html, cr_ld = crumbs([("首页", "/"), ("教程", "/guides/"), (g["title"].split("？")[0].split("：")[0], path)])
         body = f"""{cr_html}<article class="guide"><h1>{e(g['title'])}</h1>
-<p class="meta">比比价 · 更新于 {zh_date(g['updated'])} · 文中价格每天自动更新（今日 {zh_date(day['date'])}）</p>
+<p class="meta">比比价 · 更新于 {zh_date(g['updated'])} · 文中价格每天更新（今日 {zh_date(day['date'])}）</p>
 <p class="lead">{e(g['description'])}</p>
 {guide_html(g['body'], cur, day)}
 {f'<h2>常见问题</h2><div class="faq">{faq_html}</div>' if faq_html else ''}
@@ -1417,7 +1410,7 @@ def build_guides(day, cur):
     cr_html, cr_ld = crumbs([("首页", "/"), ("教程", "/guides/")])
     write("/guides/", page("AI 会员低价订阅教程：低价区 Apple ID、礼品卡充值、风险须知 · 比比价",
                            "低价区 Apple ID 注册、礼品卡购买和兑换、App 内订阅 ChatGPT / Claude / Gemini 的完整教程，文中价格每天更新。",
-                           "/guides/", f'{cr_html}<h1>教程</h1><p class="lead">怎么用低价区订阅 AI 会员：从注册账号、买礼品卡到订阅和避坑。文中的价格数据每天自动更新。</p><ul class="list">{items}</ul>',
+                           "/guides/", f'{cr_html}<h1>教程</h1><p class="lead">怎么用低价区订阅 AI 会员：从注册账号、买礼品卡到订阅和避坑。文中的价格每天更新。</p><ul class="list">{items}</ul>',
                            [cr_ld], day["date"]))
     return ["/guides/"] + urls
 
@@ -1451,8 +1444,22 @@ def auto_promos():
             if bf.search(x.get("title") or "") and any(d["active"] and d["product"] == PRICING_PROD.get(p["id"]) and bf.search(d["title"] + d.get("summary", ""))
                                                       for d in DEALS):
                 continue
-            out.append((p, x))
+            out.append((p, tidy_promo(x)))
     return out
+
+
+def tidy_promo(x):
+    """Strip the reader-facing promo of model chatter: 'not stated' audiences, notes about the page, a detail that repeats the title."""
+    x = dict(x)
+    aud = (x.get("audience") or "").strip()
+    if re.fullmatch(r"(未|没有?)(说明|注明|指定|写明|提及)|不限|所有人|全部用户|n/?a|none|unknown|-", aud, re.I):
+        aud = ""
+    x["audience"] = aud
+    det = re.sub(r"[（(][^）)]*(页面|未列|未注明|倒计时)[^）)]*[）)]", "", x.get("detail") or "").strip(" ；;。")
+    if det.lower().startswith((x.get("title") or "").lower()[:12]):
+        det = ""
+    x["detail"] = det
+    return x
 
 
 def deal_counts():
@@ -1503,8 +1510,7 @@ def build_pricing(day, cur):
         promos = "".join(f'<li><b>{e(x["title"])}</b>{("：" + e(x["detail"])) if x.get("detail") else ""}'
                          f'<br><small>{e(x.get("audience") or "")}{" · 截止 " + e(x["ends"]) if x.get("ends") else ""}</small></li>'
                          for x in p.get("promos") or [])
-        status = "" if p.get("status") == "ok" else (f'<p class="note">官网价格页最近一次（{e(p.get("checked", ""))}）没能自动读取，下面是本站人工核实过的价格。</p>' if fallback
-                  else f'<p class="note">最近一次（{e(p.get("checked", ""))}）未能读取：{e(p.get("status", ""))}。下面是之前读到的价格。</p>')
+        status = ""  # read failures are shown on /admin, not to visitors
         cheapest = min((plan_price(x)[1] for x in plans if x.get("period") == "month" and (plan_price(x)[1] or 0) > 0), default=None)
         lead = (f"{p['name']} 官网目前列出 {len(plans)} 个付费方案"
                 + (f"，月付最低约 {usd(cheapest)}" if cheapest else "") + "。"
@@ -1524,13 +1530,13 @@ def build_pricing(day, cur):
                         f'<a href="/{prod}/">{e(PRODUCTS[prod]["name"].split("（")[0])} 各档位最便宜的地区</a>按 App Store 月付标价对比：</p>'
                         f'<ul class="list">{items}</ul>')
         body = f"""{cr_html}<h1>{e(p['name'])} 会员价格（官网）</h1>
-<p class="meta">读取自 <a href="{e(p['url'])}" rel="nofollow noopener" target="_blank">官网价格页</a> · 更新于 {e(p.get('updated') or p.get('checked', ''))}（北京时间）· 每天自动检查</p>
+<p class="meta">来源：<a href="{e(p['url'])}" rel="nofollow noopener" target="_blank">官网价格页</a> · 更新于 {e(p.get('updated') or p.get('checked', ''))}（北京时间）</p>
 <p class="lead">{e(lead)}</p>{status}
 {f'<h2>正在进行的优惠</h2><ul class="list">{promos}</ul>' if promos else ''}
 <div class="bar"><h2>付费方案</h2>{cur_select()}</div>
 <div class="tablewrap"><table class="prices sortable"><thead><tr><th>方案</th><th>计费</th><th>官网标价</th><th data-sort=num>折合</th><th>说明</th></tr></thead><tbody>{trs}</tbody></table></div>
 {regional}
-<p class="note">价格由 AI 从官网页面文字中识别，可能有误或因地区、登录状态而不同，请以官网结账页为准。官网价格多为美国或默认地区价格，不含税。</p>
+<p class="note">官网价格多为美国价，不含税，实际以结账页为准。</p>
 <p class="src"><a href="/ai-pricing/">全部 AI 官方价格</a> · <a href="/deals/">AI 会员优惠</a></p>"""
         write(path, page(f"{p['name']} 会员多少钱？官网价格和优惠（{zh_date(day['date'])}）· 比比价",
                          lead[:150], path, body, [cr_ld], day["date"], noindex=not plans))
@@ -1540,13 +1546,13 @@ def build_pricing(day, cur):
                  f'<td>{len(plans)}</td><td>{"🔥 " + e(p["promos"][0]["title"]) if p.get("promos") else ""}</td></tr>')
     cr_html, cr_ld = crumbs([("首页", "/"), ("AI 官方价格", "/ai-pricing/")])
     body = f"""{cr_html}<h1>AI 会员官方价格</h1>
-<p class="lead">每天自动打开 {len(PRICING['products'])} 家 AI 产品的官网价格页，整理付费方案、价格和正在进行的优惠。想看 App Store 各地区价格，请看<a href="/">首页比价</a>。</p>
+<p class="lead">{len(PRICING['products'])} 家 AI 产品的官网付费方案、价格和正在进行的优惠，每天更新。想看 App Store 各地区价格，请看<a href="/">首页比价</a>。</p>
 <div class="bar"><h2>一览</h2>{cur_select()}</div>
 <div class="tablewrap"><table class="prices sortable"><thead><tr><th>产品</th><th data-sort=num>月付最低</th><th>方案数</th><th>正在进行的优惠</th></tr></thead><tbody>{rows}</tbody></table></div>
-<p class="note">价格由 AI 从官网页面识别，以官网结账页为准。更新于 {e(PRICING.get('time', ''))}（北京时间）。</p>"""
+<p class="note">以官网结账页为准。更新于 {e(PRICING.get('time', ''))}（北京时间）。</p>"""
     write("/ai-pricing/", page("AI 会员官方价格一览：ChatGPT、Claude、Midjourney、可灵、Lovart、LiblibAI · 比比价",
                                "ChatGPT、Claude、Gemini、Grok、Cursor、Perplexity 等 AI 会员的官网标价、按年付折扣和正在进行的优惠，"
-                               "每天自动读取各家官网价格页；同一产品在 App Store 各地区的价格也有对比。", "/ai-pricing/", body, [cr_ld], day["date"]))
+                               "每天更新；同一产品在 App Store 各地区的价格也有对比。", "/ai-pricing/", body, [cr_ld], day["date"]))
     return ["/ai-pricing/"] + urls
 
 
@@ -1586,7 +1592,7 @@ def merchant_block(key):
     rate = CHANNELS.get("usd_cny") or 7.1
     ls = [l for l in MERCH["listings"] if l["plan_key"] == key and l["eligible"]]
     if not ls:
-        return f'<p class="hint">还没有商家报价。<a href="/merchant/join/">商家入驻</a>：只展示自动核价通过的每类最低价前 {TOP_N} 名。</p>'
+        return ''
     html_ = ""
     for t, label in TYPE_ORDER:
         group = sorted([l for l in ls if l["type"] == t], key=lambda l: (l["price"], -l["score"]))[:TOP_N]
@@ -1622,9 +1628,7 @@ def shops_block(key):
         if h:
             days = (dt.datetime.fromisoformat(h[-1][0]) - dt.datetime.fromisoformat(h[0][0])).days
         up = sum(x[2] for x in h) / len(h) if h else 1
-        mon = f'有货率 {up * 100:.0f}% · 已监控 {days} 天' if days >= 1 else "今天开始监控"
-        if r.get("stale"):
-            mon += "<br>⚠️ 本轮没读到，显示 " + e(r["checked"][5:16].replace("T", " ")) + "（UTC）的数据"
+        mon = f'近 {days} 天有货 {up * 100:.0f}%' if days >= 1 else "新收录"
         shop_meta = " · ".join(x for x in [f'入驻 {r["months"]} 个月' if r.get("months") else "",
                                             f'保证金 ¥{r["deposit"]:g}' if r.get("deposit") else "无保证金",
                                             r.get("shop_sales") or ""] if x)
@@ -1634,18 +1638,16 @@ def shops_block(key):
                  f'<td><small>{e(r["title"][:70])}</small></td>'
                  f'<td data-v="{r["total"]:.2f}"><b>¥{r["total"]:,.2f}</b><br><small>{"人工发货" if r.get("manual") else "库存 " + str(r["stock"])}</small></td>'
                  f'<td>{e(r["warranty"])}<br><small>{"、".join(PAY_SHORT.get(p, p) for p in r.get("pays", []))}</small></td>'
-                 f'<td>{"".join(f"<span class=rk>{e(x)}</span>" for x in r.get("risks", [])) or "<small>说明里没写额外限制</small>"}</td>'
+                 f'<td>{"".join(f"<span class=rk>{e(x)}</span>" for x in r.get("risks", [])) or "<small>没有特别限制</small>"}</td>'
                  f'<td><small>{mon}</small></td><td>{out_link(f"/go/{key_}", "去店铺")}</td></tr>')
     t = (SHOPW.get("shops") or {}).get("time", "")
-    note_gone = f'另有 {len(gone)} 个监控中的商品暂时缺货或下架，未列出。' if gone else ""
-    return (f'<h2 id="shops">公开店铺报价（本站监控）</h2>'
-            f'<p class="hint">本站从 16688 卡网挑出的几家写明「充到自己账号」和质保的店铺，每 4 小时读取一次公开价格和库存。'
-            f'<b>这些店铺没有入驻本站</b>，本站不参与交易，售后由店铺和 16688 平台负责。</p>'
+    return (f'<h2 id="shops">可以直接下单的店铺</h2>'
+            f'<p class="hint">这些店铺写明充到你自己的账号，并且有质保。比比价不参与交易，售后由店铺和 16688 平台负责。</p>'
             f'<div class="tablewrap"><table class="prices sortable shopw"><thead><tr><th>店铺</th><th>商品</th><th data-sort=num>实付（含手续费）</th>'
-            f'<th>标题写的质保 · 付款</th><th>商品说明里的限制</th><th>监控记录</th><th></th></tr></thead><tbody>{rows}</tbody></table></div>'
-            f'<p class="note">{note_gone}价格是下单时支付宝通道的实付金额，最近读取于 {e(t[:16].replace("T", " "))}（UTC）。'
-            f'质保天数取自商品标题；「商品说明里的限制」是本站每次检查时从详情页说明里找出的条款，标题写了质保、说明里却写不到账不负责的情况很常见，下单前请看完店铺说明。'
-            f'店主如需更正或下架，请通过<a href="/merchant/join/">商家入驻</a>页联系我们。</p>')
+            f'<th>质保 · 付款</th><th>需要注意</th><th>在架情况</th><th></th></tr></thead><tbody>{rows}</tbody></table></div>'
+            f'<p class="note">价格是用支付宝付款的实付金额，更新于 {e(t[:16].replace("T", " "))}（UTC）。'
+            f'「需要注意」摘自商品说明；标题写了质保、说明里却不包到账的情况不少见，下单前请看完店铺说明。'
+            f'店主需要更正或下架，请<a href="/merchant/join/">联系我们</a>。</p>')
 
 
 def build_shops():
@@ -1672,7 +1674,7 @@ def build_shops():
         path = f"/shop/{mid}/"
         cr_html, cr_ld = crumbs([("首页", "/"), ("商家", "/merchant/join/"), (name, path)])
         body = f"""{cr_html}<h1>{e(name)}</h1>
-<p class="meta">比比价入驻商家 · 价格由本站爬虫自动核验</p>
+<p class="meta">比比价入驻商家 · 价格每 4 小时核对一次</p>
 <div class="bar"><h2>商品</h2>{cur_select()}</div>
 <div class="tablewrap"><table class="prices"><thead><tr><th>档位</th><th>交付方式</th><th>售价</th><th>质保</th><th>信用分</th><th>最近核价</th><th>评价</th><th></th></tr></thead><tbody>{rows}</tbody></table></div>
 <h2>投诉记录</h2>{crows}
@@ -1898,7 +1900,7 @@ def home_panels():
               + "<ul>" + "".join(f"<li>{e(x['title'])}</li>" for x in b["items"][:3]) + "</ul>")
     card = lambda icon, title, href, more, inner: (f'<section class="hp{" brief" if icon == "📰" else ""}" data-sec="首页-{ {"🔥": "优惠", "📘": "教程", "📰": "早报"}[icon] }"><h2><span>{icon}</span>{title}<a href="{href}">{more} →</a></h2>{inner}</section>')
     return ('<div class="hpanels">'
-            + card("🔥", "正在进行的优惠", "/deals/", f"全部 {n_deals} 条", f'<ul>{dl}</ul>' if dl else "<p>暂无</p>")
+            + card("🔥", "正在进行的优惠", "/deals/", f"全部 {n_deals} 条", f'<ul>{dl}</ul>' if dl else "<p>目前没有活动</p>")
             + card("📘", "新手教程", "/guides/", "全部教程", f"<ul>{gl}</ul>")
             + (card("📰", f"AI 早报 · {zh_date(BRIEFS[-1]['date'])[5:]}", "/news/", "往期", bh) if BRIEFS else "")
             + "</div>")
@@ -2133,7 +2135,7 @@ def build_gift(day, cur):
         pays = "".join(f'<li><b>{e(SHOPS[s]["name"])}</b>：{e(SHOPS[s]["pay"])}</li>' for s in shops_here)
         body = f"""{cr_html}
 <h1>{flag(cc)} {e(name)}区 App Store 礼品卡价格对比</h1>
-<p class="meta">报价抓取于 {e(GIFT['time'])}（北京时间）· 汇率 {e(day['fx_source'])} · 每日更新</p>
+<p class="meta">报价更新于 {e(GIFT['time'])}（北京时间）· 汇率 {e(day['fx_source'])} · 每日更新</p>
 <p class="lead">{e(lead)}</p>
 <div class="bar"><h2>各家报价</h2>{cur_select()}</div>
 <div class="tablewrap"><table class="prices sortable"><thead><tr><th>平台</th><th data-sort=num>面额</th><th data-sort=num>售价</th><th data-sort=num>面值折合</th><th data-sort=num>溢价</th><th></th></tr></thead><tbody>{trs}</tbody></table></div>
@@ -2160,16 +2162,15 @@ def build_gift(day, cur):
     cr_html, cr_ld = crumbs([("首页", "/"), ("礼品卡", "/gift-cards/")])
     body = f"""{cr_html}
 <h1>App Store 礼品卡价格对比</h1>
-<p class="lead">跨区订阅 AI 会员，最常用的付款方式是当地 App Store 礼品卡。我们每天抓取 Bitrefill、SEAGM、Eneba 的公开报价（由我付为人工核价），按当日汇率算出每张卡的溢价，换算成订阅会员的实付价格，并标出每家能不能用支付宝、微信和国内信用卡。</p>
+<p class="lead">跨区订阅 AI 会员，最常用的付款方式是当地 App Store 礼品卡。这里每天对比 Bitrefill、SEAGM、Eneba 和由我付的报价，按当日汇率算出每张卡的溢价，换算成订阅会员的实付价格，并标出每家能不能用支付宝、微信和国内信用卡。</p>
 <div class="bar"><h2>各地区最划算的礼品卡</h2>{cur_select()}</div>
 <div class="tablewrap"><table class="prices sortable"><thead><tr><th>地区</th><th>平台 · 付款方式</th><th data-sort=num>最低溢价</th><th>对应面额 · 售价</th><th>最省的会员（礼品卡实付）</th></tr></thead><tbody>{trs}</tbody></table></div>
 <h2 id="no-card">为什么有些低价区没有礼品卡？</h2>
 <p>菲律宾这类 App Store 标价很低的地区，表里没有礼品卡，常见原因有两种：</p>
 <ul>
 <li><b>当地苹果只卖「Apple Store 礼品卡」，只能买硬件。</b>比如菲律宾，苹果官网卖的礼品卡条款写明只能用于菲律宾 Apple 在线商店，不能用于 App Store、iTunes 等数字服务（<a href="https://www.apple.com/legal/giftcards/applestore/ph/" rel="nofollow noopener" target="_blank">苹果菲律宾礼品卡条款</a>）。这类地区没有能给 Apple 账户充值的卡，网上卖的"菲区卡"要么买错了，要么是代充。</li>
-<li><b>当地有 App Store 卡，但本站跟踪的平台不卖或没收录。</b>礼品卡锁区，只能充值购买地区的 Apple 账户，所以没有当地卡就只能绑当地的银行卡或 PayPal 付款。</li>
+<li><b>当地有 App Store 卡，但上面这几家平台不卖。</b>礼品卡锁区，只能充值购买地区的 Apple 账户，所以没有当地卡就只能绑当地的银行卡或 PayPal 付款。</li>
 </ul>
-<p>所以首页「App Store 低价区 Top3」只给有礼品卡报价的地区排名，标价更低但没有卡的地区单独列在下面。</p>
 <h2>各平台支持哪些付款方式</h2>{pay_table(list(PAY))}
 {CN_CARD_TIPS}
 <p class="hint">第一次用？看<a href="/guides/subscribe-with-gift-card/">礼品卡订阅教程</a>和<a href="/guides/apple-id-low-price-region/">低价区 Apple ID 注册教程</a>。</p>
