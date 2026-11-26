@@ -789,5 +789,153 @@
   "kind": "promo",
   "title": "黑五最高 33% off",
   "detail": "黑五活动最高 33% off；Max 年付首年 $1,600，之后 $2,000/年"
+ },
+ {
+  "t": "2026-11-27 03:23",
+  "id": "gemini",
+  "kind": "promo",
+  "title": "学生免费Pro一年",
+  "detail": "可免费获得 Google AI Pro 12 个月"
+ },
+ {
+  "t": "2026-11-27 03:23",
+  "id": "grok",
+  "kind": "promo",
+  "title": "黑五买一送一",
+  "detail": "支付 1 个月订阅费，额外获得 1 个月免费。"
+ },
+ {
+  "t": "2026-11-27 03:23",
+  "id": "grok",
+  "kind": "promo",
+  "title": "Premium黑五特价",
+  "detail": "前 2 个月共 30 美元，之后每月 30 美元。"
+ },
+ {
+  "t": "2026-11-27 03:23",
+  "id": "perplexity",
+  "kind": "promo",
+  "title": "Pro 限时加赠积分",
+  "detail": "额外赠送价值 40 美元的 Computer 积分"
+ },
+ {
+  "t": "2026-11-27 03:23",
+  "id": "perplexity",
+  "kind": "promo",
+  "title": "Max 限时加赠积分",
+  "detail": "额外赠送价值 350 美元的 Computer 积分"
+ },
+ {
+  "t": "2026-11-27 03:23",
+  "id": "copilot",
+  "kind": "promo",
+  "title": "Fusion 使用费7折",
+  "detail": "Copilot Fusion 使用费用享 30% 折扣，截至 12 月 31 日。"
+ },
+ {
+  "t": "2026-11-27 03:23",
+  "id": "suno",
+  "kind": "promo",
+  "title": "黑五额外7折",
+  "detail": "年付方案首年价：Pro $67.20、Premier $201.60、Platinum $840"
+ },
+ {
+  "t": "2026-11-27 03:23",
+  "id": "elevenlabs",
+  "kind": "promo",
+  "title": "黑五最高55%折扣",
+  "detail": "适用于 ElevenCreative 年付方案"
+ },
+ {
+  "t": "2026-11-27 03:23",
+  "id": "elevenlabs",
+  "kind": "promo",
+  "title": "Creator黑五首年特价",
+  "detail": "年付首年99美元，之后每年220美元，折合首年每月8.25美元"
+ },
+ {
+  "t": "2026-11-27 03:23",
+  "id": "elevenlabs",
+  "kind": "promo",
+  "title": "Pro黑五首年特价",
+  "detail": "年付首年445.50美元，之后每年990美元，折合首年每月37.13美元"
+ },
+ {
+  "t": "2026-11-27 03:23",
+  "id": "lovart",
+  "kind": "promo",
+  "title": "黑五会员早鸟优惠",
+  "detail": "最高享 61% 折扣，提前购。"
+ },
+ {
+  "t": "2026-11-27 03:23",
+  "id": "kling",
+  "kind": "price",
+  "plan": "Standard",
+  "period": "month",
+  "from": "6.5 USD",
+  "to": "8.8 USD"
+ },
+ {
+  "t": "2026-11-27 03:23",
+  "id": "kling",
+  "kind": "price",
+  "plan": "Pro",
+  "period": "month",
+  "from": "24 USD",
+  "to": "32.56 USD"
+ },
+ {
+  "t": "2026-11-27 03:23",
+  "id": "kling",
+  "kind": "price",
+  "plan": "Premier",
+  "period": "month",
+  "from": "135 USD",
+  "to": "181.99 USD"
+ },
+ {
+  "t": "2026-11-27 03:23",
+  "id": "kling",
+  "kind": "price",
+  "plan": "Ultra+",
+  "period": "month",
+  "from": "402 USD",
+  "to": "544.99 USD"
+ },
+ {
+  "t": "2026-11-27 03:23",
+  "id": "kling",
+  "kind": "promo",
+  "title": "月付首3月6.5折",
+  "detail": "Standard $6.5/月、Pro $24/月、Premier $135/月、Ultra+ $402/月；首3个月后 Standard $8.8/月、Pro $32.56/月、Premier $181.99/月、Ultra+ $544.99/月；一次性优惠，可随时取消"
+ },
+ {
+  "t": "2026-11-27 03:23",
+  "id": "kling",
+  "kind": "promo",
+  "title": "年付限时5折",
+  "detail": "年付订阅适用"
+ },
+ {
+  "t": "2026-11-27 03:23",
+  "id": "kling",
+  "kind": "promo",
+  "title": "推荐码升级+10%",
+  "detail": "输入推荐码升级可享 +10%"
+ },
+ {
+  "t": "2026-11-27 03:23",
+  "id": "kling",
+  "kind": "promo",
+  "title": "限时免费额度",
+  "detail": "登录个人工作区领取免费额度"
+ },
+ {
+  "t": "2026-11-27 03:23",
+  "id": "manus",
+  "kind": "promo",
+  "title": "黑五最高33%折扣",
+  "detail": "Max年付首年$1,600，之后$2,000/年"
  }
 ]
