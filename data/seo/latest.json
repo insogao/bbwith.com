@@ -1,5 +1,5 @@
 {
- "date": "2026-11-25",
+ "date": "2026-11-26",
  "errors": {},
  "google": {
   "errors": {},
@@ -931,13 +931,13 @@
     "isPending": false,
     "isSitemapsIndex": false,
     "type": "sitemap",
-    "lastDownloaded": "2026-11-23T09:24:59.491Z",
+    "lastDownloaded": "2026-11-25T12:50:34.037Z",
     "warnings": "0",
     "errors": "0",
     "contents": [
      {
       "type": "web",
-      "submitted": "75",
+      "submitted": "74",
       "indexed": "0"
      }
     ]
@@ -1018,7 +1018,7 @@
    },
    "https://bbwith.com/x/": {
     "verdict": "NEUTRAL",
-    "coverageState": "Discovered - currently not indexed",
+    "coverageState": "URL is unknown to Google",
     "lastCrawlTime": null,
     "googleCanonical": null,
     "userCanonical": null,
@@ -1046,7 +1046,7 @@
    "https://bbwith.com/chatgpt/go/": {
     "verdict": "PASS",
     "coverageState": "Submitted and indexed",
-    "lastCrawlTime": "2026-11-25T01:02:48Z",
+    "lastCrawlTime": "2026-11-25T13:15:45Z",
     "googleCanonical": "https://bbwith.com/chatgpt/go/",
     "userCanonical": "https://bbwith.com/chatgpt/go/",
     "robotsTxtState": "ALLOWED",
@@ -1064,7 +1064,7 @@
    "https://bbwith.com/chatgpt/pro-100/": {
     "verdict": "PASS",
     "coverageState": "Submitted and indexed",
-    "lastCrawlTime": "2026-11-25T05:06:02Z",
+    "lastCrawlTime": "2026-11-25T16:24:08Z",
     "googleCanonical": "https://bbwith.com/chatgpt/pro-100/",
     "userCanonical": "https://bbwith.com/chatgpt/pro-100/",
     "robotsTxtState": "ALLOWED",
@@ -1073,7 +1073,7 @@
    "https://bbwith.com/chatgpt/pro-200/": {
     "verdict": "PASS",
     "coverageState": "Submitted and indexed",
-    "lastCrawlTime": "2026-11-25T05:07:52Z",
+    "lastCrawlTime": "2026-11-25T16:23:19Z",
     "googleCanonical": "https://bbwith.com/chatgpt/pro-200/",
     "userCanonical": "https://bbwith.com/chatgpt/pro-200/",
     "robotsTxtState": "ALLOWED",
@@ -1082,7 +1082,7 @@
    "https://bbwith.com/chatgpt/pro-500/": {
     "verdict": "PASS",
     "coverageState": "Submitted and indexed",
-    "lastCrawlTime": "2026-11-25T05:05:54Z",
+    "lastCrawlTime": "2026-11-25T16:23:29Z",
     "googleCanonical": "https://bbwith.com/chatgpt/pro-500/",
     "userCanonical": "https://bbwith.com/chatgpt/pro-500/",
     "robotsTxtState": "ALLOWED",
@@ -1100,7 +1100,7 @@
    "https://bbwith.com/claude/max/": {
     "verdict": "PASS",
     "coverageState": "Submitted and indexed",
-    "lastCrawlTime": "2026-11-25T06:30:40Z",
+    "lastCrawlTime": "2026-11-25T18:42:25Z",
     "googleCanonical": "https://bbwith.com/claude/max/",
     "userCanonical": "https://bbwith.com/claude/max/",
     "robotsTxtState": "ALLOWED",
@@ -1109,7 +1109,7 @@
    "https://bbwith.com/claude/ultra/": {
     "verdict": "PASS",
     "coverageState": "Submitted and indexed",
-    "lastCrawlTime": "2026-11-25T04:59:16Z",
+    "lastCrawlTime": "2026-11-25T16:26:21Z",
     "googleCanonical": "https://bbwith.com/claude/ultra/",
     "userCanonical": "https://bbwith.com/claude/ultra/",
     "robotsTxtState": "ALLOWED",
@@ -1118,7 +1118,7 @@
    "https://bbwith.com/google-ai/pro/": {
     "verdict": "PASS",
     "coverageState": "Submitted and indexed",
-    "lastCrawlTime": "2026-11-25T05:07:55Z",
+    "lastCrawlTime": "2026-11-25T16:23:22Z",
     "googleCanonical": "https://bbwith.com/google-ai/pro/",
     "userCanonical": "https://bbwith.com/google-ai/pro/",
     "robotsTxtState": "ALLOWED",
@@ -1127,7 +1127,7 @@
    "https://bbwith.com/google-ai/ultra/": {
     "verdict": "PASS",
     "coverageState": "Submitted and indexed",
-    "lastCrawlTime": "2026-11-25T05:05:24Z",
+    "lastCrawlTime": "2026-11-25T23:55:25Z",
     "googleCanonical": "https://bbwith.com/google-ai/ultra/",
     "userCanonical": "https://bbwith.com/google-ai/ultra/",
     "robotsTxtState": "ALLOWED",
@@ -1136,7 +1136,7 @@
    "https://bbwith.com/grok/supergrok-lite/": {
     "verdict": "PASS",
     "coverageState": "Submitted and indexed",
-    "lastCrawlTime": "2026-11-25T05:06:32Z",
+    "lastCrawlTime": "2026-11-25T16:21:28Z",
     "googleCanonical": "https://bbwith.com/grok/supergrok-lite/",
     "userCanonical": "https://bbwith.com/grok/supergrok-lite/",
     "robotsTxtState": "ALLOWED",
@@ -1145,7 +1145,7 @@
    "https://bbwith.com/grok/supergrok/": {
     "verdict": "PASS",
     "coverageState": "Submitted and indexed",
-    "lastCrawlTime": "2026-11-25T05:07:02Z",
+    "lastCrawlTime": "2026-11-26T00:16:56Z",
     "googleCanonical": "https://bbwith.com/grok/supergrok/",
     "userCanonical": "https://bbwith.com/grok/supergrok/",
     "robotsTxtState": "ALLOWED",
@@ -1154,7 +1154,7 @@
    "https://bbwith.com/grok/supergrok-plus/": {
     "verdict": "PASS",
     "coverageState": "Submitted and indexed",
-    "lastCrawlTime": "2026-11-25T04:58:45Z",
+    "lastCrawlTime": "2026-11-25T16:26:06Z",
     "googleCanonical": "https://bbwith.com/grok/supergrok-plus/",
     "userCanonical": "https://bbwith.com/grok/supergrok-plus/",
     "robotsTxtState": "ALLOWED",
@@ -1199,7 +1199,7 @@
    "https://bbwith.com/perplexity/pro/": {
     "verdict": "PASS",
     "coverageState": "Submitted and indexed",
-    "lastCrawlTime": "2026-11-24T07:50:13Z",
+    "lastCrawlTime": "2026-11-25T21:05:39Z",
     "googleCanonical": "https://bbwith.com/perplexity/pro/",
     "userCanonical": "https://bbwith.com/perplexity/pro/",
     "robotsTxtState": "ALLOWED",
@@ -1208,7 +1208,7 @@
    "https://bbwith.com/perplexity/max/": {
     "verdict": "PASS",
     "coverageState": "Submitted and indexed",
-    "lastCrawlTime": "2026-11-25T05:08:08Z",
+    "lastCrawlTime": "2026-11-25T16:24:46Z",
     "googleCanonical": "https://bbwith.com/perplexity/max/",
     "userCanonical": "https://bbwith.com/perplexity/max/",
     "robotsTxtState": "ALLOWED",
@@ -1217,7 +1217,7 @@
    "https://bbwith.com/cursor/pro/": {
     "verdict": "PASS",
     "coverageState": "Submitted and indexed",
-    "lastCrawlTime": "2026-11-25T05:10:57Z",
+    "lastCrawlTime": "2026-11-25T16:24:05Z",
     "googleCanonical": "https://bbwith.com/cursor/pro/",
     "userCanonical": "https://bbwith.com/cursor/pro/",
     "robotsTxtState": "ALLOWED",
@@ -1235,7 +1235,7 @@
    "https://bbwith.com/cursor/ultra/": {
     "verdict": "PASS",
     "coverageState": "Submitted and indexed",
-    "lastCrawlTime": "2026-11-25T05:04:23Z",
+    "lastCrawlTime": "2026-11-25T16:23:39Z",
     "googleCanonical": "https://bbwith.com/cursor/ultra/",
     "userCanonical": "https://bbwith.com/cursor/ultra/",
     "robotsTxtState": "ALLOWED",
@@ -1270,7 +1270,7 @@
    },
    "https://bbwith.com/daily/2026-11-24/": {
     "verdict": "NEUTRAL",
-    "coverageState": "URL is unknown to Google",
+    "coverageState": "Discovered - currently not indexed",
     "lastCrawlTime": null,
     "googleCanonical": null,
     "userCanonical": null,
@@ -1278,6 +1278,15 @@
     "pageFetchState": "PAGE_FETCH_STATE_UNSPECIFIED"
    },
    "https://bbwith.com/daily/2026-11-25/": {
+    "verdict": "NEUTRAL",
+    "coverageState": "Discovered - currently not indexed",
+    "lastCrawlTime": null,
+    "googleCanonical": null,
+    "userCanonical": null,
+    "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
+    "pageFetchState": "PAGE_FETCH_STATE_UNSPECIFIED"
+   },
+   "https://bbwith.com/daily/2026-11-26/": {
     "verdict": "NEUTRAL",
     "coverageState": "URL is unknown to Google",
     "lastCrawlTime": null,
@@ -1333,7 +1342,7 @@
    },
    "https://bbwith.com/gift-cards/apple/id/": {
     "verdict": "NEUTRAL",
-    "coverageState": "URL is unknown to Google",
+    "coverageState": "Discovered - currently not indexed",
     "lastCrawlTime": null,
     "googleCanonical": null,
     "userCanonical": null,
@@ -1395,24 +1404,33 @@
     "pageFetchState": "SUCCESSFUL"
    },
    "https://bbwith.com/news/2026-11-23/": {
-    "verdict": "NEUTRAL",
-    "coverageState": "Discovered - currently not indexed",
-    "lastCrawlTime": null,
-    "googleCanonical": null,
-    "userCanonical": null,
-    "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
-    "pageFetchState": "PAGE_FETCH_STATE_UNSPECIFIED"
+    "verdict": "PASS",
+    "coverageState": "Submitted and indexed",
+    "lastCrawlTime": "2026-11-25T09:43:33Z",
+    "googleCanonical": "https://bbwith.com/news/2026-11-23/",
+    "userCanonical": "https://bbwith.com/news/2026-11-23/",
+    "robotsTxtState": "ALLOWED",
+    "pageFetchState": "SUCCESSFUL"
    },
    "https://bbwith.com/news/2026-11-24/": {
-    "verdict": "NEUTRAL",
-    "coverageState": "URL is unknown to Google",
-    "lastCrawlTime": null,
-    "googleCanonical": null,
-    "userCanonical": null,
-    "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
-    "pageFetchState": "PAGE_FETCH_STATE_UNSPECIFIED"
+    "verdict": "PASS",
+    "coverageState": "Submitted and indexed",
+    "lastCrawlTime": "2026-11-25T10:00:40Z",
+    "googleCanonical": "https://bbwith.com/news/2026-11-24/",
+    "userCanonical": "https://bbwith.com/news/2026-11-24/",
+    "robotsTxtState": "ALLOWED",
+    "pageFetchState": "SUCCESSFUL"
    },
    "https://bbwith.com/news/2026-11-25/": {
+    "verdict": "PASS",
+    "coverageState": "Submitted and indexed",
+    "lastCrawlTime": "2026-11-25T21:46:55Z",
+    "googleCanonical": "https://bbwith.com/news/2026-11-25/",
+    "userCanonical": "https://bbwith.com/news/2026-11-25/",
+    "robotsTxtState": "ALLOWED",
+    "pageFetchState": "SUCCESSFUL"
+   },
+   "https://bbwith.com/news/2026-11-26/": {
     "verdict": "NEUTRAL",
     "coverageState": "URL is unknown to Google",
     "lastCrawlTime": null,
@@ -1423,7 +1441,7 @@
    },
    "https://bbwith.com/ai-pricing/": {
     "verdict": "NEUTRAL",
-    "coverageState": "URL is unknown to Google",
+    "coverageState": "Discovered - currently not indexed",
     "lastCrawlTime": null,
     "googleCanonical": null,
     "userCanonical": null,
@@ -1440,13 +1458,13 @@
     "pageFetchState": "SUCCESSFUL"
    },
    "https://bbwith.com/ai-pricing/claude/": {
-    "verdict": "NEUTRAL",
-    "coverageState": "URL is unknown to Google",
-    "lastCrawlTime": null,
-    "googleCanonical": null,
-    "userCanonical": null,
-    "robotsTxtState": "ROBOTS_TXT_STATE_UNSPECIFIED",
-    "pageFetchState": "PAGE_FETCH_STATE_UNSPECIFIED"
+    "verdict": "PASS",
+    "coverageState": "Submitted and indexed",
+    "lastCrawlTime": "2026-11-25T14:02:22Z",
+    "googleCanonical": "https://bbwith.com/ai-pricing/claude/",
+    "userCanonical": "https://bbwith.com/ai-pricing/claude/",
+    "robotsTxtState": "ALLOWED",
+    "pageFetchState": "SUCCESSFUL"
    },
    "https://bbwith.com/ai-pricing/cursor/": {
     "verdict": "NEUTRAL",
@@ -1532,7 +1550,7 @@
    "https://bbwith.com/ai-pricing/perplexity/": {
     "verdict": "PASS",
     "coverageState": "Submitted and indexed",
-    "lastCrawlTime": "2026-11-25T00:24:11Z",
+    "lastCrawlTime": "2026-11-25T12:49:59Z",
     "googleCanonical": "https://bbwith.com/ai-pricing/perplexity/",
     "userCanonical": "https://bbwith.com/ai-pricing/perplexity/",
     "robotsTxtState": "ALLOWED",
@@ -1603,7 +1621,7 @@
    },
    "https://bbwith.com/channels/": {
     "verdict": "NEUTRAL",
-    "coverageState": "URL is unknown to Google",
+    "coverageState": "Discovered - currently not indexed",
     "lastCrawlTime": null,
     "googleCanonical": null,
     "userCanonical": null,
@@ -1611,7 +1629,7 @@
     "pageFetchState": "PAGE_FETCH_STATE_UNSPECIFIED"
    }
   },
-  "indexed": 59
+  "indexed": 63
  },
  "bing": {
   "GetRankAndTrafficStats": [
@@ -1678,7 +1696,7 @@
   "GetUrlSubmissionQuota": {
    "__type": "UrlSubmissionQuota:#Microsoft.Bing.Webmaster.Api",
    "DailyQuota": 100,
-   "MonthlyQuota": 600
+   "MonthlyQuota": 500
   }
  },
  "cloudflare": {
@@ -1719,6 +1737,16 @@
     }
    },
    {
+    "date": "2026-11-26",
+    "requests": 52,
+    "pageViews": 26,
+    "uniques": 41,
+    "status": {
+     "200": 38,
+     "302": 14
+    }
+   },
+   {
     "date": "2026-11-22",
     "requests": 2384,
     "pageViews": 563,
@@ -1736,19 +1764,19 @@
    },
    {
     "date": "2026-11-25",
-    "requests": 810,
-    "pageViews": 359,
-    "uniques": 495,
+    "requests": 2595,
+    "pageViews": 1009,
+    "uniques": 1307,
     "status": {
-     "200": 513,
-     "301": 23,
-     "302": 159,
+     "200": 1495,
+     "301": 86,
+     "302": 430,
      "304": 1,
-     "308": 11,
-     "403": 2,
-     "404": 97,
-     "405": 3,
-     "499": 1
+     "308": 23,
+     "403": 16,
+     "404": 533,
+     "405": 7,
+     "499": 4
     }
    },
    {
@@ -1772,30 +1800,80 @@
   "errors_who_24h": [
    {
     "cacheStatus": "miss",
-    "clientCountryName": "TW",
-    "datetimeHour": "2026-11-24T18:00:00Z",
+    "clientCountryName": "PL",
+    "datetimeHour": "2026-11-25T22:00:00Z",
+    "originResponseStatus": 0,
+    "userAgent": "fl2 early hints",
+    "n": 5
+   },
+   {
+    "cacheStatus": "miss",
+    "clientCountryName": "US",
+    "datetimeHour": "2026-11-25T14:00:00Z",
     "originResponseStatus": 0,
     "userAgent": "fl2 early hints",
     "n": 4
+   },
+   {
+    "cacheStatus": "miss",
+    "clientCountryName": "CN",
+    "datetimeHour": "2026-11-25T10:00:00Z",
+    "originResponseStatus": 0,
+    "userAgent": "fl2 early hints",
+    "n": 2
+   },
+   {
+    "cacheStatus": "miss",
+    "clientCountryName": "CN",
+    "datetimeHour": "2026-11-25T23:00:00Z",
+    "originResponseStatus": 0,
+    "userAgent": "fl2 early hints",
+    "n": 1
+   },
+   {
+    "cacheStatus": "miss",
+    "clientCountryName": "US",
+    "datetimeHour": "2026-11-25T21:00:00Z",
+    "originResponseStatus": 0,
+    "userAgent": "fl2 early hints",
+    "n": 1
+   },
+   {
+    "cacheStatus": "miss",
+    "clientCountryName": "US",
+    "datetimeHour": "2026-11-25T13:00:00Z",
+    "originResponseStatus": 0,
+    "userAgent": "fl2 early hints",
+    "n": 1
    }
   ],
   "status_24h": {
-   "200": 1647,
-   "302": 554,
-   "404": 237,
-   "301": 152,
-   "308": 51,
-   "405": 5,
-   "504": 4,
-   "304": 3,
-   "403": 2,
-   "499": 1
+   "200": 1458,
+   "404": 530,
+   "302": 406,
+   "301": 84,
+   "308": 23,
+   "403": 16,
+   "405": 16,
+   "504": 14,
+   "499": 4,
+   "304": 1
   },
   "errors_24h": [
    {
-    "path": "/google-ai/ultra/",
+    "path": "/channels/",
+    "status": 504,
+    "n": 3
+   },
+   {
+    "path": "/deals/google-ai-black-friday-2026/",
     "status": 504,
     "n": 2
+   },
+   {
+    "path": "/gift-cards/apple/jp/",
+    "status": 504,
+    "n": 1
    },
    {
     "path": "/google-ai/pro/",
@@ -1803,20 +1881,49 @@
     "n": 1
    },
    {
+    "path": "/go/eneba-tr-250",
+    "status": 504,
+    "n": 1
+   },
+   {
     "path": "/",
+    "status": 504,
+    "n": 1
+   },
+   {
+    "path": "/gift-cards/apple/br/",
+    "status": 504,
+    "n": 1
+   },
+   {
+    "path": "/gift-cards/apple/us/",
+    "status": 504,
+    "n": 1
+   },
+   {
+    "path": "/google-ai/",
+    "status": 504,
+    "n": 1
+   },
+   {
+    "path": "/deals/",
+    "status": 504,
+    "n": 1
+   },
+   {
+    "path": "/gift-cards/apple/tw/",
     "status": 504,
     "n": 1
    }
   ],
   "crawlers_24h": {
-   "Googlebot": 88,
-   "bingbot": 24,
-   "ChatGPT-User": 22,
-   "YandexBot": 19
+   "Googlebot": 139,
+   "bingbot": 21,
+   "ChatGPT-User": 18
   }
  },
  "site_search_gaps": {
-  "since": "2026-10-29",
+  "since": "2026-10-30",
   "gaps": []
  }
 }
