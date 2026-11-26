@@ -640,5 +640,154 @@
   "kind": "promo",
   "title": "黑五最高 33% 折扣",
   "detail": "Pro 25% OFF，首年$900；Max 33% OFF，首年$1,600；续费$1,000/年、$2,000/年"
+ },
+ {
+  "t": "2026-11-26 14:18",
+  "id": "gemini",
+  "kind": "promo",
+  "title": "大学生免费 Pro 一年",
+  "detail": "College students get a free Pro plan for one year."
+ },
+ {
+  "t": "2026-11-26 14:18",
+  "id": "grok",
+  "kind": "promo",
+  "title": "Black Friday: Pay for 1 month, get 1 free",
+  "detail": "首 2 个月共 $30，之后 $30/月"
+ },
+ {
+  "t": "2026-11-26 14:18",
+  "id": "copilot",
+  "kind": "promo",
+  "title": "Copilot Fusion 使用费 7 折",
+  "detail": "Copilot Fusion usage 30% off，截止 Dec 31"
+ },
+ {
+  "t": "2026-11-26 14:18",
+  "id": "suno",
+  "kind": "price",
+  "plan": "Pro",
+  "period": "year",
+  "from": "96 USD",
+  "to": "67.2 USD"
+ },
+ {
+  "t": "2026-11-26 14:18",
+  "id": "suno",
+  "kind": "price",
+  "plan": "Premier",
+  "period": "year",
+  "from": "288 USD",
+  "to": "201.6 USD"
+ },
+ {
+  "t": "2026-11-26 14:18",
+  "id": "suno",
+  "kind": "price",
+  "plan": "Platinum",
+  "period": "year",
+  "from": "1200 USD",
+  "to": "840 USD"
+ },
+ {
+  "t": "2026-11-26 14:18",
+  "id": "suno",
+  "kind": "promo",
+  "title": "Black Friday Sale",
+  "detail": "年付额外30% off；Pro首年$67.20、Premier首年$201.60、Platinum首年$840，之后分别$96/$288/$1,200每年"
+ },
+ {
+  "t": "2026-11-26 14:18",
+  "id": "elevenlabs",
+  "kind": "promo",
+  "title": "Creator 黑五首年价",
+  "detail": "年付首年 $99，之后 $220/年；首年折合 $8.25/月"
+ },
+ {
+  "t": "2026-11-26 14:18",
+  "id": "elevenlabs",
+  "kind": "promo",
+  "title": "Pro 黑五首年价",
+  "detail": "年付首年 $445.50，之后 $990/年；首年折合 $37.13/月"
+ },
+ {
+  "t": "2026-11-26 14:18",
+  "id": "kling",
+  "kind": "price",
+  "plan": "Standard",
+  "period": "month",
+  "from": "8.8 USD",
+  "to": "6.5 USD"
+ },
+ {
+  "t": "2026-11-26 14:18",
+  "id": "kling",
+  "kind": "price",
+  "plan": "Pro",
+  "period": "month",
+  "from": "32.56 USD",
+  "to": "24 USD"
+ },
+ {
+  "t": "2026-11-26 14:18",
+  "id": "kling",
+  "kind": "price",
+  "plan": "Premier",
+  "period": "month",
+  "from": "181.99 USD",
+  "to": "135 USD"
+ },
+ {
+  "t": "2026-11-26 14:18",
+  "id": "kling",
+  "kind": "price",
+  "plan": "Ultra+",
+  "period": "month",
+  "from": "544.99 USD",
+  "to": "402 USD"
+ },
+ {
+  "t": "2026-11-26 14:18",
+  "id": "kling",
+  "kind": "promo",
+  "title": "Yearly Limited-Time 50% Off",
+  "detail": "Yearly plan limited-time 50% Off"
+ },
+ {
+  "t": "2026-11-26 14:18",
+  "id": "kling",
+  "kind": "promo",
+  "title": "Monthly Limited-Time 35% Off",
+  "detail": "35% Off the First 3 Months; one-time offer; Standard $6.5/mo then $8.8/mo; Pro $24 then $32.56; Premier $135 then $181.99; Ultra+ $402 then $544.99"
+ },
+ {
+  "t": "2026-11-26 14:18",
+  "id": "kling",
+  "kind": "promo",
+  "title": "Kling Image 4.0 - 8K 40% Off",
+  "detail": "Kling Image 4.0 - 8K 40% Off"
+ },
+ {
+  "t": "2026-11-26 14:18",
+  "id": "kling",
+  "kind": "promo",
+  "title": "Claim limited-time free credits",
+  "detail": "Claim limited-time free credits; Bonus Inspiration Credits are available on Kling AI platforms only"
+ },
+ {
+  "t": "2026-11-26 14:18",
+  "id": "manus",
+  "kind": "price",
+  "plan": "Max",
+  "period": "year",
+  "from": "1600 USD",
+  "to": "2000 USD"
+ },
+ {
+  "t": "2026-11-26 14:18",
+  "id": "manus",
+  "kind": "promo",
+  "title": "黑五最高 33% off",
+  "detail": "黑五活动最高 33% off；Max 年付首年 $1,600，之后 $2,000/年"
  }
 ]
