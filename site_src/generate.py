@@ -568,6 +568,7 @@ def build_plan_page(product, plan, rows, prev_rows, day, all_plans):
 {f'<p class="note">在以下地区 App Store 无法下载这个 App：{"、".join(cname(c) for c in unavailable)}。</p>' if unavailable else ''}
 {f'<p class="note">以下地区能下载 App，但本次没有抓到这一档的标价（App Store 每个 App 只展示约 10 个内购项目）：{"、".join(cname(c) for c in missing[:40])}{" 等" if len(missing) > 40 else ""}。</p>' if missing else ''}
 {f'<p class="note">{e(PRODUCTS[product]["note"])}</p>' if PRODUCTS[product]["note"] else ''}
+{f'<p class="linkbtn"><a href="{hub_url(product)}">{e(PRODUCTS[product]["name"].split("（")[0])} 现在有什么优惠、怎么买最便宜 →</a></p>' if product in HUB_PRODUCTS else ''}
 <h2>常见问题</h2>
 <div class="faq">{faq_html}</div>
 <p class="src">数据来源：各地区 App Store 公开页面的「App 内购买项目」，每天更新。</p>
@@ -600,6 +601,7 @@ def build_product_page(product, plans_rows, day):
     desc = f"{name0} 各档会员在 {len(day['storefronts'])} 个 App Store 地区的月付标价，统一折算成美元，对比最便宜和最贵的地区，每日更新。"
     body = f"""{cr_html}
 <h1>{e(info['name'])} 各档会员 App Store 价格</h1>
+{f'<p class="linkbtn"><a href="{hub_url(product)}">{e(name0)} 现在有什么优惠、怎么买最便宜 →</a></p>' if product in HUB_PRODUCTS else ''}
 <p class="meta">更新于 {zh_date(day['date'])} · App：{e(info['app'])}（{e(info['vendor'])}）</p>
 {deal_banner(product)}
 {f'<p class="note">{e(info["note"])}</p>' if info["note"] else ''}
@@ -1095,6 +1097,108 @@ def deal_banner(product=None, plan=None):
     return f'<aside class="deals"><h2>🔥 限时优惠</h2><ul>{items}</ul></aside>'
 
 
+HUB_PRODUCTS = ("claude", "chatgpt", "google-ai")  # evergreen "优惠和最低价" pages; more can be added once the data supports them
+HUB_MAIN = {"chatgpt": "plus", "claude": "pro", "google-ai": "pro"}  # the plan most people mean by "ChatGPT 会员"
+
+
+def usd_txt(v):
+    """Plain-text dollar amount for titles, descriptions and FAQ text (money() returns markup for the currency switch)."""
+    return f"${v:,.2f}"
+
+
+def hub_url(product):
+    return f"/{product}/deals/"
+
+
+def cheapest_routes(p, pl, rows, fx):
+    """The ways to pay into your own account, cheapest first: [(usd, label, detail, href)]."""
+    out = []
+    off = official_of(p, pl)
+    if off:
+        out.append((off["usd"], "官网订阅", "美国标价，结账时另加税，需要能付美元的信用卡", url_plan(p, pl) + "#official"))
+    best = None
+    for r in rows:
+        rr = gift_shop_rates(r["cc"], fx)
+        if rr:
+            v = r["local"] * min(rr)
+            if best is None or v < best[0]:
+                best = (v, r)
+    if best:
+        v, r = best
+        out.append((v, f"{cname(r['cc'])} App Store + 礼品卡", f"当地标价 {usd_txt(r['usd'])} × 买卡成本 {v / r['usd'] * 100:.0f}%，需要该地区的 Apple ID",
+                    f"/gift-cards/apple/{r['cc']}/"))
+    ck, rate = channel_key_for(p, pl), CHANNELS.get("usd_cny")
+    tp = ((CHANNELS.get("plans") or {}).get(ck) or {}).get("topup") if ck else None
+    if tp and rate:
+        out.append((tp["median"] / rate, "国内代充", f"国内卡网 {tp['count']} 条报价的中位数，充到你自己的账号，售后看店铺条款", "/channels/"))
+    return sorted(out, key=lambda x: x[0])
+
+
+def build_deal_hubs(day, cur):
+    urls = []
+    today = day["date"]
+    for product in HUB_PRODUCTS:
+        info = PRODUCTS.get(product)
+        plans = [(k, cur[k]) for k in [x[:2] for x in PLANS] if k[0] == product and cur.get(k)]
+        if not info or not plans:
+            continue
+        name0 = info["name"].split("（")[0]
+        path = hub_url(product)
+        # current offers: checked deals + what the daily official-page read found
+        live = [d for d in DEALS if d["active"] and d["product"] == product]
+        auto = [(pp, x) for pp, x in auto_promos() if PRICING_PROD.get(pp["id"]) == product]
+        ended = [d for d in DEALS if not d["active"] and d["product"] == product]
+        offers = "".join(f'<li><a href="{deal_url(d)}"><b>{e(d["title"])}</b></a><small>{e(d["discount"])} · {e(deal_period(d))}</small></li>' for d in live)
+        offers += "".join(f'<li><b>{e(x["title"])}</b>{("：" + e(x["detail"])) if x.get("detail") else ""}'
+                          f'<small>官网价格页每日识别{(" · 截止 " + e(x["ends"])) if x.get("ends") else ""} · <a href="{e(pp["url"])}" rel="nofollow noopener" target="_blank">去官网核对</a></small></li>'
+                          for pp, x in auto)
+        has_offer = bool(live or auto)
+        # cheapest own-account route per plan
+        main = next(((k, r) for k, r in plans if k[1] == HUB_MAIN.get(product)), plans[0])
+        (main_p, main_pl), main_rows = main
+        main_routes = cheapest_routes(main_p, main_pl, main_rows, day["fx"])
+        main_name = full_name(main_p, main_pl)
+        blocks = ""
+        for (p_, pl_), rows in plans:
+            rts = cheapest_routes(p_, pl_, rows, day["fx"])
+            if not rts:
+                continue
+            lis = "".join(f'<li class="{"best" if i == 0 else ""}"><span class="rn">{i + 1}</span><a href="{h}"><b>{e(lbl)}</b></a>'
+                          f'<span class="rp">{money(v)}</span><small>{e(det)}</small></li>' for i, (v, lbl, det, h) in enumerate(rts))
+            blocks += (f'<div class="hubplan"><h3><a href="{url_plan(p_, pl_)}">{e(plan_label(p_, pl_))}</a></h3>'
+                       f'{plan_note(p_, pl_)}<ol class="routes">{lis}</ol></div>')
+        lo = main_routes[0] if main_routes else None
+        rate_ = CHANNELS.get("usd_cny")
+        head = f"{main_name} 最低 {usd_txt(lo[0])}" + (f"（约 ¥{lo[0] * rate_:.0f}）" if rate_ else "") if lo else f"{name0}会员价格"
+        title = f"{name0} 优惠和最低价（{zh_date(today)[5:]}更新）：{head} · 比比价"
+        desc = (f"{name0} 会员现在有没有优惠、怎么买最便宜：" + ("当前有官方优惠；" if has_offer else "目前官方没有优惠活动；")
+                + (f"{main_name}最便宜的买法是{lo[1]}，约 {usd_txt(lo[0])}/月。" if lo else "") + "每天按官网、App Store、礼品卡和国内代充的实际价格更新。")
+        faq = [(f"{name0} 现在有优惠吗？",
+                ("有。" + "；".join([d["title"] for d in live] + [x["title"] for _, x in auto]) + "。详情和截止时间见本页「正在进行的优惠」。") if has_offer
+                else f"截至 {zh_date(today)}，本站每天检查的 {name0} 官网价格页上没有限时优惠，也没有核实过的活动。有新活动时本页会第一时间更新。"),
+               (f"{main_name}怎么买最便宜？",
+                ("按今天的价格，充到自己账号最便宜的是" + "，其次是".join(f"{lbl}（约 {usd_txt(v)}）" for v, lbl, _, _ in main_routes[:3]) + "。各方式的条件不同，见上面的列表。") if main_routes else "暂无数据。"),
+               (f"成品号为什么不算在里面？", "成品号是卖家开好会员的账号，不在你名下，可能随时失效，所以本页只比较充到你自己账号的方式。成品号的报价在「代充 · 成品号」页。")]
+        faq_html = "".join(f"<details><summary>{e(q)}</summary><p>{e(a)}</p></details>" for q, a in faq)
+        cr_html, cr_ld = crumbs([("首页", "/"), (info["name"], f"/{product}/"), ("优惠和最低价", path)])
+        past = "".join(f'<li><a href="{deal_url(d)}">{e(d["title"])}</a> <small>{e(deal_period(d))}</small></li>' for d in ended)
+        body = f"""{cr_html}<h1>{e(name0)} 优惠和最低价</h1>
+<p class="lead">{e(desc)}</p>
+<h2>正在进行的优惠</h2>
+{f'<ul class="list hubdeals">{offers}</ul>' if has_offer else f'<p>目前没有。本站每天检查 {e(name0)} 官网价格页，出现限时优惠会列在这里。</p>'}
+<h2>各档位怎么买最便宜</h2>
+<p class="hint">只比较充到你自己账号的方式，按今天的价格从低到高排。点每一项看详情。</p>
+<div class="hubplans">{blocks}</div>
+{f'<h2>往期优惠</h2><ul class="list">{past}</ul>' if past else ''}
+<h2>常见问题</h2><div class="faq">{faq_html}</div>
+<p class="src">更多：<a href="/{product}/">{e(name0)} 各地区 App Store 价格</a> · <a href="/gift-cards/">礼品卡</a> · <a href="/channels/">代充 · 成品号</a> · <a href="/deals/">全部优惠</a></p>"""
+        ld = [cr_ld, {"@context": "https://schema.org", "@type": "FAQPage",
+                      "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in faq]}]
+        write(path, page(title, desc[:150], path, body, ld, today))
+        urls.append(path)
+    return urls
+
+
 def build_deals(day):
     for d in DEALS:
         path = deal_url(d)
@@ -1115,6 +1219,7 @@ def build_deals(day):
 <tr><th>怎么参加</th><td style="white-space:normal">{e(d['how'])}</td></tr>
 </tbody></table></div>
 <p class="note">核实方式：{e(d['verified_how'])}。优惠内容以官方页面和结账页为准，可能随时调整或提前结束。</p>
+{f'<p class="linkbtn"><a href="{hub_url(d["product"])}">{"活动结束后" if d["active"] else "这个活动已结束，"}{e(info["name"].split("（")[0])} 现在怎么买最便宜 →</a></p>' if d["product"] in HUB_PRODUCTS else ''}
 <h2>来源</h2><ul class="list">{src}</ul>
 <p class="src"><a href="/deals/">全部优惠快讯</a> · <a href="/{e(d['product'])}/">{e(info['name'])} 各地区价格</a></p>"""
         ld = [cr_ld, {"@context": "https://schema.org", "@type": "Article", "headline": d["title"], "datePublished": d["added"],
@@ -1143,6 +1248,7 @@ def build_deals(day):
              f'<button type="button" class="linkbtn" data-pf-reset>看全部 {n_all} 条优惠</button></p>')
     body = f"""{cr_html}<h1>AI 会员优惠</h1>
 <p class="lead">各家 AI 会员正在进行的折扣、首月优惠和限时活动，每天自动更新。</p>
+<p class="hubnav">按产品看优惠和最低价：{" · ".join(f'<a href="{hub_url(x)}">{e(PRODUCTS[x]["name"].split("（")[0])}</a>' for x in HUB_PRODUCTS if x in PRODUCTS)}</p>
 <div class="fl">
 {f'<h2>编辑核实</h2><ul class="list">{rows(verified)}</ul>' if verified else ''}
 {f'<h2>官网正在进行</h2><div class="dealcards" data-sec="优惠卡片">{cards}</div>' if cards else '<p>今天没有在各家官网价格页上发现限时优惠。</p>'}
@@ -2072,6 +2178,11 @@ def build_search_index(cur):
         b_ = best_rate(cc, FX_ALL or {}) if GIFT.get("items") and FX_ALL else None
         items.append({"t": f"{name}区 App Store 礼品卡", "u": f"/gift-cards/apple/{cc}/", "g": "充值卡",
                       "d": f"最低溢价 {pct(b_['prem'])}" if b_ else "", "k": f"{cc} {name} {name}区 礼品卡 充值卡 gift card itunes apple 苹果 支付宝"})
+    for x in HUB_PRODUCTS:
+        if x in PRODUCTS:
+            n0 = PRODUCTS[x]["name"].split("（")[0]
+            items.append({"t": f"{n0} 优惠和最低价", "u": hub_url(x), "g": "优惠", "d": "",
+                          "k": f"{x} {ALIASES.get(x, '')} 优惠 最低价 便宜 打折 折扣 黑五 免费 优惠码 活动"})
     items.append({"t": "代充、成品号价格行情", "u": "/channels/", "g": "代充 · 成品号", "d": "", "k": "代充 成品号 拼车 共享 账号 卡网"})
     for g in GUIDES:
         items.append({"t": g["title"], "u": f"/guides/{g['slug']}/", "g": "教程", "d": "", "k": g["description"]})
@@ -2162,7 +2273,7 @@ def main():
     build_about(day)
     pricing_urls = build_pricing(day, cur)
     build_deals(day)
-    gift_urls = build_gift(day, cur) + build_news(cur) + build_shops() + pricing_urls + build_guides(day, cur) + build_channels_hub(cur)
+    gift_urls = build_deal_hubs(day, cur) + build_gift(day, cur) + build_news(cur) + build_shops() + pricing_urls + build_guides(day, cur) + build_channels_hub(cur)
     build_merchant_pages()
     build_data(days, cur)
     build_meta(days, cur, gift_urls)
