@@ -443,3 +443,14 @@ a.offer b{display:inline}
   div.rt.best{border-color:#2bb58f}
   .a-act .btn{background:#fff;color:#0d6b5e}
 }
+dialog.mpdlg{border:0;border-radius:16px;padding:20px 24px;max-width:420px;width:calc(100% - 32px);background:var(--card);color:var(--fg);box-shadow:0 20px 60px rgba(0,0,0,.3)}
+dialog.mpdlg::backdrop{background:rgba(0,0,0,.45)}
+.mpdlg h3{margin:0 0 6px;font-size:18px}
+.mpdlg p{margin:6px 0;font-size:14px;color:var(--muted)}
+.mp-body{display:flex;gap:16px;align-items:center;margin:12px 0}
+.mp-body img{background:#fff;border-radius:8px;padding:4px;flex:none}
+.mp-body ol{margin:0;padding-left:18px;font-size:15px;line-height:1.8}
+.mp-x{position:absolute;top:8px;right:12px;border:0;background:none;font-size:24px;color:var(--muted);cursor:pointer}
+.mpdlg{position:fixed}
+.mp-how p{margin:0;font-size:15px;color:var(--fg);line-height:1.7}
+.mp-how p.mp-or{font-size:12px;color:var(--muted);margin:2px 0}

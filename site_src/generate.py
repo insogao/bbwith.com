@@ -101,6 +101,13 @@ def pct(v):
     return "持平" if s in ("+0%", "-0%") else s
 
 
+def ppct(v):
+    """Gift-card premium: one decimal under 1%, since a few tenths decide between shops."""
+    if v is not None and 0.0005 <= abs(v) < 0.01:
+        return f"{v * 100:+.1f}%"
+    return pct(v)
+
+
 def zh_date(iso):
     d = dt.date.fromisoformat(iso)
     return f"{d.year}年{d.month}月{d.day}日"
@@ -1388,7 +1395,7 @@ def gift_summary_table(day):
         b = best_rate(cc, day["fx"])
         if b:
             trs += (f'<tr><td><a href="/gift-cards/apple/{cc}/">{flag(cc)} {e(name)}区</a></td><td>{e(SHOPS[b["shop"]]["name"])}</td>'
-                    f'<td>{e(face_text(b))} · {money(b["usd"])}</td><td>{pct(b["prem"])}</td></tr>')
+                    f'<td>{e(face_text(b))} · {money(b["usd"])}</td><td>{ppct(b["prem"])}</td></tr>')
     return (f'<div class="tablewrap"><table class="prices"><thead><tr><th>地区</th><th>最划算的平台</th><th>面额 · 售价</th><th>溢价</th></tr></thead>'
             f'<tbody>{trs}</tbody></table></div><p class="hint">数据每天更新，今日 {zh_date(day["date"])}。</p>')
 
@@ -1976,7 +1983,11 @@ GO = {}     # /go/<slug> -> destination; written to _redirects
 SHOPS = {"bitrefill": {"name": "Bitrefill", "pay": "加密货币为主，也支持银行卡（有限额）", "url": "https://www.bitrefill.com/us/en/gift-cards/{slug}/"},
          "seagm": {"name": "SEAGM", "pay": "支付宝、微信、信用卡、PayPal", "url": "https://www.seagm.com/{slug}"},
          "eneba": {"name": "Eneba", "pay": "信用卡、PayPal 等（平台上的第三方卖家）", "url": "https://www.eneba.com/{slug}"},
-         "youworld": {"name": "由我付 YouWorld", "pay": "支付宝（人民币），需手机号登录", "url": "https://up.youworld.cn/{slug}"}}
+         "youworld": {"name": "由我付 YouWorld", "pay": "支付宝（人民币），需手机号登录", "url": "https://up.youworld.cn/{slug}",
+                      "mini": "由我付", "qr": "/assets/youworld-qr.svg"},
+         "nediya": {"name": "Nediya 奈达", "pay": "支付宝（人民币），无服务费", "url": "https://www.nediya.com/product",
+                    "mini": "Nediya", "qr": ""}}
+MINI = {}  # /go/ keys that open an Alipay mini program: desktop shows how to open it on the phone instead
 GIFT_NAMES = {"tr": "土耳其", "id": "印尼", "br": "巴西", "in": "印度", "jp": "日本", "us": "美国"}
 
 
@@ -1985,21 +1996,33 @@ def load_gift():
     return json.load(open(files[-1], encoding="utf8")) if files else {}
 
 
+DAY_FX = {}
+
+
 def add_manual_gift(usd_cny):
     """Prices checked by hand (shops that need a login), converted at today's CNY rate."""
     f = os.path.join(ROOT, "data", "giftcards", "manual.json")
     if not os.path.exists(f) or not GIFT.get("items"):
         return
     for m in json.load(open(f, encoding="utf8")):
+        if "prem" in m:  # a shop that sells at a fixed margin to the exchange rate: price follows today's rate
+            usd = float(m["face"]) / ((DAY_FX or {}).get(m["cur"]) or 1) * (1 + m["prem"])
+            cny = round(usd * usd_cny, 2)
+        else:
+            usd, cny = m["cny"] / usd_cny, m["cny"]
         GIFT["items"].append({"shop": m["shop"], "cc": m["cc"], "cur": m["cur"], "face": float(m["face"]),
-                              "usd": round(m["cny"] / usd_cny, 2), "slug": "", "manual": m["checked"], "cny": m["cny"]})
+                              "usd": round(usd, 2), "slug": "", "manual": m["checked"], "cny": cny})
 
 
 def go(shop, slug, key):
     aff = AFF.get(shop, "")
+    if SHOPS.get(shop, {}).get("mini"):
+        MINI[key] = shop
     if isinstance(aff, dict):  # a full referral link replaces the shop URL
         GO[key] = aff["url"]
         return f"/go/{key}"
+    if SHOPS.get(shop, {}).get("mini"):
+        MINI[key] = shop
     url = SHOPS[shop]["url"].format(slug=slug)
     if aff:
         url += ("&" if "?" in url else "?") + aff
@@ -2007,8 +2030,18 @@ def go(shop, slug, key):
     return f"/go/{key}"
 
 
+def mini_attrs(href):
+    """Alipay mini programs can't be opened from a desktop browser: tag the link so app.js shows the QR / search tip there."""
+    shop = MINI.get(href.rsplit("/", 1)[-1]) if href.startswith("/go/") else None
+    if not shop:
+        return ""
+    sh, aff = SHOPS[shop], AFF.get(shop) if isinstance(AFF.get(shop), dict) else {}
+    return (f' data-mp="{e(sh["name"])}" data-mp-search="{e(sh["mini"])}" data-mp-qr="{e(sh.get("qr", ""))}"'
+            f' data-mp-copy="{e(aff.get("share_text", ""))}"{" data-mp-direct" if aff.get("url") else ""}')
+
+
 def out_link(href, text, cls="btn small"):
-    return f'<a class="{cls}" href="{href}" rel="nofollow sponsored noopener" target="_blank">{e(text)}</a>'
+    return f'<a class="{cls}" href="{href}" rel="nofollow sponsored noopener" target="_blank"{mini_attrs(href)}>{e(text)}</a>'
 
 
 def gift_rows(cc, fx):
@@ -2043,6 +2076,8 @@ def best_rate(cc, fx, min_face_usd=4):
 # value: (status, note); status: "yes" | "no" | "maybe"
 PAY_COLS = [("alipay", "支付宝"), ("wechat", "微信支付"), ("card", "Visa / 万事达"), ("paypal", "PayPal"), ("crypto", "加密货币")]
 PAY = {
+    "nediya": {"alipay": ("yes", "人民币直付，无服务费"), "wechat": ("no", ""), "card": ("no", ""), "paypal": ("no", ""), "crypto": ("no", ""),
+               "note": "支付宝小程序，搜「Nediya」或「奈达」，支付宝一键登录；美区卡 $2–$500 可自填面额，有单日限额。"},
     "youworld": {"alipay": ("yes", "人民币直付"), "wechat": ("no", ""), "card": ("no", ""), "paypal": ("no", ""), "crypto": ("no", ""),
                  "note": "支付宝小程序，需手机号登录；只卖美区卡。"},
     "seagm": {"alipay": ("yes", "仅限中国大陆用户"), "wechat": ("yes", ""), "card": ("yes", ""), "paypal": ("yes", ""), "crypto": ("no", ""),
@@ -2073,8 +2108,8 @@ def pay_badges(shop):
 
 
 def shop_with_pay(shop, href="", prem=None):
-    pr = f' <span class="sp">溢价 {pct(prem)}</span>' if prem is not None else ""
-    nm = (f'<a class="sn" href="{href}" rel="nofollow sponsored noopener" target="_blank">{e(SHOPS[shop]["name"])}{pr} →</a>' if href
+    pr = f' <span class="sp">溢价 {ppct(prem)}</span>' if prem is not None else ""
+    nm = (f'<a class="sn" href="{href}" rel="nofollow sponsored noopener" target="_blank"{mini_attrs(href)}>{e(SHOPS[shop]["name"])}{pr} →</a>' if href
           else f'<span class="sn">{e(SHOPS[shop]["name"])}{pr}</span>')
     return f'<span class="shopcell">{nm}{pay_badges(shop)}</span>'
 
@@ -2098,7 +2133,7 @@ def shop_href(cc, shop):
 
 
 def pay_table(shops):
-    shops = [x for x in ["youworld", "seagm", "bitrefill", "eneba"] if x in shops]
+    shops = [x for x in ["nediya", "youworld", "seagm", "bitrefill", "eneba"] if x in shops]
     head = "".join(f"<th>{e(n)}</th>" for _, n in PAY_COLS)
     trs = ""
     for sh in shops:
@@ -2147,7 +2182,7 @@ def gift_note_for_plan(rows, day):
         if b and r["cc"] != "us":
             net = r["local"] * b["rate"]
             out.append(f'<li><a href="/gift-cards/apple/{r["cc"]}/">{flag(r["cc"])} {e(cname(r["cc"]))}区礼品卡</a>：'
-                       f'标价 {e(r["display"])}，用礼品卡实付约 <b>{money(net)}</b>（卡价比汇率 {pct(b["prem"])}）</li>')
+                       f'标价 {e(r["display"])}，用礼品卡实付约 <b>{money(net)}</b>（卡价比汇率 {ppct(b["prem"])}）</li>')
     if not out:
         return ""
     return f'<h2>用礼品卡订阅要花多少</h2><p class="hint">跨区订阅通常用当地 App Store 礼品卡付款。礼品卡售价一般略高于面值，下面已按最划算的面额算上这部分溢价。</p><ul class="list">{"".join(out)}</ul>'
@@ -2168,7 +2203,7 @@ def build_gift(day, cur):
         cur_code = rows[0]["cur"]
         trs = "".join(
             f'<tr><td>{shop_with_pay(r["shop"])}{manual_note(r)}</td><td data-v="{r["face"]}">{e(face_text(r))}</td><td data-v="{r["usd"]:.4f}"><b>{money(r["usd"])}</b></td>'
-            f'<td data-v="{r["fair"]:.4f}">{money(r["fair"])}</td><td data-v="{r["prem"]:.4f}" class="{"down" if r["prem"] < -0.005 else ("up" if r["prem"] > 0.005 else "")}">{pct(r["prem"])}</td>'
+            f'<td data-v="{r["fair"]:.4f}">{money(r["fair"])}</td><td data-v="{r["prem"]:.4f}" class="{"down" if r["prem"] < -0.005 else ("up" if r["prem"] > 0.005 else "")}">{ppct(r["prem"])}</td>'
             f'<td>{out_link(r["href"], "去购买")}</td></tr>' for r in rows)
         shops_here = sorted({r["shop"] for r in rows})
         shop_best = {s: min((r for r in rows if r["shop"] == s and r["fair"] >= 4), key=lambda r: r["prem"], default=None) for s in shops_here}
@@ -2232,7 +2267,7 @@ def build_gift(day, cur):
         idx.append((cc, name, b, len(rows), shops_here, cheap_all))
     trs = "".join(
         f'<tr><td><a href="/gift-cards/apple/{cc}/">{flag(cc)} {e(name)}区</a></td><td class="shops">{"".join(shop_with_pay(s, shop_href(cc, s), shop_prem(cc, s)) for s in sorted(shops, key=lambda s: (shop_prem(cc, s) if shop_prem(cc, s) is not None else 9)))}</td>'
-        f'<td data-v="{b["prem"] if b else 9:.4f}">{pct(b["prem"]) if b else "—"}</td><td>{e(face_text(b)) + " · " + money(b["usd"]) + "<br>" + out_link(b["href"], "去 " + SHOPS[b["shop"]]["name"].split()[0] + " 买") if b else "—"}</td>'
+        f'<td data-v="{b["prem"] if b else 9:.4f}">{ppct(b["prem"]) if b else "—"}</td><td>{e(face_text(b)) + " · " + money(b["usd"]) + "<br>" + out_link(b["href"], "去 " + SHOPS[b["shop"]]["name"].split()[0] + " 买") if b else "—"}</td>'
         f'<td><ul class="top2">{"".join(f"<li data-prod={prod_of_url(u_)}>{e(n)} {money(net)}</li>" for n, u_, _, net, _ in ch) or "—"}</ul></td></tr>'
         for cc, name, b, n, shops, ch in idx)
     cr_html, cr_ld = crumbs([("首页", "/"), ("礼品卡", "/gift-cards/")])
@@ -2340,6 +2375,7 @@ def main():
     prev = rows_of(prev_day) if prev_day else None
     CHANNELS.update(load_channels())
     GIFT.update(load_gift())
+    DAY_FX.update(day["fx"])
     add_manual_gift(day["usd_cny"])
     BRIEFS.extend(load_briefs())
     MERCH.update(load_merch())

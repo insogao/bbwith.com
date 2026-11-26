@@ -366,3 +366,33 @@ document.addEventListener("click", function (ev) {
   }
   tick(); setInterval(tick, 250);
 })();
+// ---- Alipay mini programs (由我付, Nediya): a desktop browser can't open them, so show how to open them on the phone ----
+(function () {
+  var dlg = null;
+  function esc(t) { return String(t).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function show(a, phone) {
+    var name = a.getAttribute("data-mp"), q = a.getAttribute("data-mp-search"), qr = a.getAttribute("data-mp-qr"), copy = a.getAttribute("data-mp-copy");
+    if (!dlg) { dlg = document.createElement("dialog"); dlg.className = "mpdlg"; document.body.appendChild(dlg); }
+    dlg.innerHTML = '<button type="button" class="mp-x" aria-label="关闭">×</button>'
+      + "<h3>" + esc(name) + " 在支付宝里买</h3>"
+      + "<p>这是支付宝里的小程序，" + (phone ? "网页打不开。" : "电脑上的网页打不开，要用手机支付宝。") + "</p>"
+      + '<div class="mp-body">' + (qr && !phone ? '<img src="' + esc(qr) + '" width="140" height="140" alt="支付宝扫码">' : "")
+      + '<div class="mp-how">' + (qr && !phone ? "<p>用手机支付宝扫码</p><p class=mp-or>或者</p>" : "")
+      + "<p>打开支付宝，搜「<b>" + esc(q) + "</b>」进入小程序</p></div></div>"
+      + '<p class="mp-btns">' + (copy ? '<button type="button" class="btn small" data-copy="' + esc(copy) + '">复制支付宝口令</button> ' : "")
+      + '<button type="button" class="btn small ghost" data-copy="' + esc(q) + '">复制「' + esc(q) + '」</button>'
+      + (phone ? ' <a class="btn small" href="alipays://">打开支付宝</a>' : "") + "</p>";
+    dlg.querySelector(".mp-x").onclick = function () { dlg.close(); };
+    dlg.onclick = function (ev) { if (ev.target === dlg) dlg.close(); };
+    if (dlg.showModal) dlg.showModal(); else dlg.setAttribute("open", "");
+    if (window.bbEv) try { window.bbEv("click", { sec: "小程序弹窗", t: name }); } catch (e) {}
+  }
+  document.addEventListener("click", function (ev) {
+    var a = ev.target.closest && ev.target.closest("a[data-mp]");
+    if (!a) return;
+    var phone = window.matchMedia && matchMedia("(pointer:coarse)").matches;
+    if (phone && a.hasAttribute("data-mp-direct")) return;  // the share link opens Alipay on a phone
+    ev.preventDefault();
+    show(a, phone);
+  });
+})();
