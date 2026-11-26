@@ -2072,10 +2072,22 @@ def pay_badges(shop):
     return f'<span class="pbs">{out}</span>'
 
 
-def shop_with_pay(shop, href=""):
-    nm = (f'<a class="sn" href="{href}" rel="nofollow sponsored noopener" target="_blank">{e(SHOPS[shop]["name"])} →</a>' if href
-          else f'<span class="sn">{e(SHOPS[shop]["name"])}</span>')
+def shop_with_pay(shop, href="", prem=None):
+    pr = f' <span class="sp">溢价 {pct(prem)}</span>' if prem is not None else ""
+    nm = (f'<a class="sn" href="{href}" rel="nofollow sponsored noopener" target="_blank">{e(SHOPS[shop]["name"])}{pr} →</a>' if href
+          else f'<span class="sn">{e(SHOPS[shop]["name"])}{pr}</span>')
     return f'<span class="shopcell">{nm}{pay_badges(shop)}</span>'
+
+
+def shop_best(cc, shop):
+    rs = [r for r in gift_rows(cc, FX_ALL) if r["shop"] == shop]
+    big = [r for r in rs if r["fair"] >= 4] or rs
+    return min(big, key=lambda r: r["rate"]) if big else None
+
+
+def shop_prem(cc, shop):
+    b = shop_best(cc, shop)
+    return b["prem"] if b else None
 
 
 def shop_href(cc, shop):
@@ -2219,7 +2231,7 @@ def build_gift(day, cur):
         write(path, page(title, desc, path, body, ld, GIFT["date"]))
         idx.append((cc, name, b, len(rows), shops_here, cheap_all))
     trs = "".join(
-        f'<tr><td><a href="/gift-cards/apple/{cc}/">{flag(cc)} {e(name)}区</a></td><td class="shops">{"".join(shop_with_pay(s, shop_href(cc, s)) for s in sorted(shops, key=lambda s: (PAY.get(s, {}).get("alipay", ("no",))[0] != "yes", SHOPS[s]["name"])))}</td>'
+        f'<tr><td><a href="/gift-cards/apple/{cc}/">{flag(cc)} {e(name)}区</a></td><td class="shops">{"".join(shop_with_pay(s, shop_href(cc, s), shop_prem(cc, s)) for s in sorted(shops, key=lambda s: (shop_prem(cc, s) if shop_prem(cc, s) is not None else 9)))}</td>'
         f'<td data-v="{b["prem"] if b else 9:.4f}">{pct(b["prem"]) if b else "—"}</td><td>{e(face_text(b)) + " · " + money(b["usd"]) + "<br>" + out_link(b["href"], "去 " + SHOPS[b["shop"]]["name"].split()[0] + " 买") if b else "—"}</td>'
         f'<td><ul class="top2">{"".join(f"<li data-prod={prod_of_url(u_)}>{e(n)} {money(net)}</li>" for n, u_, _, net, _ in ch) or "—"}</ul></td></tr>'
         for cc, name, b, n, shops, ch in idx)
@@ -2228,7 +2240,7 @@ def build_gift(day, cur):
 <h1>App Store 礼品卡价格对比</h1>
 <p class="lead">跨区订阅 AI 会员，最常用的付款方式是当地 App Store 礼品卡。这里每天对比 Bitrefill、SEAGM、Eneba 和由我付的报价，按当日汇率算出每张卡的溢价，换算成订阅会员的实付价格，并标出每家能不能用支付宝、微信和国内信用卡。</p>
 <div class="bar"><h2>各地区最划算的礼品卡</h2>{cur_select()}</div>
-<div class="tablewrap"><table class="prices sortable"><thead><tr><th>地区</th><th>平台 · 付款方式</th><th data-sort=num>最低溢价</th><th>对应面额 · 售价</th><th>最省的会员（礼品卡实付）</th></tr></thead><tbody>{trs}</tbody></table></div>
+<div class="tablewrap"><table class="prices sortable"><thead><tr><th>地区</th><th>平台 · 溢价 · 付款方式</th><th data-sort=num>最低溢价</th><th>对应面额 · 售价</th><th>最省的会员（礼品卡实付）</th></tr></thead><tbody>{trs}</tbody></table></div>
 <h2 id="no-card">为什么有些低价区没有礼品卡？</h2>
 <p>菲律宾这类 App Store 标价很低的地区，表里没有礼品卡，常见原因有两种：</p>
 <ul>
