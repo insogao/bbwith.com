@@ -275,5 +275,17 @@
   "full": true,
   "picked": [],
   "dropped": []
+ },
+ {
+  "date": "2026-11-26",
+  "plan": "grok/supergrok",
+  "full": true,
+  "picked": [],
+  "dropped": [
+   {
+    "goods_no": "G47687155",
+    "reason": "同档位下比 G96072538 贵约 230%，且质保条款没有更明确，不应继续监控。"
+   }
+  ]
  }
 ]
