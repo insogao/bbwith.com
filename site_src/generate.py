@@ -661,8 +661,14 @@ def paid_row(rows, off):
     v, r = best
     d = v / off["usd"] - 1
     cls = "down" if d < -0.005 else ("up" if d > 0.005 else "")
+    cards = [c for c in gift_rows(r["cc"], FX_ALL) if c["fair"] >= 4]
+    c = min(cards, key=lambda c: c["rate"])
+    ali = [x for x in cards if alipay_ok(x["shop"])]
+    a_ = min(ali, key=lambda x: x["rate"]) if ali and not alipay_ok(c["shop"]) else None
+    btns = (out_link(c["href"], f"去 {SHOPS[c['shop']]['name'].split()[0]} 买卡")
+            + (f'<br>{out_link(a_["href"], "支付宝：" + SHOPS[a_["shop"]]["name"].split()[0], "rt-alt")}' if a_ else ""))
     return (f'<tr><td>用礼品卡实付最低：{flag(r["cc"])} {e(cname(r["cc"]))}<br><small>标价 {money(r["usd"])} × 买卡成本 {v / r["usd"] * 100:.0f}%</small></td>'
-            f'<td><b>{money(v)}</b></td><td class="{cls}">{pct(d)}</td></tr>')
+            f'<td><b>{money(v)}</b></td><td class="{cls}">{pct(d)}</td><td>{btns}</td></tr>')
 
 
 def channel_compare(product, plan, rows):
@@ -675,10 +681,10 @@ def channel_compare(product, plan, rows):
     gap = us["usd"] / off["usd"] - 1
     lo_vs_off = lo["usd"] / off["usd"] - 1
     cls = lambda v: "down" if v < -0.005 else ("up" if v > 0.005 else "")
-    return f"""<div class="tablewrap"><table class="prices"><thead><tr><th>渠道</th><th>月付价格</th><th>比官网</th></tr></thead><tbody>
-<tr><td>官网订阅（网页，美国价，不含税）</td><td><b>{money(off['usd'])}</b></td><td>—</td></tr>
-<tr><td>美区 App Store（iOS 内购）</td><td><b>{money(us['usd'])}</b></td><td class="{cls(gap)}">{pct(gap)}</td></tr>
-<tr><td>App Store 标价最低：{flag(lo['cc'])} {e(cname(lo['cc']))}{"" if gift_shop_rates(lo["cc"], FX_ALL) else '<br><small>当地买不到 App Store 礼品卡</small>'}</td><td><b>{money(lo['usd'])}</b></td><td class="{cls(lo_vs_off)}">{pct(lo_vs_off)}</td></tr>
+    return f"""<div class="tablewrap"><table class="prices"><thead><tr><th>渠道</th><th>月付价格</th><th>比官网</th><th></th></tr></thead><tbody>
+<tr><td>官网订阅（网页，美国价，不含税）</td><td><b>{money(off['usd'])}</b></td><td>—</td><td>{official_btn(product)}</td></tr>
+<tr><td>美区 App Store（iOS 内购）</td><td><b>{money(us['usd'])}</b></td><td class="{cls(gap)}">{pct(gap)}</td><td>{out_link(shop_href("us", "youworld"), "支付宝买美区卡") if shop_href("us", "youworld") else ""}</td></tr>
+<tr><td>App Store 标价最低：{flag(lo['cc'])} {e(cname(lo['cc']))}{"" if gift_shop_rates(lo["cc"], FX_ALL) else '<br><small>当地买不到 App Store 礼品卡</small>'}</td><td><b>{money(lo['usd'])}</b></td><td class="{cls(lo_vs_off)}">{pct(lo_vs_off)}</td><td></td></tr>
 {paid_row(rows, off)}
 </tbody></table></div>
 <p class="hint" id="official"><b>官网价要加税吗？</b>要看账单地址。官网标价是美国价、不含税：美国按州加销售税，欧盟、英国、日本等地加增值税或消费税，金额在结账页显示。用国内发行的 Visa / 万事达付美元，银行通常还收约 1%–1.5% 的货币转换费（各行规定不同），而且国内卡在官网经常被拒付。App Store 价格在多数地区已含增值税，美区 App Store 标价同样不含州销售税。</p>
@@ -1113,6 +1119,14 @@ def pay_txt(shop):
 
 def alipay_ok(shop):
     return (PAY.get(shop, {}).get("alipay") or ("",))[0] == "yes"
+
+
+def official_btn(product):
+    u = official_url(product)
+    if not u:
+        return ""
+    GO[f"off-{product}"] = u
+    return out_link(f"/go/off-{product}", "去官网")
 
 
 def official_url(product):
@@ -2058,8 +2072,17 @@ def pay_badges(shop):
     return f'<span class="pbs">{out}</span>'
 
 
-def shop_with_pay(shop):
-    return f'<span class="shopcell"><span class="sn">{e(SHOPS[shop]["name"])}</span>{pay_badges(shop)}</span>'
+def shop_with_pay(shop, href=""):
+    nm = (f'<a class="sn" href="{href}" rel="nofollow sponsored noopener" target="_blank">{e(SHOPS[shop]["name"])} →</a>' if href
+          else f'<span class="sn">{e(SHOPS[shop]["name"])}</span>')
+    return f'<span class="shopcell">{nm}{pay_badges(shop)}</span>'
+
+
+def shop_href(cc, shop):
+    """Link to a platform's cheapest worthwhile card in one region."""
+    rs = [r for r in gift_rows(cc, FX_ALL) if r["shop"] == shop]
+    big = [r for r in rs if r["fair"] >= 4] or rs
+    return min(big, key=lambda r: r["rate"])["href"] if big else ""
 
 
 def pay_table(shops):
@@ -2196,8 +2219,8 @@ def build_gift(day, cur):
         write(path, page(title, desc, path, body, ld, GIFT["date"]))
         idx.append((cc, name, b, len(rows), shops_here, cheap_all))
     trs = "".join(
-        f'<tr><td><a href="/gift-cards/apple/{cc}/">{flag(cc)} {e(name)}区</a></td><td class="shops">{"".join(shop_with_pay(s) for s in sorted(shops, key=lambda s: (PAY.get(s, {}).get("alipay", ("no",))[0] != "yes", SHOPS[s]["name"])))}</td>'
-        f'<td data-v="{b["prem"] if b else 9:.4f}">{pct(b["prem"]) if b else "—"}</td><td>{e(face_text(b)) + " · " + money(b["usd"]) if b else "—"}</td>'
+        f'<tr><td><a href="/gift-cards/apple/{cc}/">{flag(cc)} {e(name)}区</a></td><td class="shops">{"".join(shop_with_pay(s, shop_href(cc, s)) for s in sorted(shops, key=lambda s: (PAY.get(s, {}).get("alipay", ("no",))[0] != "yes", SHOPS[s]["name"])))}</td>'
+        f'<td data-v="{b["prem"] if b else 9:.4f}">{pct(b["prem"]) if b else "—"}</td><td>{e(face_text(b)) + " · " + money(b["usd"]) + "<br>" + out_link(b["href"], "去 " + SHOPS[b["shop"]]["name"].split()[0] + " 买") if b else "—"}</td>'
         f'<td><ul class="top2">{"".join(f"<li data-prod={prod_of_url(u_)}>{e(n)} {money(net)}</li>" for n, u_, _, net, _ in ch) or "—"}</ul></td></tr>'
         for cc, name, b, n, shops, ch in idx)
     cr_html, cr_ld = crumbs([("首页", "/"), ("礼品卡", "/gift-cards/")])
