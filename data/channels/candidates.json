@@ -1,5 +1,5 @@
 {
-"time": "2026-11-27T12:32+08:00",
+"time": "2026-11-27T16:33+08:00",
 "plans": {
 "chatgpt/plus": [
 {
@@ -33,10 +33,10 @@
 "goods_category_id": 639,
 "source_category_id": 1,
 "name": "【官方直充 】 菲区plus 月卡|直冲自己账号|质保订阅一个月|🌙 无地区限制 一卡一付 极速秒到 完美修复兑换",
-"price": 105.5,
+"price": 105.8,
 "cost_price": 104,
 "agent_price": 106.99,
-"sales_count": 7430
+"sales_count": 7628
 },
 {
 "id": 118049,
@@ -48,7 +48,7 @@
 "price": 105.9,
 "cost_price": 104,
 "agent_price": 105.9,
-"sales_count": 15
+"sales_count": 16
 },
 {
 "id": 117660,
@@ -60,7 +60,7 @@
 "price": 105.9,
 "cost_price": 104,
 "agent_price": 105.9,
-"sales_count": 56
+"sales_count": 65
 },
 {
 "id": 104326,
@@ -72,7 +72,7 @@
 "price": 105.9,
 "cost_price": 103,
 "agent_price": 105.9,
-"sales_count": 505
+"sales_count": 508
 },
 {
 "id": 84580,
@@ -84,7 +84,7 @@
 "price": 105.9,
 "cost_price": 103,
 "agent_price": 105.9,
-"sales_count": 1796
+"sales_count": 1813
 },
 {
 "id": 14273,
@@ -99,6 +99,18 @@
 "sales_count": 4836
 },
 {
+"id": 22392,
+"goods_no": "G22708827",
+"parent_goods_id": 0,
+"goods_category_id": 3148,
+"source_category_id": 1,
+"name": "G|P|T Plus 【正价代充】🔥24小时自助充值🔥【质保订阅30天带账单】",
+"price": 105.9,
+"cost_price": 104.82,
+"agent_price": 107,
+"sales_count": 4772
+},
+{
 "id": 47904,
 "goods_no": "G42288503",
 "parent_goods_id": 0,
@@ -108,7 +120,7 @@
 "price": 106,
 "cost_price": 0,
 "agent_price": 105.99,
-"sales_count": 3659
+"sales_count": 3669
 },
 {
 "id": 19407,
@@ -120,7 +132,7 @@
 "price": 106,
 "cost_price": 104,
 "agent_price": 106,
-"sales_count": 7828
+"sales_count": 7848
 },
 {
 "id": 58401,
@@ -132,7 +144,7 @@
 "price": 106,
 "cost_price": 0,
 "agent_price": 106,
-"sales_count": 5011
+"sales_count": 5046
 },
 {
 "id": 30728,
@@ -145,18 +157,6 @@
 "cost_price": 104.15,
 "agent_price": 106,
 "sales_count": 263
-},
-{
-"id": 22392,
-"goods_no": "G22708827",
-"parent_goods_id": 0,
-"goods_category_id": 3148,
-"source_category_id": 1,
-"name": "G|P|T Plus 【正价代充】🔥24小时自助充值🔥【质保订阅30天带账单】",
-"price": 106,
-"cost_price": 104.82,
-"agent_price": 107,
-"sales_count": 4735
 },
 {
 "id": 36862,
@@ -192,7 +192,7 @@
 "price": 106.5,
 "cost_price": 106,
 "agent_price": 106.5,
-"sales_count": 1274
+"sales_count": 1283
 },
 {
 "id": 46615,
@@ -216,7 +216,7 @@
 "price": 107,
 "cost_price": 103.21,
 "agent_price": 107,
-"sales_count": 116
+"sales_count": 117
 },
 {
 "id": 113239,
@@ -228,7 +228,7 @@
 "price": 107,
 "cost_price": 0,
 "agent_price": 107,
-"sales_count": 5
+"sales_count": 6
 },
 {
 "id": 117405,
@@ -288,7 +288,7 @@
 "price": 108,
 "cost_price": 105,
 "agent_price": 108,
-"sales_count": 1729
+"sales_count": 1737
 },
 {
 "id": 36478,
@@ -300,7 +300,7 @@
 "price": 108,
 "cost_price": 103,
 "agent_price": 109,
-"sales_count": 819
+"sales_count": 821
 }
 ],
 "chatgpt/pro-200": [
@@ -308,13 +308,13 @@
 "id": 3031,
 "goods_no": "G95368608",
 "parent_goods_id": 0,
-"goods_category_id": 0,
+"goods_category_id": 12661,
 "source_category_id": 1,
 "name": "【🔥🔥🔥可续费，开票快】官方正价直充 GP,T Pro200(20x)30天会员直充自己号 质保30天 可开发票 带官方发票账单（1号1卡1付）24小时全自动充值",
 "price": 959.99,
 "cost_price": 0,
 "agent_price": 959.99,
-"sales_count": 854
+"sales_count": 863
 },
 {
 "id": 4802,
@@ -326,7 +326,7 @@
 "price": 960,
 "cost_price": 0,
 "agent_price": 960,
-"sales_count": 729
+"sales_count": 730
 },
 {
 "id": 13614,
@@ -374,7 +374,7 @@
 "price": 966.95,
 "cost_price": 960,
 "agent_price": 970,
-"sales_count": 1058
+"sales_count": 1060
 },
 {
 "id": 19414,
@@ -433,8 +433,8 @@
 "name": "Pro200刀 官方充值月卡(质保一个月) 24小时全自动正规卡充值 直冲个人账号 -全自动发货-可开票-可自助升级高等级套餐",
 "price": 977.65,
 "cost_price": 0,
-"agent_price": 978.1,
-"sales_count": 584
+"agent_price": 978,
+"sales_count": 585
 },
 {
 "id": 75307,
@@ -446,7 +446,7 @@
 "price": 980,
 "cost_price": 0,
 "agent_price": 960,
-"sales_count": 16
+"sales_count": 17
 },
 {
 "id": 50966,
@@ -518,7 +518,7 @@
 "price": 986.8,
 "cost_price": 0,
 "agent_price": 986.8,
-"sales_count": 16
+"sales_count": 17
 },
 {
 "id": 33157,
@@ -643,6 +643,42 @@
 "sales_count": 0
 },
 {
+"id": 1518,
+"goods_no": "G23611756",
+"parent_goods_id": 0,
+"goods_category_id": 438,
+"source_category_id": 1,
+"name": "【可开票】Pro 100刀 / ios官网正价 / 直冲自己账号 / 可覆盖订阅 / 质保订阅30天",
+"price": 585,
+"cost_price": 580,
+"agent_price": 585,
+"sales_count": 948
+},
+{
+"id": 466,
+"goods_no": "G43756178",
+"parent_goods_id": 0,
+"goods_category_id": 249,
+"source_category_id": 1,
+"name": "【美区IOS】质保订阅30天 GT..P Pro 5X 官充 秒到账 【Pro5x100刀月卡】支持开票或提供苹果账单 欢迎企业采购或代理对接！！！@@001",
+"price": 587.98,
+"cost_price": 0,
+"agent_price": 587.98,
+"sales_count": 1430
+},
+{
+"id": 552,
+"goods_no": "G13829858",
+"parent_goods_id": 0,
+"goods_category_id": 263,
+"source_category_id": 1,
+"name": "【美区IOS】JPT Codex Pro 5X 100美元月卡 官方充值 【质保30天】可开票@【pro5x】",
+"price": 587.98,
+"cost_price": 0,
+"agent_price": 587.98,
+"sales_count": 1461
+},
+{
 "id": 30580,
 "goods_no": "G33746589",
 "parent_goods_id": 0,
@@ -652,31 +688,7 @@
 "price": 588,
 "cost_price": 590,
 "agent_price": 588,
-"sales_count": 162
-},
-{
-"id": 466,
-"goods_no": "G43756178",
-"parent_goods_id": 0,
-"goods_category_id": 249,
-"source_category_id": 1,
-"name": "【美区IOS】质保订阅30天 GT..P Pro 5X 官充 秒到账 【Pro5x100刀月卡】支持开票或提供苹果账单 欢迎企业采购或代理对接！！！@@001",
-"price": 590,
-"cost_price": 0,
-"agent_price": 590,
-"sales_count": 1424
-},
-{
-"id": 552,
-"goods_no": "G13829858",
-"parent_goods_id": 0,
-"goods_category_id": 263,
-"source_category_id": 1,
-"name": "【美区IOS】JPT Codex Pro 5X 100美元月卡 官方充值 【质保30天】可开票@【pro5x】",
-"price": 590,
-"cost_price": 0,
-"agent_price": 590,
-"sales_count": 1459
+"sales_count": 168
 },
 {
 "id": 4939,
@@ -685,10 +697,10 @@
 "goods_category_id": 191,
 "source_category_id": 1,
 "name": "Pro100 5X 100$ 官方充值月卡(质保一个月) -正规卡冲非ios-充值个人账号-(24小时全自动充值)-可开票 -可自助升级高等级套餐",
-"price": 590,
+"price": 588,
 "cost_price": 0,
-"agent_price": 590.1,
-"sales_count": 922
+"agent_price": 588.1,
+"sales_count": 928
 },
 {
 "id": 138,
@@ -700,7 +712,7 @@
 "price": 590,
 "cost_price": 582,
 "agent_price": 600,
-"sales_count": 2625
+"sales_count": 2632
 },
 {
 "id": 103,
@@ -712,7 +724,7 @@
 "price": 593,
 "cost_price": 585,
 "agent_price": 593,
-"sales_count": 1276
+"sales_count": 1283
 },
 {
 "id": 36815,
@@ -725,18 +737,6 @@
 "cost_price": 576,
 "agent_price": 593.99,
 "sales_count": 23
-},
-{
-"id": 1518,
-"goods_no": "G23611756",
-"parent_goods_id": 0,
-"goods_category_id": 438,
-"source_category_id": 1,
-"name": "【可开票】Pro 100刀 / ios官网正价 / 直冲自己账号 / 可覆盖订阅 / 质保订阅30天",
-"price": 595,
-"cost_price": 582,
-"agent_price": 588,
-"sales_count": 942
 },
 {
 "id": 36959,
@@ -856,7 +856,7 @@
 "price": 595,
 "cost_price": 570,
 "agent_price": 595,
-"sales_count": 107
+"sales_count": 108
 },
 {
 "id": 120228,
@@ -918,7 +918,7 @@
 "price": 27.69,
 "cost_price": 0,
 "agent_price": 28,
-"sales_count": 653
+"sales_count": 655
 },
 {
 "id": 73440,
@@ -930,7 +930,7 @@
 "price": 27.69,
 "cost_price": 24,
 "agent_price": 27.81,
-"sales_count": 399
+"sales_count": 405
 },
 {
 "id": 65240,
@@ -966,7 +966,7 @@
 "price": 27.89,
 "cost_price": 0,
 "agent_price": 27.89,
-"sales_count": 84
+"sales_count": 86
 },
 {
 "id": 75799,
@@ -1074,7 +1074,7 @@
 "price": 32,
 "cost_price": 26,
 "agent_price": 32,
-"sales_count": 16
+"sales_count": 18
 },
 {
 "id": 92824,
@@ -1228,23 +1228,35 @@
 "parent_goods_id": 0,
 "goods_category_id": 417,
 "source_category_id": 1,
-"name": "【正规实付】独享Gemini Pro月卡代充 质保订阅30天 Google one 反重力Antigravity",
-"price": 133.9,
-"cost_price": 130,
-"agent_price": 134,
-"sales_count": 1591
+"name": "【正规实付】独享Gemini Pro月卡代充 质保订阅30天 Google one 反重力Antigravity 优品",
+"price": 129,
+"cost_price": 120,
+"agent_price": 129.9,
+"sales_count": 1625
 },
 {
-"id": 128089,
-"goods_no": "G91133399",
+"id": 58950,
+"goods_no": "G19014535",
 "parent_goods_id": 0,
 "goods_category_id": 147,
 "source_category_id": 1,
-"name": "【限时福利】【IOS渠道】Gemini Google AI Pro 20刀 月卡【质保订阅30天】",
-"price": 134,
-"cost_price": 115,
-"agent_price": 134,
-"sales_count": 18
+"name": "【IOS渠道】Gemini Google AI Pro 20刀 月卡【质保订阅30天】",
+"price": 130,
+"cost_price": 105,
+"agent_price": 130,
+"sales_count": 305
+},
+{
+"id": 133423,
+"goods_no": "G67765070",
+"parent_goods_id": 0,
+"goods_category_id": 10222,
+"source_category_id": 1,
+"name": "【正规实付】独享Gemini Pro月卡代充 质保订阅30天 Google one 反重力Antigravity",
+"price": 130,
+"cost_price": 0,
+"agent_price": 130,
+"sales_count": 6
 },
 {
 "id": 123751,
@@ -1257,18 +1269,6 @@
 "cost_price": 0,
 "agent_price": 140,
 "sales_count": 0
-},
-{
-"id": 58950,
-"goods_no": "G19014535",
-"parent_goods_id": 0,
-"goods_category_id": 147,
-"source_category_id": 1,
-"name": "【IOS渠道】Gemini Google AI Pro 20刀 月卡【质保订阅30天】",
-"price": 139,
-"cost_price": 115,
-"agent_price": 139,
-"sales_count": 292
 },
 {
 "id": 124995,
@@ -1464,7 +1464,7 @@
 "price": 200,
 "cost_price": 0,
 "agent_price": 200,
-"sales_count": 215
+"sales_count": 216
 },
 {
 "id": 31553,
@@ -1598,7 +1598,7 @@
 "price": 769,
 "cost_price": 720,
 "agent_price": 769,
-"sales_count": 0
+"sales_count": 1
 },
 {
 "id": 34710,
