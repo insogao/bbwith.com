@@ -287,5 +287,12 @@
     "reason": "同档位下比 G96072538 贵约 230%，且质保条款没有更明确，不应继续监控。"
    }
   ]
+ },
+ {
+  "date": "2026-11-27",
+  "plan": "grok/supergrok",
+  "full": true,
+  "picked": [],
+  "dropped": []
  }
 ]
