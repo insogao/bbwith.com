@@ -1032,5 +1032,98 @@
   "period": "year",
   "from": "2000 USD",
   "to": "1600 USD"
+ },
+ {
+  "t": "2026-11-28 06:43",
+  "id": "gemini",
+  "kind": "promo",
+  "title": "大学生免费Pro一年",
+  "detail": "0美元使用12个月。"
+ },
+ {
+  "t": "2026-11-28 06:43",
+  "id": "perplexity",
+  "kind": "promo",
+  "title": "Pro限时加赠额度",
+  "detail": "订阅获赠 40 美元 Computer 额度，限时活动"
+ },
+ {
+  "t": "2026-11-28 06:43",
+  "id": "perplexity",
+  "kind": "promo",
+  "title": "Max限时加赠额度",
+  "detail": "订阅获赠 350 美元 Computer 额度，限时活动"
+ },
+ {
+  "t": "2026-11-28 06:43",
+  "id": "copilot",
+  "kind": "promo",
+  "title": "Fusion用量优惠",
+  "detail": "Copilot Fusion 用量享 30% 折扣"
+ },
+ {
+  "t": "2026-11-28 06:43",
+  "id": "suno",
+  "kind": "promo",
+  "title": "黑五年付额外7折",
+  "detail": "年付首年Pro $67.20、Premier $201.60、Platinum $840，之后$96/$288/$1200每年"
+ },
+ {
+  "t": "2026-11-28 06:43",
+  "id": "elevenlabs",
+  "kind": "promo",
+  "title": "黑五最高55%折扣",
+  "detail": "Creator 年付首年 $99（原 $220），Pro 年付首年 $445.50（原 $990）"
+ },
+ {
+  "t": "2026-11-28 06:43",
+  "id": "elevenlabs",
+  "kind": "promo",
+  "title": "初创公司免费12个月",
+  "detail": "含 3300 万字符，可用于构建、发布和测试，需通过 Startup Grants 申请"
+ },
+ {
+  "t": "2026-11-28 06:43",
+  "id": "lovart",
+  "kind": "promo",
+  "title": "黑五限时优惠",
+  "detail": "指定方案最高省61%，另赠1个月会员和180天无限生成"
+ },
+ {
+  "t": "2026-11-28 06:43",
+  "id": "kling",
+  "kind": "promo",
+  "title": "月付首3月减35%",
+  "detail": "Standard、Pro、Premier、Ultra+ 首3个月分别 $6.5、$24、$135、$402/月，之后 $8.8、$32.56、$181.99、$544.99/月；一次性优惠，可随时取消。"
+ },
+ {
+  "t": "2026-11-28 06:43",
+  "id": "kling",
+  "kind": "promo",
+  "title": "年付限时5折",
+  "detail": "年付方案按原价50%计费。"
+ },
+ {
+  "t": "2026-11-28 06:43",
+  "id": "kling",
+  "kind": "promo",
+  "title": "推荐码升级+10%",
+  "detail": "输入有效推荐码后，升级额度增加10%。"
+ },
+ {
+  "t": "2026-11-28 06:43",
+  "id": "kling",
+  "kind": "promo",
+  "title": "限时免费灵感积分",
+  "detail": "可领取免费灵感积分；仅限 Kling AI 平台。"
+ },
+ {
+  "t": "2026-11-28 06:43",
+  "id": "manus",
+  "kind": "price",
+  "plan": "Pro",
+  "period": "year_monthly",
+  "from": "16 USD",
+  "to": "20 USD"
  }
 ]
