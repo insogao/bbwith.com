@@ -1,10 +1,10 @@
 {
  "date": "2026-11-28",
- "time": "2026-11-28T00:38+08:00",
+ "time": "2026-11-28T04:35+08:00",
  "source": "16688",
  "currency": "CNY",
  "usd_cny": 6.674963,
- "listings_seen": 531,
+ "listings_seen": 528,
  "mode": "sample",
  "plans": {
   "google-ai/pro": {
@@ -45,10 +45,10 @@
     "no_guarantee": 0
    },
    "promo": {
-    "count": 4,
+    "count": 3,
     "min": 57.5,
-    "p25": 90.0,
-    "median": 120.0,
+    "p25": 57.5,
+    "median": 90.0,
     "sales": 0,
     "trimmed": 0,
     "no_guarantee": 0
@@ -65,10 +65,10 @@
   },
   "claude/max-5x": {
    "account-short": {
-    "count": 16,
+    "count": 15,
     "min": 1150.0,
-    "p25": 1210.0,
-    "median": 1389.5,
+    "p25": 1200.0,
+    "median": 1380.0,
     "sales": 0,
     "trimmed": 1,
     "no_guarantee": 0
@@ -248,9 +248,9 @@
   },
   "claude/max-20x": {
    "account-short": {
-    "count": 16,
+    "count": 15,
     "min": 2000.0,
-    "p25": 2230.0,
+    "p25": 2200.0,
     "median": 2400.0,
     "sales": 0,
     "trimmed": 0,
@@ -339,17 +339,17 @@
     "no_guarantee": 0
    },
    "account-long": {
-    "count": 18,
+    "count": 19,
     "min": 48.0,
     "p25": 55.0,
-    "median": 78.44,
+    "median": 75.0,
     "sales": 0,
     "trimmed": 0,
     "no_guarantee": 0
    },
    "account-short": {
     "count": 17,
-    "min": 10.49,
+    "min": 10.34,
     "p25": 21.0,
     "median": 35.0,
     "sales": 0,
@@ -443,7 +443,7 @@
    },
    "topup": {
     "count": 22,
-    "min": 480.0,
+    "min": 449.99,
     "p25": 550.0,
     "median": 658.3299999999999,
     "sales": 0,
@@ -451,8 +451,8 @@
     "routes": {
      "us-ios": {
       "count": 16,
-      "min": 480.0,
-      "p25": 620.0,
+      "min": 449.99,
+      "p25": 550.0,
       "median": 845.0,
       "sales": 0,
       "trimmed": 0
@@ -626,12 +626,12 @@
   },
   "chatgpt/team": {
    "seat": {
-    "count": 11,
-    "min": 30.0,
+    "count": 12,
+    "min": 19.9,
     "p25": 35.0,
-    "median": 90.0,
+    "median": 85.0,
     "sales": 0,
-    "trimmed": 5,
+    "trimmed": 6,
     "no_guarantee": 0
    }
   },
@@ -697,10 +697,10 @@
     "no_guarantee": 0
    },
    "promo": {
-    "count": 5,
-    "min": 580.0,
-    "p25": 600.0,
-    "median": 608.0,
+    "count": 4,
+    "min": 600.0,
+    "p25": 608.0,
+    "median": 619.0,
     "sales": 0,
     "trimmed": 1,
     "no_guarantee": 0
