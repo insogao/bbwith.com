@@ -1,5 +1,5 @@
 {
-"time": "2026-11-27T04:30+08:00",
+"time": "2026-11-27T08:48+08:00",
 "plans": {
 "chatgpt/plus": [
 {
@@ -72,7 +72,7 @@
 "price": 105.9,
 "cost_price": 103,
 "agent_price": 105.9,
-"sales_count": 1776
+"sales_count": 1779
 },
 {
 "id": 14273,
@@ -96,7 +96,7 @@
 "price": 106,
 "cost_price": 0,
 "agent_price": 105.99,
-"sales_count": 3631
+"sales_count": 3633
 },
 {
 "id": 19407,
@@ -108,7 +108,7 @@
 "price": 106,
 "cost_price": 104,
 "agent_price": 106,
-"sales_count": 7749
+"sales_count": 7753
 },
 {
 "id": 58401,
@@ -120,7 +120,7 @@
 "price": 106,
 "cost_price": 0,
 "agent_price": 106,
-"sales_count": 4968
+"sales_count": 4973
 },
 {
 "id": 30728,
@@ -144,7 +144,7 @@
 "price": 106,
 "cost_price": 104.82,
 "agent_price": 107,
-"sales_count": 4669
+"sales_count": 4676
 },
 {
 "id": 36862,
@@ -288,7 +288,7 @@
 "price": 108,
 "cost_price": 105,
 "agent_price": 108,
-"sales_count": 1722
+"sales_count": 1723
 },
 {
 "id": 36478,
@@ -314,7 +314,7 @@
 "price": 959.99,
 "cost_price": 0,
 "agent_price": 959.99,
-"sales_count": 843
+"sales_count": 847
 },
 {
 "id": 4802,
@@ -664,7 +664,19 @@
 "price": 590,
 "cost_price": 0,
 "agent_price": 590,
-"sales_count": 1388
+"sales_count": 1389
+},
+{
+"id": 4939,
+"goods_no": "G36580884",
+"parent_goods_id": 0,
+"goods_category_id": 191,
+"source_category_id": 1,
+"name": "Pro100 5X 100$ 官方充值月卡(质保一个月) -正规卡冲非ios-充值个人账号-(24小时全自动充值)-可开票 -可自助升级高等级套餐",
+"price": 590,
+"cost_price": 0,
+"agent_price": 590.1,
+"sales_count": 917
 },
 {
 "id": 30580,
@@ -677,18 +689,6 @@
 "cost_price": 590,
 "agent_price": 591,
 "sales_count": 159
-},
-{
-"id": 4939,
-"goods_no": "G36580884",
-"parent_goods_id": 0,
-"goods_category_id": 191,
-"source_category_id": 1,
-"name": "Pro100 5X 100$ 官方充值月卡(质保一个月) -正规卡冲非ios-充值个人账号-(24小时全自动充值)-可开票 -可自助升级高等级套餐",
-"price": 591,
-"cost_price": 0,
-"agent_price": 591.1,
-"sales_count": 917
 },
 {
 "id": 138,
@@ -736,7 +736,7 @@
 "price": 595,
 "cost_price": 582,
 "agent_price": 588,
-"sales_count": 939
+"sales_count": 940
 },
 {
 "id": 36959,
@@ -918,7 +918,7 @@
 "price": 27.69,
 "cost_price": 0,
 "agent_price": 28,
-"sales_count": 650
+"sales_count": 651
 },
 {
 "id": 73440,
@@ -1223,6 +1223,18 @@
 "sales_count": 0
 },
 {
+"id": 128089,
+"goods_no": "G91133399",
+"parent_goods_id": 0,
+"goods_category_id": 147,
+"source_category_id": 1,
+"name": "【限时福利】【IOS渠道】Gemini Google AI Pro 20刀 月卡【质保订阅30天】",
+"price": 134,
+"cost_price": 115,
+"agent_price": 134,
+"sales_count": 10
+},
+{
 "id": 6696,
 "goods_no": "G98350308",
 "parent_goods_id": 0,
@@ -1232,7 +1244,7 @@
 "price": 134.9,
 "cost_price": 130,
 "agent_price": 135,
-"sales_count": 1573
+"sales_count": 1574
 },
 {
 "id": 58950,
