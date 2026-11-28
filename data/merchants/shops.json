@@ -1,5 +1,5 @@
 {
- "time": "2026-11-27T20:35+00:00",
+ "time": "2026-11-28T00:53+00:00",
  "source": "16688 公开商品页接口",
  "items": [
   {
@@ -32,7 +32,9 @@
    "url": "https://www.16688.com.cn/goods/G49307465",
    "checked": "2026-11-27T20:35+00:00",
    "missing": 0,
-   "since": "2026-11-27T16:38+00:00"
+   "since": "2026-11-27T16:38+00:00",
+   "stale": true,
+   "why": "本轮读取失败，显示 2026-11-27T20:35 的数据"
   },
   {
    "goods_no": "G76222918",
@@ -63,7 +65,7 @@
     "封号不赔"
    ],
    "url": "https://www.16688.com.cn/goods/G76222918",
-   "checked": "2026-11-27T20:35+00:00",
+   "checked": "2026-11-28T00:53+00:00",
    "missing": 0,
    "since": null
   },
@@ -78,11 +80,11 @@
    "title": "【官方正价充值】菲区plus/质保订阅30天/售后稳定/充值自己号码",
    "price": 105.5,
    "total": 108.45,
-   "stock": 133,
+   "stock": 127,
    "manual": false,
    "in_stock": true,
-   "sales": "3814人付款",
-   "shop_sales": "3280人付款",
+   "sales": "3820人付款",
+   "shop_sales": "3286人付款",
    "months": 1,
    "deposit": 200,
    "region": "中国陕西",
@@ -95,7 +97,7 @@
     "会员到期后才能充"
    ],
    "url": "https://www.16688.com.cn/goods/G42288503",
-   "checked": "2026-11-27T20:35+00:00",
+   "checked": "2026-11-28T00:53+00:00",
    "missing": 0,
    "since": "2026-11-25T16:33+00:00"
   },
@@ -110,7 +112,7 @@
    "title": "💥💥💥【官网直充】GT-P Plus 1个月会员充自己号（1号1卡1付）同步官方售后 24小时全自动充值",
    "price": 105.9,
    "total": 108.87,
-   "stock": 128,
+   "stock": 122,
    "manual": false,
    "in_stock": true,
    "sales": "1.1万+付款",
@@ -125,7 +127,7 @@
    "warranty": "售后同步官方",
    "risks": [],
    "url": "https://www.16688.com.cn/goods/G92285725",
-   "checked": "2026-11-27T20:35+00:00",
+   "checked": "2026-11-28T00:53+00:00",
    "missing": 0,
    "since": null
   },
@@ -155,7 +157,7 @@
    "warranty": "质保 30 天",
    "risks": [],
    "url": "https://www.16688.com.cn/goods/G99064927",
-   "checked": "2026-11-27T20:35+00:00",
+   "checked": "2026-11-28T00:53+00:00",
    "missing": 0,
    "since": null
   },
@@ -187,7 +189,7 @@
     "封号不赔"
    ],
    "url": "https://www.16688.com.cn/goods/G75173659",
-   "checked": "2026-11-27T20:35+00:00",
+   "checked": "2026-11-28T00:53+00:00",
    "missing": 0,
    "since": null
   },
@@ -229,7 +231,7 @@
     "封号不赔"
    ],
    "url": "https://www.16688.com.cn/goods/G52145908",
-   "checked": "2026-11-27T20:35+00:00",
+   "checked": "2026-11-28T00:53+00:00",
    "missing": 0,
    "since": null
   },
@@ -265,7 +267,7 @@
     "掉订阅不负责"
    ],
    "url": "https://www.16688.com.cn/goods/G41662442",
-   "checked": "2026-11-27T20:35+00:00",
+   "checked": "2026-11-28T00:53+00:00",
    "missing": 0,
    "since": null
   },
@@ -299,7 +301,7 @@
     "新注册账号不建议充"
    ],
    "url": "https://www.16688.com.cn/goods/G53770261",
-   "checked": "2026-11-27T20:35+00:00",
+   "checked": "2026-11-28T00:53+00:00",
    "missing": 0,
    "since": null
   },
@@ -331,7 +333,7 @@
     "会员到期后才能充"
    ],
    "url": "https://www.16688.com.cn/goods/G25034038",
-   "checked": "2026-11-27T20:35+00:00",
+   "checked": "2026-11-28T00:53+00:00",
    "missing": 0,
    "since": "2026-11-23T11:01+00:00"
   },
@@ -363,7 +365,7 @@
     "会员到期后才能充"
    ],
    "url": "https://www.16688.com.cn/goods/G48143491",
-   "checked": "2026-11-27T20:35+00:00",
+   "checked": "2026-11-28T00:53+00:00",
    "missing": 0,
    "since": "2026-11-25T12:38+00:00"
   },
@@ -393,7 +395,7 @@
    "warranty": "售后同步官方",
    "risks": [],
    "url": "https://www.16688.com.cn/goods/G39683201",
-   "checked": "2026-11-27T20:35+00:00",
+   "checked": "2026-11-28T00:53+00:00",
    "missing": 0,
    "since": "2026-11-23T11:01+00:00"
   },
@@ -423,7 +425,7 @@
    "warranty": "质保 30 天",
    "risks": [],
    "url": "https://www.16688.com.cn/goods/G95368608",
-   "checked": "2026-11-27T20:35+00:00",
+   "checked": "2026-11-28T00:53+00:00",
    "missing": 0,
    "since": "2026-11-23T11:01+00:00"
   },
@@ -455,7 +457,7 @@
     "会员到期后才能充"
    ],
    "url": "https://www.16688.com.cn/goods/G84062363",
-   "checked": "2026-11-27T20:35+00:00",
+   "checked": "2026-11-28T00:53+00:00",
    "missing": 0,
    "since": "2026-11-23T11:01+00:00"
   },
@@ -485,7 +487,7 @@
    "warranty": "质保 30 天",
    "risks": [],
    "url": "https://www.16688.com.cn/goods/G14666280",
-   "checked": "2026-11-27T20:35+00:00",
+   "checked": "2026-11-28T00:53+00:00",
    "missing": 0,
    "since": "2026-11-23T11:01+00:00"
   },
@@ -515,7 +517,7 @@
    "warranty": "质保 30 天",
    "risks": [],
    "url": "https://www.16688.com.cn/goods/G49196764",
-   "checked": "2026-11-27T20:35+00:00",
+   "checked": "2026-11-28T00:53+00:00",
    "missing": 0,
    "since": "2026-11-23T11:01+00:00"
   },
@@ -545,7 +547,7 @@
    "warranty": "质保 30 天",
    "risks": [],
    "url": "https://www.16688.com.cn/goods/G13829858",
-   "checked": "2026-11-27T20:35+00:00",
+   "checked": "2026-11-28T00:53+00:00",
    "missing": 0,
    "since": "2026-11-23T11:01+00:00"
   },
@@ -560,11 +562,11 @@
    "title": "【美区IOS】自动发货现货GP（T） Pro 5X，100美金 官方IOS充值现货全自动发货（可覆盖） 质保30天 可以开发票🔥🔥🔥（直充自己的号）",
    "price": 580,
    "total": 596.24,
-   "stock": 44,
+   "stock": 42,
    "manual": false,
    "in_stock": true,
-   "sales": "2647人付款",
-   "shop_sales": "2868人付款",
+   "sales": "2649人付款",
+   "shop_sales": "2870人付款",
    "months": 3,
    "deposit": 0,
    "region": "中国云南",
@@ -575,7 +577,7 @@
    "warranty": "质保 30 天",
    "risks": [],
    "url": "https://www.16688.com.cn/goods/G70554833",
-   "checked": "2026-11-27T20:35+00:00",
+   "checked": "2026-11-28T00:53+00:00",
    "missing": 0,
    "since": "2026-11-23T11:01+00:00"
   },
@@ -590,10 +592,10 @@
    "title": "【Go会员官方直冲】（质保一个月订阅）带官方发票账单 充值个人账号---24小时全自动充值",
    "price": 27.69,
    "total": 28.47,
-   "stock": 7,
+   "stock": 6,
    "manual": false,
    "in_stock": true,
-   "sales": "661人付款",
+   "sales": "662人付款",
    "shop_sales": "1.1万+付款",
    "months": 3,
    "deposit": 1500,
@@ -605,7 +607,7 @@
    "warranty": "质保 30 天",
    "risks": [],
    "url": "https://www.16688.com.cn/goods/G46449601",
-   "checked": "2026-11-27T20:35+00:00",
+   "checked": "2026-11-28T00:53+00:00",
    "missing": 0,
    "since": "2026-11-23T11:01+00:00"
   },
@@ -637,7 +639,7 @@
     "会员到期后才能充"
    ],
    "url": "https://www.16688.com.cn/goods/G55178911",
-   "checked": "2026-11-27T20:35+00:00",
+   "checked": "2026-11-28T00:53+00:00",
    "missing": 0,
    "since": "2026-11-23T11:01+00:00"
   },
@@ -656,7 +658,7 @@
    "manual": false,
    "in_stock": true,
    "sales": "106人付款",
-   "shop_sales": "892人付款",
+   "shop_sales": "893人付款",
    "months": 1,
    "deposit": 0,
    "region": "中国河南",
@@ -667,7 +669,7 @@
    "warranty": "质保 30 天",
    "risks": [],
    "url": "https://www.16688.com.cn/goods/G62963966",
-   "checked": "2026-11-27T20:35+00:00",
+   "checked": "2026-11-28T00:53+00:00",
    "missing": 0,
    "since": "2026-11-23T11:01+00:00"
   },
@@ -686,7 +688,7 @@
    "manual": false,
    "in_stock": true,
    "sales": "410人付款",
-   "shop_sales": "2284人付款",
+   "shop_sales": "2285人付款",
    "months": 1,
    "deposit": 0,
    "region": "中国上海",
@@ -700,7 +702,7 @@
     "封号不赔"
    ],
    "url": "https://www.16688.com.cn/goods/G84346912",
-   "checked": "2026-11-27T20:35+00:00",
+   "checked": "2026-11-28T00:53+00:00",
    "missing": 0,
    "since": "2026-11-23T11:01+00:00"
   },
@@ -733,7 +735,7 @@
     "封号不赔"
    ],
    "url": "https://www.16688.com.cn/goods/G90234346",
-   "checked": "2026-11-27T20:35+00:00",
+   "checked": "2026-11-28T00:53+00:00",
    "missing": 0,
    "since": "2026-11-23T11:01+00:00"
   },
@@ -752,7 +754,7 @@
    "manual": false,
    "in_stock": true,
    "sales": "321人付款",
-   "shop_sales": "9430人付款",
+   "shop_sales": "9432人付款",
    "months": 3,
    "deposit": 10000,
    "region": "中国广东",
@@ -765,7 +767,7 @@
     "可能不到账"
    ],
    "url": "https://www.16688.com.cn/goods/G19014535",
-   "checked": "2026-11-27T20:35+00:00",
+   "checked": "2026-11-28T00:53+00:00",
    "missing": 0,
    "since": "2026-11-25T08:38+00:00"
   },
@@ -800,7 +802,7 @@
     "新注册账号不建议充"
    ],
    "url": "https://www.16688.com.cn/goods/G96586931",
-   "checked": "2026-11-27T20:35+00:00",
+   "checked": "2026-11-28T00:53+00:00",
    "missing": 0,
    "since": "2026-11-23T11:01+00:00"
   },
@@ -830,7 +832,7 @@
    "warranty": "质保 30 天",
    "risks": [],
    "url": "https://www.16688.com.cn/goods/G96072538",
-   "checked": "2026-11-27T20:35+00:00",
+   "checked": "2026-11-28T00:53+00:00",
    "missing": 0,
    "since": "2026-11-23T11:01+00:00"
   },
@@ -849,7 +851,7 @@
    "manual": true,
    "in_stock": true,
    "sales": "1人付款",
-   "shop_sales": "902人付款",
+   "shop_sales": "903人付款",
    "months": 1,
    "deposit": 2000,
    "region": "中国海南",
@@ -860,7 +862,7 @@
    "warranty": "有质保，未写天数",
    "risks": [],
    "url": "https://www.16688.com.cn/goods/G87336868",
-   "checked": "2026-11-27T20:35+00:00",
+   "checked": "2026-11-28T00:53+00:00",
    "missing": 0,
    "since": "2026-11-23T11:01+00:00"
   },
@@ -892,7 +894,7 @@
     "会员到期后才能充"
    ],
    "url": "https://www.16688.com.cn/goods/G53931744",
-   "checked": "2026-11-27T20:35+00:00",
+   "checked": "2026-11-28T00:53+00:00",
    "missing": 0,
    "since": "2026-11-23T11:01+00:00"
   },
@@ -926,7 +928,7 @@
     "会员到期后才能充"
    ],
    "url": "https://www.16688.com.cn/goods/G71286073",
-   "checked": "2026-11-27T20:35+00:00",
+   "checked": "2026-11-28T00:53+00:00",
    "missing": 0,
    "since": "2026-11-23T11:01+00:00"
   },
@@ -945,7 +947,7 @@
    "manual": true,
    "in_stock": true,
    "sales": "1人付款",
-   "shop_sales": "902人付款",
+   "shop_sales": "903人付款",
    "months": 1,
    "deposit": 2000,
    "region": "中国海南",
@@ -956,7 +958,7 @@
    "warranty": "有质保，未写天数",
    "risks": [],
    "url": "https://www.16688.com.cn/goods/G92514094",
-   "checked": "2026-11-27T20:35+00:00",
+   "checked": "2026-11-28T00:53+00:00",
    "missing": 0,
    "since": "2026-11-23T11:01+00:00"
   },
@@ -988,7 +990,7 @@
     "会员到期后才能充"
    ],
    "url": "https://www.16688.com.cn/goods/G48247275",
-   "checked": "2026-11-27T20:35+00:00",
+   "checked": "2026-11-28T00:53+00:00",
    "missing": 0,
    "since": "2026-11-23T11:01+00:00"
   },
@@ -1020,7 +1022,7 @@
     "可能不到账"
    ],
    "url": "https://www.16688.com.cn/goods/G50412884",
-   "checked": "2026-11-27T20:35+00:00",
+   "checked": "2026-11-28T00:53+00:00",
    "missing": 0,
    "since": "2026-11-24T01:49+00:00"
   },
@@ -1052,7 +1054,7 @@
     "可能不到账"
    ],
    "url": "https://www.16688.com.cn/goods/G43955893",
-   "checked": "2026-11-27T20:35+00:00",
+   "checked": "2026-11-28T00:53+00:00",
    "missing": 0,
    "since": "2026-11-24T01:49+00:00"
   },
@@ -1084,7 +1086,7 @@
     "会员到期后才能充"
    ],
    "url": "https://www.16688.com.cn/goods/G45286054",
-   "checked": "2026-11-27T20:35+00:00",
+   "checked": "2026-11-28T00:53+00:00",
    "missing": 0,
    "since": "2026-11-24T01:49+00:00"
   },
@@ -1116,7 +1118,7 @@
     "会员到期后才能充"
    ],
    "url": "https://www.16688.com.cn/goods/G73095534",
-   "checked": "2026-11-27T20:35+00:00",
+   "checked": "2026-11-28T00:53+00:00",
    "missing": 0,
    "since": "2026-11-24T01:49+00:00"
   }
