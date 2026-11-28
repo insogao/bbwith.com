@@ -294,5 +294,19 @@
   "full": true,
   "picked": [],
   "dropped": []
+ },
+ {
+  "date": "2026-11-28",
+  "plan": "grok/supergrok",
+  "full": true,
+  "picked": [
+   {
+    "goods_no": "G47687155",
+    "shop": "秋九一AI直购",
+    "total": 709.32,
+    "reason": "Super 美区月付代充，30天订阅质保且写明掉订阅按剩余天数退款，条款清晰，同档中更稳妥。"
+   }
+  ],
+  "dropped": []
  }
 ]
